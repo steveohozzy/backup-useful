@@ -1,0 +1,538 @@
+<script>
+(function () {
+
+  if (window.location.pathname.indexOf('/586743') === -1) {
+    return;
+  }
+
+  if (window.hobbitqueueRunning) {
+    return;
+  }
+
+  window.hobbitqueueRunning = true;
+
+
+  var QUEUE_COLLECTION = 'hobbitqueue';
+  var SETTINGS_DOCUMENT = 'hobbit-drop';
+
+  var SESSION_STORAGE_KEY = 'hobbitSessionId';
+
+  var HEARTBEAT_INTERVAL = 5000;
+  var SESSION_TIMEOUT = 60000;
+  var ACCESS_CHECK_INTERVAL = 30000;
+
+  var LOCK_ID = 'hobbit-page-lock';
+
+  var admitted = false;
+  var heartbeatTimer = null;
+  var observer = null;
+  var accessCheckTimer = null;
+
+
+  function createProtection() {
+
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+
+    if (!document.getElementById(LOCK_ID)) {
+
+      var lock = document.createElement('div');
+
+      lock.id = LOCK_ID;
+
+      lock.innerHTML =
+        '<div class="hobbit-queue-box">' +
+          '<h1>Hobbit launch queue</h1>' +
+          '<p>Checking availability...</p>' +
+
+          '<div class="hobbit-status">' +
+            '<div class="hobbit-spinner"></div>' +
+            '<p>Checking access...</p>' +
+          '</div>' +
+
+        '</div>';
+
+      lock.setAttribute(
+        'style',
+        'position:fixed;' +
+        'top:0;' +
+        'left:0;' +
+        'right:0;' +
+        'bottom:0;' +
+        'width:100%;' +
+        'height:100%;' +
+        'background:#0d5d9c;' +
+        'display:flex;' +
+        'align-items:center;' +
+        'justify-content:center;' +
+        'z-index:2147483647;' +
+        'font-family:"Nunito Regular",Tahoma,sans-serif;' +
+        'color:#fff;'
+      );
+
+      document.body.appendChild(lock);
+    }
+
+    if (!document.getElementById('hobbit-queue-style')) {
+
+      var style = document.createElement('style');
+
+      style.id = 'hobbit-queue-style';
+
+      style.innerHTML =
+        '.hobbit-queue-box{' +
+          'width:90%;' +
+          'max-width:480px;' +
+          'background:#0d5d9c;' +
+          'border:1px solid #fff;' +
+          'border-radius:16px;' +
+          'padding:40px;' +
+          'text-align:center;' +
+          'box-sizing:border-box;' +
+        '}' +
+
+        '.hobbit-queue-box h1{' +
+          'margin:0 0 16px;' +
+          'font-size:28px;' +
+        '}' +
+
+        '.hobbit-queue-box p{' +
+          'line-height:1.5;' +
+        '}' +
+
+        '.hobbit-status{' +
+          'padding:24px;' +
+          'background:#407ec9;' +
+          'border-radius:12px;' +
+          'margin-top:20px;' +
+        '}' +
+
+        '.hobbit-spinner{' +
+          'width:42px;' +
+          'height:42px;' +
+          'border:3px solid #407ec9;' +
+          'border-top-color:#fff;' +
+          'border-radius:50%;' +
+          'margin:0 auto 16px;' +
+          'animation:hobbit-spin 1s linear infinite;' +
+        '}' +
+
+        '@keyframes hobbit-spin{' +
+          'to{transform:rotate(360deg);}' +
+        '}';
+
+      document.head.appendChild(style);
+    }
+  }
+
+  function updateStatus(html) {
+
+    var status = document.querySelector(
+      '#' + LOCK_ID + ' .hobbit-status'
+    );
+
+    if (status) {
+      status.innerHTML = '<p>' + html + '</p>';
+    }
+  }
+
+  function loadScript(src, callback) {
+
+    var script = document.createElement('script');
+
+    script.src = src;
+
+    script.onload = callback;
+
+    script.onerror = function () {
+
+      removeProtection();
+
+    };
+
+    document.head.appendChild(script);
+  }
+
+  createProtection();
+
+
+  loadScript(
+    'https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js',
+    function () {
+
+      loadScript(
+        'https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js',
+        function () {
+
+          var firebaseConfig = {
+
+            apiKey: "AIzaSyDJgmTvfE5BLONPIn7zHA8FONTUsqzVLtY",
+            authDomain: "hobbit-queue-2.firebaseapp.com",
+            projectId: "hobbit-queue-2",
+            storageBucket: "hobbit-queue-2.firebasestorage.app",
+            messagingSenderId: "1071669868555",
+            appId: "1:1071669868555:web:9c8f0b6bb32624f6f32f0e"
+
+        };
+
+          if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+          }
+
+          var db = firebase.firestore();
+
+          var sessionId =
+            sessionStorage.getItem(SESSION_STORAGE_KEY);
+
+          if (!sessionId) {
+
+            sessionId =
+              's_' +
+              new Date().getTime() +
+              '_' +
+              Math.floor(Math.random() * 1000000);
+
+            sessionStorage.setItem(
+              SESSION_STORAGE_KEY,
+              sessionId
+            );
+          }
+
+          var queueRef =
+            db.collection(QUEUE_COLLECTION).doc(sessionId);
+
+          var settingsRef =
+            db.collection('settings')
+              .doc(SETTINGS_DOCUMENT);
+
+          function heartbeat() {
+
+            if (!admitted) {
+              return;
+            }
+
+            queueRef.set({
+
+              lastSeen:
+                firebase.firestore.FieldValue.serverTimestamp(),
+
+              status:
+                'admitted'
+
+            }, {
+              merge: true
+            });
+          }
+
+          function admitUser() {
+
+            if (admitted) {
+              return;
+            }
+
+            admitted = true;
+            heartbeat();
+
+            heartbeatTimer = setInterval(
+              heartbeat,
+              HEARTBEAT_INTERVAL
+            );
+
+            removeProtection();
+
+          }
+
+          function removeProtection() {
+
+            admitted = true;
+
+            if (observer) {
+
+              observer.disconnect();
+
+              observer = null;
+
+            }
+
+            if (accessCheckTimer) {
+
+              clearTimeout(accessCheckTimer);
+
+              accessCheckTimer = null;
+
+            }
+
+            var lock =
+              document.getElementById(LOCK_ID);
+
+            if (lock) {
+
+              lock.parentNode.removeChild(lock);
+
+            }
+
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+
+          }
+
+          function checkAccess() {
+
+            if (admitted) {
+              return;
+            }
+
+            settingsRef.get().then(function (settingsDoc) {
+
+              if (!settingsDoc.exists) {
+
+                // If queue configuration cannot be found,
+                // fail open so customers are not blocked.
+                removeProtection();
+                return;
+              }
+
+              var settings =
+                settingsDoc.data();
+
+              var maxUsers =
+                parseInt(settings.maxUsers, 10);
+
+              if (!maxUsers || maxUsers < 1) {
+
+                // Invalid queue configuration:
+                // fail open rather than blocking customers.
+                removeProtection();
+                return;
+              }
+
+              db.collection(QUEUE_COLLECTION)
+                .where(
+                  'lastSeen',
+                  '>',
+                  new Date(Date.now() - SESSION_TIMEOUT)
+                )
+                .get()
+                .then(function (snapshot) {
+
+                  var now =
+                    new Date().getTime();
+
+                  var active = 0;
+
+                  snapshot.forEach(function (doc) {
+
+                    var data =
+                      doc.data();
+
+                    if (
+                      data.lastSeen &&
+                      data.lastSeen.toMillis
+                    ) {
+
+                      if (
+                        (now -
+                        data.lastSeen.toMillis()) <
+                        SESSION_TIMEOUT
+                      ) {
+
+                        if (doc.id !== sessionId) {
+                          active++;
+                        }
+
+                      }
+
+                    }
+
+                  });
+
+                  if (active < maxUsers) {
+
+                    admitUser();
+
+                  } else {
+
+                    updateStatus(
+
+                      'All slots are currently full.' +
+                      '<br><br>' +
+
+                      active +
+                      ' of ' +
+                      maxUsers +
+                      ' customers are currently viewing this product.' +
+
+                      '<br><br>' +
+
+                      'You will be admitted automatically ' +
+                      'when a slot becomes available.'
+
+                    );
+
+                    accessCheckTimer =
+                      setTimeout(
+                        checkAccess,
+                        ACCESS_CHECK_INTERVAL
+                      );
+
+                  }
+
+                })
+                .catch(function () {
+
+                  // Firestore check failed.
+                  // Fail open rather than blocking the customer.
+                  removeProtection();
+
+                });
+
+            })
+            .catch(function () {
+
+              // Settings check failed.
+              // Fail open rather than blocking the customer.
+              removeProtection();
+
+            });
+
+          }
+
+          function startProtectionObserver() {
+
+            if (!window.MutationObserver) {
+              return;
+            }
+
+            function enforceLock() {
+
+              if (admitted) {
+                return;
+              }
+
+              var lock =
+                document.getElementById(LOCK_ID);
+
+              if (!lock) {
+
+                createProtection();
+
+                return;
+              }
+
+              lock.style.position = 'fixed';
+              lock.style.top = '0';
+              lock.style.left = '0';
+              lock.style.right = '0';
+              lock.style.bottom = '0';
+
+              lock.style.width = '100%';
+              lock.style.height = '100%';
+
+              lock.style.display = 'flex';
+
+              lock.style.visibility = 'visible';
+              lock.style.opacity = '1';
+
+              lock.style.transform = 'none';
+
+              lock.style.margin = '0';
+              lock.style.padding = '0';
+
+              lock.style.pointerEvents = 'auto';
+
+              lock.style.zIndex = '2147483647';
+
+              lock.style.overflow = 'hidden';
+
+              document.documentElement.style.overflow = 'hidden';
+              document.body.style.overflow = 'hidden';
+
+              var rect = lock.getBoundingClientRect();
+
+              var viewportWidth =
+                window.innerWidth ||
+                document.documentElement.clientWidth;
+
+              var viewportHeight =
+                window.innerHeight ||
+                document.documentElement.clientHeight;
+
+              if (
+                rect.left > 1 ||
+                rect.top > 1 ||
+                rect.right < viewportWidth - 1 ||
+                rect.bottom < viewportHeight - 1
+              ) {
+
+                lock.style.position = 'fixed';
+                lock.style.top = '0';
+                lock.style.left = '0';
+                lock.style.right = '0';
+                lock.style.bottom = '0';
+
+                lock.style.width = '100%';
+                lock.style.height = '100%';
+
+                lock.style.transform = 'none';
+              }
+
+            }
+
+            observer =
+              new MutationObserver(function () {
+
+                if (admitted) {
+                  return;
+                }
+
+                enforceLock();
+
+              });
+
+            observer.observe(
+              document.documentElement,
+              {
+                childList: true,
+                attributes: true,
+                subtree: true,
+                attributeFilter: [
+                  'style',
+                  'class'
+                ]
+              }
+            );
+
+            setInterval(function () {
+
+              if (admitted) {
+                return;
+              }
+
+              enforceLock();
+
+            }, 250);
+
+          }
+
+          startProtectionObserver();
+
+          checkAccess();
+
+          window.addEventListener(
+            'beforeunload',
+            function () {
+              queueRef.delete();
+
+            }
+          );
+
+        }
+
+      );
+
+    }
+
+  );
+
+})();
+</script>

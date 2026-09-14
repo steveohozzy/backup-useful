@@ -1,0 +1,697 @@
+<style>
+    .breadcrumb-section {display: none;}
+
+    .comp-form {
+        background: #ffffff;
+        max-width: 1024px;
+        margin: 20px auto 100px;
+        box-shadow: 0 4px 20px rgba(44, 93, 136, 0.08);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .comp-header,
+    .comp-footer {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 100%;
+        max-width: 1024px;
+        background: #fff;
+        margin: 0 auto;
+    }
+    .comp-header h1 {
+        margin: 0;
+    }
+
+    .comp-header img,
+    .comp-footer img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .comp-header img {
+        border-radius: 12px 12px 0 0;
+    }
+
+    .comp-footer {
+        max-width: 100%;
+        display: none; /* Hide footer temp before winter launches */
+    }
+
+    .comp-footer img.desktop {
+        display: none;
+    }
+    
+    /* CONTENT & TYPOGRAPHY */
+    .comp-content {
+        margin: 0 auto;
+        padding: 40px 30px;
+        color: #2c5d88;
+        line-height: 150%;
+        width: 100%;
+        max-width: 1024px;
+    }
+    
+    .comp-content p {
+        margin: 0 0 20px;
+    }
+
+    .comp-content p a {
+        color: #2c5d88;
+        text-decoration: underline;
+    }
+
+    .title-field-container {
+        margin: 0 0 24px;
+    }
+
+    .comp-content legend {
+        margin: 0 0 8px;
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 120%;
+        color: #2c5d88;
+        letter-spacing: 0.3px;
+    }
+
+    .mandatory-asterisks {
+        color: #d96b27; /* Warm accent matching the fox put back when winter launches */
+        color: #ee3224;
+    }
+
+    /* FORM CONTROLS & INPUTS */
+    .form-control {
+        color: #2c5d88;
+        border: solid 1.5px #cbd5e1;
+        border-radius: 8px;
+        padding: 12px 16px;
+        height: auto;
+        transition: all 0.2s ease;
+        background-color: #fafbfc;
+    }
+
+    .form-control:focus {
+        border-color: #d96b27; /* Warm accent matching the fox put back when winter launches */
+        border-color: #ffd100;
+        box-shadow: 0 0 0 3px rgba(217, 107, 39, 0.15);
+        outline: none;
+        background-color: #fff;
+    }
+
+    /* NICE SELECT DROPDOWN */
+    .nice-select {
+        margin: 0 0 24px;
+        color: #2c5d88;
+        border: solid 1.5px #cbd5e1;
+        border-radius: 8px;
+        height: 48px;
+        line-height: 46px;
+        background-color: #fafbfc;
+        float: none;
+        width: 100%;
+    }
+
+    .nice-select .current {
+        box-shadow: none;
+        padding-left: 12px;
+    }
+
+    .nice-select .current:after {
+        border-bottom: 2px solid #2c5d88;
+        border-right: 2px solid #2c5d88;
+    }
+
+    .nice-select .list {
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        width: 100%;
+    }
+
+    .nice-select .option:hover, 
+    .nice-select .option.focus, 
+    .nice-select .option.selected.focus {
+        background-color: #eef3f7;
+        color: #2c5d88;
+    }
+
+    /* DISCLAIMERS & CHECKBOXES */
+    .comp-content p.sign-up-disclaimer {
+        margin: 0 0 16px;
+        font-size: 13px;
+        line-height: 140%;
+        color: #59738c;
+    }
+
+    .email-signup-opt-in {
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+    .title-field-container label.checkbox-inline {
+        margin: 6px 0 6px 0;
+        padding: 8px 12px 8px 42px;
+        color: #334e68;
+        font-size: 14px;
+        line-height: 140%;
+        background: #f4f7f9;
+        border-radius: 6px;
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.2s;
+        vertical-align: top;
+    }
+
+    .title-field-container label.checkbox-inline:hover {
+        background: #eef3f7;
+    }
+
+    .title-field-container label.checkbox-inline input[type="checkbox"] {
+        position: absolute;
+        left: 30px;
+        top: 5px;
+        width: 18px;
+        height: 18px;
+        accent-color: #d96b27; /* Warm accent matching the fox put back when winter launches */
+        accent-color: #ffd100;
+    }
+
+    /* SUBMIT BUTTON */
+    .comp-content .btn-default, 
+    .comp-content .btn-default:hover, 
+    .comp-content .btn-default:active, 
+    .comp-content .btn-default:focus {
+        box-shadow: 0 4px 12px rgba(217, 107, 39, 0.3);
+    }
+
+    .comp-content .btn-default {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        line-height: 100%;
+        color: #ffffff;
+        background: #d96b27; /* Warm contrast button matching fox tones  put back when winter launches */
+        background: #0d5d9c;
+        border: none;
+        border-radius: 8px;
+        padding: 16px 24px;
+        transition: background 0.2s, transform 0.1s;
+        cursor: pointer;
+    }
+
+    .comp-content .btn-default:hover {
+        background: #c15c20; /* Warm contrast button matching fox tones  put back when winter launches */
+        background: #ff2b1c;
+    }
+
+    /* MEDIA QUERIES */
+    @media (min-width: 768px) {
+        .comp-footer img.desktop {
+            display: block;
+        }
+
+        .comp-footer img.mobile {
+            display: none;
+        }
+        
+        .comp-header img.header-mobile {
+            display: none;
+        }
+        
+        .comp-header img.header-desktop {
+            display: block;
+        }
+        
+        .title-field-container {
+            margin: 0 0 28px;
+        }
+        
+        .nice-select {
+            margin: 0 0 28px;
+        }
+        
+        .comp-content .btn-default {
+            width: 280px;
+            display: block;
+            margin: 0 auto;
+        }
+    }
+
+    .signup-icons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 10px 30px;
+        gap: 20px;
+    }
+
+    .signup-icons .icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: calc(50% - 20px);
+    }
+
+    .signup-icons .icon img {
+        width: 100%;
+        height: auto;
+    }
+
+    .signup-icons .icon span {
+        font-size: 18px;
+        line-height: 140%;
+        color: #59738c;
+        margin-top: 10px;
+        text-align: center;
+        font: 22px/120% "Nunito Bold", "Tahoma Bold", sans-serif;
+    }
+
+    @media (min-width: 768px) {
+        .signup-icons .icon {
+            width: calc(25% - 20px);
+        }
+    }
+
+    .hp-email-signup-container-footer {
+        display: none;
+    }
+
+    footer {
+        position: relative;
+        margin-top: -30px !important;
+    }
+
+    @media (min-width: 768px) {
+        footer {
+            margin-top: -110px !important;
+        }
+    }
+
+    .intro-text {
+        text-align: center;
+        padding: 30px 30px 0;
+    }
+
+    .checkboxes-wrapper {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 20px;
+    }
+
+     @media (min-width: 768px) {
+        .checkboxes-wrapper {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+    }
+</style>
+
+<div class="comp-form">
+	
+	<!-- HEADER -->
+
+	<div class="comp-header">
+			
+		<h1><img src="https://www.thetoyshop.com/medias/TE-rewards-2026-form-DT-header-944x200px.jpg?context=bWFzdGVyfHJvb3R8MTUxMTc0fGltYWdlL2pwZWd8YUdRNUwyaGpaQzh4TWpnME1UZzFPVGMwTXpjM05DOVVSU0J5WlhkaGNtUnpJREl3TWpZZ1ptOXliU0JFVkNCb1pXRmtaWElnT1RRMGVESXdNSEI0TG1wd1p3fGUzMGM0YzdjZjI1NjBiMDk1NTlkYTE1ODQ2YWFiODAyMTczMTE2NjgzYTc0YTFkYWU2NjlhOWFjNDYwNTBjNWQ" alt="The Entertainer Rewards" title="The Entertainer Rewards"><span style="visibility: hidden;">The Entertainer Rewards</span></h1>
+	
+	</div>
+
+    <div class="signup-icons">
+        <div class="icon">
+            <img src="https://www.thetoyshop.com/medias/TE-Rewards-welcome-icon-300x300px-opt2.png?context=bWFzdGVyfHJvb3R8MTEwOTh8aW1hZ2UvcG5nfGFHWTFMMmd6WWk4eE1qZzBNVGcyTURNek16VTVPQzlVUlNCU1pYZGhjbVJ6SUhkbGJHTnZiV1VnYVdOdmJpQXpNREI0TXpBd2NIZ2diM0IwTWk1d2JtY3w0ZDdkMjM4NTlmMjIyNDZkMWQ1Y2E4ODI0ZjliOWQ3YTcyZmMwYmY2ZTZiMTFlOGU4YTc4ZDJmNzFjYjIzOTI3" alt="The Entertainer Rewards Members Welcome Discount" title="The Entertainer Rewards Welcome Discount">
+            <span>Welcome <br>Discount</span>
+        </div>
+       
+        <div class="icon">
+            <img src="https://www.thetoyshop.com/medias/TE-Rewards-Birthday-icon-300x300px.png?context=bWFzdGVyfHJvb3R8MTEwNjR8aW1hZ2UvcG5nfGFESTBMMmd6TlM4eE1qZzBNVGcyTURFek5qazVNQzlVUlNCU1pYZGhjbVJ6SUVKcGNuUm9aR0Y1SUdsamIyNGdNekF3ZURNd01IQjRMbkJ1Wnd8Njg2ZGIwZDBkMGM4N2RiNjZhZTkzOTUxMWY1NWViNGZlNDE2MDE2MTVhMWZlZGFjZTA5YzU2OWJhMTIyMGYwOQ" alt="The Entertainer Rewards Big Birthday Perks" title="The Entertainer Rewards Big Birthday Perks">
+            
+            <span>Big Birthday <br>Perks</span>
+        </div>
+         <div class="icon">
+            <img src="https://www.thetoyshop.com/medias/TE-Rewards-member-icon-300x300px.png?context=bWFzdGVyfHJvb3R8MTA4MjB8aW1hZ2UvcG5nfGFEWTFMMmd6TVM4eE1qZzBNVGcyTURBd05Ua3hPQzlVUlNCU1pYZGhjbVJ6SUcxbGJXSmxjaUJwWTI5dUlETXdNSGd6TURCd2VDNXdibWN8ZmE2NDAyOGQ1MmQ0N2QxODQ5ZmE5YWFiMjU0MDUxMDBkOGE2YzUyYjM5Nzk5ZmUxNjBlMGQ0YmE3YmJkZTI0YQ" alt="The Entertainer Rewards Members only prices" title="The Entertainer Rewards Members only prices">
+            <span>Members <br>Offers</span>
+        </div>
+        <div class="icon">
+            <img src="https://www.thetoyshop.com/medias/TE-Rewards-access-icon-300x300px.png?context=bWFzdGVyfHJvb3R8MTA5NTB8aW1hZ2UvcG5nfGFHVTBMMmd6T0M4eE1qZzBNVGcyTURJMk9EQTJNaTlVUlNCU1pYZGhjbVJ6SUdGalkyVnpjeUJwWTI5dUlETXdNSGd6TURCd2VDNXdibWN8MTlmZjgxNGE2OGY1YTg5MWIzNmY4ZWI4ZWJjZTE0NWYyYWQwZGQxNTI5YzcyYWZmODE2MmE4Y2QyYWUzMjgwMg" alt="The Entertainer Rewards Members only prices" title="The Entertainer Rewards Members only prices">
+            <span>Early<br>Access</span>
+        </div>
+        
+    </div>
+
+    <div class="intro-text">
+        <p>Sign up to The Entertainer Rewards today and get access to all sorts of amazing benefits including 10% off your next online order. <strong>Until 9th September, you can claim your 10% welcome discount instore too.</strong></p>
+ 
+        <p>Let us know your birthday month below - and the people you buy for - and we'll send you something from us to add a little extra sparkle.</p>
+ 
+        <p>Plus, join now and you'll unlock early access to selected toy sales and big promotions throughout the year, and we'll send you exclusive offers only open to The Entertainer Rewards members.</p>
+ 
+        <p>Play can be rewarding… in more ways than one!</p>
+    </div>
+	
+	
+	<!-- FORM CONTENT -->
+	
+	<div class="comp-content">
+		
+		<form name="CompForm" onsubmit="return CheckCompInputs();" action="https://link.thetoyshop.com/u/register.php" method="get">
+			
+			<input type="hidden" name="CID" value="1049437855">
+			<input type="hidden" name="SID" value="">
+			<input type="hidden" name="UID" value="">
+			<input type="hidden" name="f" value="2474">
+			<input type="hidden" name="p" value="2">
+			<input type="hidden" name="a" value="r">
+			<input type="hidden" name="el" value="">
+			<input type="hidden" name="llid" value="">
+			<input type="hidden" name="c" value="">
+			<input type="hidden" name="counted" value="">
+			<input type="hidden" name="RID" value="">
+			<input type="hidden" name="mailnow" value="">
+			
+			
+			<!-- EMAIL FIELD -->
+			
+			<div class="title-field-container">
+							
+				<div>
+								
+					<legend>Email address <span class="mandatory-asterisks">(*)</span></legend>
+							
+				</div>
+							
+				<div>
+								
+					<input type="email" name="inp_3" maxlength="255" value="" class="form-control">
+							
+				</div>
+					
+			</div>
+			
+			
+			<!-- FIRST NAME FIELD -->
+			
+			<div class="title-field-container">
+							
+				<div>
+
+					<legend>First Name <span class="mandatory-asterisks">(*)</span></legend>
+
+				</div>
+
+				<div>
+
+					<input type="text" name="inp_1" maxlength="60" value="" class="form-control">
+
+				</div>
+				
+			</div>
+			
+			
+			<!-- LAST NAME FIELD -->
+						
+			<div class="title-field-container">
+							
+				<div>
+								
+					<legend>Last Name <span class="mandatory-asterisks">(*)</span></legend>
+							
+				</div>
+				
+				<div>
+						
+					<input type="text" name="inp_2" maxlength="60" value="" class="form-control">
+							
+				</div>
+					
+			</div>
+			
+			
+			<!-- BRAND INTEREST TICKBOXES -->
+			
+			<div class="title-field-container">
+				
+				<div>
+								
+					<legend>Which toys are you interested in?<!--<span class="mandatory-asterisks">(*)</span>--></legend>
+							
+				</div>
+				
+				<div class="checkboxes-wrapper">
+					
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="1">Barbie</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="17">Batman</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="5">Bluey</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="2">Disney Princess</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="10">Fuggler</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="13">Gabby's Dollhouse</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="25">Harry Potter</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="8">Hot Wheels</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="18">L.O.L. Surprise!</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="21">LEGO</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="4">Marvel</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="22">Mini Brands / Miniverse</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="11">Monster Jam</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="14">NERF</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="23">Nintendo</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="6">Paw Patrol</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="3">Peppa Pig</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="24">Pokemon</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="26">Sony PlayStation</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="16">Spider-Man</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="7">Squishmallows</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="9">Star Wars</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="20">Teenage Mutant Ninja Turtles</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13841[]" value="19">Transformers</label>
+					
+				</div>
+							
+			</div>
+			
+			
+			<!-- BRAND INTEREST TICKBOXES -->
+			
+			<div class="title-field-container">
+				
+				<div>
+								
+					<legend>The birthday month/s of children I buy for are:<!--<span class="mandatory-asterisks">(*)</span>--></legend>
+							
+				</div>
+				
+				<div class="checkboxes-wrapper">
+					
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="1">January</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="2">February</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="3">March</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="4">April</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="5">May</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="6">June</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="7">July</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="8">August</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="9">September</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="10">October</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="11">November</label>
+					<label class="checkbox-inline"><input type="checkbox" name="inp_13561[]" value="12">December</label>
+					
+				</div>
+							
+			</div>
+			
+			
+			<!-- DROPDOWN FOR STORE SELECT -->
+						
+			<div class="title-field-container">
+				
+				<legend>Please select your local store</legend>
+					
+				<select name="inp_12451" size="1" class="form-control" style="display: none;">
+						
+					<option value="">Select Store</option><option value="165">Aberdeen</option><option value="1">Altrincham</option><option value="2">Amersham</option><option value="3">Antrim</option><option value="4">Ashford</option><option value="5">Aylesbury</option><option value="6">Banbury</option><option value="7">Barnsley</option><option value="8">Barnstaple</option><option value="9">Barrow-in-Furness</option><option value="10">Basildon</option><option value="11">Basingstoke</option><option value="12">Bath</option><option value="13">Belfast</option><option value="14">Beverley</option><option value="15">Bexleyheath</option><option value="16">Birkenhead</option><option value="17">Bishop Stortford</option><option value="18">Blackburn</option><option value="19">Bluewater</option><option value="20">Bolton</option><option value="21">Bournemouth</option><option value="169">Bracknell</option><option value="22">Bradford</option><option value="23">Braehead</option><option value="24">Brighton</option><option value="25">Bristol Cabot Circus</option><option value="26">Bromley Lower</option><option value="27">Bromley Upper</option><option value="28">Broughton Park</option><option value="29">Bullring</option><option value="30">Burnley</option><option value="31">Burton upon Trent</option><option value="32">Bury</option><option value="33">Camberley</option><option value="34">Cambridge</option><option value="35">Cardiff</option><option value="36">Carlisle</option><option value="37">Carmarthen</option><option value="38">Chatham</option><option value="39">Chelmsford</option><option value="40">Chester</option><option value="41">Chesterfield</option><option value="42">Chichester</option><option value="43">Clydebank</option><option value="44">Colchester</option><option value="45">Coliseum</option><option value="46">Corby</option><option value="47">Coventry</option><option value="48">Crawley</option><option value="49">Cribbs Causeway</option><option value="50">Cumbernauld</option><option value="51">Cwmbran</option><option value="163">Dalton Park</option><option value="52">Derby</option><option value="53">Didcot</option><option value="54">Doncaster</option><option value="55">Douglas</option><option value="56">Dover</option><option value="58">Dunfermline</option><option value="59">East Kilbride</option><option value="60">Eastleigh</option><option value="166">Edinburgh Gyle</option><option value="61">Exeter</option><option value="62">Gateshead Metro Centre</option><option value="64">Glasgow Silverburn</option><option value="128">Glasgow St Enoch</option><option value="65">Gloucester</option><option value="66">Grimsby</option><option value="67">Guildford</option><option value="68">Hanley</option><option value="69">Harlow Harvey</option><option value="72">Hemel Hempstead</option><option value="73">Hereford</option><option value="74">Huddersfield</option><option value="75">Hull</option><option value="76">Ilford</option><option value="77">Inverness</option><option value="78">Ipswich</option><option value="79">Jersey</option><option value="80">Keynsham</option><option value="82">King's Lynn, Vancouver Quarter</option><option value="83">Kingston Bentalls</option><option value="84">Lakeside</option><option value="85">Lancaster</option><option value="86">Leamington Spa</option><option value="87">Leeds Springs</option><option value="88">Leeds Trinity</option><option value="89">Leeds White Rose</option><option value="90">Leicester</option><option value="91">Lichfield</option><option value="92">Lincoln</option><option value="93">Liverpool One</option><option value="94">Liverpool St Johns</option><option value="95">Livingston</option><option value="96">Llandudno</option><option value="97">Macclesfield</option><option value="98">Manchester Arndale</option><option value="99">Merry Hill</option><option value="100">Middlesbrough</option><option value="101">Midsomer Norton</option><option value="102">Milton Keynes</option><option value="103">Newbury</option><option value="104">Newport IOW</option><option value="105">Newport Wales</option><option value="106">Northampton</option><option value="107">Northwich</option><option value="108">Norwich</option><option value="109">Nottingham</option><option value="110">Oldham</option><option value="112">Peterborough</option><option value="113">Plymouth</option><option value="114">Poole</option><option value="115">Port Talbot</option><option value="168">Portsmouth Gunwharf Quays</option><option value="117">Reading</option><option value="118">Redditch</option><option value="119">Romford Brewery</option><option value="120">Romford Mercury</option><option value="164">Rushden Lakes</option><option value="122">Sheffield</option><option value="123">Sheffield Meadowhall</option><option value="124">Shrewsbury</option><option value="125">Solihull</option><option value="126">Southport</option><option value="127">St Albans</option><option value="130">Stevenage</option><option value="131">Stirling</option><option value="132">Stockport</option><option value="133">Stratford</option><option value="134">Sunderland</option><option value="135">Sutton Coldfield</option><option value="136">Swansea</option><option value="137">Swindon</option><option value="138">Taunton</option><option value="139">Telford</option><option value="167">The O2</option><option value="140">Torquay</option><option value="141">Truro</option><option value="142">Uxbridge</option><option value="144">Walsall</option><option value="145">Wandsworth</option><option value="146">Warrington</option><option value="147">Watford</option><option value="148">Welwyn Garden City</option><option value="149">West Bromwich</option><option value="150">White City</option><option value="151">Whiteley</option><option value="153">Winchester</option><option value="154">Witney</option><option value="155">Woking</option><option value="156">Wolverhampton</option><option value="157">Worcester</option><option value="158">Workington</option><option value="160">Yate</option><option value="161">Yeovil</option><option value="162">York</option>
+				
+				</select><div class="nice-select" tabindex="0"><ul class="list"><li data-value="" class="option selected">Select Store</li><li data-value="165" class="option">Aberdeen</li><li data-value="1" class="option">Altrincham</li><li data-value="2" class="option">Amersham</li><li data-value="3" class="option">Antrim</li><li data-value="4" class="option">Ashford</li><li data-value="5" class="option">Aylesbury</li><li data-value="6" class="option">Banbury</li><li data-value="7" class="option">Barnsley</li><li data-value="8" class="option">Barnstaple</li><li data-value="9" class="option">Barrow-in-Furness</li><li data-value="10" class="option">Basildon</li><li data-value="11" class="option">Basingstoke</li><li data-value="12" class="option">Bath</li><li data-value="13" class="option">Belfast</li><li data-value="14" class="option">Beverley</li><li data-value="15" class="option">Bexleyheath</li><li data-value="16" class="option">Birkenhead</li><li data-value="17" class="option">Bishop Stortford</li><li data-value="18" class="option">Blackburn</li><li data-value="19" class="option">Bluewater</li><li data-value="20" class="option">Bolton</li><li data-value="21" class="option">Bournemouth</li><li data-value="169" class="option">Bracknell</li><li data-value="22" class="option">Bradford</li><li data-value="23" class="option">Braehead</li><li data-value="24" class="option">Brighton</li><li data-value="25" class="option">Bristol Cabot Circus</li><li data-value="26" class="option">Bromley Lower</li><li data-value="27" class="option">Bromley Upper</li><li data-value="28" class="option">Broughton Park</li><li data-value="29" class="option">Bullring</li><li data-value="30" class="option">Burnley</li><li data-value="31" class="option">Burton upon Trent</li><li data-value="32" class="option">Bury</li><li data-value="33" class="option">Camberley</li><li data-value="34" class="option">Cambridge</li><li data-value="35" class="option">Cardiff</li><li data-value="36" class="option">Carlisle</li><li data-value="37" class="option">Carmarthen</li><li data-value="38" class="option">Chatham</li><li data-value="39" class="option">Chelmsford</li><li data-value="40" class="option">Chester</li><li data-value="41" class="option">Chesterfield</li><li data-value="42" class="option">Chichester</li><li data-value="43" class="option">Clydebank</li><li data-value="44" class="option">Colchester</li><li data-value="45" class="option">Coliseum</li><li data-value="46" class="option">Corby</li><li data-value="47" class="option">Coventry</li><li data-value="48" class="option">Crawley</li><li data-value="49" class="option">Cribbs Causeway</li><li data-value="50" class="option">Cumbernauld</li><li data-value="51" class="option">Cwmbran</li><li data-value="163" class="option">Dalton Park</li><li data-value="52" class="option">Derby</li><li data-value="53" class="option">Didcot</li><li data-value="54" class="option">Doncaster</li><li data-value="55" class="option">Douglas</li><li data-value="56" class="option">Dover</li><li data-value="58" class="option">Dunfermline</li><li data-value="59" class="option">East Kilbride</li><li data-value="60" class="option">Eastleigh</li><li data-value="166" class="option">Edinburgh Gyle</li><li data-value="61" class="option">Exeter</li><li data-value="62" class="option">Gateshead Metro Centre</li><li data-value="64" class="option">Glasgow Silverburn</li><li data-value="128" class="option">Glasgow St Enoch</li><li data-value="65" class="option">Gloucester</li><li data-value="66" class="option">Grimsby</li><li data-value="67" class="option">Guildford</li><li data-value="68" class="option">Hanley</li><li data-value="69" class="option">Harlow Harvey</li><li data-value="72" class="option">Hemel Hempstead</li><li data-value="73" class="option">Hereford</li><li data-value="74" class="option">Huddersfield</li><li data-value="75" class="option">Hull</li><li data-value="76" class="option">Ilford</li><li data-value="77" class="option">Inverness</li><li data-value="78" class="option">Ipswich</li><li data-value="79" class="option">Jersey</li><li data-value="80" class="option">Keynsham</li><li data-value="82" class="option">King's Lynn, Vancouver Quarter</li><li data-value="83" class="option">Kingston Bentalls</li><li data-value="84" class="option">Lakeside</li><li data-value="85" class="option">Lancaster</li><li data-value="86" class="option">Leamington Spa</li><li data-value="87" class="option">Leeds Springs</li><li data-value="88" class="option">Leeds Trinity</li><li data-value="89" class="option">Leeds White Rose</li><li data-value="90" class="option">Leicester</li><li data-value="91" class="option">Lichfield</li><li data-value="92" class="option">Lincoln</li><li data-value="93" class="option">Liverpool One</li><li data-value="94" class="option">Liverpool St Johns</li><li data-value="95" class="option">Livingston</li><li data-value="96" class="option">Llandudno</li><li data-value="97" class="option">Macclesfield</li><li data-value="98" class="option">Manchester Arndale</li><li data-value="99" class="option">Merry Hill</li><li data-value="100" class="option">Middlesbrough</li><li data-value="101" class="option">Midsomer Norton</li><li data-value="102" class="option">Milton Keynes</li><li data-value="103" class="option">Newbury</li><li data-value="104" class="option">Newport IOW</li><li data-value="105" class="option">Newport Wales</li><li data-value="106" class="option">Northampton</li><li data-value="107" class="option">Northwich</li><li data-value="108" class="option">Norwich</li><li data-value="109" class="option">Nottingham</li><li data-value="110" class="option">Oldham</li><li data-value="112" class="option">Peterborough</li><li data-value="113" class="option">Plymouth</li><li data-value="114" class="option">Poole</li><li data-value="115" class="option">Port Talbot</li><li data-value="168" class="option">Portsmouth Gunwharf Quays</li><li data-value="117" class="option">Reading</li><li data-value="118" class="option">Redditch</li><li data-value="119" class="option">Romford Brewery</li><li data-value="120" class="option">Romford Mercury</li><li data-value="164" class="option">Rushden Lakes</li><li data-value="122" class="option">Sheffield</li><li data-value="123" class="option">Sheffield Meadowhall</li><li data-value="124" class="option">Shrewsbury</li><li data-value="125" class="option">Solihull</li><li data-value="126" class="option">Southport</li><li data-value="127" class="option">St Albans</li><li data-value="130" class="option">Stevenage</li><li data-value="131" class="option">Stirling</li><li data-value="132" class="option">Stockport</li><li data-value="133" class="option">Stratford</li><li data-value="134" class="option">Sunderland</li><li data-value="135" class="option">Sutton Coldfield</li><li data-value="136" class="option">Swansea</li><li data-value="137" class="option">Swindon</li><li data-value="138" class="option">Taunton</li><li data-value="139" class="option">Telford</li><li data-value="167" class="option">The O2</li><li data-value="140" class="option">Torquay</li><li data-value="141" class="option">Truro</li><li data-value="142" class="option">Uxbridge</li><li data-value="144" class="option">Walsall</li><li data-value="145" class="option">Wandsworth</li><li data-value="146" class="option">Warrington</li><li data-value="147" class="option">Watford</li><li data-value="148" class="option">Welwyn Garden City</li><li data-value="149" class="option">West Bromwich</li><li data-value="150" class="option">White City</li><li data-value="151" class="option">Whiteley</li><li data-value="153" class="option">Winchester</li><li data-value="154" class="option">Witney</li><li data-value="155" class="option">Woking</li><li data-value="156" class="option">Wolverhampton</li><li data-value="157" class="option">Worcester</li><li data-value="158" class="option">Workington</li><li data-value="160" class="option">Yate</li><li data-value="161" class="option">Yeovil</li><li data-value="162" class="option">York</li></ul><span class="current">Select Store</span></div>
+			
+			</div>
+			
+			
+			<!-- THE ENTERTAINER MAILING LIST CHECKBOX -->			
+			
+			<p class="sign-up-disclaimer">By submitting your email address, you agree to receive emails about special offers, new toys and inspiration from The Entertainer</p>
+            
+			<div class="title-field-container email-signup-opt-in">
+
+				<label class="checkbox-inline" style="width: 100%;"><input tabindex="882" type="checkbox" name="optin" value="y"> Tick here to receive email marketing communications from The Entertainer</label>
+
+			</div>
+			
+			
+			<!-- SUBMIT BUTTON -->
+			
+			<input class="btn btn-default btn-block" aria-label="Register" tabindex="993" type="button" onclick="javascript:SubmitComp()" name="submit2" value="Submit">
+		
+		</form>		
+	
+	</div>
+
+</div>
+
+<div class="comp-footer">
+    <img class="desktop" src="https://www.thetoyshop.com/medias/TE-Rewards-form-footer-mob-2800x706px.png?context=bWFzdGVyfHJvb3R8MzMwNTg2fGltYWdlL3BuZ3xhR1JpTDJoallTOHhNamcwTVRnMU9UZ3dPVE14TUM5VVJTQlNaWGRoY21SeklHWnZjbTBnWm05dmRHVnlJRzF2WWlBeU9EQXdlRGN3Tm5CNExuQnVad3w3M2IwOTYwY2RiNGUyM2NkNDFiYjgzMzVmYWJkMmU1ZDhkMjEzMTBlY2QxOTQ0YThhZDEwN2UzOWZiYTYyMmRi" alt="The Entertainer Rewards strip" title="The Entertainer Rewards strip">
+    <img class="mobile" src="https://www.thetoyshop.com/medias/TE-Rewards-form-footer-mob-500x224px.png?context=bWFzdGVyfHJvb3R8NTExMzl8aW1hZ2UvcG5nfGFERmhMMmhqWVM4eE1qZzBNVGcxT1RnM05EZzBOaTlVUlNCU1pYZGhjbVJ6SUdadmNtMGdabTl2ZEdWeUlHMXZZaUExTURCNE1qSTBjSGd1Y0c1bnwyMDFlMTFjN2FiZGY5YjA4YjUzMjkwMGZiMmM3YjE4MmYyZDY1ZDEyOTJhOTVhMzM4YmM3NjAxNmY4YjYwZGJm" alt="The Entertainer Rewards graphic" title="The Entertainer Rewards graphic">
+</div>
+
+
+<!-- PLEASE DO NOT TOUCH THE SCRIPTS BELOW -->
+
+<script language="javascript">
+	<!--
+	function onbeforesubmit() {
+		return true;
+	}
+	//-->
+</script>
+
+<script language="javascript">
+	<!--
+	var error;
+	var form_lanuage = 'en';
+	
+	function is_0_valid(){
+		count = 0;
+		if(document.CompForm.optin){
+			if(document.CompForm.optin.checked){
+				if(document.getElementsByName('interest[]')){
+					if(document.getElementsByName('interest[]').length > 0 ){
+						Interest = document.getElementsByName('interest[]');
+						for(i = 0 ; i < Interest.length;i++){
+							if(Interest[i].checked)
+								++count;
+						}
+						if(count == 0) {
+							error  += "Interests:";
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return  true;
+	}
+	
+	function is_1_valid(input) {
+		if(input == "") {
+			error += "First Name: missing data!\n";
+			return false;
+		}
+		return true;
+	}
+	
+	function is_2_valid(input) {
+		if(input == "") {
+			error += "Last Name: missing data!\n";
+			return false;
+		}
+		return true;
+	}
+	
+	function is_3_valid(input) {
+		if(input == "") {
+			error += "Email: missing data!\n";
+			return false;
+		}
+		return true;
+	}
+	
+	function CheckCompInputs() {
+		var check_ok = true;
+		error = "Please enter mandatory fields for the prize draw...\n";
+		
+		check_ok = (is_0_valid('null') && check_ok);
+		check_ok = (is_1_valid(document.CompForm.inp_1.value) && check_ok);
+		check_ok = (is_2_valid(document.CompForm.inp_2.value) && check_ok);
+		check_ok = (is_3_valid(document.CompForm.inp_3.value) && check_ok);
+		if(check_ok == false)
+			alert(error);
+		return check_ok;
+	}
+	
+	//-->
+
+</script>
+
+<script language="javascript">
+	
+	function SubmitComp(){
+		if(CheckCompInputs() == true){
+			if(window.onbeforesubmit)
+				onbeforesubmit();
+			document.CompForm.submit();
+		}
+	}
+	
+	function MailIt(){
+		if(CheckCompInputs()){
+			if((document.CompForm.subject.value=='') || (document.CompForm.msg.value==''))
+				alert('Bitte f\u00fcr Sie die Nachrichtenfelder aus!');
+			else
+				document.CompForm.submit();
+		}
+	}
+	
+	function FieldWithName(frm, fieldname, numofield) {
+		if(!numofield)
+			numofield = 0;
+		field_count = 0;
+		for(i = 0; i < frm.elements.length; ++i) {
+			if(frm.elements[i].name == fieldname) {
+				if(field_count == numofield)
+					return frm.elements[i];
+				else
+					field_count++;
+			}
+		}
+	}
+	
+	function NumChecked(frm, fieldname) {
+		var count = 0;
+		for(i = 0; i < frm.elements.length; ++i) {
+			if(frm.elements[i].name == fieldname && frm.elements[i].checked == true)
+				++count;
+		}
+		return count;
+	}
+	
+	function NumSel(field) {
+		var count = 0;
+		for(i = 0; i < field.length; ++i)
+			if(field[i].selected == true) ++count;
+		return count;
+	}
+
+</script>
+
+<script language="javascript">
+	var multiFields = new Array();
+	var dateFields = new Array();
+	multiFields["interest[]"] = "interest"
+	multiFields["optin"] = "optin"
+	var arr_optin = new Array();
+	arr_optin["True"] = "y";
+	var arr_interest = new Array();
+</script>
+
+<script>
+	
+	setTimeout(function () {
+
+		$('.email-signup-opt-in input').prop('checked', true);
+		
+	}, 500);
+
+</script>
+		
+<script language="javascript" src="https://link.thetoyshop.com/u/nprefill.js" type="text/javascript"></script>

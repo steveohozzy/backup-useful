@@ -1,0 +1,632 @@
+<!-- Top Picks -->
+ <style type="text/css">
+    .top-picks {
+        padding: 0;
+        background-color: #dbe3ff;
+    }
+
+    .top-picks-container {
+        padding: 0 20px 20px;
+        max-width: 980px;
+        margin: 0 auto;
+    }
+
+    .top-picks .flickity-button,
+    .top-picks .flickity-page-dots {
+        display: none;
+    }
+
+    .top-picks .carousel-cell {
+        width: 81%;
+        margin-right: 10px;
+    }
+
+    .top-picks .heading-ribbon-container {
+        text-align: center;
+    }
+
+    .top-picks .heading-ribbon {
+        position: relative;
+        padding: 0 23px;
+        display: lock;
+        margin-bottom: 10px;
+    }
+
+    .top-picks .heading-ribbon h3 {
+        color: #fff;
+        font: 24px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+        background-color: #EE3224;
+        height: 48px;
+        line-height: 48px;
+        padding: 0 40px;
+        margin: 0;
+        text-transform: none;
+    }
+
+    .top-picks .heading-ribbon .ribbon-start {
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .top-picks .heading-ribbon .ribbon-end {
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .top-picks .heading-ribbon .ribbon-start,
+    .top-picks .heading-ribbon .ribbon-start svg,
+    .top-picks .heading-ribbon .ribbon-end,
+    .top-picks .heading-ribbon .ribbon-end svg {
+        height: 100%;
+        width: 24px;
+    }
+
+    .top-picks .heading-ribbon .ribbon-end {
+        transform: scale(-1, -1);
+    }
+
+    .top-picks-product-tile {
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        align-items: stretch;
+        height: 100%;
+    }
+
+    .top-picks-product-tile .product-tile-image {
+        border: 3px solid #407EC9;
+        border-radius: 8px;
+        overflow: hidden;
+        width: 100%;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .top-picks-product-tile .product-tile-image a {
+        display: block;
+    }
+
+    .top-picks-product-tile .product-tile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .top-picks-product-tile .product-tile-image .badge-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        z-index: 2;
+    }
+
+    .top-picks-product-tile .product-tile-image .badge {
+        background-color: #EE3224;
+        padding: 5px 10px;
+        font-weight: bold;
+        color: #fff;
+        font-size: 10px;
+         text-shadow: -1px -1px 0 #000, 1px -1px 0 #A7170C, -1px 1px 0 #A7170C, 1px 1px 0 #A7170C;
+    }
+
+    .top-picks-product-tile .product-tile-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 60%;
+        padding: 10px 20px;
+    }
+
+    .top-picks-product-tile .product-title {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .top-picks-product-tile .price a {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        color: #EE3224;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .top-picks-product-tile .price a .was-price {
+        font-size: 12px;
+        color: #9B9B9B;
+        font-weight: normal;
+        margin-left: 3px;
+        text-decoration: line-through;
+    }
+
+    .top-picks-product-tile .details-button {
+        background-color: #009E44;
+        border-radius: 50px;
+        padding: 10px 20px;
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 15px;
+        color: #fff;
+        box-shadow: 0 0 5px rgba(3,33,33,.3);
+        transition: all 0.3s;
+    }
+
+    .top-picks-product-tile .details-button:hover {
+        background-color: #AFCB17;
+        scale: 1.05;
+        box-shadow: 0 0 18px rgba(3,33,33,.3);
+    }
+
+    @media (min-width: 768px) {
+        .top-picks .carousel-cell {
+            width: 42%;
+        }
+
+        .top-picks-product-tile .product-title {
+            max-height: 70px;
+            overflow: hidden;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .top-picks .carousel-cell {
+            width: 31%;
+        }
+    }
+    
+ </style>
+ <div class="top-picks">
+    <div class="top-picks-container">
+        <div class="heading-ribbon-container">
+            <div class="heading-ribbon">
+                <span class="ribbon-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="48" viewBox="0 0 24 48" fill="none">
+                        <g clip-path="url(#clip0_2260_15)">
+                        <path d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z" fill="#EE3224"/>
+                        <path d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z" fill="#EE3224"/>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_2260_15">
+                        <rect width="335" height="48" fill="white"/>
+                        </clipPath>
+                        </defs>
+                    </svg>
+                </span>
+                <h3>Top Picks</h3>
+                <span class="ribbon-end">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="48" viewBox="0 0 24 48" fill="none">
+                        <g clip-path="url(#clip0_2260_15)">
+                        <path d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z" fill="#EE3224"/>
+                        <path d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z" fill="#EE3224"/>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_2260_15">
+                        <rect width="335" height="48" fill="white"/>
+                        </clipPath>
+                        </defs>
+                    </svg>
+                </span>
+            </div>
+        </div>
+        <div class="carousel carousel-top-picks js-flickity flickity-enabled is-draggable" data-flickity="{ &quot;autoPlay&quot;: true, &quot;wrapAround&quot;: true, &quot;cellAlign&quot;: &quot;left&quot; }">
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/shop-by-age/8-year-olds/Huffy-Green-Machine-20%22-Drift-Trike/p/577753" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-577753-Primary?context=bWFzdGVyfGltYWdlc3w5ODg4NXxpbWFnZS9qcGVnfGFEZzBMMmc0TUM4eE1qVTBNelF3TlRnMU1EWTFOQzgxTVRWWGVEVXhOVWhmTlRjM056VXpYMUJ5YVcxaGNua3xmOTE0ZDE1Y2RlODdlY2MwYjRjZTYwMjdhNmZkODFiNDQyN2ZkMjM3YmFjNDUzMTVlZDAzYzNiNDYzMTY5ZDRl" alt='Huffy Green Machine 20" Drift Trike' title='Huffy Green Machine 20" Drift Trike' />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                50% OFF
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/shop-by-age/8-year-olds/Huffy-Green-Machine-20%22-Drift-Trike/p/577753" title="view more details">
+                                Huffy Green Machine 20" Drift Trike
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/shop-by-age/8-year-olds/Huffy-Green-Machine-20%22-Drift-Trike/p/577753" title="view more details">
+                                &pound;79.99
+                                <span class="was-price">
+                                    &pound;159.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/shop-by-age/8-year-olds/Huffy-Green-Machine-20%22-Drift-Trike/p/577753" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/construction-toys/building-blocks/LEGO-Disney-Lilo-and-Stitch-Beach-House-Construction-Set-43268/p/576066" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-576066-Primary?context=bWFzdGVyfGltYWdlc3wxODQ4Njd8aW1hZ2UvanBlZ3xhR0V6TDJnMVlTOHhNalV5TWpRek9UZ3pOVFkzT0M4MU1UVlhlRFV4TlVoZk5UYzJNRFkyWDFCeWFXMWhjbmt8N2JmYTQwMDk2OTAxMjJjOTAxYzVkOWQ1MmYzN2M4M2VhM2I1MjkwMzM1MzNhZTA4NGQ4YTM1MGVlZDVhZmY3Yw" alt='LEGO Disney Lilo and Stitch Beach House Construction Set 43268' title='LEGO Disney Lilo and Stitch Beach House Construction Set 43268' />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                SAVE £22
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/construction-toys/building-blocks/LEGO-Disney-Lilo-and-Stitch-Beach-House-Construction-Set-43268/p/576066" title="view more details">
+                                LEGO Disney Lilo and Stitch Beach House Construction Set 43268
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/construction-toys/building-blocks/LEGO-Disney-Lilo-and-Stitch-Beach-House-Construction-Set-43268/p/576066" title="view more details">
+                                &pound;57.99
+                                <span class="was-price">
+                                    &pound;79.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/construction-toys/building-blocks/LEGO-Disney-Lilo-and-Stitch-Beach-House-Construction-Set-43268/p/5760661" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Disney-Stitch-Ultimate-Electronic-Pet/p/573526" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-573526-Primary?context=bWFzdGVyfGltYWdlc3wxMDM5MjJ8aW1hZ2UvanBlZ3xhRGd6TDJnd01pOHhNalUwTkRVNE5UUTVPRFkxTkM4MU1UVlhlRFV4TlVoZk5UY3pOVEkyWDFCeWFXMWhjbmt8YWIzYjIzMGRlZGQ3NTQ4YTY5ZmJjZDE1OGE1ZTQyNjMyZWVlODJhZjljYTFiMDg2MThkYzI2MDA2MGJiMTE0Ng" alt="Disney Stitch Ultimate Electronic Pet" title="Disney Stitch Ultimate Electronic Pet" />
+                        </a>
+                        <!-- <div class="badge-container">
+                            <div class="badge">
+                                25% OFF
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Disney-Stitch-Ultimate-Electronic-Pet/p/573526" title="view more details">
+                                Disney Stitch Ultimate Electronic Pet
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Disney-Stitch-Ultimate-Electronic-Pet/p/573526" title="view more details">
+                                &pound;80.00
+                                <!-- <span class="was-price">
+                                    &pound;15.00
+                                </span> -->
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Disney-Stitch-Ultimate-Electronic-Pet/p/573526" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/animals/dinosaurs/Jurassic-World-Distortus-Rex-Dinosaur-Rebirth/p/575031" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-575031-Primary?context=bWFzdGVyfGltYWdlc3wxMzg2MDl8aW1hZ2UvanBlZ3xhRFE0TDJobU1TOHhNalV3T0RJNU1qSXhPRGt4TUM4MU1UVlhlRFV4TlVoZk5UYzFNRE14WDFCeWFXMWhjbmt8ZDcxYzdlYTA1MTFmYWNkZWQ2YmQ5OGExODkxZDVlNWJmOGZlNjZhY2I4YWZiYjgwMmJjOTMzMTVjOWVkYmMwMg" alt='Jurassic World Distortus Rex Dinosaur Rebirth' title='Jurassic World Distortus Rex Dinosaur Rebirth' />
+                        </a>
+                        <!-- <div class="badge-container">
+                            <div class="badge">
+                                SAVE £5
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/animals/dinosaurs/Jurassic-World-Distortus-Rex-Dinosaur-Rebirth/p/575031" title="view more details">
+                                Jurassic World Distortus Rex Dinosaur Rebirth
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/animals/dinosaurs/Jurassic-World-Distortus-Rex-Dinosaur-Rebirth/p/575031" title="view more details">
+                                &pound;55.00
+                                <!-- <span class="was-price">
+                                    &pound;54.99
+                                </span> -->
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/animals/dinosaurs/Jurassic-World-Distortus-Rex-Dinosaur-Rebirth/p/575031" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/online-only/Huffy-Extent-Junior-20%22-Mountain-Bike---Antifreeze-Green/p/560999" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/560999-Primary-515Wx515H?context=bWFzdGVyfGltYWdlc3wxNzU3OTB8aW1hZ2UvanBlZ3xhVzFoWjJWekwyaGxPUzlvWldRdk1USXdNamN3TkRFMU1UTTFNREl1YW5Cbnw2ZTFjMmIxMjVlYWVmZTk1ZDc2ZTFiY2Y3NzMyMDI3NzJkOWQwMTFkODgyNjk3MTZhZTE2OWQwNGRiM2Q2ZjY3" alt='Huffy Extent Junior 20" Mountain Bike - Antifreeze Green' title='Huffy Extent Junior 20" Mountain Bike - Antifreeze Green' />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                SAVE £43
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/online-only/Huffy-Extent-Junior-20%22-Mountain-Bike---Antifreeze-Green/p/560999" title="view more details">
+                                Huffy Extent Junior 20" Mountain Bike - Antifreeze Green
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/online-only/Huffy-Extent-Junior-20%22-Mountain-Bike---Antifreeze-Green/p/560999" title="view more details">
+                                &pound;176.99
+                                <span class="was-price">
+                                    &pound;219.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/online-only/Huffy-Extent-Junior-20%22-Mountain-Bike---Antifreeze-Green/p/560999" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/dolls/animal-figures/Sylvanian-Families-Pony%27s-Hair-Salon-Playset/p/556085" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-556085-Primary?context=bWFzdGVyfGltYWdlc3w3ODQ2OXxpbWFnZS9qcGVnfGFEYzRMMmcwTVM4eE1qUXdPRFU0TWpnNU56WTVOQzgxTVRWWGVEVXhOVWhmTlRVMk1EZzFYMUJ5YVcxaGNua3wxOWE5ZmIzNzEzZmY0NWYwNTVmMTg4ZmVmN2Y5MGMzOTM1OWIxMWNjYzlkODhlOTA2NTE5ZjdjNGRmYTA1YTUx" alt="Sylvanian Families Pony's Hair Salon Playset" title="Sylvanian Families Pony's Hair Salon Playset" />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                SAVE £40
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/dolls/animal-figures/Sylvanian-Families-Pony%27s-Hair-Salon-Playset/p/556085" title="view more details">
+                                Sylvanian Families Pony's Hair Salon Playset
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/dolls/animal-figures/Sylvanian-Families-Pony%27s-Hair-Salon-Playset/p/556085" title="view more details">
+                                &pound;29.99
+                                <span class="was-price">
+                                    &pound;69.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/dolls/animal-figures/Sylvanian-Families-Pony%27s-Hair-Salon-Playset/p/556085" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Jurassic-World-Primal-Hatch-Electronic-Pet/p/575373" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-575373-Primary?context=bWFzdGVyfGltYWdlc3w5MTE5MHxpbWFnZS9qcGVnfGFERTJMMmcwWWk4eE1qVTBORGMwT0RJNU1EQTNPQzgxTVRWWGVEVXhOVWhmTlRjMU16Y3pYMUJ5YVcxaGNua3wzOTMzODZhMGRiYWIyNmRhYjIwYzc0ZmViZmEzOTU0ZGU1NjA2ZTc0OGU2YTNkNGFmYmNlNTkyNjZlNDQ0YTk2" alt='Jurassic World Primal Hatch Electronic Pet' title='Jurassic World Primal Hatch Electronic Pet' />
+                        </a>
+                        <!-- <div class="badge-container">
+                            <div class="badge">
+                                25% OFF
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Jurassic-World-Primal-Hatch-Electronic-Pet/p/575373" title="view more details">
+                                Jurassic World Primal Hatch Electronic Pet
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Jurassic-World-Primal-Hatch-Electronic-Pet/p/575373" title="view more details">
+                                &pound;64.99
+                                <!-- <span class="was-price">
+                                    &pound;20.00
+                                </span> -->
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Jurassic-World-Primal-Hatch-Electronic-Pet/p/575373" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/shop-by-age/3-4-years/Octonauts-Above-%26-Beyond%3A-Octoray-Headquarters-Transforming-Playset-and-Mini-Ray-Figure/p/557409" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/557409-Primary-515Wx515H?context=bWFzdGVyfGltYWdlc3wxNDk2NTR8aW1hZ2UvanBlZ3xhVzFoWjJWekwyZzNNaTlvTmpBdk1URXpPRGN6TlRreU9UYzFOall1YW5Cbnw3MTQ1M2MzNzU2ZDA0NTQzMzI5ZTlkMTljNmIxMWY1ZGRhNDIyZTdkYzU4YjJmYTVjODIzZTRmMjM3YzE0YjM4" alt="Octonauts Above & Beyond: Octoray Headquarters Transforming Playset and Mini-Ray Figure" title="Octonauts Above & Beyond: Octoray Headquarters Transforming Playset and Mini-Ray Figure" />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                SAVE £50
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/shop-by-age/3-4-years/Octonauts-Above-%26-Beyond%3A-Octoray-Headquarters-Transforming-Playset-and-Mini-Ray-Figure/p/557409" title="view more details">
+                                Octonauts Above & Beyond: Octoray Headquarters Transforming Playset and Mini-Ray Figure
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/shop-by-age/3-4-years/Octonauts-Above-%26-Beyond%3A-Octoray-Headquarters-Transforming-Playset-and-Mini-Ray-Figure/p/557409" title="view more details">
+                                &pound;19.99
+                                <span class="was-price">
+                                    &pound;69.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/shop-by-age/3-4-years/Octonauts-Above-%26-Beyond%3A-Octoray-Headquarters-Transforming-Playset-and-Mini-Ray-Figure/p/557409" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/transport-toys/race-tracks/Monster-Jam-World-Finals-Supercharge-Speedway-Race-Track-Playset/p/568758" title="view more details">
+                                <img src="https://www.thetoyshop.com/medias/515Wx515H-568758-Primary?context=bWFzdGVyfGltYWdlc3wxMzY5NTJ8aW1hZ2UvanBlZ3xhRE5rTDJoaE5pOHhNak16TnprME1qZ3lNamswTWk4MU1UVlhlRFV4TlVoZk5UWTROelU0WDFCeWFXMWhjbmt8Yjc0ZmJkNjZlMDhkNmQzYzg1M2EwMjgxNDBlMjUxNmZhOWU4ZTI3Y2E5NDFkY2ZhMTJiNDllN2UyZjY0NzdmZQ" alt="Monster Jam World Finals Supercharge Speedway Race Track Playset" title="Monster Jam World Finals Supercharge Speedway Race Track Playset" />
+                            </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                50% OFF
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/transport-toys/race-tracks/Monster-Jam-World-Finals-Supercharge-Speedway-Race-Track-Playset/p/568758" title="view more details">
+                                Monster Jam World Finals Supercharge Speedway Race Track Playset
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/transport-toys/race-tracks/Monster-Jam-World-Finals-Supercharge-Speedway-Race-Track-Playset/p/568758" title="view more details">
+                                &pound;20.00
+                                <span class="was-price">
+                                    &pound;40.00
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/transport-toys/race-tracks/Monster-Jam-World-Finals-Supercharge-Speedway-Race-Track-Playset/p/568758" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/gifts-for-children/Happyland-Village-Collection-Playset/p/551378" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/551378-1-515Wx515H?context=bWFzdGVyfHJvb3R8NTczNDd8aW1hZ2UvanBlZ3xhR1E0TDJnek1DOHhNVE15TVRBMU16UTNPRGswTWk1cWNHY3wyZDc4OTNlYjAxNGE2M2JmMmQyMjIxOWUyYzIzN2I0OTRjMmQxZjM4YzU3ZjFiMjQ0MDkyNjA1ZGU2NWM5MzU0" alt="Happyland Village Collection Playset" title="Happyland Village Collection Playset" />
+                        </a>
+                        <!-- <div class="badge-container">
+                            <div class="badge">
+                               25% OFF
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/gifts-for-children/Happyland-Village-Collection-Playset/p/551378" title="view more details">
+                                Happyland Village Collection Playset
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/gifts-for-children/Happyland-Village-Collection-Playset/p/551378" title="view more details">
+                                &pound;75.00
+                                <!-- <span class="was-price">
+                                    &pound;8.00
+                                </span> -->
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/gifts-for-children/Happyland-Village-Collection-Playset/p/551378" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Furby-Galaxy-Glow-in-the-Dark-Electronic-Pet/p/570904" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-570904-Primary?context=bWFzdGVyfGltYWdlc3w4NzQ1NnxpbWFnZS9qcGVnfGFEUXhMMmczWmk4eE1qSTVPREV5TWpFNU9UQTNNQzgxTVRWWGVEVXhOVWhmTlRjd09UQTBYMUJ5YVcxaGNua3w4YzQ2NjcxNmZiZjQ0NDNhYWUyODAyMGVhMmY5NDY3N2MyZWIzYmU5NzVlODZhZDhkNTQ2N2JhZDkxZDk0ZTgw" alt='Furby Galaxy Glow in the Dark Electronic Pet' title='Furby Galaxy Glow in the Dark Electronic Pet' />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                SAVE £40
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Furby-Galaxy-Glow-in-the-Dark-Electronic-Pet/p/570904" title="view more details">
+                                Furby Galaxy Glow in the Dark Electronic Pet
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Furby-Galaxy-Glow-in-the-Dark-Electronic-Pet/p/570904" title="view more details">
+                                &pound;34.99
+                                <span class="was-price">
+                                    &pound;74.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Furby-Galaxy-Glow-in-the-Dark-Electronic-Pet/p/570904" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/transport-toys/garages/Majorette-Super-Chase-Centre-Garage/p/573940" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-573940-Primary?context=bWFzdGVyfGltYWdlc3wzNDE4OTd8aW1hZ2UvanBlZ3xhREUwTDJoaU15OHhNalUxTVRRNU5EVTJOVGt4T0M4MU1UVlhlRFV4TlVoZk5UY3pPVFF3WDFCeWFXMWhjbmt8Y2Q2NjQ2Mjg3MTViOWQwN2M3MzgxZDc1ZjFiYTFkNjMxYjY0OTBmZjFlNTI3NGY3OGFiZDY5ZDIxZDY4ODkyOQ" alt="Majorette Super Chase Centre Garage" title="Majorette Super Chase Centre Garage" />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                50% OFF
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/transport-toys/garages/Majorette-Super-Chase-Centre-Garage/p/573940" title="view more details">
+                                Majorette Super Chase Centre Garage
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/transport-toys/garages/Majorette-Super-Chase-Centre-Garage/p/573940" title="view more details">
+                                &pound;49.99
+                                <span class="was-price">
+                                    &pound;99.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/transport-toys/garages/Majorette-Super-Chase-Centre-Garage/p/573940" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+ </div>
+
+  <script>
+        setTimeout(function(){
+            const topPicksSlides = document.querySelectorAll('.top-picks-container .carousel-cell');
+
+            topPicksSlides.forEach((slide) => {
+                slide.style.height = "100%";
+            })
+        }, 500);
+ </script>

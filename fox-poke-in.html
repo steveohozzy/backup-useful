@@ -1,0 +1,79 @@
+<style>
+#peeking-fox {
+  position: fixed;
+  top: 40%;
+  left: -200px;
+  width: 80px;
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+@media (min-width: 1440px) {
+  #peeking-fox {
+    top: 15%;
+    width: 150px;
+  }
+}
+
+@media (min-width: 1640px) {
+  #peeking-fox {
+    top: 15%;
+    width: 220px;
+  }
+}
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const fox = document.createElement("img");
+    fox.id = "peeking-fox";
+    fox.src = "https://www.thetoyshop.com/medias/edited-photo-59-.png?context=bWFzdGVyfHJvb3R8NjU1ODR8aW1hZ2UvcG5nfGFESmhMMmd4TlM4eE1qZzBNelV3TVRBNU1qZzVOQzlsWkdsMFpXUXRjR2h2ZEc4Z0tEVTVLUzV3Ym1jfDI5YmFiYWRhNDI2ZmI0MzdhMWE1NTI0ODc2NjhkYjQ1NWI4ODE5MTczMDMwMWQ0NTRhNDQ1YWM3ZjYyM2MwY2E";
+    fox.alt = "Peeking fox head";
+    document.body.appendChild(fox);
+
+    function updateFoxParallax() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+      // Define a different active scroll window for the fox (e.g., between 20% and 40% down the page)
+      const startPercent = 7;
+      const peakPercent = 15; // Fully peeked out at 30%
+      const endPercent = 30;  // Hidden again by 40%
+
+      if (scrollPercent < startPercent || scrollPercent > endPercent) {
+        // Fully hidden off-screen
+        fox.style.opacity = "0";
+        fox.style.transform = "translateX(0px)";
+      } else {
+        let progress = 0;
+        
+        // Peek out as we move from startPercent to peakPercent
+        if (scrollPercent <= peakPercent) {
+          progress = (scrollPercent - startPercent) / (peakPercent - startPercent);
+        } 
+        // Retreat back out as we move from peakPercent to endPercent
+        else {
+          progress = 1 - ((scrollPercent - peakPercent) / (endPercent - peakPercent));
+        }
+
+        progress = Math.max(0, Math.min(1, progress));
+
+        // Distance to slide out from the left edge (e.g., 180 pixels)
+        const slideDistance = 180 * progress;
+
+        fox.style.opacity = "1";
+        fox.style.transform = `translateX(${slideDistance}px)`;
+      }
+    }
+
+    window.addEventListener("scroll", updateFoxParallax);
+    window.addEventListener("resize", updateFoxParallax);
+    
+    updateFoxParallax();
+  });
+</script>

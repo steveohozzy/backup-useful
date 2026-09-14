@@ -1,0 +1,4171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>MECCANO // BUILD LAB</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #08090b;
+    color: white;
+
+    user-select: none;
+    -webkit-user-select: none;
+
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================
+   GAME
+========================================================= */
+
+#game {
+    position: relative;
+
+    width: 100vw;
+    height: 100dvh;
+
+    min-height: 560px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            #34383d 0,
+            #151719 35%,
+            #08090b 75%
+        );
+}
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.background-grid {
+    position: absolute;
+    inset: 0;
+
+    opacity: .18;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.12) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.12) 1px,
+            transparent 1px
+        );
+
+    background-size: 40px 40px;
+
+    transform:
+        perspective(700px)
+        rotateX(60deg)
+        scale(1.4);
+
+    transform-origin: center bottom;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 82px;
+
+    padding: 15px 22px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    z-index: 100;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.75),
+            transparent
+        );
+}
+
+.logo {
+    font-size:
+        clamp(
+            24px,
+            4vw,
+            42px
+        );
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+    color: #d51f26;
+
+    text-shadow:
+        2px 2px 0 #eee,
+        4px 4px 0 #300407,
+        0 0 18px rgba(213,31,38,.6);
+}
+
+.logo span {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size:
+        clamp(
+            7px,
+            1vw,
+            10px
+        );
+
+    letter-spacing: 4px;
+
+    color: #aaa;
+
+    text-shadow: none;
+}
+
+.stats {
+    display: flex;
+    gap: 25px;
+    text-align: right;
+}
+
+.stat-label {
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #888;
+}
+
+.stat-value {
+    margin-top: 3px;
+
+    font-size: 18px;
+    font-weight: 900;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 82px;
+    bottom: 0;
+
+    display: flex;
+
+    gap: 18px;
+
+    padding: 15px 18px 18px;
+
+    z-index: 20;
+}
+
+/* =========================================================
+   PARTS PANEL
+========================================================= */
+
+.parts-panel {
+    width:
+        clamp(
+            210px,
+            25vw,
+            300px
+        );
+
+    flex-shrink: 0;
+
+    border: 1px solid #444;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(35,37,40,.96),
+            rgba(12,13,15,.96)
+        );
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.5),
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+    padding: 15px;
+
+    overflow: hidden;
+}
+
+.panel-title {
+    font-size: 11px;
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+    color: #ddd;
+
+    margin-bottom: 4px;
+}
+
+.panel-sub {
+    font-size: 8px;
+
+    letter-spacing: 1px;
+
+    color: #777;
+
+    margin-bottom: 15px;
+}
+
+/* =========================================================
+   LEVEL SELECTOR
+========================================================= */
+
+.level-selector {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-bottom: 12px;
+}
+
+.level-arrow {
+    width: 28px;
+    height: 28px;
+
+    border: 1px solid #555;
+    border-radius: 7px;
+
+    background: #181a1d;
+    color: white;
+
+    cursor: pointer;
+
+    font-weight: 900;
+}
+
+.level-arrow:hover {
+    border-color: #d51f26;
+}
+
+.level-name {
+    flex: 1;
+
+    min-width: 0;
+
+    text-align: center;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.level-dots {
+    display: flex;
+    gap: 3px;
+
+    max-width: 100%;
+
+    overflow: hidden;
+
+    margin-bottom: 12px;
+}
+
+.level-dot {
+    flex: 1;
+
+    height: 3px;
+
+    min-width: 4px;
+
+    background: #333;
+
+    border-radius: 5px;
+}
+
+.level-dot.current {
+    background: #d51f26;
+}
+
+.level-dot.done {
+    background: #42d38f;
+}
+
+/* =========================================================
+   PARTS
+========================================================= */
+
+.parts {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 9px;
+
+    overflow-y: auto;
+
+    height:
+        calc(
+            100% - 115px
+        );
+
+    padding: 3px;
+
+    scrollbar-width: none;
+    touch-action: pan-y;
+}
+
+.parts::-webkit-scrollbar {
+    display: none;
+}
+
+/* =========================================================
+   PART CARD
+========================================================= */
+
+.part-card {
+    position: relative;
+
+    min-height: 82px;
+
+    border: 1px solid #444;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #292c2f,
+            #151719
+        );
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: grab;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 5px 12px rgba(0,0,0,.35);
+
+    transition:
+        transform .15s,
+        border-color .15s,
+        opacity .15s;
+
+    touch-action: none;
+}
+
+.part-card:active {
+    cursor: grabbing;
+    transform: scale(.96);
+}
+
+.part-card:hover {
+    border-color: #d51f26;
+}
+
+.part-card.used {
+    opacity: .22;
+    pointer-events: none;
+}
+
+.part-name {
+    margin-top: 6px;
+
+    font-size: 7px;
+
+    letter-spacing: 1px;
+
+    color: #aaa;
+
+    font-weight: 900;
+
+    text-align: center;
+}
+
+/* =========================================================
+   COLOURS
+========================================================= */
+
+.metal {
+    position: relative;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #f0f0f0,
+            #9c9c9c 45%,
+            #555 55%,
+            #c8c8c8
+        );
+
+    border: 1px solid #333;
+
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,.6),
+        0 2px 4px rgba(0,0,0,.6);
+}
+
+.red {
+    background:
+        linear-gradient(
+            to bottom,
+            #ff5a5f,
+            #d51f26 45%,
+            #7c1015 55%,
+            #ed3b42
+        ) !important;
+}
+
+.blue {
+    background:
+        linear-gradient(
+            to bottom,
+            #61b3ff,
+            #2174bb 45%,
+            #123e68 55%,
+            #4b9be0
+        ) !important;
+}
+
+.yellow {
+    background:
+        linear-gradient(
+            to bottom,
+            #fff27a,
+            #e2b51c 45%,
+            #805f08 55%,
+            #f1ce39
+        ) !important;
+}
+
+.green {
+    background:
+        linear-gradient(
+            to bottom,
+            #6fe29c,
+            #25945a 45%,
+            #145331 55%,
+            #50c980
+        ) !important;
+}
+
+.black {
+    background:
+        linear-gradient(
+            to bottom,
+            #555,
+            #222 45%,
+            #080808 55%,
+            #444
+        ) !important;
+}
+
+/* =========================================================
+   MINI VISUALS
+========================================================= */
+
+.mini-beam {
+    width: 82px;
+    height: 13px;
+    border-radius: 2px;
+}
+
+.mini-beam::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 2px 4px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0,
+            transparent 13px,
+            #555 13px,
+            #555 16px
+        );
+}
+
+.mini-short {
+    width: 55px;
+    height: 13px;
+}
+
+.mini-plate {
+    width: 65px;
+    height: 28px;
+
+    border-radius: 3px;
+}
+
+.mini-plate::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 5px;
+
+    background:
+        radial-gradient(
+            circle,
+            #555 0 2px,
+            transparent 2.5px
+        );
+
+    background-size: 12px 12px;
+}
+
+.mini-wheel {
+    width: 43px;
+    height: 43px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #555 0 16%,
+            #ccc 17% 27%,
+            #666 28% 38%,
+            #222 39% 66%,
+            #aaa 67% 72%,
+            #222 73%
+        );
+
+    border: 3px solid #777;
+}
+
+.mini-gear {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #555 0 20%,
+            #bbb 21% 38%,
+            #666 39% 53%,
+            #ccc 54% 63%,
+            #666 64%
+        );
+
+    border: 4px dotted #ddd;
+}
+
+.mini-bolt {
+    width: 22px;
+    height: 22px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 30%,
+            white,
+            #aaa 35%,
+            #444 70%
+        );
+
+    border: 2px solid #222;
+}
+
+.mini-bracket {
+    width: 45px;
+    height: 35px;
+
+    border: 6px solid #aaa;
+
+    border-top: 6px solid #eee;
+    border-right: 6px solid #777;
+
+    transform: skewY(-8deg);
+}
+
+.mini-axle {
+    width: 70px;
+    height: 7px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #eee,
+            #777,
+            #ddd
+        );
+
+    border-radius: 5px;
+}
+
+/* =========================================================
+   SPECIAL PARTS
+========================================================= */
+
+.mini-hook {
+    width: 30px;
+    height: 38px;
+
+    border: 5px solid #aaa;
+    border-top: 0;
+
+    border-radius:
+        0 0 18px 18px;
+
+    position: relative;
+}
+
+.mini-hook::after {
+    content: "";
+
+    position: absolute;
+
+    width: 10px;
+    height: 5px;
+
+    background: #aaa;
+
+    right: -7px;
+    bottom: 0;
+
+    transform: rotate(-35deg);
+}
+
+.mini-cable {
+    width: 5px;
+    height: 55px;
+
+    background:
+        linear-gradient(
+            to right,
+            #aaa,
+            #333,
+            #aaa
+        );
+
+    border-radius: 5px;
+}
+
+.mini-mast {
+    width: 12px;
+    height: 58px;
+
+    border-radius: 2px;
+}
+
+.mini-blade {
+    width: 14px;
+    height: 65px;
+
+    border-radius: 7px 7px 2px 2px;
+
+    transform: rotate(-15deg);
+}
+
+.mini-prop {
+    width: 72px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    position: relative;
+}
+
+.mini-prop::after {
+    content: "";
+
+    position: absolute;
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #222;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%,-50%);
+}
+
+.mini-bucket {
+    width: 48px;
+    height: 35px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e8e8e8,
+            #777
+        );
+
+    border: 4px solid #444;
+
+    clip-path:
+        polygon(
+            0 0,
+            100% 10%,
+            82% 100%,
+            15% 85%
+        );
+}
+
+.mini-fork {
+    width: 65px;
+    height: 30px;
+
+    position: relative;
+
+    border-left: 6px solid #aaa;
+}
+
+.mini-fork::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 6px;
+
+    background: #aaa;
+
+    box-shadow:
+        0 -12px 0 #aaa;
+}
+
+.mini-track {
+    width: 62px;
+    height: 25px;
+
+    border-radius: 14px;
+
+    background: #222;
+
+    border: 5px solid #555;
+
+    position: relative;
+}
+
+.mini-track::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 4px;
+
+    border:
+        2px dotted #aaa;
+
+    border-radius: 8px;
+}
+
+.mini-cab {
+    width: 52px;
+    height: 42px;
+
+    border:
+        5px solid #555;
+
+    border-radius:
+        6px 6px 2px 2px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #5b6870,
+            #1c2226
+        );
+}
+
+.mini-cab::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 6px;
+
+    border:
+        2px solid rgba(255,255,255,.5);
+}
+
+.mini-seat {
+    width: 40px;
+    height: 25px;
+
+    border-radius: 8px 8px 3px 3px;
+
+    background:
+        linear-gradient(
+            #444,
+            #111
+        );
+
+    border: 2px solid #777;
+}
+
+.mini-body {
+    width: 70px;
+    height: 28px;
+
+    border-radius:
+        12px 5px 5px 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ddd,
+            #555
+        );
+
+    border: 2px solid #333;
+}
+
+.mini-spoiler {
+    width: 58px;
+    height: 7px;
+
+    background: #d51f26;
+
+    border-radius: 3px;
+
+    position: relative;
+}
+
+.mini-spoiler::after {
+    content: "";
+
+    position: absolute;
+
+    width: 6px;
+    height: 20px;
+
+    background: #555;
+
+    left: 10px;
+    top: -15px;
+
+    box-shadow:
+        32px 0 #555;
+}
+
+.mini-rotor {
+    width: 100px;
+    height: 7px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #eee,
+            #666,
+            #eee
+        );
+
+    border-radius: 5px;
+}
+
+.mini-tail {
+    width: 65px;
+    height: 10px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #ddd,
+            #666
+        );
+
+    border-radius: 5px;
+}
+
+.mini-fist {
+    width: 30px;
+    height: 35px;
+
+    border-radius: 8px;
+
+    background: #777;
+
+    border: 3px solid #aaa;
+}
+
+.mini-head {
+    width: 42px;
+    height: 38px;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            #ccc,
+            #666
+        );
+
+    border: 3px solid #333;
+}
+
+.mini-antenna {
+    width: 5px;
+    height: 35px;
+
+    background: #aaa;
+
+    position: relative;
+}
+
+.mini-antenna::after {
+    content: "";
+
+    position: absolute;
+
+    width: 11px;
+    height: 11px;
+
+    border-radius: 50%;
+
+    background: #d51f26;
+
+    left: -3px;
+    top: -7px;
+}
+
+.mini-nose {
+    width: 35px;
+    height: 15px;
+
+    background: #d51f26;
+
+    clip-path:
+        polygon(
+            0 100%,
+            100% 50%,
+            0 0
+        );
+}
+
+.mini-fin {
+    width: 20px;
+    height: 55px;
+
+    background: #d51f26;
+
+    clip-path:
+        polygon(
+            0 100%,
+            100% 100%,
+            100% 0
+        );
+}
+
+/* =========================================================
+   BLUEPRINT
+========================================================= */
+
+.blueprint-area {
+    position: relative;
+
+    flex: 1;
+
+    min-width: 0;
+
+    border: 1px solid #3f4549;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #033c5a,
+            #04274d 75%
+        );
+
+    box-shadow:
+        inset 0 0 80px rgba(36, 67, 109, 0.5),
+        0 15px 40px rgba(47, 80, 99, 0.45);
+}
+
+.blueprint-grid {
+    position: absolute;
+    inset: 0;
+
+    opacity: .25;
+
+    background-image:
+        linear-gradient(
+            #acbcc7 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            #6c7880 1px,
+            transparent 1px
+        );
+
+    background-size: 30px 30px;
+}
+
+.blueprint-title {
+    position: absolute;
+
+    top: 15px;
+    left: 18px;
+
+    z-index: 5;
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+
+    font-weight: 900;
+
+    color: #cbd1d4;
+}
+
+.blueprint-number {
+    position: absolute;
+
+    top: 14px;
+    right: 18px;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    color: #727b80;
+}
+
+/* =========================================================
+   MODEL
+========================================================= */
+
+#model {
+    position: absolute;
+
+    left: 50%;
+    top: 52%;
+
+    width:
+        min(
+            700px,
+            82%
+        );
+
+    height: 460px;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+}
+
+/* =========================================================
+   TARGET
+========================================================= */
+
+.target {
+    position: absolute;
+
+    opacity: .6;
+
+    border:
+        2px dashed rgba(255,255,255,.8);
+
+    border-radius: 4px;
+
+    transition:
+        opacity .2s,
+        border-color .2s,
+        background .2s;
+
+    pointer-events: none;
+}
+
+.target.ready {
+    opacity: .9;
+
+    border-color: #d51f26;
+
+    background:
+        rgba(213,31,38,.12);
+}
+
+.target.complete {
+    opacity: .0;
+}
+
+/* =========================================================
+   MODEL PART
+========================================================= */
+
+.model-part {
+    position: absolute;
+
+    opacity: 0;
+
+    transform:
+        scale(.85);
+
+    transition:
+        opacity .25s,
+        transform .25s;
+
+    pointer-events: none;
+}
+
+.model-part.visible {
+    opacity: 1;
+
+    transform:
+        scale(1);
+}
+
+/* =========================================================
+   MODEL BEAMS
+========================================================= */
+
+.model-beam {
+    height: 18px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #f3f3f3,
+            #999 45%,
+            #555 55%,
+            #d5d5d5
+        );
+
+    border:
+        2px solid #333;
+
+    border-radius: 3px;
+
+    box-shadow:
+        inset 0 1px 2px white,
+        0 4px 8px rgba(0,0,0,.6);
+}
+
+.model-beam::after {
+    content: "";
+
+    position: absolute;
+
+    left: 8px;
+    right: 8px;
+
+    top: 4px;
+    bottom: 4px;
+
+    background:
+        radial-gradient(
+            circle,
+            #444 0 3px,
+            transparent 3.5px
+        );
+
+    background-size: 24px 10px;
+}
+
+.model-short {
+    height: 13px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #f3f3f3,
+            #888,
+            #ddd
+        );
+
+    border: 2px solid #333;
+
+    border-radius: 3px;
+}
+
+/* =========================================================
+   MODEL PLATE
+========================================================= */
+
+.model-plate {
+    background:
+        linear-gradient(
+            145deg,
+            #e4e4e4,
+            #888
+        );
+
+    border: 2px solid #444;
+
+    box-shadow:
+        inset 0 1px 3px white,
+        0 4px 8px rgba(0,0,0,.6);
+}
+
+.model-plate::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 8px;
+
+    background:
+        radial-gradient(
+            circle,
+            #444 0 3px,
+            transparent 3.5px
+        );
+
+    background-size: 24px 20px;
+}
+
+/* =========================================================
+   WHEEL
+========================================================= */
+
+.model-wheel {
+    width: 78px;
+    height: 78px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #444 0 14%,
+            #ddd 15% 25%,
+            #777 26% 34%,
+            #1c1c1c 35% 65%,
+            #999 66% 71%,
+            #222 72%
+        );
+
+    border: 4px solid #777;
+
+    box-shadow:
+        0 6px 12px rgba(0,0,0,.7);
+}
+
+/* =========================================================
+   TRACK
+========================================================= */
+
+.model-track {
+    border-radius: 25px;
+
+    background:
+        #181818;
+
+    border:
+        7px solid #555;
+
+    box-shadow:
+        inset 0 0 0 3px #222,
+        0 5px 10px black;
+}
+
+.model-track::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 8px;
+
+    border:
+        3px dotted #aaa;
+
+    border-radius: 15px;
+}
+
+/* =========================================================
+   GEAR
+========================================================= */
+
+.model-gear {
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #444 0 17%,
+            #ddd 18% 32%,
+            #666 33% 48%,
+            #ddd 49% 59%,
+            #555 60%
+        );
+
+    border: 5px dotted #eee;
+
+    box-shadow:
+        0 4px 8px rgba(0,0,0,.6);
+}
+
+/* =========================================================
+   AXLE
+========================================================= */
+
+.model-axle {
+    height: 8px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #eee,
+            #666,
+            #ccc
+        );
+
+    border-radius: 5px;
+
+    box-shadow:
+        0 3px 5px black;
+}
+
+/* =========================================================
+   SPECIAL MODEL PARTS
+========================================================= */
+
+.model-hook {
+    width: 30px;
+    height: 45px;
+
+    border:
+        5px solid #aaa;
+
+    border-top: 0;
+
+    border-radius:
+        0 0 20px 20px;
+}
+
+.model-cable {
+    width: 5px;
+
+    background:
+        linear-gradient(
+            to right,
+            #aaa,
+            #333,
+            #aaa
+        );
+
+    border-radius: 5px;
+}
+
+.model-mast {
+    width: 14px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #555,
+            #eee,
+            #555
+        );
+
+    border:
+        2px solid #222;
+}
+
+.model-blade {
+    background:
+        linear-gradient(
+            90deg,
+            #ddd,
+            #777
+        );
+
+    border:
+        2px solid #444;
+
+    border-radius:
+        8px 8px 2px 2px;
+}
+
+.model-prop {
+    height: 10px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #eee,
+            #555
+        );
+}
+
+.model-bucket {
+    background:
+        linear-gradient(
+            145deg,
+            #e4e4e4,
+            #666
+        );
+
+    border:
+        4px solid #444;
+
+    clip-path:
+        polygon(
+            0 0,
+            100% 10%,
+            82% 100%,
+            15% 85%
+        );
+}
+
+.model-fork {
+    position: absolute;
+
+    border-left:
+        7px solid #aaa;
+}
+
+.model-fork::after {
+    content: "";
+
+    position: absolute;
+
+    left: -7px;
+    bottom: 0;
+
+    width: 80px;
+    height: 7px;
+
+    background: #aaa;
+
+    box-shadow:
+        0 -15px 0 #aaa;
+}
+
+.model-cab {
+    background:
+        linear-gradient(
+            145deg,
+            #64737b,
+            #20262a
+        );
+
+    border:
+        5px solid #555;
+
+    border-radius:
+        8px 8px 2px 2px;
+}
+
+.model-cab::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 7px;
+
+    border:
+        2px solid rgba(255,255,255,.45);
+}
+
+.model-seat {
+    background:
+        linear-gradient(
+            #444,
+            #111
+        );
+
+    border:
+        3px solid #777;
+
+    border-radius:
+        8px 8px 3px 3px;
+}
+
+.model-body {
+    border-radius:
+        14px 5px 5px 14px;
+
+    border:
+        3px solid #333;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ddd,
+            #555
+        );
+}
+
+.model-spoiler {
+    background: #d51f26;
+
+    border-radius: 3px;
+}
+
+.model-rotor {
+    height: 7px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #eee,
+            #666,
+            #eee
+        );
+
+    border-radius: 5px;
+}
+
+.model-tail {
+    height: 10px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #ddd,
+            #666
+        );
+
+    border-radius: 5px;
+}
+
+.model-head {
+    background:
+        linear-gradient(
+            #ccc,
+            #666
+        );
+
+    border:
+        3px solid #333;
+
+    border-radius: 8px;
+}
+
+.model-fist {
+    background: #777;
+
+    border:
+        3px solid #aaa;
+
+    border-radius: 8px;
+}
+
+.model-antenna {
+    width: 5px;
+
+    background: #aaa;
+}
+
+.model-antenna::after {
+    content: "";
+
+    position: absolute;
+
+    width: 11px;
+    height: 11px;
+
+    border-radius: 50%;
+
+    background: #d51f26;
+
+    left: -3px;
+    top: -7px;
+}
+
+/* =========================================================
+   COLOURED MODEL PARTS
+========================================================= */
+
+.model-part.red {
+    border-color: #570b0f;
+}
+
+.model-part.blue {
+    border-color: #123653;
+}
+
+.model-part.yellow {
+    border-color: #66500a;
+}
+
+.model-part.green {
+    border-color: #16472d;
+}
+
+/* =========================================================
+   DRAGGING
+========================================================= */
+
+.dragging {
+    position: fixed !important;
+
+    z-index: 1000 !important;
+
+    pointer-events: none !important;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1.1) !important;
+
+    opacity: .92 !important;
+
+    filter:
+        drop-shadow(
+            0 10px 15px rgba(0,0,0,.6)
+        );
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress {
+    position: absolute;
+
+    left: 18px;
+    right: 150px;
+
+    bottom: 19px;
+
+    height: 5px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d51f26,
+            #42d38f
+        );
+
+    transition:
+        width .25s ease;
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+.reset {
+    position: absolute;
+
+    right: 18px;
+    bottom: 16px;
+
+    z-index: 30;
+
+    border: 1px solid #555;
+
+    border-radius: 999px;
+
+    padding: 11px 20px;
+
+    background: #181a1d;
+
+    color: white;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+}
+
+.reset:hover {
+    border-color: #d51f26;
+}
+
+/* =========================================================
+   COMPLETE
+========================================================= */
+
+#complete {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 500;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(4,7,6,.86);
+
+    backdrop-filter:
+        blur(6px);
+
+    text-align: center;
+}
+
+.complete-box {
+    animation:
+        completeIn .5s ease-out;
+}
+
+.complete-title {
+    font-size:
+        clamp(
+            42px,
+            8vw,
+            80px
+        );
+
+    font-weight: 900;
+
+    color: #42d38f;
+
+    letter-spacing: 4px;
+
+    text-shadow:
+        0 0 30px rgba(66,211,143,.7);
+}
+
+.complete-sub {
+    margin-top: 10px;
+
+    color: #bbb;
+
+    letter-spacing: 3px;
+
+    font-size: 11px;
+}
+
+.complete-next {
+    margin-top: 22px;
+
+    display: inline-block;
+
+    border: 1px solid #555;
+
+    border-radius: 999px;
+
+    padding: 12px 22px;
+
+    background: #181a1d;
+
+    color: white;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+}
+
+@keyframes completeIn {
+
+    from {
+        opacity: 0;
+        transform: scale(.7);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    #game {
+        min-height: 600px;
+    }
+
+    .header {
+        height: 70px;
+        padding: 10px 12px;
+    }
+
+    .logo {
+        font-size: 20px;
+        letter-spacing: 2px;
+    }
+
+    .logo span {
+        display: none;
+    }
+
+    .stats {
+        gap: 10px;
+    }
+
+    .stat-label {
+        font-size: 6px;
+    }
+
+    .stat-value {
+        font-size: 13px;
+    }
+
+    .main {
+        top: 70px;
+
+        padding: 8px;
+
+        gap: 8px;
+
+        flex-direction: column;
+    }
+
+    .parts-panel {
+        width: 100%;
+
+        height: 145px;
+
+        padding: 9px;
+    }
+
+    .panel-title {
+        font-size: 9px;
+    }
+
+    .panel-sub {
+        display: none;
+    }
+
+    .level-selector {
+        margin-bottom: 6px;
+    }
+
+    .level-dots {
+        margin-bottom: 6px;
+    }
+
+    .parts {
+        height: 76px;
+
+        display: flex;
+
+        gap: 7px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+        touch-action: pan-x;
+    }
+
+    .part-card {
+        min-width: 72px;
+        min-height: 72px;
+    }
+
+    .part-name {
+        font-size: 6px;
+    }
+
+    .blueprint-area {
+        flex: 1;
+        min-height: 0;
+    }
+
+    #model {
+        width: 96%;
+        height: 350px;
+    }
+
+    .model-wheel {
+        width: 58px;
+        height: 58px;
+    }
+
+    .progress {
+        left: 10px;
+        right: 115px;
+        bottom: 12px;
+    }
+
+    .reset {
+        right: 10px;
+        bottom: 8px;
+
+        padding: 9px 13px;
+
+        font-size: 8px;
+    }
+
+    .blueprint-title {
+        left: 10px;
+        top: 10px;
+
+        font-size: 8px;
+
+        letter-spacing: 2px;
+    }
+
+    .blueprint-number {
+        right: 10px;
+        top: 11px;
+
+        font-size: 6px;
+    }
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <div class="background-grid"></div>
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="logo">
+
+            MECCANO
+
+            <span>
+                BUILD LAB // CONSTRUCTION SERIES
+            </span>
+
+        </div>
+
+        <div class="stats">
+
+            <div>
+
+                <div class="stat-label">
+                    BUILD
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="buildNumber"
+                >
+                    001
+                </div>
+
+            </div>
+
+            <div>
+
+                <div class="stat-label">
+                    PARTS
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="partsCount"
+                >
+                    0 / 0
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- PARTS -->
+
+        <section class="parts-panel">
+
+            <div class="panel-title">
+                PARTS TRAY
+            </div>
+
+            <div class="panel-sub">
+                DRAG COMPONENTS TO THE BLUEPRINT
+            </div>
+
+            <div class="level-selector">
+
+                <button
+                    class="level-arrow"
+                    id="prevLevel"
+                >
+                    ‹
+                </button>
+
+                <div
+                    class="level-name"
+                    id="levelName"
+                >
+                    BASIC CRANE
+                </div>
+
+                <button
+                    class="level-arrow"
+                    id="nextLevel"
+                >
+                    ›
+                </button>
+
+            </div>
+
+            <div
+                class="level-dots"
+                id="levelDots"
+            ></div>
+
+            <div
+                class="parts"
+                id="parts"
+            ></div>
+
+        </section>
+
+        <!-- BLUEPRINT -->
+
+        <section class="blueprint-area">
+
+            <div class="blueprint-grid"></div>
+
+            <div
+                class="blueprint-title"
+                id="blueprintTitle"
+            >
+                PROJECT // BASIC CRANE
+            </div>
+
+            <div
+                class="blueprint-number"
+                id="blueprintNumber"
+            >
+                DRAWING NO. BC-001
+            </div>
+
+            <div id="model"></div>
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    id="progressBar"
+                ></div>
+
+            </div>
+
+            <button
+                class="reset"
+                id="resetButton"
+            >
+                RESET BUILD
+            </button>
+
+        </section>
+
+    </main>
+
+    <!-- COMPLETE -->
+
+    <div id="complete">
+
+        <div class="complete-box">
+
+            <div
+                class="complete-title"
+                id="completeTitle"
+            >
+                BUILD COMPLETE
+            </div>
+
+            <div
+                class="complete-sub"
+                id="completeSub"
+            >
+                BASIC CRANE // ASSEMBLY 001
+            </div>
+
+            <button
+                class="complete-next"
+                id="nextBuild"
+            >
+                NEXT BUILD
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   PART FACTORY
+========================================================= */
+
+function P(
+    id,
+    name,
+    type,
+    x,
+    y,
+    w,
+    h,
+    color,
+    rotate
+) {
+
+    return {
+        id: id,
+        name: name,
+        type: type,
+        x: x,
+        y: y,
+        w: w,
+        h: h,
+        color: color || "",
+        rotate: rotate || 0
+    };
+
+}
+
+
+/* =========================================================
+   20 BUILD LEVELS
+
+   Every build has a recognisable silhouette.
+========================================================= */
+
+var LEVELS = [
+
+/* =========================================================
+   01 BASIC CRANE
+========================================================= */
+
+{
+    number: "001",
+    short: "BC",
+    name: "BASIC CRANE",
+
+    parts: [
+
+        P("base","BASE PLATE","plate",30,69,40,10,""),
+
+        P("tower","TOWER","mast",47,27,6,44,""),
+
+        P("towerBeam1","TOWER BEAM","beam",42,32,16,4,""),
+
+        P("towerBeam2","TOWER BEAM","beam",42,46,16,4,""),
+
+        P("jib","RED JIB","beam",17,23,66,4,"red"),
+
+        P("counter","COUNTER ARM","beam",55,31,25,4,""),
+
+        P("cable","CABLE","cable",70,27,2,30,""),
+
+        P("hook","HOOK","hook",67,55,7,12,"yellow"),
+
+        P("gear","GEAR","gear",44,59,8,9,""),
+
+        P("bolt","BOLT","bolt",46,20,4,4,"yellow")
+
+    ]
+},
+
+/* =========================================================
+   02 BRIDGE
+========================================================= */
+
+{
+    number: "002",
+    short: "BR",
+    name: "BRIDGE",
+
+    parts: [
+
+        P("road","ROADWAY","beam",10,57,80,5,""),
+
+        P("road2","ROADWAY","beam",10,65,80,5,""),
+
+        P("tower1","LEFT SUPPORT","mast",18,27,5,40,"blue"),
+
+        P("tower2","RIGHT SUPPORT","mast",77,27,5,40,"blue"),
+
+        P("cross1","LEFT CROSSBAR","beam",14,35,13,4,"red"),
+
+        P("cross2","RIGHT CROSSBAR","beam",73,35,13,4,"red"),
+
+        P("top","TOP BEAM","beam",18,25,64,4,""),
+
+        P("brace1","BRACE","beam",25,38,22,3,"",25),
+
+        P("brace2","BRACE","beam",53,38,22,3,"",-25),
+
+        P("bolt1","BOLT","bolt",16,25,4,4,"yellow"),
+
+        P("bolt2","BOLT","bolt",80,25,4,4,"yellow")
+
+    ]
+},
+
+/* =========================================================
+   03 WINDMILL
+========================================================= */
+
+{
+    number: "003",
+    short: "WM",
+    name: "WINDMILL",
+
+    parts: [
+
+        P("base","BASE","plate",39,78,22,7,""),
+
+        P("tower","MILL TOWER","mast",47,38,6,43,""),
+
+        P("beam1","TOWER BEAM","beam",43,48,14,4,""),
+
+        P("beam2","TOWER BEAM","beam",44,61,12,4,""),
+
+        P("hub","HUB","gear",44,30,12,12,"red"),
+
+        P("blade1","BLADE","blade",47,10,5,24,""),
+
+        P("blade2","BLADE","blade",59,33,25,5,""),
+
+        P("blade3","BLADE","blade",47,42,5,24,""),
+
+        P("blade4","BLADE","blade",18,33,25,5,""),
+
+        P("bolt","HUB BOLT","bolt",47,33,5,5,"yellow")
+
+    ]
+},
+
+/* =========================================================
+   04 MOTORBIKE
+========================================================= */
+
+{
+    number: "004",
+    short: "MB",
+    name: "MOTORBIKE",
+
+    parts: [
+
+        P("wheel1","FRONT WHEEL","wheel",69,54,13,20,""),
+
+        P("wheel2","REAR WHEEL","wheel",18,54,13,20,""),
+
+        P("frame","FRAME","beam",25,48,50,5,"red",-8),
+
+        P("frame2","LOW FRAME","beam",28,61,40,4,""),
+
+        P("seat","SEAT","seat",38,40,18,8,"black"),
+
+        P("engine","ENGINE","gear",45,51,10,12,""),
+
+        P("handle","HANDLEBARS","beam",67,35,17,3,"",65),
+
+        P("fork","FRONT FORK","beam",70,37,4,22,""),
+
+        P("axle","AXLE","axle",24,62,58,3,""),
+
+        P("exhaust","EXHAUST","beam",31,55,20,3,"black")
+
+    ]
+},
+
+/* =========================================================
+   05 GO-KART
+========================================================= */
+
+{
+    number: "005",
+    short: "GK",
+    name: "GO-KART",
+
+    parts: [
+
+        P("body","CHASSIS","beam",22,50,55,6,"red"),
+
+        P("front","FRONT BEAM","beam",16,43,68,5,""),
+
+        P("rear","REAR BEAM","beam",25,63,50,5,""),
+
+        P("wheel1","WHEEL","wheel",13,57,12,18,""),
+
+        P("wheel2","WHEEL","wheel",75,57,12,18,""),
+
+        P("wheel3","WHEEL","wheel",17,39,10,16,""),
+
+        P("wheel4","WHEEL","wheel",77,39,10,16,""),
+
+        P("seat","SEAT","seat",43,39,17,10,"black"),
+
+        P("steering","STEERING","gear",46,28,9,9,""),
+
+        P("column","STEERING COLUMN","axle",49,33,3,15,"")
+
+    ]
+},
+
+/* =========================================================
+   06 EXCAVATOR
+========================================================= */
+
+{
+    number: "006",
+    short: "EX",
+    name: "EXCAVATOR",
+
+    parts: [
+
+        P("track1","LEFT TRACK","track",13,69,30,10,"black"),
+
+        P("track2","RIGHT TRACK","track",57,69,30,10,"black"),
+
+        P("base","TRACK BASE","beam",18,65,65,5,"yellow"),
+
+        P("cab","CAB","cab",50,42,25,23,"blue"),
+
+        P("pivot","PIVOT","gear",45,57,10,10,""),
+
+        P("boom","BOOM","beam",24,30,42,5,"yellow",-18),
+
+        P("arm","DIGGER ARM","beam",16,27,28,5,"yellow",-38),
+
+        P("bucket","BUCKET","bucket",8,27,18,17,"yellow"),
+
+        P("hydraulic","HYDRAULIC RAM","axle",26,42,30,3,"red",-25),
+
+        P("counter","COUNTERWEIGHT","plate",67,59,18,8,"")
+
+    ]
+},
+
+/* =========================================================
+   07 FORKLIFT
+========================================================= */
+
+{
+    number: "007",
+    short: "FL",
+    name: "FORKLIFT",
+
+    parts: [
+
+        P("wheel1","REAR WHEEL","wheel",17,61,12,18,""),
+
+        P("wheel2","FRONT WHEEL","wheel",70,61,12,18,""),
+
+        P("base","CHASSIS","beam",21,65,58,5,"yellow"),
+
+        P("cab","DRIVER CAB","cab",37,39,28,27,"blue"),
+
+        P("mast","LIFT MAST","mast",70,20,6,50,""),
+
+        P("cross","MAST CROSSBAR","beam",67,34,12,4,"red"),
+
+        P("fork1","FORK","fork",66,50,25,14,"yellow"),
+
+        P("fork2","FORK","fork",66,57,25,14,"yellow"),
+
+        P("seat","SEAT","seat",43,49,15,8,"black"),
+
+        P("steering","STEERING","gear",45,38,8,8,"")
+
+    ]
+},
+
+/* =========================================================
+   08 TOWER CRANE
+========================================================= */
+
+{
+    number: "008",
+    short: "TC",
+    name: "TOWER CRANE",
+
+    parts: [
+
+        P("base","BASE","plate",39,84,22,6,""),
+
+        P("tower","TOWER","mast",47,22,6,64,"red"),
+
+        P("tower1","TOWER CROSS","beam",42,36,16,4,""),
+
+        P("tower2","TOWER CROSS","beam",42,52,16,4,""),
+
+        P("jib","LONG RED JIB","beam",10,19,80,5,"red"),
+
+        P("counter","COUNTER JIB","beam",54,28,25,4,"blue"),
+
+        P("cable","HOIST CABLE","cable",70,23,2,40,""),
+
+        P("hook","HOOK","hook",67,61,7,12,"yellow"),
+
+        P("trolley","TROLLEY","gear",66,20,8,8,"yellow"),
+
+        P("gear","GEAR","gear",44,70,10,10,""),
+
+        P("bolt","TOP BOLT","bolt",47,16,5,5,"yellow")
+
+    ]
+},
+
+/* =========================================================
+   09 RACE CAR
+========================================================= */
+
+{
+    number: "009",
+    short: "RC",
+    name: "RACE CAR",
+
+    parts: [
+
+        P("body","AERODYNAMIC BODY","body",22,46,58,18,"red"),
+
+        P("nose","FRONT NOSE","nose",10,51,18,10,"red"),
+
+        P("rear","REAR BODY","beam",65,53,20,5,""),
+
+        P("wheel1","FRONT WHEEL","wheel",18,62,12,18,"black"),
+
+        P("wheel2","REAR WHEEL","wheel",68,62,12,18,"black"),
+
+        P("axle1","FRONT AXLE","axle",15,65,18,3,""),
+
+        P("axle2","REAR AXLE","axle",65,65,18,3,""),
+
+        P("seat","DRIVER SEAT","seat",45,42,14,10,"black"),
+
+        P("spoiler","REAR SPOILER","spoiler",70,40,16,10,"red"),
+
+        P("engine","ENGINE","gear",57,49,10,10,""),
+
+        P("front","FRONT BEAM","beam",23,57,50,4,"")
+
+    ]
+},
+
+/* =========================================================
+   10 HELICOPTER
+========================================================= */
+
+{
+    number: "010",
+    short: "HC",
+    name: "HELICOPTER",
+
+    parts: [
+
+        P("body","HELICOPTER BODY","body",30,48,38,18,"blue"),
+
+        P("cockpit","COCKPIT","cab",18,49,25,17,""),
+
+        P("tail","TAIL BOOM","tail",61,51,27,5,"red"),
+
+        P("tailRotor","TAIL ROTOR","gear",82,44,9,14,"yellow"),
+
+        P("mast","ROTOR MAST","mast",47,30,5,20,""),
+
+        P("rotor","MAIN ROTOR","rotor",20,24,65,4,"red"),
+
+        P("hub","ROTOR HUB","gear",45,25,10,10,"yellow"),
+
+        P("skid1","LANDING SKID","beam",30,68,25,4,""),
+
+        P("skid2","LANDING SKID","beam",48,68,25,4,""),
+
+        P("engine","ENGINE","gear",39,55,10,10,"")
+
+    ]
+},
+
+/* =========================================================
+   11 ROBOT
+========================================================= */
+
+{
+    number: "011",
+    short: "RB",
+    name: "ROBOT",
+
+    parts: [
+
+        P("foot1","LEFT FOOT","plate",29,78,13,7,"blue"),
+
+        P("foot2","RIGHT FOOT","plate",58,78,13,7,"blue"),
+
+        P("leg1","LEFT LEG","beam",32,61,7,18,""),
+
+        P("leg2","RIGHT LEG","beam",61,61,7,18,""),
+
+        P("body","ROBOT BODY","plate",36,43,28,20,"red"),
+
+        P("arm1","LEFT ARM","beam",22,45,18,5,"blue",-20),
+
+        P("arm2","RIGHT ARM","beam",61,45,18,5,"blue",20),
+
+        P("fist1","LEFT HAND","fist",15,48,9,9,""),
+
+        P("fist2","RIGHT HAND","fist",77,48,9,9,""),
+
+        P("head","ROBOT HEAD","head",40,26,20,15,""),
+
+        P("antenna","ANTENNA","antenna",48,16,2,12,""),
+
+        P("eye1","EYE","bolt",44,31,4,4,"yellow"),
+
+        P("eye2","EYE","bolt",53,31,4,4,"yellow")
+
+    ]
+},
+
+/* =========================================================
+   12 MOTORCYCLE
+========================================================= */
+
+{
+    number: "012",
+    short: "MC",
+    name: "MOTORCYCLE",
+
+    parts: [
+
+        P("wheel1","FRONT WHEEL","wheel",70,58,13,20,"black"),
+
+        P("wheel2","REAR WHEEL","wheel",17,58,13,20,"black"),
+
+        P("frame","FRAME","beam",25,51,48,5,"blue",-8),
+
+        P("frame2","LOW FRAME","beam",29,64,39,4,""),
+
+        P("tank","FUEL TANK","body",39,42,23,12,"red"),
+
+        P("seat","SEAT","seat",30,39,20,8,"black"),
+
+        P("fork","FRONT FORK","beam",70,38,4,24,""),
+
+        P("handle","HANDLEBARS","beam",66,32,19,3,"",-25),
+
+        P("engine","ENGINE","gear",44,53,12,12,""),
+
+        P("exhaust","EXHAUST","beam",32,59,22,3,"black"),
+
+        P("axle","AXLE","axle",23,65,55,3,"")
+
+    ]
+},
+
+/* =========================================================
+   13 BULLDOZER
+========================================================= */
+
+{
+    number: "013",
+    short: "BD",
+    name: "BULLDOZER",
+
+    parts: [
+
+        P("track1","LEFT TRACK","track",13,66,31,11,"black"),
+
+        P("track2","RIGHT TRACK","track",56,66,31,11,"black"),
+
+        P("base","TRACK CHASSIS","beam",18,62,66,5,"yellow"),
+
+        P("cab","CAB","cab",48,39,29,25,"blue"),
+
+        P("roof","CAB ROOF","plate",45,34,35,6,"yellow"),
+
+        P("blade","DOZER BLADE","beam",8,46,25,7,"yellow",-18),
+
+        P("bladeBar","BLADE BAR","beam",10,54,28,5,"red",-10),
+
+        P("ram1","HYDRAULIC RAM","axle",26,49,28,3,""),
+
+        P("ram2","HYDRAULIC RAM","axle",28,54,25,3,""),
+
+        P("engine","ENGINE","gear",62,55,10,10,"")
+
+    ]
+},
+
+/* =========================================================
+   14 DRAGSTER
+========================================================= */
+
+{
+    number: "014",
+    short: "DG",
+    name: "DRAGSTER",
+
+    parts: [
+
+        P("frontWheel1","FRONT WHEEL","wheel",12,62,8,14,"black"),
+
+        P("frontWheel2","FRONT WHEEL","wheel",22,62,8,14,"black"),
+
+        P("rearWheel1","REAR WHEEL","wheel",72,57,14,22,"black"),
+
+        P("rearWheel2","REAR WHEEL","wheel",82,57,14,22,"black"),
+
+        P("chassis","LONG CHASSIS","beam",18,55,67,5,"red"),
+
+        P("nose","NOSE","nose",10,52,20,8,"red"),
+
+        P("engine","ENGINE","gear",59,45,14,14,""),
+
+        P("seat","SEAT","seat",45,42,14,9,"black"),
+
+        P("roll","ROLL BAR","beam",44,30,5,20,""),
+
+        P("rollTop","ROLL BAR","beam",40,29,17,4,""),
+
+        P("rear","REAR BEAM","beam",70,51,22,4,""),
+
+        P("axle","REAR AXLE","axle",67,66,28,3,"")
+
+    ]
+},
+
+/* =========================================================
+   15 MEGA CRANE
+========================================================= */
+
+{
+    number: "015",
+    short: "MG",
+    name: "MEGA CRANE",
+
+    parts: [
+
+        P("base","HEAVY BASE","plate",33,82,34,7,""),
+
+        P("tower","MAIN TOWER","mast",47,18,7,68,"red"),
+
+        P("tower1","TOWER CROSS","beam",40,35,21,4,""),
+
+        P("tower2","TOWER CROSS","beam",40,52,21,4,""),
+
+        P("jib","MEGA RED JIB","beam",7,16,85,5,"red"),
+
+        P("counter","COUNTER JIB","beam",56,25,30,4,"blue"),
+
+        P("jib2","SECOND JIB","beam",20,29,50,4,""),
+
+        P("cable1","MAIN CABLE","cable",72,21,2,43,""),
+
+        P("hook1","MAIN HOOK","hook",68,61,8,12,"yellow"),
+
+        P("cable2","SECOND CABLE","cable",51,30,2,27,""),
+
+        P("hook2","SECOND HOOK","hook",47,55,8,12,"yellow"),
+
+        P("gear","MAIN GEAR","gear",43,69,12,12,""),
+
+        P("bolt","TOP BOLT","bolt",48,13,5,5,"yellow")
+
+    ]
+},
+
+/* =========================================================
+   16 MONSTER TRUCK
+========================================================= */
+
+{
+    number: "016",
+    short: "MT",
+    name: "MONSTER TRUCK",
+
+    parts: [
+
+        P("body","TRUCK BODY","body",25,42,50,20,"red"),
+
+        P("cab","CAB","cab",48,31,27,24,"blue"),
+
+        P("roof","ROOF","plate",44,27,34,6,"red"),
+
+        P("wheel1","BIG WHEEL","wheel",10,58,20,28,"black"),
+
+        P("wheel2","BIG WHEEL","wheel",70,58,20,28,"black"),
+
+        P("chassis","HEAVY CHASSIS","beam",18,61,64,6,""),
+
+        P("axle","AXLE","axle",15,71,72,4,""),
+
+        P("bumper","FRONT BUMPER","beam",8,49,22,5,"yellow"),
+
+        P("engine","ENGINE","gear",35,51,13,13,""),
+
+        P("seat","DRIVER SEAT","seat",56,45,12,9,"black"),
+
+        P("roll","ROLL BAR","beam",54,24,5,24,""),
+
+        P("rollTop","ROLL BAR","beam",51,23,18,4,"")
+
+    ]
+},
+
+/* =========================================================
+   17 BIPLANE
+========================================================= */
+
+{
+    number: "017",
+    short: "BP",
+    name: "BIPLANE",
+
+    parts: [
+
+        P("fuselage","FUSELAGE","beam",25,48,50,6,"red"),
+
+        P("cockpit","COCKPIT","cab",44,39,18,13,"blue"),
+
+        P("wingTop","TOP WING","beam",10,27,80,5,"red"),
+
+        P("wingBottom","BOTTOM WING","beam",18,58,64,5,""),
+
+        P("strut1","WING STRUT","beam",30,31,4,29,""),
+
+        P("strut2","WING STRUT","beam",65,31,4,29,""),
+
+        P("tail","TAIL","beam",70,43,23,4,""),
+
+        P("tailFin","TAIL FIN","fin",77,31,8,15,"red"),
+
+        P("prop","PROPELLER","prop",17,43,25,5,"yellow"),
+
+        P("wheel1","LANDING WHEEL","wheel",41,66,8,12,"black"),
+
+        P("wheel2","LANDING WHEEL","wheel",58,66,8,12,"black")
+
+    ]
+},
+
+/* =========================================================
+   18 ROCKET
+========================================================= */
+
+{
+    number: "018",
+    short: "RK",
+    name: "ROCKET",
+
+    parts: [
+
+        P("body","ROCKET BODY","body",39,20,22,55,"silver"),
+
+        P("nose","NOSE CONE","nose",40,12,20,15,"red"),
+
+        P("fin1","LEFT FIN","fin",28,57,15,24,"red"),
+
+        P("fin2","RIGHT FIN","fin",57,57,15,24,"red"),
+
+        P("window1","WINDOW","bolt",46,31,7,7,"blue"),
+
+        P("window2","WINDOW","bolt",46,44,7,7,"blue"),
+
+        P("band1","BODY BAND","beam",37,53,26,4,"yellow"),
+
+        P("band2","BODY BAND","beam",37,65,26,4,""),
+
+        P("engine1","ENGINE","gear",41,73,8,10,""),
+
+        P("engine2","ENGINE","gear",51,73,8,10,""),
+
+        P("flame","ENGINE BEAM","beam",43,82,14,6,"yellow")
+
+    ]
+},
+
+/* =========================================================
+   19 INDUSTRIAL LOADER
+========================================================= */
+
+{
+    number: "019",
+    short: "IL",
+    name: "INDUSTRIAL LOADER",
+
+    parts: [
+
+        P("wheel1","FRONT WHEEL","wheel",64,62,15,22,"black"),
+
+        P("wheel2","REAR WHEEL","wheel",18,62,15,22,"black"),
+
+        P("chassis","CHASSIS","beam",20,63,60,6,"yellow"),
+
+        P("rear","REAR BODY","plate",18,43,29,22,"blue"),
+
+        P("cab","CAB","cab",44,35,25,27,"blue"),
+
+        P("boom1","LOADER ARM","beam",20,28,48,5,"yellow",-25),
+
+        P("boom2","LOADER ARM","beam",25,39,39,5,"yellow",-10),
+
+        P("bucket","LOADER BUCKET","bucket",8,25,23,18,"yellow"),
+
+        P("pivot","PIVOT","gear",42,56,10,10,""),
+
+        P("hydraulic","HYDRAULIC RAM","axle",31,42,30,3,"red",-20),
+
+        P("counter","COUNTERWEIGHT","plate",18,54,18,9,"")
+
+    ]
+},
+
+/* =========================================================
+   20 SUPER MACHINE
+========================================================= */
+
+{
+    number: "020",
+    short: "SM",
+    name: "SUPER MACHINE",
+
+    parts: [
+
+        P("wheel1","FRONT WHEEL","wheel",9,68,15,22,"black"),
+
+        P("wheel2","FRONT WHEEL","wheel",76,68,15,22,"black"),
+
+        P("chassis","MAIN CHASSIS","beam",15,62,72,6,"red"),
+
+        P("body","CENTRAL BODY","plate",29,42,42,23,"blue"),
+
+        P("cab","COMMAND CAB","cab",42,27,28,23,"blue"),
+
+        P("roof","CAB ROOF","plate",39,23,34,6,"red"),
+
+        P("tower","CENTRAL TOWER","mast",48,9,5,25,""),
+
+        P("top","TOP ARM","beam",33,10,37,5,"red"),
+
+        P("cable","CABLE","cable",65,14,2,36,""),
+
+        P("hook","HOOK","hook",62,49,8,12,"yellow"),
+
+        P("frontArm","FRONT ARM","beam",10,37,40,5,"yellow",-20),
+
+        P("bucket","FRONT BUCKET","bucket",4,28,20,18,"yellow"),
+
+        P("rearArm","REAR ARM","beam",59,49,34,5,"green",20),
+
+        P("gear","POWER GEAR","gear",45,52,12,12,"yellow"),
+
+        P("engine","ENGINE","gear",33,55,11,11,""),
+
+        P("axle","HEAVY AXLE","axle",12,72,76,4,""),
+
+        P("bumper","FRONT BUMPER","beam",7,52,25,5,"red"),
+
+        P("fin","TOP FIN","fin",48,4,9,15,"red")
+
+    ]
+}
+
+];
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+var partsContainer =
+    document.getElementById("parts");
+
+var model =
+    document.getElementById("model");
+
+var partsCount =
+    document.getElementById("partsCount");
+
+var progressBar =
+    document.getElementById("progressBar");
+
+var complete =
+    document.getElementById("complete");
+
+var resetButton =
+    document.getElementById("resetButton");
+
+var nextBuild =
+    document.getElementById("nextBuild");
+
+var levelName =
+    document.getElementById("levelName");
+
+var levelDots =
+    document.getElementById("levelDots");
+
+var buildNumber =
+    document.getElementById("buildNumber");
+
+var blueprintTitle =
+    document.getElementById("blueprintTitle");
+
+var blueprintNumber =
+    document.getElementById("blueprintNumber");
+
+var prevLevel =
+    document.getElementById("prevLevel");
+
+var nextLevel =
+    document.getElementById("nextLevel");
+
+var completeTitle =
+    document.getElementById("completeTitle");
+
+var completeSub =
+    document.getElementById("completeSub");
+
+
+var currentLevel = 0;
+
+var placed = 0;
+
+var dragging = null;
+
+
+/* =========================================================
+   VISUAL TYPE MAP
+========================================================= */
+
+function createVisual(type, color) {
+
+    var element =
+        document.createElement("div");
+
+    var classes = "";
+
+    if (type === "beam") {
+        classes = "metal mini-beam";
+    }
+
+    else if (type === "short") {
+        classes = "metal mini-short";
+    }
+
+    else if (type === "plate") {
+        classes = "metal mini-plate";
+    }
+
+    else if (type === "wheel") {
+        classes = "mini-wheel";
+    }
+
+    else if (type === "gear") {
+        classes = "mini-gear";
+    }
+
+    else if (type === "bolt") {
+        classes = "mini-bolt";
+    }
+
+    else if (type === "bracket") {
+        classes = "mini-bracket";
+    }
+
+    else if (type === "axle") {
+        classes = "mini-axle";
+    }
+
+    else if (type === "hook") {
+        classes = "mini-hook";
+    }
+
+    else if (type === "cable") {
+        classes = "mini-cable";
+    }
+
+    else if (type === "mast") {
+        classes = "metal mini-mast";
+    }
+
+    else if (type === "blade") {
+        classes = "metal mini-blade";
+    }
+
+    else if (type === "rotor") {
+        classes = "mini-rotor";
+    }
+
+    else if (type === "tail") {
+        classes = "mini-tail";
+    }
+
+    else if (type === "bucket") {
+        classes = "mini-bucket";
+    }
+
+    else if (type === "fork") {
+        classes = "mini-fork";
+    }
+
+    else if (type === "track") {
+        classes = "mini-track";
+    }
+
+    else if (type === "cab") {
+        classes = "mini-cab";
+    }
+
+    else if (type === "seat") {
+        classes = "mini-seat";
+    }
+
+    else if (type === "body") {
+        classes = "mini-body";
+    }
+
+    else if (type === "spoiler") {
+        classes = "mini-spoiler";
+    }
+
+    else if (type === "prop") {
+        classes = "mini-prop";
+    }
+
+    else if (type === "fist") {
+        classes = "mini-fist";
+    }
+
+    else if (type === "head") {
+        classes = "mini-head";
+    }
+
+    else if (type === "antenna") {
+        classes = "mini-antenna";
+    }
+
+    else if (type === "nose") {
+        classes = "mini-nose";
+    }
+
+    else if (type === "fin") {
+        classes = "mini-fin";
+    }
+
+    else {
+        classes = "metal mini-short";
+    }
+
+    element.className =
+        classes +
+        (color ? " " + color : "");
+
+    return element;
+}
+
+
+/* =========================================================
+   LEVEL DOTS
+========================================================= */
+
+function buildLevelDots() {
+
+    levelDots.innerHTML = "";
+
+    for (
+        var i = 0;
+        i < LEVELS.length;
+        i++
+    ) {
+
+        var dot =
+            document.createElement("div");
+
+        dot.className =
+            "level-dot";
+
+        if (i < currentLevel) {
+            dot.classList.add("done");
+        }
+
+        if (i === currentLevel) {
+            dot.classList.add("current");
+        }
+
+        levelDots.appendChild(dot);
+    }
+}
+
+
+/* =========================================================
+   BUILD LEVEL
+========================================================= */
+
+function loadLevel(index) {
+
+    if (
+        index < 0 ||
+        index >= LEVELS.length
+    ) {
+        return;
+    }
+
+    currentLevel = index;
+
+    var level =
+        LEVELS[currentLevel];
+
+    placed = 0;
+
+    complete.style.display =
+        "none";
+
+    levelName.textContent =
+        level.name;
+
+    buildNumber.textContent =
+        level.number;
+
+    blueprintTitle.textContent =
+        "PROJECT // " +
+        level.name;
+
+    blueprintNumber.textContent =
+        "DRAWING NO. " +
+        level.short +
+        "-" +
+        level.number;
+
+    completeSub.textContent =
+        level.name +
+        " // ASSEMBLY " +
+        level.number;
+
+    buildLevelDots();
+
+    buildParts();
+
+    buildModel();
+
+    updateProgress();
+}
+
+
+/* =========================================================
+   BUILD PARTS TRAY
+========================================================= */
+
+function buildParts() {
+
+    partsContainer.innerHTML =
+        "";
+
+    var level =
+        LEVELS[currentLevel];
+
+    for (
+        var i = 0;
+        i < level.parts.length;
+        i++
+    ) {
+
+        var part =
+            level.parts[i];
+
+        var card =
+            document.createElement("div");
+
+        card.className =
+            "part-card";
+
+        card.dataset.id =
+            part.id;
+
+        var visual =
+            createVisual(
+                part.type,
+                part.color
+            );
+
+        var name =
+            document.createElement("div");
+
+        name.className =
+            "part-name";
+
+        name.textContent =
+            part.name;
+
+        card.appendChild(
+            visual
+        );
+
+        card.appendChild(
+            name
+        );
+
+        partsContainer.appendChild(
+            card
+        );
+
+        makeDraggable(
+            card,
+            part
+        );
+    }
+}
+
+
+/* =========================================================
+   BUILD MODEL
+========================================================= */
+
+function buildModel() {
+
+    model.innerHTML =
+        "";
+
+    var level =
+        LEVELS[currentLevel];
+
+    for (
+        var i = 0;
+        i < level.parts.length;
+        i++
+    ) {
+
+        var part =
+            level.parts[i];
+
+        /*
+            Target
+        */
+
+        var target =
+            document.createElement("div");
+
+        target.className =
+            "target";
+
+        target.dataset.part =
+            part.id;
+
+        target.style.left =
+            part.x + "%";
+
+        target.style.top =
+            part.y + "%";
+
+        target.style.width =
+            part.w + "%";
+
+        target.style.height =
+            part.h + "%";
+
+        if (part.rotate) {
+
+            target.style.transform =
+                "rotate(" +
+                part.rotate +
+                "deg)";
+        }
+
+        model.appendChild(
+            target
+        );
+
+
+        /*
+            Actual model
+        */
+
+        var actual =
+    document.createElement("div");
+
+actual.className =
+    getDetailedPartClass(part.type) +
+    " model-part" +
+    (part.color ?
+        " " + part.color :
+        "");
+
+        actual.id =
+            "model-" +
+            part.id;
+
+        actual.dataset.part =
+            part.id;
+
+        actual.style.left =
+            part.x + "%";
+
+        actual.style.top =
+            part.y + "%";
+
+        actual.style.width =
+            part.w + "%";
+
+        actual.style.height =
+            part.h + "%";
+
+        actual.style.zIndex =
+            i + 1;
+
+        if (part.rotate) {
+
+            actual.style.transform =
+                "rotate(" +
+                part.rotate +
+                "deg) scale(.85)";
+        }
+
+        model.appendChild(
+            actual
+        );
+    }
+}
+
+
+/* =========================================================
+   MODEL CLASS
+========================================================= */
+
+function getModelClass(type) {
+
+    if (type === "beam")
+        return "model-beam";
+
+    if (type === "short")
+        return "model-short";
+
+    if (type === "plate")
+        return "model-plate";
+
+    if (type === "wheel")
+        return "model-wheel";
+
+    if (type === "gear")
+        return "model-gear";
+
+    if (type === "axle")
+        return "model-axle";
+
+    if (type === "hook")
+        return "model-hook";
+
+    if (type === "cable")
+        return "model-cable";
+
+    if (type === "mast")
+        return "model-mast";
+
+    if (type === "blade")
+        return "model-blade";
+
+    if (type === "rotor")
+        return "model-rotor";
+
+    if (type === "tail")
+        return "model-tail";
+
+    if (type === "bucket")
+        return "model-bucket";
+
+    if (type === "fork")
+        return "model-fork";
+
+    if (type === "track")
+        return "model-track";
+
+    if (type === "cab")
+        return "model-cab";
+
+    if (type === "seat")
+        return "model-seat";
+
+    if (type === "body")
+        return "model-body";
+
+    if (type === "spoiler")
+        return "model-spoiler";
+
+    if (type === "prop")
+        return "model-prop";
+
+    if (type === "fist")
+        return "model-fist";
+
+    if (type === "head")
+        return "model-head";
+
+    if (type === "antenna")
+        return "model-antenna";
+
+    if (type === "nose")
+        return "model-body";
+
+    if (type === "fin")
+        return "model-fin";
+
+    return "model-beam";
+}
+
+function getDetailedPartClass(type) {
+
+    if (type === "beam")
+        return "metal mini-beam";
+
+    if (type === "short")
+        return "metal mini-beam";
+
+    if (type === "plate")
+        return "metal mini-plate";
+
+    if (type === "wheel")
+        return "metal mini-wheel";
+
+    if (type === "gear")
+        return "metal mini-gear";
+
+    if (type === "bolt")
+        return "metal mini-bolt";
+
+    if (type === "axle")
+        return "metal mini-axle";
+
+    if (type === "hook")
+        return "metal mini-hook";
+
+    if (type === "cable")
+        return "metal mini-cable";
+
+    if (type === "mast")
+        return "metal mini-mast";
+
+    if (type === "blade")
+        return "metal mini-blade";
+
+    if (type === "rotor")
+        return "metal mini-rotor";
+
+    if (type === "tail")
+        return "metal mini-tail";
+
+    if (type === "bucket")
+        return "metal mini-bucket";
+
+    if (type === "fork")
+        return "metal mini-fork";
+
+    if (type === "track")
+        return "metal mini-track";
+
+    if (type === "cab")
+        return "metal mini-cab";
+
+    if (type === "seat")
+        return "metal mini-seat";
+
+    if (type === "body")
+        return "metal mini-body";
+
+    if (type === "spoiler")
+        return "metal mini-spoiler";
+
+    if (type === "prop")
+        return "metal mini-prop";
+
+    if (type === "fist")
+        return "metal mini-fist";
+
+    if (type === "head")
+        return "metal mini-head";
+
+    if (type === "antenna")
+        return "metal mini-antenna";
+
+    if (type === "nose")
+        return "metal mini-body";
+
+    if (type === "fin")
+        return "metal mini-fin";
+
+    return "metal mini-beam";
+}
+
+
+/* =========================================================
+   DRAGGING
+========================================================= */
+
+function makeDraggable(
+    card,
+    part
+) {
+
+    card.addEventListener(
+        "pointerdown",
+        function(event) {
+
+            event.preventDefault();
+
+            if (
+                card.classList.contains(
+                    "used"
+                )
+            ) {
+                return;
+            }
+
+            var rect =
+                card.getBoundingClientRect();
+
+            var ghost =
+                createVisual(
+                    part.type,
+                    part.color
+                );
+
+            ghost.classList.add(
+                "dragging"
+            );
+
+            document.body.appendChild(
+                ghost
+            );
+
+            ghost.style.left =
+                event.clientX + "px";
+
+            ghost.style.top =
+                event.clientY + "px";
+
+            dragging = {
+
+                part: part,
+
+                card: card,
+
+                ghost: ghost,
+
+                offsetX:
+                    event.clientX -
+                    (
+                        rect.left +
+                        rect.width / 2
+                    ),
+
+                offsetY:
+                    event.clientY -
+                    (
+                        rect.top +
+                        rect.height / 2
+                    )
+            };
+
+            highlightTarget(
+                part
+            );
+
+            document.addEventListener(
+                "pointermove",
+                dragMove
+            );
+
+            document.addEventListener(
+                "pointerup",
+                dragEnd
+            );
+
+            document.addEventListener(
+                "pointercancel",
+                dragCancel
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   DRAG MOVE
+========================================================= */
+
+function dragMove(event) {
+
+    if (!dragging) {
+        return;
+    }
+
+    var x =
+        event.clientX -
+        dragging.offsetX;
+
+    var y =
+        event.clientY -
+        dragging.offsetY;
+
+    dragging.ghost.style.left =
+        x + "px";
+
+    dragging.ghost.style.top =
+        y + "px";
+}
+
+
+/* =========================================================
+   CLEANUP DRAG LISTENERS & ELEMENTS
+========================================================= */
+
+function cleanupDrag() {
+    document.removeEventListener(
+        "pointermove",
+        dragMove
+    );
+    document.removeEventListener(
+        "pointerup",
+        dragEnd
+    );
+    document.removeEventListener(
+        "pointercancel",
+        dragCancel
+    );
+
+    clearTargetHighlights();
+}
+
+
+/* =========================================================
+   DRAG CANCEL (Fixes stuck ghost pieces on mobile)
+========================================================= */
+
+function dragCancel(event) {
+
+    if (!dragging) {
+        cleanupDrag();
+        return;
+    }
+
+    dragging.ghost.remove();
+    dragging = null;
+
+    cleanupDrag();
+}
+
+
+/* =========================================================
+   DRAG END
+========================================================= */
+
+function dragEnd(event) {
+
+    if (!dragging) {
+        cleanupDrag();
+        return;
+    }
+
+    var current =
+        dragging;
+
+    dragging =
+        null;
+
+    cleanupDrag();
+
+    var target =
+        document.querySelector(
+            '.target[data-part="' +
+            current.part.id +
+            '"]'
+        );
+
+    if (!target) {
+
+        current.ghost.remove();
+
+        return;
+    }
+
+    var targetRect =
+        target.getBoundingClientRect();
+
+    var targetX =
+        targetRect.left +
+        targetRect.width / 2;
+
+    var targetY =
+        targetRect.top +
+        targetRect.height / 2;
+
+    var distance =
+        Math.sqrt(
+            Math.pow(
+                event.clientX -
+                targetX,
+                2
+            ) +
+            Math.pow(
+                event.clientY -
+                targetY,
+                2
+            )
+        );
+
+    current.ghost.remove();
+
+    /*
+        Generous snap range.
+
+        This is especially important
+        on mobile.
+    */
+
+    if (
+        distance <
+        Math.max(
+            70,
+            targetRect.width * .45,
+            targetRect.height * .7
+        )
+    ) {
+
+        placePart(
+            current.part,
+            current.card,
+            target
+        );
+    }
+}
+
+
+/* =========================================================
+   TARGET HIGHLIGHT
+========================================================= */
+
+function highlightTarget(part) {
+
+    clearTargetHighlights();
+
+    var target =
+        document.querySelector(
+            '.target[data-part="' +
+            part.id +
+            '"]'
+        );
+
+    if (target) {
+
+        target.classList.add(
+            "ready"
+        );
+    }
+}
+
+
+/* =========================================================
+   CLEAR TARGETS
+========================================================= */
+
+function clearTargetHighlights() {
+
+    var targets =
+        document.querySelectorAll(
+            ".target.ready"
+        );
+
+    for (
+        var i = 0;
+        i < targets.length;
+        i++
+    ) {
+
+        targets[i].classList.remove(
+            "ready"
+        );
+    }
+}
+
+
+/* =========================================================
+   PLACE PART
+========================================================= */
+
+function placePart(
+    part,
+    card,
+    target
+) {
+
+    card.classList.add(
+        "used"
+    );
+
+    target.classList.remove(
+        "ready"
+    );
+
+    target.classList.add(
+        "complete"
+    );
+
+    var modelPart =
+        document.getElementById(
+            "model-" +
+            part.id
+        );
+
+    if (modelPart) {
+
+        modelPart.classList.add(
+            "visible"
+        );
+
+        /*
+            Keep rotation after
+            revealing the model.
+        */
+
+        if (part.rotate) {
+
+            modelPart.style.transform =
+                "rotate(" +
+                part.rotate +
+                "deg) scale(1)";
+        }
+    }
+
+    placed++;
+
+    updateProgress();
+
+    /*
+        Placement pulse
+    */
+
+    target.animate(
+        [
+            {
+                transform:
+                    "scale(.9)"
+            },
+
+            {
+                transform:
+                    "scale(1.12)"
+            },
+
+            {
+                transform:
+                    "scale(1)"
+            }
+        ],
+        {
+            duration: 280
+        }
+    );
+
+    /*
+        Complete level
+    */
+
+    if (
+        placed ===
+        LEVELS[currentLevel].parts.length
+    ) {
+
+        setTimeout(
+            completeBuild,
+            600
+        );
+    }
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+function updateProgress() {
+
+    var total =
+        LEVELS[currentLevel].parts.length;
+
+    partsCount.textContent =
+        placed +
+        " / " +
+        total;
+
+    progressBar.style.width =
+        (
+            placed /
+            total *
+            100
+        ) + "%";
+}
+
+
+/* =========================================================
+   COMPLETE BUILD
+========================================================= */
+
+function completeBuild() {
+
+    complete.style.display =
+        "flex";
+
+    var visibleParts =
+        document.querySelectorAll(
+            ".model-part.visible"
+        );
+
+    for (
+        var i = 0;
+        i < visibleParts.length;
+        i++
+    ) {
+
+        visibleParts[i].animate(
+            [
+                {
+                    filter:
+                        "brightness(1)"
+                },
+
+                {
+                    filter:
+                        "brightness(1.8)"
+                },
+
+                {
+                    filter:
+                        "brightness(1)"
+                }
+            ],
+            {
+                duration: 900,
+
+                delay:
+                    i * 45,
+
+                iterations: 2
+            }
+        );
+    }
+
+    if (
+        currentLevel ===
+        LEVELS.length - 1
+    ) {
+
+        nextBuild.textContent =
+            "REBUILD SUPER MACHINE";
+    }
+
+    else {
+
+        nextBuild.textContent =
+            "NEXT BUILD";
+    }
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetBuild() {
+
+    placed = 0;
+
+    complete.style.display =
+        "none";
+
+    buildParts();
+
+    buildModel();
+
+    updateProgress();
+}
+
+
+/* =========================================================
+   NEXT LEVEL
+========================================================= */
+
+function goNext() {
+
+    if (
+        currentLevel <
+        LEVELS.length - 1
+    ) {
+
+        loadLevel(
+            currentLevel + 1
+        );
+    }
+
+    else {
+
+        loadLevel(0);
+    }
+}
+
+
+/* =========================================================
+   PREVIOUS LEVEL
+========================================================= */
+
+function goPrevious() {
+
+    if (
+        currentLevel > 0
+    ) {
+
+        loadLevel(
+            currentLevel - 1
+        );
+    }
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+resetButton.addEventListener(
+    "click",
+    resetBuild
+);
+
+nextBuild.addEventListener(
+    "click",
+    goNext
+);
+
+nextLevel.addEventListener(
+    "click",
+    goNext
+);
+
+prevLevel.addEventListener(
+    "click",
+    goPrevious
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "ArrowRight"
+        ) {
+
+            goNext();
+        }
+
+        if (
+            event.key === "ArrowLeft"
+        ) {
+
+            goPrevious();
+        }
+
+        if (
+            event.key === "r" ||
+            event.key === "R"
+        ) {
+
+            resetBuild();
+        }
+    }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadLevel(0);
+
+</script>
+
+</body>
+</html>

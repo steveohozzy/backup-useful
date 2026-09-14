@@ -1,0 +1,598 @@
+<style>
+  /* =========================================================
+     STAR CONTAINER
+  ========================================================= */
+
+  #starry-sky-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  main {
+    position: relative;
+  }
+
+  .winter-star {
+    position: absolute;
+    width: 60px;
+    height: auto;
+    display: block;
+    pointer-events: none;
+    will-change: transform, opacity;
+
+    animation:
+      starTwinkle var(--twinkle-duration) ease-in-out infinite alternate,
+      starRotate var(--rotate-duration) linear infinite;
+  }
+
+  @keyframes starTwinkle {
+    0% {
+      opacity: 0.4;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes starRotate {
+    0% {
+      transform: rotate(0deg) scale(var(--star-scale));
+    }
+
+    100% {
+      transform: rotate(360deg) scale(var(--star-scale));
+    }
+  }
+
+  @media (max-width: 1479px) {
+    #starry-sky-container {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    var main = document.querySelector("main");
+
+    if (!main) {
+      return;
+    }
+
+
+    /* =========================================================
+       CREATE STAR CONTAINER
+    ========================================================= */
+
+    var skyContainer =
+      document.getElementById("starry-sky-container");
+
+    if (!skyContainer) {
+
+      skyContainer =
+        document.createElement("div");
+
+      skyContainer.id =
+        "starry-sky-container";
+
+      main.insertBefore(
+        skyContainer,
+        main.firstChild
+      );
+    }
+
+
+    /* =========================================================
+       SETTINGS
+    ========================================================= */
+
+    var starImageUrl =
+      "https://www.thetoyshop.com/medias/edited-photo-60-.png?context=bWFzdGVyfHJvb3R8MzUyMTh8aW1hZ2UvcG5nfGFEYzFMMmcwTVM4eE1qZzBNelV3TmpnNU1qZ3pNQzlsWkdsMFpXUXRjR2h2ZEc4Z0tEWXdLUzV3Ym1jfGE2ZTQ2NmYzNTUwZjVkMTY5YmRkMTZjZDU3MGUxNWJjN2YxNWY5N2E1ZDZhOGVhY2ViZGRkMGJkOTQyNzk4MWI";
+
+    var totalStars = 16;
+
+    var minimumDistance = 220;
+
+    var verticalPadding = 80;
+
+    var edgePadding = 20;
+
+    /*
+       IMPORTANT:
+
+       Never allow stars to occupy the final part of the page.
+
+       This prevents random stars appearing miles below
+       the actual content.
+    */
+    var bottomSafetySpace = 150;
+
+
+    /* =========================================================
+       FIND A SENSIBLE MAIN HEIGHT
+    ========================================================= */
+
+    function getMainContentHeight() {
+
+      var maxBottom = 0;
+
+      /*
+         Look at the actual children of MAIN.
+
+         We use their visual position rather than main.scrollHeight.
+      */
+      var children = main.children;
+
+      for (var i = 0; i < children.length; i++) {
+
+        var child = children[i];
+
+        /*
+           Don't measure the star container itself.
+        */
+        if (
+          child.id ===
+          "starry-sky-container"
+        ) {
+          continue;
+        }
+
+        /*
+           Ignore invisible elements.
+        */
+        var style =
+          window.getComputedStyle(child);
+
+        if (
+          style.display === "none" ||
+          style.visibility === "hidden"
+        ) {
+          continue;
+        }
+
+
+        var rect =
+          child.getBoundingClientRect();
+
+        var mainRect =
+          main.getBoundingClientRect();
+
+
+        var bottom =
+          rect.bottom -
+          mainRect.top;
+
+
+        if (bottom > maxBottom) {
+          maxBottom = bottom;
+        }
+      }
+
+
+      /*
+         Fallback if MAIN contains unusual structure.
+      */
+      if (maxBottom <= 0) {
+        maxBottom =
+          main.getBoundingClientRect().height;
+      }
+
+
+      /*
+         Don't put stars right at the bottom.
+      */
+      maxBottom =
+        maxBottom -
+        bottomSafetySpace;
+
+
+      /*
+         Never return a negative height.
+      */
+      return Math.max(
+        300,
+        maxBottom
+      );
+    }
+
+
+    /* =========================================================
+       CHECK DISTANCE BETWEEN STARS
+    ========================================================= */
+
+    function isFarEnough(
+      x,
+      y,
+      positions
+    ) {
+
+      for (
+        var i = 0;
+        i < positions.length;
+        i++
+      ) {
+
+        var dx =
+          x -
+          positions[i].x;
+
+        var dy =
+          y -
+          positions[i].y;
+
+        var distance =
+          Math.sqrt(
+            (dx * dx) +
+            (dy * dy)
+          );
+
+        if (
+          distance <
+          minimumDistance
+        ) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+
+    /* =========================================================
+       FIND STAR POSITION
+    ========================================================= */
+
+    function findPosition(
+      side,
+      containerWidth,
+      containerHeight,
+      marginWidth,
+      positions
+    ) {
+
+      for (
+        var attempt = 0;
+        attempt < 100;
+        attempt++
+      ) {
+
+        var x;
+
+        if (side === "left") {
+
+          x =
+            edgePadding +
+            Math.random() *
+            Math.max(
+              1,
+              marginWidth - 80
+            );
+
+        } else {
+
+          var rightMarginStart =
+            containerWidth -
+            marginWidth;
+
+          x =
+            rightMarginStart +
+            Math.random() *
+            Math.max(
+              1,
+              marginWidth - 80
+            );
+        }
+
+
+        var y =
+          verticalPadding +
+          Math.random() *
+          Math.max(
+            1,
+            containerHeight -
+            verticalPadding * 2
+          );
+
+
+        if (
+          isFarEnough(
+            x,
+            y,
+            positions
+          )
+        ) {
+
+          return {
+            x: x,
+            y: y
+          };
+        }
+      }
+
+
+      return {
+        x:
+          side === "left"
+            ? edgePadding +
+              Math.random() *
+              Math.max(
+                1,
+                marginWidth - 80
+              )
+            : containerWidth -
+              marginWidth +
+              Math.random() *
+              Math.max(
+                1,
+                marginWidth - 80
+              ),
+
+        y:
+          verticalPadding +
+          Math.random() *
+          Math.max(
+            1,
+            containerHeight -
+            verticalPadding * 2
+          )
+      };
+    }
+
+
+    /* =========================================================
+       PLACE STARS
+    ========================================================= */
+
+    function placeStars() {
+
+      var screenWidth =
+        window.innerWidth;
+
+
+      /*
+         Clear everything first.
+      */
+      skyContainer.innerHTML = "";
+
+
+      /*
+         Only desktop.
+      */
+      if (
+        screenWidth < 1480
+      ) {
+
+        skyContainer.style.height =
+          "0px";
+
+        return;
+      }
+
+
+      /*
+         Get the ACTUAL content height.
+
+         NOT document height.
+         NOT scrollHeight.
+      */
+      var containerHeight =
+        getMainContentHeight();
+
+
+      /*
+         Width of MAIN.
+      */
+      var containerWidth =
+        main.clientWidth;
+
+
+      /*
+         Central site content.
+      */
+      var contentWidth = 1440;
+
+
+      /*
+         Side gutters.
+      */
+      var marginWidth =
+        (
+          containerWidth -
+          contentWidth
+        ) / 2;
+
+
+      /*
+         Not enough gutter space.
+      */
+      if (
+        marginWidth < 100
+      ) {
+
+        skyContainer.style.height =
+          "0px";
+
+        return;
+      }
+
+
+      /*
+         Set the layer height explicitly.
+
+         Because it is absolute, this does NOT
+         add to MAIN's height.
+      */
+      skyContainer.style.height =
+        containerHeight + "px";
+
+
+      var positions = [];
+
+
+      /* =======================================================
+         GENERATE STARS
+      ======================================================= */
+
+      for (
+        var i = 0;
+        i < totalStars;
+        i++
+      ) {
+
+        var side =
+          i % 2 === 0
+            ? "left"
+            : "right";
+
+
+        var position =
+          findPosition(
+            side,
+            containerWidth,
+            containerHeight,
+            marginWidth,
+            positions
+          );
+
+
+        positions.push(
+          position
+        );
+
+
+        var star =
+          document.createElement("img");
+
+
+        star.src =
+          starImageUrl;
+
+        star.className =
+          "winter-star";
+
+        star.alt = "";
+
+
+        star.style.left =
+          position.x + "px";
+
+        star.style.top =
+          position.y + "px";
+
+
+        star.style.setProperty(
+          "--twinkle-duration",
+          (
+            4 +
+            Math.random() * 4
+          ) + "s"
+        );
+
+
+        star.style.setProperty(
+          "--rotate-duration",
+          (
+            20 +
+            Math.random() * 20
+          ) + "s"
+        );
+
+
+        star.style.setProperty(
+          "--star-scale",
+          0.7 +
+          Math.random() * 0.6
+        );
+
+
+        skyContainer.appendChild(
+          star
+        );
+      }
+    }
+
+
+    /* =========================================================
+       INITIALISE
+    ========================================================= */
+
+    placeStars();
+
+
+    /*
+       Allow the rest of the page to finish loading.
+    */
+    setTimeout(
+      placeStars,
+      500
+    );
+
+    setTimeout(
+      placeStars,
+      1500
+    );
+
+
+    /* =========================================================
+       RESIZE
+    ========================================================= */
+
+    var resizeTimer;
+
+    window.addEventListener(
+      "resize",
+      function () {
+
+        clearTimeout(
+          resizeTimer
+        );
+
+        resizeTimer =
+          setTimeout(
+            placeStars,
+            250
+          );
+      }
+    );
+
+
+    /* =========================================================
+       WATCH MAIN
+    ========================================================= */
+
+    if (
+      window.ResizeObserver
+    ) {
+
+      var observer =
+        new ResizeObserver(
+          function () {
+
+            /*
+               Small delay lets the page finish
+               changing its dimensions before we
+               calculate the star area.
+            */
+            setTimeout(
+              placeStars,
+              50
+            );
+          }
+        );
+
+
+      observer.observe(
+        main
+      );
+    }
+
+  });
+</script>

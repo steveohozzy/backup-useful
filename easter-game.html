@@ -1,0 +1,359 @@
+<style>
+.game-container {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: #a2d8f7;
+    padding: 30px 0;
+    text-align: center;
+}
+
+h1 { margin:10px 0; color:#ff66aa; }
+#scoreboard { font-size:20px; margin:5px; color:#333; }
+#offer { font-size:22px; color:#ff9900; margin-bottom:10px; }
+button {
+    font-size:16px; padding:8px 15px; margin:10px; border-radius:8px;
+    border:none; cursor:pointer; background-color:#ff66aa; color:white;
+}
+button:hover { background-color:#ff88cc; }
+
+#game-area {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    height:600px;
+    margin:0 auto;
+    background-color: #7ec850;
+    border:3px solid #4caf50; 
+    border-radius:12px; 
+    overflow:hidden;
+}
+
+/* Overlay centered */
+#overlay-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255,255,255,0.95);
+    border: 2px solid #ff66aa;
+    border-radius: 12px;
+    padding: 20px 30px;
+    font-size: 24px;
+    color: #ff4400;
+    display: none;
+    z-index: 1000;
+    text-align: center;
+}
+#overlay-message button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    background-color: #ff66aa;
+    color: white;
+    cursor: pointer;
+}
+#overlay-message button:hover {
+    background-color: #ff88cc;
+}
+
+/* Decorations */
+.flower { position:absolute; width:22px; height:22px; z-index:2; }
+.flower .petal { position:absolute; width:14px; height:14px; border-radius:50%; }
+.flower .stem { position:absolute; width:2px; height:18px; background:#2e8b57; left:10px; top:18px; }
+.flower .leaf { position:absolute; width:8px; height:12px; background:#2e8b57; border-radius:3px; left:-4px; top:14px; transform:rotate(-30deg); }
+
+.log { position:absolute; width:70px; height:25px;
+    background: linear-gradient(#8b5a2b,#5c3b1f);
+    border-radius:12px; box-shadow: inset 0 0 5px #5c3b1f, 2px 2px 2px #3b2615; 
+    z-index:2;
+}
+.rock { position:absolute; width:12px; height:8px; background:#888;
+    border-radius:50%; box-shadow:1px 1px 2px #555; z-index:2;
+}
+
+.egg { position:absolute; width:25px; height:35px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; 
+    cursor:pointer; transition: transform .25s, opacity .25s; z-index:2; }
+.egg-real { opacity:0.5; }
+.egg-real:hover{ opacity:1; transform:scale(1.5); }
+.egg-fake{ opacity:0.4; }
+.egg-fake:hover{ opacity:0.9; transform:scale(1.4); }
+
+.bush {
+    position: absolute;
+    width: 120px;
+    height: 90px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 160'>\
+    <circle cx='120' cy='85' r='70' fill='%2384d96c'/>\
+    <circle cx='70' cy='95' r='55' fill='%238adf72'/>\
+    <circle cx='170' cy='95' r='55' fill='%238adf72'/>\
+    <ellipse cx='105' cy='70' rx='35' ry='18' fill='%23c5ffb4' opacity='0.55'/>\
+    <ellipse cx='150' cy='90' rx='28' ry='15' fill='%23c5ffb4' opacity='0.45'/>\
+    <ellipse cx='120' cy='135' rx='90' ry='30' fill='%2367af53' opacity='0.4'/>\
+</svg>");
+    filter: adow(0 3px 4px rgba(0,0,0,0.25));
+    z-index:2;
+}
+
+/* Grass blades */
+.grass {
+    position: absolute;
+    width: 2px;
+    height: 15px;
+    background: linear-gradient(to top, #3cb043 0%, #6fcf50 100%);
+    border-radius: 1px;
+    transform: rotate(calc(-25deg + 50deg * var(--r)));
+    z-index:1;
+}
+
+.sparkle {
+    position:absolute; width:30px; height:30px;
+    background: radial-gradient(circle,#ffff88 0%,#ffcc00 80%);
+    border-radius:50%; pointer-events:none; animation:sparkleAnim 0.8s ease-out forwards;
+    z-index:3;
+}
+@keyframes sparkleAnim {
+    0% { transform:scale(0.5); opacity:1; }
+    100% { transform:scale(1.8); opacity:0; }
+}
+</style>
+<div class="game-container">
+<h1>🎉 Easter Egg Hunt — Cartoon Grass 🎉</h1>
+<div id="scoreboard">Score: <span id="score">0</span> | Time left: <span id="timer">60</span>s</div>
+<div id="offer"></div>
+<button onclick="startGame()">Play Again</button>
+
+<div id="game-area">
+    <div id="overlay-message"></div>
+</div>
+</div>
+<script>
+let score=0, timeLeft=60, timerInterval, gameOver=false;
+
+function startGame(){
+    score=0; timeLeft=60; gameOver=false;
+    const area = document.getElementById("game-area");
+    area.innerHTML = '<div id="overlay-message"></div>';
+    document.getElementById("score").textContent = score;
+    document.getElementById("timer").textContent = timeLeft;
+
+    placeGrass(area);
+    placeDecorations(area);
+    placeEggs(area);
+
+    clearInterval(timerInterval);
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+/* Prevent closing win/lose overlays */
+function showOverlayMessage(msg, duration) {
+    const overlay = document.getElementById("overlay-message");
+
+    // If restart button exists, this is win/lose → do NOT auto-close
+    if (overlay.querySelector("button")) {
+        overlay.style.display = "block";
+        overlay.innerHTML = msg;
+        return;
+    }
+
+    // Fake egg overlay
+    overlay.innerHTML = msg;
+    overlay.style.display = "block";
+
+    if (duration) {
+        setTimeout(() => {
+            // Only auto-hide if no restart button was added
+            if (!overlay.querySelector("button")) {
+                overlay.style.display = "none";
+            }
+        }, duration);
+    }
+}
+
+function isColliding(x,y,w,h,items){
+    for(let it of items){
+        if(!(x+w<it.x||x>it.x+it.w||y+h<it.y||y>it.y+it.h)) return true;
+    }
+    return false;
+}
+
+function placeDecorations(area){
+    const flowerPos=[], bushPos=[], logPos=[];
+    const colors=["#ff4da6","#ffcc33","#66ccff","#ff884d"];
+
+    // Flowers
+    for(let i=0;i<25;i++){
+        let placed=false, tries=0;
+        while(!placed && tries<100){
+            let x=Math.random()*(area.offsetWidth-22);
+            let y=Math.random()*(area.offsetHeight-22);
+            if(!isColliding(x,y,22,22,flowerPos)){
+                const f=document.createElement("div");
+                f.className="flower"; f.style.left=x+"px"; f.style.top=y+"px";
+                for(let p=0;p<5;p++){
+                    let petal=document.createElement("div");
+                    petal.className="petal";
+                    petal.style.background=colors[Math.floor(Math.random()*colors.length)];
+                    petal.style.transform=`rotate(${p*72}deg) translate(0px,-7px)`;
+                    f.appendChild(petal);
+                }
+                let s=document.createElement("div"); s.className="stem"; f.appendChild(s);
+                let l=document.createElement("div"); l.className="leaf"; f.appendChild(l);
+                area.appendChild(f);
+                flowerPos.push({x,y,w:22,h:22}); placed=true;
+            }
+            tries++;
+        }
+    }
+
+    // Logs
+    for(let i=0;i<5;i++){
+        let placed=false, tries=0;
+        while(!placed && tries<100){
+            let x=Math.random()*(area.offsetWidth-70);
+            let y=Math.random()*(area.offsetHeight-25);
+            if(!isColliding(x,y,70,25,flowerPos)&&!isColliding(x,y,70,25,logPos)){
+                const log=document.createElement("div");
+                log.className="log"; log.style.left=x+"px"; log.style.top=y+"px";
+                log.style.transform=`rotate(${Math.random()*30-15}deg)`;
+                area.appendChild(log);
+                logPos.push({x,y,w:70,h:25}); placed=true;
+            }
+            tries++;
+        }
+    }
+
+    // Bushes
+    for(let i=0;i<12;i++){
+        let placed=false, tries=0;
+        while(!placed && tries<100){
+            let x=Math.random()*(area.offsetWidth-120);
+            let y=Math.random()*(area.offsetHeight-90);
+            if(!isColliding(x,y,120,90,flowerPos)&&!isColliding(x,y,120,90,logPos)&&!isColliding(x,y,120,90,bushPos)){
+                const b=document.createElement("div");
+                b.className="bush"; b.style.left=x+"px"; b.style.top=y+"px";
+                area.appendChild(b);
+                bushPos.push({x,y,w:120,h:90}); placed=true;
+            }
+            tries++;
+        }
+    }
+}
+
+const eggPatterns=[
+    'radial-gradient(circle at 50% 20%, #ffcc00 20%, #ff66aa 50%, #ffcc00 80%)',
+    'linear-gradient(135deg, #ff66aa, #ffcc00, #ff66aa)',
+    'repeating-linear-gradient(45deg, #ff66aa, #ff66aa 5px, #ffff88 5px, #ffff88 10px)',
+    'radial-gradient(circle at 30% 30%, #66ccff 20%, #33aaff 60%)',
+    'linear-gradient(120deg, #ff884d,#ffcc33,#ff884d)',
+    'repeating-linear-gradient(60deg,#33aa66,#33aa66 6px,#66ff88 6px,#66ff88 12px)'
+];
+
+function placeEggs(area){
+    const eggs=[];
+    
+    // Real eggs
+    for(let i=0;i<10;i++){
+        let placed=false, tries=0;
+        while(!placed && tries<100){
+            let x=Math.random()*(area.offsetWidth-25);
+            let y=Math.random()*(area.offsetHeight-35);
+            if(!isColliding(x,y,25,35,eggs)){
+                const e=document.createElement("div");
+                e.className="egg egg-real";
+                e.style.left=x+"px"; e.style.top=y+"px";
+                e.style.background=eggPatterns[Math.floor(Math.random()*eggPatterns.length)];
+                e.addEventListener("click",evt => popEgg(e,evt,area));
+                area.appendChild(e);
+                eggs.push({x,y,w:25,h:35});
+                placed=true;
+            }
+            tries++;
+        }
+    }
+
+    // Fake eggs
+    for(let i=0;i<15;i++){
+        let placed=false, tries=0;
+        while(!placed && tries<100){
+            let x=Math.random()*(area.offsetWidth-25);
+            let y=Math.random()*(area.offsetHeight-35);
+            if(!isColliding(x,y,25,35,eggs)){
+                const e=document.createElement("div");
+                e.className="egg egg-fake";
+                e.style.left=x+"px"; e.style.top=y+"px";
+                e.style.background=eggPatterns[Math.floor(Math.random()*eggPatterns.length)];
+                e.addEventListener("click", () => {
+                    if(gameOver) return;
+                    showOverlayMessage("❌ That was a fake egg!", 1200);
+                });
+                area.appendChild(e);
+                eggs.push({x,y,w:25,h:35});
+                placed=true;
+            }
+            tries++;
+        }
+    }
+}
+
+function popEgg(egg,evt,area){
+    if(gameOver) return;
+    egg.remove();
+    score++;
+    document.getElementById("score").textContent=score;
+
+    const rect=area.getBoundingClientRect();
+    const x=evt.clientX-rect.left-15;
+    const y=evt.clientY-rect.top-15;
+
+    const spark=document.createElement("div");
+    spark.className="sparkle"; spark.style.left=x+"px"; spark.style.top=y+"px";
+    area.appendChild(spark);
+    setTimeout(()=>spark.remove(),800);
+
+    if(score===10) endGame(true);
+}
+
+function updateTimer(){
+    timeLeft--;
+    document.getElementById("timer").textContent=timeLeft;
+    if(timeLeft<=0 && !gameOver) endGame(false);
+}
+
+function endGame(win){
+    clearInterval(timerInterval);
+    gameOver=true;
+
+    const overlay=document.getElementById("overlay-message");
+
+    if(win){
+        overlay.innerHTML="🎉 YOU WIN! You found all the REAL eggs!<br>🎁 SPECIAL OFFER UNLOCKED!";
+    } else {
+        overlay.innerHTML="⏰ Time’s up! Try again!";
+    }
+
+    const btn=document.createElement("button");
+    btn.textContent="Restart Game";
+    btn.onclick=()=>{ startGame(); overlay.style.display="none"; };
+    overlay.appendChild(btn);
+
+    overlay.style.display="block";
+}
+
+function placeGrass(area){
+    for(let i=0;i<200;i++){
+        let x=Math.random()*(area.offsetWidth-2);
+        let y=Math.random()*(area.offsetHeight-15);
+        const g=document.createElement("div");
+        g.className="grass";
+        g.style.left=x+"px"; g.style.top=y+"px";
+        g.style.setProperty('--r',Math.random());
+        area.appendChild(g);
+    }
+}
+
+window.onload=startGame;
+</script>

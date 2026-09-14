@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winter Robin Escape - Magic Edition</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #0b1d3a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(11, 29, 58, 0.85);
+            backdrop-filter: blur(6px);
+            padding: 40px;
+            border-radius: 16px;
+            border: 3px solid #7dd3fc;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: auto;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        .screen.active {
+            opacity: 1;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            color: #e0f2fe;
+            letter-spacing: 1px;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+            color: #cbd5e1;
+        }
+        .btn {
+            padding: 14px 36px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #b45309;
+            transition: transform 0.1s, background 0.2s;
+        }
+        .btn:hover {
+            background: #fbbf24;
+        }
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+        #score-display {
+            position: absolute;
+            top: 30px;
+            font-size: 4rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="score-display">0</div>
+        
+        <canvas id="gameCanvas"></canvas>
+        
+        <div class="ui-layer">
+            <!-- Start Screen -->
+            <div id="start-screen" class="screen active">
+                <h1>Robin's Magic Winter Escape</h1>
+                <p>Fly through the trees! Grab Golden Stars for +3 Bonus Points!</p>
+                <button class="btn" id="start-btn">START MAGIC JOURNEY</button>
+            </div>
+            
+            <!-- Game Over Screen -->
+            <div id="gameover-screen" class="screen" style="display: none;">
+                <h1>Frozen!</h1>
+                <p id="final-score" style="font-size: 1.8rem; color: #fbbf24; margin-bottom: 8px; font-weight: bold;">Score: 0</p>
+                <p id="high-score" style="margin-bottom: 24px; color: #93c5fd;">Best Journey: 0</p>
+                <button class="btn" id="restart-btn">PLAY AGAIN</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreDisplay = document.getElementById('score-display');
+    
+    const startScreen = document.getElementById('start-screen');
+    const gameoverScreen = document.getElementById('gameover-screen');
+    const startBtn = document.getElementById('start-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    const finalScoreTxt = document.getElementById('final-score');
+    const highScoreTxt = document.getElementById('high-score');
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let gameState = 'START';
+    let score = 0;
+    let highScore = localStorage.getItem('robinMagicWinterHighScore') || 0;
+    let frames = 0;
+
+    // Load Images
+    const robinImg = new Image();
+    robinImg.src = 'https://www.thetoyshop.com/medias/Robbin.png?context=bWFzdGVyfHJvb3R8NDk1OHxpbWFnZS9wbmd8YUdFMEwyaGpPQzh4TWpneE56UXlNVGMyTWpVNU1DOVNiMkppYVc0dWNHNW58MDZjNjFhNzU0N2NmNTQ5OGJhZWNhYTIwYWU3YTAxMDVjYjIzZWY3ZTk4ZDZjNDk4YzE1NmVmYzA4ZmJjZGExYQ';
+
+    const treeDarkImg = new Image();
+    treeDarkImg.src = 'https://www.thetoyshop.com/medias/Tree-Dark.png?context=bWFzdGVyfHJvb3R8MTI1NTZ8aW1hZ2UvcG5nfGFHVm1MMmhsTWk4eE1qZ3hOelF6T1RZeU1URTFNQzlVY21WbElFUmhjbXN1Y0c1bnwwNzNhZjE0ODczN2NhOTVhZWE3NWFhMWFlZjE4ZDMwNGU3YTJmMzk2N2YzNTRlMTIwMGZlNmM0MTA5MjVjNTU2';
+
+    const treeLightImg = new Image();
+    treeLightImg.src = 'https://www.thetoyshop.com/medias/Tree-Light.png?context=bWFzdGVyfHJvb3R8MTI1NTJ8aW1hZ2UvcG5nfGFEbGpMMmhsTXk4eE1qZ3hOelF6T1RZNE5qWTROaTlVY21WbElFeHBaMmgwTG5CdVp3fDNkMzllYzMwZjZmNWY5OGY2NzE0ZmUxOTUwOGU5NmMzODAxOWE1ZTY1YzlmYTNlY2ZlZDM1OGY4OTlmZjgzMTA';
+
+    // Particle Pools
+    const snowParticles = [];
+    const magicTrailParticles = [];
+    const explosionParticles = [];
+
+    // Ambient Snow Setup
+    function createSnowflake() {
+        return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * -canvas.height,
+            radius: Math.random() * 3 + 1,
+            density: Math.random() * 1 + 0.5
+        };
+    }
+    for(let i = 0; i < 60; i++) {
+        let flake = createSnowflake();
+        flake.y = Math.random() * canvas.height;
+        snowParticles.push(flake);
+    }
+
+    function updateAndDrawSnow() {
+        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+        snowParticles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+            p.y += p.density;
+            p.x += Math.sin(p.y / 30) * 0.5;
+            if (p.y > canvas.height) {
+                p.y = -10;
+                p.x = Math.random() * canvas.width;
+            }
+        });
+    }
+
+    // Magical Robin Trail System
+    function addTrailParticle(x, y) {
+        magicTrailParticles.push({
+            x: x,
+            y: y,
+            size: Math.random() * 5 + 2,
+            speedX: -(Math.random() * 2 + 1),
+            speedY: (Math.random() * 1 - 0.5),
+            alpha: 1,
+            color: `hsla(${Math.random() * 40 + 35}, 100%, 70%, 1)` // Golden sparkle tints
+        });
+    }
+
+    function updateAndDrawTrails() {
+        for(let i = 0; i < magicTrailParticles.length; i++) {
+            let p = magicTrailParticles[i];
+            p.x += p.speedX;
+            p.y += p.speedY;
+            p.alpha -= 0.02;
+
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            
+            // Draw a tiny star shape or diamond spark
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y - p.size);
+            ctx.lineTo(p.x + p.size/2, p.y);
+            ctx.lineTo(p.x, p.y + p.size);
+            ctx.lineTo(p.x - p.size/2, p.y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+
+            if(p.alpha <= 0) {
+                magicTrailParticles.splice(i, 1);
+                i--;
+            }
+        }
+    }
+
+    // Star Burst Sparkle Effect
+    function createStarBurst(x, y) {
+        for (let i = 0; i < 15; i++) {
+            explosionParticles.push({
+                x: x,
+                y: y,
+                vx: (Math.random() - 0.5) * 8,
+                vy: (Math.random() - 0.5) * 8,
+                radius: Math.random() * 4 + 2,
+                alpha: 1
+            });
+        }
+    }
+
+    function updateAndDrawExplosions() {
+        for(let i = 0; i < explosionParticles.length; i++) {
+            let p = explosionParticles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.alpha -= 0.04;
+
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            if(p.alpha <= 0) {
+                explosionParticles.splice(i, 1);
+                i--;
+            }
+        }
+    }
+
+    // Helper function to draw crisp geometric stars
+    function drawStarSVG(cx, cy, spikes, outerRadius, innerRadius) {
+        let rot = Math.PI / 2 * 3;
+        let x = cx;
+        let y = cy;
+        let step = Math.PI / spikes;
+
+        ctx.strokeSyle = "#b45309";
+        ctx.lineWidth = 2;
+        ctx.fillStyle = "#fbbf24";
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - outerRadius);
+        
+        for (let i = 0; i < spikes; i++) {
+            x = cx + Math.cos(rot) * outerRadius;
+            y = cy + Math.sin(rot) * outerRadius;
+            ctx.lineTo(x, y);
+            rot += step;
+
+            x = cx + Math.cos(rot) * innerRadius;
+            y = cy + Math.sin(rot) * innerRadius;
+            ctx.lineTo(x, y);
+            rot += step;
+        }
+        ctx.lineTo(cx, cy - outerRadius);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    // Robin
+    const bird = {
+        x: 100,
+        y: 300,
+        size: 45,
+        gravity: 0.22,
+        velocity: 0,
+        jump: 4.8,
+        rotation: 0,
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x + this.size / 2, this.y + this.size / 2);
+            this.rotation = Math.min(Math.PI / 4, Math.max(-Math.PI / 7, this.velocity * 0.04));
+            ctx.rotate(this.rotation);
+            
+            if (robinImg.complete) {
+                ctx.drawImage(robinImg, -this.size / 2, -this.size / 2, this.size, this.size);
+            } else {
+                ctx.fillStyle = '#ef4444';
+                ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+            }
+            ctx.restore();
+        },
+
+        update() {
+            this.velocity += this.gravity;
+            this.y += this.velocity;
+
+            if (gameState === 'PLAYING') {
+                // Generate trailing sparkles out of the rear area of the robin
+                addTrailParticle(this.x + 5, this.y + this.size / 2 + (Math.random() * 10 - 5));
+            }
+
+            if (this.y + this.size >= canvas.height - 50) {
+                this.y = canvas.height - 50 - this.size;
+                endGame();
+            }
+            if (this.y < 0) {
+                this.y = 0;
+                this.velocity = 0;
+            }
+        },
+
+        flap() {
+            if (gameState === 'PLAYING') this.velocity = -this.jump;
+        }
+    };
+
+    // Obstacles and Collectibles Manager
+    const obstacles = {
+        list: [],
+        gapSize: 180, // opened gap to give room for stars
+        treeWidth: 90,
+        speed: 3,
+
+        update() {
+            if (gameState !== 'PLAYING') return;
+
+            if (frames % 120 === 0) {
+                const minHeight = 60;
+                const maxHeight = canvas.height - 50 - this.gapSize - minHeight;
+                const topTreeHeight = Math.floor(Math.random() * (maxHeight - minHeight + 1)) + minHeight;
+
+                // NEW: 50% chance to spawn a star, making them a rarer treat
+                let starConfig = null;
+                if (Math.random() < 0.5) {
+                    // NEW: Randomize the star's height within the gap (higher up or lower down)
+                    // It offsets from the absolute center by up to 45 pixels up or down
+                    const centerGapY = topTreeHeight + (this.gapSize / 2);
+                    const riskOffset = (Math.random() - 0.5) * 90; 
+                    
+                    starConfig = {
+                        y: centerGapY + riskOffset,
+                        radius: 15,
+                        collected: false,
+                        pulse: Math.random() * Math.PI // variant starting pulse
+                    };
+                }
+
+                this.list.push({
+                    x: canvas.width,
+                    topHeight: topTreeHeight,
+                    scored: false,
+                    star: starConfig
+                });
+            }
+
+            for (let i = 0; i < this.list.length; i++) {
+                let t = this.list[i];
+                t.x -= this.speed;
+
+                const birdRight = bird.x + bird.size - 5;
+                const birdLeft = bird.x + 5;
+                const birdTop = bird.y + 5;
+                const birdBottom = bird.y + bird.size - 5;
+
+                const treeRight = t.x + this.treeWidth;
+                const treeLeft = t.x;
+                const bottomTreeTop = t.topHeight + this.gapSize;
+
+                // Tree Crash Check
+                if (birdRight > treeLeft && birdLeft < treeRight) {
+                    if (birdTop < t.topHeight || birdBottom > bottomTreeTop) {
+                        endGame();
+                    }
+                }
+
+                // Star Collection Scan
+                if (t.star && !t.star.collected) {
+                    t.star.pulse += 0.08; 
+                    
+                    const starX = t.x + this.treeWidth / 2;
+                    const birdCenterX = bird.x + bird.size / 2;
+                    const birdCenterY = bird.y + bird.size / 2;
+                    
+                    const dist = Math.hypot(birdCenterX - starX, birdCenterY - t.star.y);
+                    if (dist < (bird.size / 2 + t.star.radius)) {
+                        t.star.collected = true;
+                        createStarBurst(starX, t.star.y);
+                        score += 3; 
+                        scoreDisplay.innerText = score;
+                    }
+                }
+
+                // Tree Passing Score Logic
+                if (t.x + this.treeWidth < bird.x && !t.scored) {
+                    score++;
+                    t.scored = true;
+                    scoreDisplay.innerText = score;
+                }
+
+                if (t.x + this.treeWidth < 0) {
+                    this.list.shift();
+                    i--;
+                }
+            }
+        },
+
+        draw() {
+            for (let i = 0; i < this.list.length; i++) {
+                let t = this.list[i];
+
+                // Top Hanging Tree
+                if (treeDarkImg.complete) {
+                    ctx.save();
+                    ctx.translate(t.x + this.treeWidth / 2, t.topHeight / 2);
+                    ctx.scale(1, -1);
+                    ctx.drawImage(treeDarkImg, -this.treeWidth / 2, -t.topHeight / 2, this.treeWidth, t.topHeight);
+                    ctx.restore();
+                } else {
+                    ctx.fillStyle = '#1e293b';
+                    ctx.fillRect(t.x, 0, this.treeWidth, t.topHeight);
+                }
+
+                // Bottom Ground Tree
+                const bottomHeight = canvas.height - 50 - (t.topHeight + this.gapSize);
+                if (treeLightImg.complete) {
+                    ctx.drawImage(treeLightImg, t.x, t.topHeight + this.gapSize, this.treeWidth, bottomHeight);
+                } else {
+                    ctx.fillStyle = '#0f766e';
+                    ctx.fillRect(t.x, t.topHeight + this.gapSize, this.treeWidth, bottomHeight);
+                }
+
+                // Draw Golden Star if active
+                if (t.star && !t.star.collected) {
+                    const starX = t.x + this.treeWidth / 2;
+                    const bobbingY = t.star.y + Math.sin(t.star.pulse) * 5;
+                    drawStarSVG(starX, bobbingY, 5, t.star.radius, t.star.radius / 2);
+                }
+            }
+        },
+
+        reset() {
+            this.list = [];
+        }
+    };
+
+    const ground = {
+        draw() {
+            ctx.fillStyle = '#f1f5f9';
+            ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+            ctx.fillStyle = '#e2e8f0';
+            ctx.fillRect(0, canvas.height - 50, canvas.width, 6);
+        }
+    };
+
+    function drawSkyBackground() {
+        let skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        skyGradient.addColorStop(0, '#0f172a');
+        skyGradient.addColorStop(0.6, '#1e3a8a');
+        skyGradient.addColorStop(1, '#3b82f6');
+        ctx.fillStyle = skyGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Event Controls
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' || e.code === 'ArrowUp') {
+            e.preventDefault();
+            if (gameState === 'PLAYING') bird.flap();
+            else if (gameState === 'START') startGame();
+        }
+    });
+
+    canvas.addEventListener('mousedown', () => {
+        if (gameState === 'PLAYING') bird.flap();
+    });
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (gameState === 'PLAYING') bird.flap();
+    }, { passive: false });
+
+    startBtn.addEventListener('click', (e) => { e.stopPropagation(); startGame(); });
+    restartBtn.addEventListener('click', (e) => { e.stopPropagation(); resetGame(); startGame(); });
+
+    function startGame() {
+        gameState = 'PLAYING';
+        startScreen.classList.remove('active');
+        gameoverScreen.classList.remove('active');
+        setTimeout(() => {
+            startScreen.style.display = 'none';
+            gameoverScreen.style.display = 'none';
+        }, 300);
+    }
+
+    function endGame() {
+        gameState = 'GAMEOVER';
+        if (score > highScore) {
+            highScore = score;
+            localStorage.setItem('robinMagicWinterHighScore', highScore);
+        }
+        
+        finalScoreTxt.innerText = `Score: ${score}`;
+        highScoreTxt.innerText = `Best Journey: ${highScore}`;
+        
+        gameoverScreen.style.display = 'flex';
+        setTimeout(() => gameoverScreen.classList.add('active'), 10);
+    }
+
+    function resetGame() {
+        bird.y = canvas.height / 2 - bird.size / 2;
+        bird.velocity = 0;
+        score = 0;
+        frames = 0;
+        scoreDisplay.innerText = score;
+        obstacles.reset();
+        magicTrailParticles.length = 0;
+        explosionParticles.length = 0;
+    }
+
+    function loop() {
+        drawSkyBackground();
+        updateAndDrawSnow();
+        
+        // Render behind-the-bird tracking visuals
+        updateAndDrawTrails();
+        updateAndDrawExplosions();
+
+        obstacles.update();
+        obstacles.draw();
+        ground.draw();
+        
+        if (gameState === 'PLAYING') {
+            bird.update();
+        }
+        bird.draw();
+
+        if (gameState === 'PLAYING') frames++;
+        requestAnimationFrame(loop);
+    }
+
+    loop();
+</script>
+</body>
+</html>

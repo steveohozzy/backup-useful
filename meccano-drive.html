@@ -1,0 +1,3960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+>
+
+<title>MECCANO // ASTON MARTIN NIGHT DRIVE</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    background: #06000d;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    user-select: none;
+    -webkit-user-select: none;
+
+    touch-action: none;
+
+    -webkit-tap-highlight-color:
+        transparent;
+}
+
+#game {
+
+    --car-width:
+        clamp(
+            150px,
+            14vw,
+            195px
+        );
+
+    --car-height:
+        calc(
+            var(--car-width) * .60
+        );
+
+
+    --road-width:
+        min(
+            100vw,
+            1300px
+        );
+
+    position: relative;
+
+    width: 100vw;
+    height: 100dvh;
+
+    min-height: 480px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #07000f 0%,
+            #17002e 25%,
+            #45105d 44%,
+            #a51d6f 55%,
+            #ff7149 55%,
+            #190b20 36%,
+            #050008 100%
+        );
+}
+
+
+.sun {
+    position: absolute;
+
+    left: 50%;
+    top: 13%;
+
+    width:
+        clamp(
+            110px,
+            13vw,
+            180px
+        );
+
+    height:
+        clamp(
+            110px,
+            13vw,
+            180px
+        );
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #ffd85a 0,
+            #ffd85a 9px,
+            transparent 9px,
+            transparent 16px
+        );
+
+    box-shadow:
+        0 0 30px #ffba51,
+        0 0 75px #ff5a70,
+        0 0 130px rgba(255,30,180,.45);
+
+    z-index: 1;
+}
+
+
+.mountains {
+    position: absolute;
+
+    left: -5%;
+    right: -5%;
+
+    top: 30%;
+
+    height: 25%;
+
+    z-index: 2;
+
+    background: #130b2d;
+
+    clip-path:
+        polygon(
+            0 100%,
+            5% 70%,
+            13% 84%,
+            21% 46%,
+            29% 76%,
+            39% 34%,
+            48% 77%,
+            59% 43%,
+            68% 74%,
+            79% 37%,
+            88% 77%,
+            95% 48%,
+            100% 70%,
+            100% 100%
+        );
+}
+
+
+.horizon {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 55%;
+
+    height: 16%;
+
+    z-index: 3;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(255,100,175,.65),
+            transparent
+        );
+}
+
+
+.grid {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    width: 100vw;
+
+    top: 55%;
+
+    height: 120vh;
+
+    z-index: 4;
+
+    background-image:
+
+        linear-gradient(
+            rgba(255,40,195,.4) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(255,40,195,.4) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        38px 32px;
+
+
+    transform:
+        perspective(200px)
+        rotateX(62deg);
+
+    transform-origin:
+        center top;
+
+    animation:
+        gridMove .45s linear infinite;
+}
+
+
+@keyframes gridMove {
+
+    from {
+        background-position:
+            0 0,
+            0 0;
+    }
+
+    to {
+        background-position:
+            0 32px,
+            0 0;
+    }
+
+}
+
+
+#road {
+    position: absolute;
+
+    left: 50%;
+
+    bottom: -10%;
+
+    width:
+        var(--road-width);
+
+    height:
+        880vh;
+
+    transform:
+        translateX(-50%)
+        perspective(1100px)
+        rotateX(62deg);
+
+    transform-origin:
+        center bottom;
+
+    background:
+        linear-gradient(
+            90deg,
+            #040407 0%,
+            #0e0e14 12%,
+            #19191f 50%,
+            #0e0e14 88%,
+            #040407 100%
+        );
+
+    border-left:
+        clamp(
+            6px,
+            .6vw,
+            10px
+        )
+        solid #c1c1c6;
+
+    border-right:
+        clamp(
+            6px,
+            .6vw,
+            10px
+        )
+        solid #c1c1c6;
+
+    z-index: 10;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 0 35px rgba(255,255,255,.1);
+}
+
+
+.lane {
+    position: absolute;
+
+    top: -40%;
+    bottom: -20%;
+
+    width:
+        clamp(
+            4px,
+            .45vw,
+            7px
+        );
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,.85) 0,
+            rgba(255,255,255,.85) 55px,
+            transparent 55px,
+            transparent 145px
+        );
+
+    box-shadow:
+        0 0 8px rgba(255,255,255,.45);
+}
+
+
+.lane.one {
+    left: 33.33%;
+}
+
+
+.lane.two {
+    left: 66.66%;
+}
+
+
+.road-strip {
+    position: absolute;
+
+    top: -20%;
+    bottom: -20%;
+
+    width:
+        clamp(
+            12px,
+            1.4vw,
+            20px
+        );
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #d51f26 0,
+            #d51f26 55px,
+            #741217 55px,
+            #741217 66px
+        );
+
+    box-shadow:
+        0 0 12px rgba(213,31,38,.55);
+}
+
+
+.road-strip.left {
+    left: 8px;
+}
+
+
+.road-strip.right {
+    right: 8px;
+}
+
+
+.road-bolt {
+    position: absolute;
+
+    width:
+        clamp(
+            7px,
+            .8vw,
+            12px
+        );
+
+    height:
+        clamp(
+            7px,
+            .8vw,
+            12px
+        );
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 30%,
+            #eee,
+            #888 45%,
+            #333 70%
+        );
+
+    box-shadow:
+        0 0 5px rgba(255,255,255,.3);
+}
+
+
+.road-bolt.a {
+    left: 17%;
+    top: 18%;
+}
+
+.road-bolt.b {
+    left: 17%;
+    top: 48%;
+}
+
+.road-bolt.c {
+    left: 17%;
+    top: 78%;
+}
+
+.road-bolt.d {
+    right: 17%;
+    top: 18%;
+}
+
+.road-bolt.e {
+    right: 17%;
+    top: 48%;
+}
+
+.road-bolt.f {
+    right: 17%;
+    top: 78%;
+}
+
+
+#world {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 30;
+
+    pointer-events: none;
+}
+
+
+.world-object {
+    position: absolute;
+
+    left: 50%;
+    top: 55%;
+
+    width:
+        clamp(
+            90px,
+            14vw,
+            190px
+        );
+
+    height:
+        clamp(
+            150px,
+            16vw,
+            240px
+        );
+
+    transform:
+        translate(-50%, -50%)
+        scale(.04);
+
+    transform-origin:
+        center center;
+
+    will-change:
+        top,
+        left,
+        transform;
+}
+
+.tree {
+    position: relative;
+
+    width: 100px;
+    height: 150px;
+}
+
+
+.tree .trunk {
+    position: absolute;
+
+    left: 43px;
+    bottom: 0;
+
+    width: 15px;
+    height: 100px;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #d51f26 0,
+            #d51f26 14px,
+            #751217 14px,
+            #751217 18px
+        );
+
+    border:
+        2px solid #330608;
+}
+
+
+.tree .branch {
+    position: absolute;
+
+    width: 55px;
+    height: 12px;
+
+    background:
+        #d51f26;
+
+    border:
+        2px solid #330608;
+}
+
+
+.tree .branch.a {
+    top: 50px;
+    left: 3px;
+
+    transform:
+        rotate(-25deg);
+}
+
+
+.tree .branch.b {
+    top: 65px;
+    right: 0;
+
+    transform:
+        rotate(25deg);
+}
+
+
+.tree .gear {
+    position: absolute;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #555 0 20%,
+            #d7d7d7 21% 45%,
+            #777 46% 61%,
+            #d51f26 62% 100%
+        );
+
+    border:
+        5px dotted #aaa;
+}
+
+
+.tree .gear.a {
+    left: 0;
+    top: 15px;
+}
+
+
+.tree .gear.b {
+    right: 0;
+    top: 30px;
+}
+
+
+.tree .gear.c {
+    left: 29px;
+    top: 0;
+}
+
+.sign {
+    position: relative;
+
+    width: 130px;
+    height: 150px;
+}
+
+
+.sign-board {
+    position: absolute;
+
+    left: 5px;
+    right: 5px;
+
+    top: 0;
+
+    height: 55px;
+
+    border:
+        5px solid #d51f26;
+
+    background:
+        #15151b;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    color:
+        white;
+
+    font-weight:
+        900;
+
+    font-size:
+        12px;
+
+    letter-spacing:
+        2px;
+
+    text-shadow:
+        0 0 8px #ff3b43;
+}
+
+
+.sign-pole {
+    position: absolute;
+
+    left: 57px;
+    top: 55px;
+
+    width: 16px;
+    height: 95px;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #d51f26 0,
+            #d51f26 13px,
+            #751217 13px,
+            #751217 17px
+        );
+
+    border:
+        2px solid #330608;
+}
+
+.windmill {
+    position: relative;
+
+    width: 130px;
+    height: 170px;
+}
+
+
+.windmill-pole {
+    position: absolute;
+
+    left: 56px;
+    top: 38px;
+
+    width: 17px;
+    height: 132px;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #ccc 0,
+            #ccc 13px,
+            #777 13px,
+            #777 17px
+        );
+
+    border:
+        2px solid #555;
+}
+
+
+.windmill-centre {
+    position: absolute;
+
+    left: 43px;
+    top: 20px;
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+
+    background:
+        #d51f26;
+
+    border:
+        7px solid #aaa;
+
+    z-index: 5;
+}
+
+
+.windmill-blade {
+    position: absolute;
+
+    left: 63px;
+    top: 3px;
+
+    width: 9px;
+    height: 45px;
+
+    background:
+        #d51f26;
+
+    transform-origin:
+        50% 50%;
+}
+
+
+.windmill-blade.a {
+    transform: rotate(0deg);
+}
+
+.windmill-blade.b {
+    transform: rotate(90deg);
+}
+
+.windmill-blade.c {
+    transform: rotate(180deg);
+}
+
+.windmill-blade.d {
+    transform: rotate(270deg);
+}
+
+.crane {
+    position: relative;
+
+    width: 160px;
+    height: 170px;
+}
+
+
+.crane-leg {
+    position: absolute;
+
+    bottom: 0;
+
+    width: 16px;
+    height: 125px;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #d7d7d7 0,
+            #d7d7d7 13px,
+            #777 13px,
+            #777 17px
+        );
+
+    border:
+        2px solid #555;
+}
+
+
+.crane-leg.a {
+    left: 35px;
+
+    transform:
+        rotate(12deg);
+}
+
+
+.crane-leg.b {
+    right: 35px;
+
+    transform:
+        rotate(-12deg);
+}
+
+
+.crane-arm {
+    position: absolute;
+
+    left: 15px;
+    top: 25px;
+
+    width: 130px;
+    height: 17px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #d51f26 0,
+            #d51f26 14px,
+            #751217 14px,
+            #751217 18px
+        );
+
+    border:
+        2px solid #330608;
+}
+
+
+.crane-hook {
+    position: absolute;
+
+    left: 110px;
+    top: 42px;
+
+    width: 8px;
+    height: 70px;
+
+    background:
+        #aaa;
+}
+
+
+.crane-hook::after {
+    content: "";
+
+    position: absolute;
+
+    left: -12px;
+    bottom: -12px;
+
+    width: 28px;
+    height: 28px;
+
+    border:
+        6px solid #aaa;
+
+    border-top-color:
+        transparent;
+
+    border-radius:
+        50%;
+}
+
+.barrier {
+    position: relative;
+
+    width: 160px;
+    height: 90px;
+}
+
+
+.barrier-beam {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 25px;
+
+    height: 25px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #d51f26 0,
+            #d51f26 25px,
+            #eee 25px,
+            #eee 50px
+        );
+
+    border:
+        4px solid #330608;
+
+    transform:
+        rotate(-4deg);
+}
+
+
+.barrier-leg {
+    position: absolute;
+
+    bottom: 0;
+
+    width: 15px;
+    height: 65px;
+
+    background:
+        #aaa;
+
+    border:
+        2px solid #555;
+}
+
+
+.barrier-leg.a {
+    left: 20px;
+}
+
+
+.barrier-leg.b {
+    right: 20px;
+}
+
+.hud {
+    position: absolute;
+
+    top:
+        max(
+            12px,
+            env(safe-area-inset-top)
+        );
+
+    left:
+        max(
+            14px,
+            env(safe-area-inset-left)
+        );
+
+    right:
+        max(
+            14px,
+            env(safe-area-inset-right)
+        );
+
+    z-index: 100;
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        flex-start;
+
+    color:
+        white;
+
+    text-shadow:
+        0 0 8px #38d891;
+
+    pointer-events:
+        none;
+}
+
+
+.logo {
+    font-size:
+        clamp(
+            17px,
+            2.2vw,
+            28px
+        );
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        clamp(
+            2px,
+            .35vw,
+            4px
+        );
+
+    color:
+        #d51f26;
+
+    text-shadow:
+        2px 2px 0 #fff,
+        4px 4px 0 #3b0608,
+        0 0 20px #ff2832;
+}
+
+
+.logo span {
+    display:
+        block;
+
+    margin-top:
+        2px;
+
+    font-size:
+        clamp(
+            7px,
+            .8vw,
+            10px
+        );
+
+    letter-spacing:
+        clamp(
+            2px,
+            .4vw,
+            5px
+        );
+
+    color:
+        white;
+}
+
+
+.stats {
+    display:
+        flex;
+
+    gap:
+        clamp(
+            8px,
+            2vw,
+            24px
+        );
+
+    text-align:
+        right;
+}
+
+
+.stat-label {
+    font-size:
+        clamp(
+            7px,
+            .7vw,
+            9px
+        );
+
+    letter-spacing:
+        clamp(
+            1px,
+            .2vw,
+            2px
+        );
+
+    opacity:
+        .65;
+}
+
+
+.stat-value {
+    font-size:
+        clamp(
+            14px,
+            1.6vw,
+            20px
+        );
+
+    font-weight:
+        900;
+}
+
+#car {
+    position: absolute;
+
+    left: 50%;
+
+    bottom:
+        clamp(
+            92px,
+            9vh,
+            115px
+        );
+
+    width:
+        var(--car-width);
+
+    height:
+        var(--car-height);
+
+    transform:
+        translateX(-50%);
+
+    z-index: 80;
+
+    transition:
+        left .12s ease-out;
+
+    pointer-events:
+        none;
+}
+
+.car-body {
+    position: absolute;
+
+    left: 10%;
+    right: 10%;
+
+    bottom: 18%;
+
+    height: 53%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #2b9c6b 0%,
+            #176d49 35%,
+            #0b402c 70%,
+            #06251a 100%
+        );
+
+    border:
+        3px solid #06130e;
+
+    border-radius:
+        14px 14px 6px 6px;
+
+    box-shadow:
+        0 0 20px rgba(25,139,88,.45);
+}
+
+.rear-window {
+    position: absolute;
+
+    left: 26%;
+    top: 19%;
+
+    width: 47%;
+    height: 26%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #263b39,
+            #070c0c 65%
+        );
+
+    border:
+        3px solid #06120e;
+
+    clip-path:
+        polygon(
+            10% 0,
+            90% 0,
+            100% 100%,
+            0 100%
+        );
+
+    z-index: 4;
+}
+
+
+.window-strip {
+    position: absolute;
+
+    left: 32%;
+    top: 31%;
+
+    width: 36%;
+    height: 5%;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #42d38f 0,
+            #42d38f 11px,
+            #147348 11px,
+            #147348 15px
+        );
+
+    border:
+        1px solid #06130e;
+
+    z-index: 7;
+}
+
+.rear-panel {
+    position: absolute;
+
+    bottom: 26%;
+
+    width: 18%;
+
+    height: 28%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #2b9c6b,
+            #0e5b3a
+        );
+
+    border:
+        3px solid #06130e;
+
+    border-radius:
+        5px;
+
+    overflow:
+        hidden;
+}
+
+
+.rear-panel.left {
+    left: 13%;
+}
+
+
+.rear-panel.right {
+    right: 13%;
+}
+
+
+.rear-panel::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 5px;
+
+    background:
+        radial-gradient(
+            circle,
+            #071c13 0 2px,
+            transparent 2.5px
+        );
+
+    background-size:
+        12px 11px;
+}
+
+.rear-dark {
+    position: absolute;
+
+    left: 21%;
+    right: 21%;
+
+    bottom: 24%;
+
+    height: 33%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #101417,
+            #050707
+        );
+
+    border:
+        2px solid #07140e;
+
+    border-radius:
+        6px 6px 3px 3px;
+
+    z-index: 4;
+}
+
+.rear-light {
+    position: absolute;
+
+    bottom: 42%;
+
+    width: 15%;
+
+    height: 7%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #ffb0a0,
+            #ff442e 35%,
+            #a5120d
+        );
+
+    border:
+        2px solid #350907;
+
+    border-radius:
+        3px;
+
+    box-shadow:
+        0 0 11px rgba(255,60,30,.9);
+
+    z-index: 9;
+}
+
+
+.rear-light.left {
+    left: 9%;
+}
+
+
+.rear-light.right {
+    right: 9%;
+}
+
+.car-beam {
+    position: absolute;
+
+    left: 13%;
+    right: 13%;
+
+    bottom: 29%;
+
+    height: 8%;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #dedede 0,
+            #dedede 11px,
+            #777 11px,
+            #777 15px
+        );
+
+    border:
+        1px solid #555;
+
+    z-index: 10;
+}
+
+
+.car-beam::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 1px;
+
+    background:
+        radial-gradient(
+            circle,
+            #444 0 2px,
+            transparent 2.5px
+        );
+
+    background-size:
+        13px 8px;
+}
+
+
+.green-accent {
+    position: absolute;
+
+    left: 19%;
+    right: 19%;
+
+    bottom: 22%;
+
+    height: 3%;
+
+    background:
+        #45d995;
+
+    box-shadow:
+        0 0 7px rgba(69,217,149,.7);
+
+    z-index: 12;
+}
+
+.diffuser {
+    position: absolute;
+
+    left: 15%;
+    right: 15%;
+
+    bottom: 13%;
+
+    height: 9%;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #050606 0,
+            #050606 9px,
+            #303636 9px,
+            #303636 13px
+        );
+
+    border:
+        2px solid #020303;
+
+    z-index: 7;
+}
+
+.bumper {
+    position: absolute;
+
+    left: 11%;
+    right: 11%;
+
+    bottom: 16%;
+
+    height: 8%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #555,
+            #151515
+        );
+
+    border:
+        2px solid #080808;
+
+    border-radius:
+        3px;
+
+    z-index: 11;
+}
+
+.car-wheel {
+    position: absolute;
+
+    bottom: 1%;
+
+    width: 15%;
+
+    height: 42%;
+
+    background:
+        linear-gradient(
+            to right,
+            #030303,
+            #242828 22%,
+            #080909 55%,
+            #000 100%
+        );
+
+    border:
+        3px solid #020202;
+
+    border-radius:
+        10px 10px 6px 6px;
+
+    box-shadow:
+        inset 0 0 0 3px #242929,
+        0 5px 7px rgba(0,0,0,.85);
+
+    z-index: 2;
+}
+
+
+.car-wheel.left {
+    left: 5%;
+}
+
+
+.car-wheel.right {
+    right: 5%;
+}
+
+
+.car-wheel::after {
+    content: "";
+
+    position: absolute;
+
+    left: 4px;
+    right: 4px;
+
+    top: 6px;
+    bottom: 6px;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 5px,
+            rgba(255,255,255,.13) 5px,
+            rgba(255,255,255,.13) 7px
+        );
+
+    border-radius:
+        4px;
+}
+
+.car-spoiler {
+    position: absolute;
+
+    left: 7%;
+    right: 7%;
+
+    top: 1%;
+
+    height: 9%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #111,
+            #030404
+        );
+
+    border:
+        2px solid #020303;
+
+    border-radius:
+        3px;
+
+    z-index: 14;
+}
+
+
+.car-spoiler::after {
+    content: "";
+
+    position: absolute;
+
+    left: 10%;
+    right: 10%;
+
+    bottom: 1px;
+
+    height: 2px;
+
+    background:
+        #198b58;
+}
+
+.spoiler-mount {
+    position: absolute;
+
+    top: 7%;
+
+    width: 3%;
+
+    height: 17%;
+
+    background:
+        #aaa;
+
+    border:
+        1px solid #444;
+
+    z-index: 13;
+}
+
+
+.spoiler-mount.left {
+    left: 24%;
+}
+
+
+.spoiler-mount.right {
+    right: 24%;
+}
+
+.exhaust {
+    position: absolute;
+
+    bottom: 11%;
+
+    width: 4.5%;
+
+    height: 5%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #999,
+            #222
+        );
+
+    border:
+        1px solid #111;
+
+    border-radius:
+        50%;
+
+    z-index: 15;
+}
+
+
+.exhaust.left {
+    left: 30%;
+}
+
+
+.exhaust.right {
+    right: 30%;
+}
+
+.aston-badge {
+    position: absolute;
+
+    left: 50%;
+    top: 43%;
+
+    transform:
+        translateX(-50%);
+
+    width: 13%;
+
+    height: 6%;
+
+    color:
+        #d8d8d8;
+
+    font-size:
+        clamp(
+            3px,
+            .35vw,
+            5px
+        );
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        .7px;
+
+    text-align:
+        center;
+
+    border-top:
+        1px solid #aaa;
+
+    border-bottom:
+        1px solid #aaa;
+
+    z-index: 20;
+}
+
+.controls {
+    position: absolute;
+
+    left: 50%;
+
+    bottom:
+        max(
+            12px,
+            env(safe-area-inset-bottom)
+        );
+
+    transform:
+        translateX(-50%);
+
+    z-index: 150;
+
+    display:
+        flex;
+
+    gap:
+        clamp(
+            8px,
+            2vw,
+            12px
+        );
+}
+
+
+.control {
+    width:
+        clamp(
+            64px,
+            16vw,
+            82px
+        );
+
+    height:
+        clamp(
+            48px,
+            11vw,
+            58px
+        );
+
+    border:
+        2px solid rgba(255,255,255,.35);
+
+    border-radius:
+        14px;
+
+    background:
+        rgba(15,3,30,.72);
+
+    color:
+        white;
+
+    font-size:
+        clamp(
+            20px,
+            5vw,
+            27px
+        );
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+
+    cursor:
+        pointer;
+}
+
+
+.control:active {
+    transform:
+        scale(.9);
+}
+
+.pause {
+    position: absolute;
+
+    right:
+        max(
+            12px,
+            env(safe-area-inset-right)
+        );
+
+    bottom:
+        max(
+            12px,
+            env(safe-area-inset-bottom)
+        );
+
+    z-index: 160;
+
+    width:
+        clamp(
+            40px,
+            11vw,
+            48px
+        );
+
+    height:
+        clamp(
+            40px,
+            11vw,
+            48px
+        );
+
+    border:
+        1px solid rgba(255,255,255,.3);
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(0,0,0,.5);
+
+    color:
+        white;
+}
+
+#impact {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 200;
+
+    pointer-events:
+        none;
+
+    opacity:
+        0;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.95),
+            rgba(255,40,40,.35),
+            transparent 65%
+        );
+}
+
+
+#impact.active {
+    animation:
+        impact .4s ease-out;
+}
+
+
+@keyframes impact {
+
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+
+}
+
+/* =========================================================
+   CAR BREAK APART
+========================================================= */
+
+#car.breaking {
+    animation:
+        carBreakShake .45s ease-out forwards;
+}
+
+.car-piece-break {
+    position: absolute !important;
+
+    pointer-events: none;
+
+    z-index: 500;
+
+    animation:
+        pieceFly .85s cubic-bezier(.15,.75,.25,1) forwards;
+}
+
+@keyframes carBreakShake {
+
+    0% {
+        transform:
+            translateX(-50%)
+            rotate(0deg)
+            scale(1);
+    }
+
+    15% {
+        transform:
+            translateX(-50%)
+            rotate(-8deg)
+            scale(1.04);
+    }
+
+    30% {
+        transform:
+            translateX(-50%)
+            rotate(9deg)
+            scale(.98);
+    }
+
+    45% {
+        transform:
+            translateX(-50%)
+            rotate(-7deg)
+            scale(1.05);
+    }
+
+    60% {
+        transform:
+            translateX(-50%)
+            rotate(6deg)
+            scale(.95);
+    }
+
+    100% {
+        transform:
+            translateX(-50%)
+            rotate(0deg)
+            scale(.2);
+
+        opacity: 0;
+    }
+}
+
+@keyframes pieceFly {
+
+    0% {
+        opacity: 1;
+        transform:
+            translate(0, 0)
+            rotate(0deg)
+            scale(1);
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+
+        transform:
+            translate(
+                var(--break-x),
+                var(--break-y)
+            )
+            rotate(var(--break-rotate))
+            scale(.45);
+    }
+}
+
+.overlay {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 300;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+    color:
+        white;
+
+    background:
+        rgba(5,0,20,.86);
+
+    padding:
+        20px;
+}
+
+
+.start-title {
+    font-size:
+        clamp(
+            38px,
+            9vw,
+            85px
+        );
+
+    line-height:
+        .82;
+
+    font-weight:
+        900;
+
+    color:
+        #d51f26;
+
+    text-shadow:
+        4px 4px 0 #fff,
+        8px 8px 0 #3b0608,
+        0 0 30px #ff2832;
+}
+
+
+.start-sub {
+    margin-top:
+        20px;
+
+    font-size:
+        clamp(
+            9px,
+            2vw,
+            12px
+        );
+
+    letter-spacing:
+        clamp(
+            2px,
+            .7vw,
+            4px
+        );
+}
+
+
+.start-button {
+    margin-top:
+        30px;
+
+    padding:
+        16px 38px;
+
+    border:
+        0;
+
+    border-radius:
+        999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #9d151b,
+            #e32a32
+        );
+
+    color:
+        white;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        2px;
+
+    box-shadow:
+        0 0 20px rgba(213,31,38,.55);
+
+    cursor:
+        pointer;
+}
+
+#pauseOverlay {
+    display:
+        none;
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        280;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        rgba(5,0,20,.5);
+
+    color:
+        white;
+
+    font-size:
+        clamp(
+            30px,
+            8vw,
+            42px
+        );
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        5px;
+}
+
+@media (max-width: 600px) {
+
+    #game {
+
+        --road-width:
+            min(
+                100vw,
+                1300px
+            );
+
+        --car-width:
+            clamp(
+                78px,
+                20vw,
+                98px
+            );
+
+    }
+
+
+    .world-object {
+
+        width:
+            clamp(
+                40px,
+                6vw,
+                72px
+            );
+
+        height:
+            clamp(
+                65px,
+                9vw,
+                105px
+            );
+
+    }
+
+
+    #road {
+
+        width:
+            var(--road-width);
+
+        height:
+            960vh;
+
+        bottom:
+            -10%;
+
+        transform:
+            translateX(-50%)
+            perspective(1100px)
+            rotateX(62deg);
+
+        transform-origin:
+            center bottom;
+
+    }
+
+
+    .grid {
+
+        width:
+            var(--road-width);
+
+        background-size:
+            38px 32px;
+
+    }
+
+
+    #car {
+
+        bottom:
+            clamp(
+                82px,
+                13vh,
+                105px
+            );
+
+    }
+
+
+    .hud {
+
+        top:
+            max(
+                8px,
+                env(safe-area-inset-top)
+            );
+
+    }
+
+
+    .logo span {
+
+        display:
+            none;
+
+    }
+
+
+    .stats {
+
+        gap:
+            7px;
+
+    }
+
+
+    .stat-label {
+
+        font-size:
+            6px;
+
+    }
+
+
+    .stat-value {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .controls {
+
+        bottom:
+            max(
+                10px,
+                env(safe-area-inset-bottom)
+            );
+
+    }
+
+
+    .pause {
+
+        bottom:
+            max(
+                10px,
+                env(safe-area-inset-bottom)
+            );
+
+    }
+
+}
+
+@media (
+    max-height: 600px
+) and (
+    orientation: landscape
+) {
+
+    #game {
+
+        --car-width:
+            clamp(
+                150px,
+                23vw,
+                200px
+            );
+
+        --road-width:
+            min(
+                100vw,
+                1300px
+            );
+
+    }
+
+
+    #road {
+
+        height:
+            320vh;
+
+        bottom:
+            -10%;
+
+        transform:
+            translateX(-50%)
+            perspective(1100px)
+            rotateX(62deg);
+
+    }
+
+
+    #car {
+
+        bottom:
+            65px;
+
+    }
+
+
+    .controls {
+
+        bottom:
+            8px;
+
+    }
+
+
+    .control {
+
+        width:
+            65px;
+
+        height:
+            44px;
+
+    }
+
+
+    .pause {
+
+        bottom:
+            8px;
+
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div id="game">
+
+    <div class="sun"></div>
+
+    <div class="mountains"></div>
+
+    <div class="horizon"></div>
+
+    <div class="grid"></div>
+
+
+    <div id="road">
+
+        <div class="lane one"></div>
+
+        <div class="lane two"></div>
+
+        <div class="road-strip left"></div>
+
+        <div class="road-strip right"></div>
+
+        <div class="road-bolt a"></div>
+        <div class="road-bolt b"></div>
+        <div class="road-bolt c"></div>
+
+        <div class="road-bolt d"></div>
+        <div class="road-bolt e"></div>
+        <div class="road-bolt f"></div>
+
+    </div>
+
+    <div id="world"></div>
+
+    <div class="hud">
+
+        <div class="logo">
+
+            MECCANO
+
+            <span>
+                ASTON MARTIN NIGHT DRIVE
+            </span>
+
+        </div>
+
+
+        <div class="stats">
+
+            <div>
+
+                <div class="stat-label">
+                    SCORE
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="score"
+                >
+                    000000
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="stat-label">
+                    SPEED
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="speed"
+                >
+                    45
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="stat-label">
+                    LEVEL
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="level"
+                >
+                    1
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="stat-label">
+                    LIVES
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="lives"
+                >
+                    ♥♥♥
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="car">
+
+        <div class="car-spoiler"></div>
+
+        <div class="spoiler-mount left"></div>
+
+        <div class="spoiler-mount right"></div>
+
+        <div class="car-body"></div>
+
+        <div class="rear-dark"></div>
+
+        <div class="rear-window"></div>
+
+        <div class="window-strip"></div>
+
+        <div class="rear-panel left"></div>
+
+        <div class="rear-panel right"></div>
+
+        <div class="rear-light left"></div>
+
+        <div class="rear-light right"></div>
+
+        <div class="car-beam"></div>
+
+        <div class="green-accent"></div>
+
+        <div class="diffuser"></div>
+
+        <div class="bumper"></div>
+
+        <div class="car-wheel left"></div>
+
+        <div class="car-wheel right"></div>
+
+        <div class="exhaust left"></div>
+
+        <div class="exhaust right"></div>
+
+        <div class="aston-badge">
+            ASTON MARTIN
+        </div>
+
+    </div>
+
+    <div id="impact"></div>
+
+    <div class="controls">
+
+        <button
+            class="control"
+            id="leftButton"
+            aria-label="Move left"
+        >
+            ◀
+        </button>
+
+        <button
+            class="control"
+            id="rightButton"
+            aria-label="Move right"
+        >
+            ▶
+        </button>
+
+    </div>
+
+    <button
+        class="pause"
+        id="pauseButton"
+        aria-label="Pause game"
+    >
+        II
+    </button>
+
+
+    <div id="pauseOverlay">
+        PAUSED
+    </div>
+
+    <div
+        class="overlay"
+        id="startScreen"
+    >
+
+        <div>
+
+            <div class="start-title">
+                MECCANO<br>
+                ASTON MARTIN
+            </div>
+
+            <div class="start-sub">
+                BUILD FAST · DRIVE FASTER
+            </div>
+
+            <button
+                class="start-button"
+                id="startButton"
+            >
+                START ENGINE
+            </button>
+
+        </div>
+
+    </div>
+
+    <div
+        class="overlay"
+        id="gameOver"
+        style="display:none;"
+    >
+
+        <div>
+
+            <div class="start-title">
+                CRASHED
+            </div>
+
+            <div class="start-sub">
+
+                SCORE:
+                <span id="finalScore">
+                    0
+                </span>
+
+            </div>
+
+            <div class="start-sub">
+
+                BEST:
+                <span id="bestScore">
+                    0
+                </span>
+
+            </div>
+
+            <button
+                class="start-button"
+                id="restartButton"
+            >
+                REBUILD & DRIVE
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+var world =
+    document.getElementById("world");
+
+var game =
+    document.getElementById("game");
+
+var road =
+    document.getElementById("road");
+
+var car =
+    document.getElementById("car");
+
+var scoreDisplay =
+    document.getElementById("score");
+
+var speedDisplay =
+    document.getElementById("speed");
+
+var levelDisplay =
+    document.getElementById("level");
+
+var livesDisplay =
+    document.getElementById("lives");
+
+var impact =
+    document.getElementById("impact");
+
+var startScreen =
+    document.getElementById("startScreen");
+
+var gameOver =
+    document.getElementById("gameOver");
+
+var startButton =
+    document.getElementById("startButton");
+
+var restartButton =
+    document.getElementById("restartButton");
+
+var finalScore =
+    document.getElementById("finalScore");
+
+var bestScore =
+    document.getElementById("bestScore");
+
+var pauseButton =
+    document.getElementById("pauseButton");
+
+var pauseOverlay =
+    document.getElementById("pauseOverlay");
+
+var leftButton =
+    document.getElementById("leftButton");
+
+var rightButton =
+    document.getElementById("rightButton");
+
+
+var running =
+    false;
+
+var paused =
+    false;
+
+var animationFrame =
+    0;
+
+var lastTime =
+    0;
+
+var elapsed =
+    0;
+
+var score =
+    0;
+
+var lives =
+    3;
+
+var level =
+    1;
+
+var speed =
+    45;
+
+var carLane =
+    1;
+
+var carX =
+    50;
+
+var targetCarX =
+    50;
+
+var spawnTimer =
+    0;
+
+var sceneryTimer =
+    0;
+
+var objects =
+    [];
+
+
+var lanes = [
+    33,
+    50,
+    67
+];
+
+
+function getLanePositions() {
+
+    var roadRect =
+        road.getBoundingClientRect();
+
+    var gameRect =
+        game.getBoundingClientRect();
+
+
+    var roadLeft =
+        roadRect.left -
+        gameRect.left;
+
+    var roadWidth =
+        roadRect.width;
+
+
+    return [
+
+        (
+            roadLeft +
+            roadWidth * 0.3333
+        ) /
+        gameRect.width *
+        100 - 1.5,
+
+        (
+            roadLeft +
+            roadWidth * 0.50
+        ) /
+        gameRect.width *
+        100,
+
+        (
+            roadLeft +
+            roadWidth * 0.6666
+        ) /
+        gameRect.width *
+        100 + 1.5
+
+    ];
+
+}
+
+
+startButton.onclick =
+function() {
+
+    startGame();
+
+};
+
+
+restartButton.onclick =
+function() {
+
+    startGame();
+
+};
+
+
+function startGame() {
+
+    startScreen.style.display =
+        "none";
+
+    gameOver.style.display =
+        "none";
+
+    pauseOverlay.style.display =
+        "none";
+
+
+    running =
+        true;
+
+    paused =
+        false;
+
+
+    elapsed =
+        0;
+
+    score =
+        0;
+
+    lives =
+        3;
+
+    level =
+        1;
+
+    speed =
+        45;
+
+
+    carLane =
+        1;
+
+        car.style.visibility =
+    "visible";
+
+car.classList.remove(
+    "breaking"
+);
+
+var brokenPieces =
+    game.querySelectorAll(
+        ".car-piece-break"
+    );
+
+for (
+    var i = 0;
+    i < brokenPieces.length;
+    i++
+) {
+
+    brokenPieces[i].remove();
+
+}
+
+
+    var currentLanes =
+        getLanePositions();
+
+
+    carX =
+        currentLanes[1];
+
+    targetCarX =
+        currentLanes[1];
+
+
+    car.style.left =
+        carX + "%";
+
+    car.style.transform =
+        "translateX(-50%)";
+
+
+    spawnTimer =
+        0;
+
+    sceneryTimer =
+        0;
+
+
+    clearWorld();
+
+
+    lastTime =
+        performance.now();
+
+
+    updateHud();
+
+
+    animationFrame =
+        requestAnimationFrame(
+            loop
+        );
+
+}
+
+function loop(time) {
+
+    if (!running) {
+
+        return;
+
+    }
+
+
+    if (paused) {
+
+        lastTime =
+            time;
+
+        animationFrame =
+            requestAnimationFrame(
+                loop
+            );
+
+        return;
+
+    }
+
+
+    var delta =
+        Math.min(
+            50,
+            time - lastTime
+        );
+
+
+    lastTime =
+        time;
+
+
+    elapsed +=
+        delta;
+
+
+    updateDifficulty(
+        delta
+    );
+
+
+    updateCar(
+        delta
+    );
+
+
+    updateWorld(
+        delta
+    );
+
+
+    updateHud();
+
+
+    animationFrame =
+        requestAnimationFrame(
+            loop
+        );
+
+}
+
+function updateDifficulty(delta) {
+
+    speed =
+        45 +
+        elapsed / 1800;
+
+
+    if (speed > 190) {
+
+        speed =
+            190;
+
+    }
+
+
+    level =
+        1 +
+        Math.floor(
+            elapsed / 18000
+        );
+
+
+    score +=
+        speed *
+        delta /
+        1000 *
+        .65;
+
+}
+
+function updateCar(delta) {
+
+    carX +=
+        (
+            targetCarX -
+            carX
+        ) *
+        Math.min(
+            1,
+            delta / 90
+        );
+
+
+    car.style.left =
+        carX + "%";
+
+
+    var lean =
+        (
+            targetCarX -
+            carX
+        ) * .55;
+
+
+    car.style.transform =
+        "translateX(-50%) rotate(" +
+        lean +
+        "deg)";
+
+}
+
+function moveLeft() {
+
+    if (
+        !running ||
+        paused
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        carLane > 0
+    ) {
+
+        carLane--;
+
+
+        var currentLanes =
+            getLanePositions();
+
+
+        targetCarX =
+            currentLanes[
+                carLane
+            ];
+
+    }
+
+}
+
+function moveRight() {
+
+    if (
+        !running ||
+        paused
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        carLane < 2
+    ) {
+
+        carLane++;
+
+
+        var currentLanes =
+            getLanePositions();
+
+
+        targetCarX =
+            currentLanes[
+                carLane
+            ];
+
+    }
+
+}
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key ===
+            "ArrowLeft"
+        ) {
+
+            moveLeft();
+
+            event.preventDefault();
+
+        }
+
+
+        if (
+            event.key ===
+            "ArrowRight"
+        ) {
+
+            moveRight();
+
+            event.preventDefault();
+
+        }
+
+
+        if (
+            event.key ===
+            " " ||
+            event.key.toLowerCase() ===
+            "p"
+        ) {
+
+            togglePause();
+
+        }
+
+    }
+);
+
+leftButton.addEventListener(
+    "pointerdown",
+    function(event) {
+
+        event.preventDefault();
+
+        moveLeft();
+
+    }
+);
+
+
+rightButton.addEventListener(
+    "pointerdown",
+    function(event) {
+
+        event.preventDefault();
+
+        moveRight();
+
+    }
+);
+
+pauseButton.onclick =
+function() {
+
+    togglePause();
+
+};
+
+
+function togglePause() {
+
+    if (!running) {
+
+        return;
+
+    }
+
+
+    paused =
+        !paused;
+
+
+    pauseOverlay.style.display =
+        paused
+            ? "flex"
+            : "none";
+
+}
+
+function createObjectHTML(type) {
+
+    var html =
+        "";
+
+
+    if (
+        type ===
+        "tree"
+    ) {
+
+        html =
+            '<div class="tree">' +
+
+                '<div class="trunk"></div>' +
+
+                '<div class="branch a"></div>' +
+
+                '<div class="branch b"></div>' +
+
+                '<div class="gear a"></div>' +
+
+                '<div class="gear b"></div>' +
+
+                '<div class="gear c"></div>' +
+
+            '</div>';
+
+    }
+
+
+    if (
+        type ===
+        "sign"
+    ) {
+
+        html =
+            '<div class="sign">' +
+
+                '<div class="sign-board">' +
+                    'MECCANO' +
+                '</div>' +
+
+                '<div class="sign-pole"></div>' +
+
+            '</div>';
+
+    }
+
+
+    if (
+        type ===
+        "windmill"
+    ) {
+
+        html =
+            '<div class="windmill">' +
+
+                '<div class="windmill-pole"></div>' +
+
+                '<div class="windmill-centre"></div>' +
+
+                '<div class="windmill-blade a"></div>' +
+
+                '<div class="windmill-blade b"></div>' +
+
+                '<div class="windmill-blade c"></div>' +
+
+                '<div class="windmill-blade d"></div>' +
+
+            '</div>';
+
+    }
+
+
+    if (
+        type ===
+        "crane"
+    ) {
+
+        html =
+            '<div class="crane">' +
+
+                '<div class="crane-leg a"></div>' +
+
+                '<div class="crane-leg b"></div>' +
+
+                '<div class="crane-arm"></div>' +
+
+                '<div class="crane-hook"></div>' +
+
+            '</div>';
+
+    }
+
+
+    if (
+        type ===
+        "barrier"
+    ) {
+
+        html =
+            '<div class="barrier">' +
+
+                '<div class="barrier-beam"></div>' +
+
+                '<div class="barrier-leg a"></div>' +
+
+                '<div class="barrier-leg b"></div>' +
+
+            '</div>';
+
+    }
+
+
+    return html;
+
+}
+
+function spawnObject(
+    type,
+    lane,
+    isObstacle
+) {
+
+    var element =
+        document.createElement(
+            "div"
+        );
+
+
+    element.className =
+        "world-object";
+
+
+    element.innerHTML =
+        createObjectHTML(
+            type
+        );
+
+
+    element.style.left =
+        "50%";
+
+    element.style.top =
+        "55%";
+
+
+    world.appendChild(
+        element
+    );
+
+
+    objects.push({
+
+        element:
+            element,
+
+        type:
+            type,
+
+        lane:
+            lane,
+
+        obstacle:
+            isObstacle,
+
+        progress:
+            0,
+
+        hit:
+            false
+
+    });
+
+}
+
+function spawnThings(delta) {
+
+    spawnTimer +=
+        delta;
+
+    sceneryTimer +=
+        delta;
+
+
+    var obstacleDelay =
+        Math.max(
+            950,
+            2450 -
+            level * 105
+        );
+
+
+    if (
+        spawnTimer >=
+        obstacleDelay
+    ) {
+
+        var type;
+
+        var choices = [
+
+            "tree",
+            "tree",
+            "crane",
+            "sign"
+
+        ];
+
+
+        if (
+            level >= 4 &&
+            Math.random() < .18
+        ) {
+
+            type =
+                "barrier";
+
+        }
+        else {
+
+            type =
+                choices[
+                    Math.floor(
+                        Math.random() *
+                        choices.length
+                    )
+                ];
+
+        }
+
+
+        var lane =
+            Math.floor(
+                Math.random() *
+                3
+            );
+
+
+        var safe =
+            true;
+
+
+        for (
+            var i = 0;
+            i < objects.length;
+            i++
+        ) {
+
+            if (
+                objects[i].obstacle &&
+                objects[i].lane === lane &&
+                objects[i].progress < .38
+            ) {
+
+                safe =
+                    false;
+
+                break;
+
+            }
+
+        }
+
+
+        if (safe) {
+
+            spawnObject(
+                type,
+                lane,
+                true
+            );
+
+            spawnTimer =
+                0;
+
+        }
+
+    }
+
+
+    if (
+        sceneryTimer >=
+        4200
+    ) {
+
+        var sceneryTypes = [
+
+            "tree",
+            "tree",
+            "sign",
+            "windmill"
+
+        ];
+
+
+        var sceneryType =
+            sceneryTypes[
+                Math.floor(
+                    Math.random() *
+                    sceneryTypes.length
+                )
+            ];
+
+
+        var side =
+            Math.random() < .5
+                ? 0
+                : 2;
+
+
+        spawnObject(
+            sceneryType,
+            side,
+            false
+        );
+
+
+        sceneryTimer =
+            0;
+
+    }
+
+}
+
+function updateWorld(delta) {
+
+    spawnThings(
+        delta
+    );
+
+
+    var movement =
+        0.0000068 *
+        speed;
+
+
+    for (
+        var i =
+            objects.length - 1;
+
+        i >= 0;
+
+        i--
+    ) {
+
+        var object =
+            objects[i];
+
+
+        var perspectiveSpeed =
+            movement *
+            (
+                1 +
+                Math.pow(
+                    object.progress,
+                    2.8
+                ) *
+                2.0
+            );
+
+
+        object.progress +=
+            perspectiveSpeed *
+            delta;
+
+
+        var p =
+            object.progress;
+
+
+        var laneX =
+            lanes[
+                object.lane
+            ];
+
+
+        var x;
+
+
+        if (
+            object.obstacle
+        ) {
+
+            var perspective =
+                Math.pow(
+                    Math.min(
+                        p,
+                        1
+                    ),
+                    1.35
+                );
+
+
+            x =
+                50 +
+                (
+                    laneX -
+                    50
+                ) *
+                perspective;
+
+        }
+        else {
+
+            var sideDirection =
+                object.lane === 0
+                    ? -1
+                    : 1;
+
+
+            var sceneryPerspective =
+                Math.pow(
+                    Math.min(
+                        p,
+                        1
+                    ),
+                    1.35
+                );
+
+
+            x =
+                50 +
+                sideDirection *
+                (
+                    10 +
+                    sceneryPerspective *
+                    30
+                );
+
+        }
+
+        var perspectiveY =
+            Math.pow(
+                Math.min(
+                    p,
+                    1
+                ),
+                1.65
+            );
+
+
+        var y =
+            55 +
+            perspectiveY *
+            48;
+
+        var scale =
+            .008 +
+            Math.pow(
+                p,
+                2.15
+            ) *
+            0.85;
+
+        if (window.innerWidth > 600) {
+
+                scale *= 1.45;
+
+            }
+
+
+        object.element.style.left =
+            x + "%";
+
+
+        object.element.style.top =
+            y + "%";
+
+
+        object.element.style.transform =
+            "translate(-50%, -50%) " +
+            "scale(" +
+            scale +
+            ")";
+
+        if (
+            object.obstacle &&
+            !object.hit &&
+            p > .89 &&
+            p < 1.08
+        ) {
+
+            if (
+                object.lane ===
+                carLane
+            ) {
+
+                object.hit =
+                    true;
+
+
+                crash(
+                    object
+                );
+
+            }
+
+        }
+
+        if (
+            p > 1.16
+        ) {
+
+            object.element.remove();
+
+
+            objects.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+}
+
+/* =========================================================
+   BREAK CAR APART
+========================================================= */
+
+function breakCarApart() {
+
+    var parts =
+        car.querySelectorAll(
+            ".car-spoiler, " +
+            ".spoiler-mount, " +
+            ".car-body, " +
+            ".rear-dark, " +
+            ".rear-window, " +
+            ".window-strip, " +
+            ".rear-panel, " +
+            ".rear-light, " +
+            ".car-beam, " +
+            ".green-accent, " +
+            ".diffuser, " +
+            ".bumper, " +
+            ".car-wheel, " +
+            ".exhaust, " +
+            ".aston-badge"
+        );
+
+
+    car.classList.add(
+        "breaking"
+    );
+
+
+    for (
+        var i = 0;
+        i < parts.length;
+        i++
+    ) {
+
+        var part =
+            parts[i];
+
+
+        var clone =
+            part.cloneNode(true);
+
+
+        var rect =
+            part.getBoundingClientRect();
+
+
+        var gameRect =
+            game.getBoundingClientRect();
+
+
+        clone.classList.add(
+            "car-piece-break"
+        );
+
+
+        clone.style.position =
+            "absolute";
+
+
+        clone.style.left =
+            (
+                rect.left -
+                gameRect.left
+            ) + "px";
+
+
+        clone.style.top =
+            (
+                rect.top -
+                gameRect.top
+            ) + "px";
+
+
+        clone.style.width =
+            rect.width + "px";
+
+
+        clone.style.height =
+            rect.height + "px";
+
+        var direction =
+            i % 2 === 0
+                ? -1
+                : 1;
+
+
+        var distance =
+            70 +
+            Math.random() * 180;
+
+
+        var vertical =
+            -60 +
+            Math.random() * 180;
+
+
+        var rotation =
+            (
+                -180 +
+                Math.random() * 360
+            );
+
+
+        clone.style.setProperty(
+            "--break-x",
+            (
+                direction *
+                distance
+            ) + "px"
+        );
+
+
+        clone.style.setProperty(
+            "--break-y",
+            vertical + "px"
+        );
+
+
+        clone.style.setProperty(
+            "--break-rotate",
+            rotation + "deg"
+        );
+
+
+        game.appendChild(
+            clone
+        );
+
+        clone.style.animationDelay =
+            (
+                Math.random() *
+                .08
+            ) + "s";
+
+
+        setTimeout(
+            function(piece) {
+
+                return function() {
+
+                    piece.remove();
+
+                };
+
+            }(clone),
+
+            1100
+        );
+
+    }
+
+
+    car.style.visibility =
+        "hidden";
+
+}
+
+function crash(
+    object
+) {
+
+    lives--;
+
+
+    object.element.remove();
+
+
+    impact.classList.remove(
+        "active"
+    );
+
+
+    void impact.offsetWidth;
+
+
+    impact.classList.add(
+        "active"
+    );
+
+
+    car.animate(
+        [
+
+            {
+                transform:
+                    "translateX(-50%) rotate(-8deg)"
+            },
+
+            {
+                transform:
+                    "translateX(-50%) rotate(8deg)"
+            },
+
+            {
+                transform:
+                    "translateX(-50%) rotate(-5deg)"
+            },
+
+            {
+                transform:
+                    "translateX(-50%) rotate(0)"
+            }
+
+        ],
+        {
+            duration:
+                350
+        }
+    );
+
+
+    speed =
+        Math.max(
+            45,
+            speed - 30
+        );
+
+
+    if (
+    lives <= 0
+    ) {
+
+        breakCarApart();
+
+
+        setTimeout(
+            function() {
+
+                endGame();
+
+            },
+            850
+        );
+
+    }
+
+}
+
+function endGame() {
+
+    running =
+        false;
+
+
+    cancelAnimationFrame(
+        animationFrame
+    );
+
+
+    var final =
+        Math.floor(
+            score
+        );
+
+
+    var best =
+        parseInt(
+            localStorage.getItem(
+                "meccanoNightDriveBest"
+            ) ||
+            "0",
+            10
+        );
+
+
+    if (
+        final > best
+    ) {
+
+        best =
+            final;
+
+
+        localStorage.setItem(
+            "meccanoNightDriveBest",
+            best
+        );
+
+    }
+
+
+    finalScore.textContent =
+        final;
+
+
+    bestScore.textContent =
+        best;
+
+
+    gameOver.style.display =
+        "flex";
+
+}
+
+function clearWorld() {
+
+    for (
+        var i = 0;
+        i < objects.length;
+        i++
+    ) {
+
+        objects[i]
+            .element
+            .remove();
+
+    }
+
+
+    objects = [];
+
+}
+
+function updateHud() {
+
+    scoreDisplay.textContent =
+        String(
+            Math.floor(
+                score
+            )
+        ).padStart(
+            6,
+            "0"
+        );
+
+
+    speedDisplay.textContent =
+        Math.floor(
+            speed
+        );
+
+
+    levelDisplay.textContent =
+        level;
+
+
+    var hearts =
+        "";
+
+
+    for (
+        var i = 0;
+        i < lives;
+        i++
+    ) {
+
+        hearts +=
+            "♥";
+
+    }
+
+
+    livesDisplay.textContent =
+        hearts;
+
+}
+
+updateHud();
+
+</script>
+
+</body>
+</html>

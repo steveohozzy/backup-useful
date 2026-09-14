@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Burrow Runner - 10 Level Pipe Puzzle</title>
+    <style>
+        :root {
+            --board-size: 600px;
+        }
+
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+            color: #fff;
+            touch-action: manipulation;
+            overflow: hidden;
+        }
+
+        /* Top HUD Bar */
+        #hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: var(--board-size);
+            max-width: 92vw;
+            margin-bottom: 12px;
+            background: rgba(30, 41, 59, 0.9);
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: 2px solid #334155;
+        }
+
+        .hud-item {
+            font-size: 15px;
+            font-weight: bold;
+            color: #f8fafc;
+        }
+
+        .hud-value {
+            color: #f97316;
+        }
+
+        .timer-warning {
+            color: #ef4444 !important;
+            animation: pulse 0.6s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+
+        #game-container {
+            position: relative;
+            width: var(--board-size);
+            height: var(--board-size);
+            max-width: 92vw;
+            max-height: 92vw;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: #5a3823;
+            border: 4px solid #3d2618;
+        }
+
+        /* Grid Layout */
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            width: 100%;
+            height: 100%;
+            background-color: #432818;
+        }
+
+        .tile {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,0.08) 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 70%, rgba(0,0,0,0.12) 0 3px, transparent 4px),
+        linear-gradient(
+            145deg,
+            #805333 0%,
+            #6b432a 45%,
+            #57351f 100%
+        );
+
+    border: 1px solid rgba(35,18,8,0.45);
+
+    box-shadow:
+        inset 0 2px 0 rgba(255,255,255,0.08),
+        inset 0 -4px 8px rgba(0,0,0,0.18);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.12s ease,
+        filter 0.12s ease,
+        box-shadow 0.12s ease;
+}
+
+.tile:hover {
+    filter: brightness(1.08);
+}
+
+.tile:active {
+    transform: scale(0.91) translateY(2px);
+
+    box-shadow:
+        inset 0 4px 8px rgba(0,0,0,0.25);
+}
+
+        .tile svg {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .pipe-bg {
+    fill: none;
+    stroke: #24150c;
+    stroke-width: 28;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.pipe-inner {
+    fill: none;
+    stroke: #8b5a36;
+    stroke-width: 19;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    filter:
+        drop-shadow(0 3px 2px rgba(0,0,0,0.35));
+
+    transition:
+        stroke 0.2s,
+        filter 0.2s;
+}
+
+.pipe-connected {
+    stroke: #ff9d2e !important;
+
+    filter:
+        drop-shadow(0 0 5px rgba(255,157,46,0.7))
+        drop-shadow(0 3px 2px rgba(0,0,0,0.35));
+}
+.tile.just-connected {
+    animation: tilePop 0.3s ease-out;
+}
+
+@keyframes tilePop {
+    0% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+        .tile-item {
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        #runner-fox {
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    z-index: 30;
+    pointer-events: none;
+    object-fit: contain;
+
+    filter:
+        drop-shadow(0 8px 5px rgba(0, 0, 0, 0.45))
+        drop-shadow(0 0 6px rgba(255, 166, 60, 0.25));
+
+    transition:
+        left 0.18s cubic-bezier(.22,.61,.36,1),
+        top 0.18s cubic-bezier(.22,.61,.36,1);
+
+    transform: translate(-50%, -58%);
+    animation: foxBob 1.2s ease-in-out infinite;
+}
+
+/* Normal cute breathing/bobbing */
+@keyframes foxBob {
+    0%, 100% {
+        margin-top: 0;
+        transform: translate(-50%, -58%) rotate(-2deg);
+    }
+
+    50% {
+        margin-top: -5px;
+        transform: translate(-50%, -58%) rotate(2deg);
+    }
+}
+
+/* Happy when player makes a useful connection */
+#runner-fox.fox-excited {
+    animation: foxExcited 0.45s ease-out;
+}
+
+@keyframes foxExcited {
+    0% {
+        transform: translate(-50%, -58%) scale(1);
+    }
+
+    35% {
+        transform: translate(-50%, -72%) scale(1.18) rotate(-6deg);
+    }
+
+    60% {
+        transform: translate(-50%, -68%) scale(1.12) rotate(5deg);
+    }
+
+    100% {
+        transform: translate(-50%, -58%) scale(1) rotate(0);
+    }
+}
+
+/* Slightly confused when a move doesn't help */
+#runner-fox.fox-confused {
+    animation: foxConfused 0.4s ease-out;
+}
+
+@keyframes foxConfused {
+    0% {
+        transform: translate(-50%, -58%) rotate(0);
+    }
+
+    25% {
+        transform: translate(-50%, -58%) rotate(-8deg);
+    }
+
+    50% {
+        transform: translate(-50%, -58%) rotate(8deg);
+    }
+
+    75% {
+        transform: translate(-50%, -58%) rotate(-5deg);
+    }
+
+    100% {
+        transform: translate(-50%, -58%) rotate(0);
+    }
+}
+
+/* Big celebration when the puzzle is solved */
+#runner-fox.fox-celebrate {
+    animation: foxCelebrate 0.8s ease-out;
+}
+
+@keyframes foxCelebrate {
+    0% {
+        transform: translate(-50%, -58%) scale(1);
+    }
+
+    20% {
+        transform: translate(-50%, -75%) scale(1.3) rotate(-8deg);
+    }
+
+    40% {
+        transform: translate(-50%, -68%) scale(1.15) rotate(8deg);
+    }
+
+    60% {
+        transform: translate(-50%, -75%) scale(1.3) rotate(-6deg);
+    }
+
+    100% {
+        transform: translate(-50%, -58%) scale(1) rotate(0);
+    }
+}
+
+        /* Start/End Markers */
+        .marker {
+            position: absolute;
+            z-index: 20;
+            font-size: 13px;
+            pointer-events: none;
+            background: rgba(15, 23, 42, 0.85);
+            padding: 4px 8px;
+            border-radius: 8px;
+            border: 1px solid #f97316;
+            font-weight: bold;
+        }
+
+        #start-marker { top: 6px; left: 6px; }
+        #end-marker { bottom: 6px; right: 6px; }
+
+        /* Overlays */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.95);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .overlay h2 {
+            font-size: 28px;
+            color: #f97316;
+            margin: 0 0 10px 0;
+        }
+
+        .overlay p {
+            font-size: 15px;
+            color: #cbd5e1;
+            margin: 0 0 12px 0;
+            max-width: 480px;
+            line-height: 1.4;
+        }
+
+        .btn {
+            background-color: #ea580c;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            font-size: 17px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .btn:hover { background-color: #c2410c; }
+
+    /* =========================================================
+   FOX DEN TILE
+   ========================================================= */
+
+.tile.den-tile {
+    position: relative;
+    overflow: hidden;
+
+    /* Warm sandy cave exterior */
+    background:
+        radial-gradient(
+            ellipse at 50% 52%,
+            #3b2115 0%,
+            #4b2b1b 48%,
+            #8a5a35 49%,
+            #a96f3e 68%,
+            #d08b4e 82%,
+            #9a6035 100%
+        );
+
+    border: 2px solid #3d2112;
+
+    box-shadow:
+        inset 0 3px 5px rgba(255,255,255,0.18),
+        inset 0 -6px 10px rgba(0,0,0,0.4),
+        0 0 10px rgba(0,0,0,0.35);
+}
+
+
+/* Dark cave opening */
+.tile.den-tile::before {
+    content: "";
+
+    position: absolute;
+
+    width: 88%;
+    height: 78%;
+
+    left: 50%;
+    top: 56%;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50% 50% 45% 45%;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 35%,
+            #765038 0%,
+            #4c3021 42%,
+            #28170f 72%,
+            #130b07 100%
+        );
+
+    box-shadow:
+        inset 0 5px 8px rgba(0,0,0,0.7),
+        0 2px 4px rgba(0,0,0,0.4);
+
+    z-index: 0;
+
+    pointer-events: none;
+}
+
+
+/* Warm fairy lights inside the den */
+.tile.den-tile::after {
+    content: "•  •  •  •  •";
+
+    position: absolute;
+
+    left: 50%;
+    top: 18%;
+
+    transform: translateX(-50%);
+
+    width: 90%;
+
+    text-align: center;
+
+    color: #ffd27a;
+
+    font-size: 11px;
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 4px #ffb84d,
+        0 0 8px rgba(255,170,60,0.8);
+
+    z-index: 3;
+
+    pointer-events: none;
+}
+
+.tile.den-tile svg {
+    display: none;
+}
+
+
+/* Keep the pipe above the cave background */
+.tile.den-tile svg {
+    position: relative;
+    z-index: 2;
+}
+    </style>
+</head>
+<body>
+
+    <div id="hud">
+        <div class="hud-item">LEVEL: <span id="level-display" class="hud-value">1 / 10</span></div>
+        <div class="hud-item">TIME: <span id="timer-display" class="hud-value">60s</span></div>
+        <div class="hud-item">MOVES: <span id="moves-display" class="hud-value">0</span></div>
+        <div class="hud-item">SCORE: <span id="score-display" class="hud-value">0</span></div>
+    </div>
+
+    <div id="game-container">
+        <div id="start-marker" class="marker">🚩 Start</div>
+
+        <div id="grid"></div>
+
+        <!-- Fox image runner -->
+        <img id="runner-fox" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5" alt="Fox">
+
+        <!-- Start Overlay -->
+        <div id="start-screen" class="overlay">
+            <h2>🦊 Burrow Pipe Puzzle</h2>
+            <p>10 levels of subterranean burrow challenges await! Tap tiles to rotate and align the tunnel paths from <b>Start</b> to the <b>Fox Den</b>.</p>
+            <p>🌰 Gather bonus acorns & gems along connected tunnels for big score multipliers!</p>
+            <button class="btn" onclick="initAudio(); playButtonSound(); startGame()">Start 10-Level Campaign</button>
+        </div>
+
+        <!-- Intermission Screen -->
+        <div id="level-screen" class="overlay" style="display: none;">
+            <h2 id="level-title">Tunnel Connected!</h2>
+            <p id="level-desc">Great job aligning the burrows!</p>
+            <button class="btn" onclick="initAudio(); playButtonSound(); nextLevel()">Next Level</button>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="overlay" style="display: none;">
+            <h2>⏰ Time's Up!</h2>
+            <p>The burrows remained disconnected before nightfall.</p>
+            <button class="btn" onclick="initAudio(); playButtonSound(); retryLevel()">Try Again</button>
+        </div>
+
+        <!-- Win Screen -->
+        <div id="win-screen" class="overlay" style="display: none;">
+            <h2>Master Burrow Engineer! 🎉</h2>
+            <p>You completed all 10 subterranean pipe puzzles!</p>
+            <p>Final Score: <span id="final-score" style="color:#f97316; font-weight:bold;">0</span></p>
+            <button class="btn" onclick="initAudio(); playButtonSound(); restartGame()">Play Campaign Again</button>
+        </div>
+    </div>
+
+    <script>
+        const GRID_SIZE = 6;
+        const gridEl = document.getElementById('grid');
+        const runnerFox = document.getElementById('runner-fox');
+        const startScreen = document.getElementById('start-screen');
+        const levelScreen = document.getElementById('level-screen');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const winScreen = document.getElementById('win-screen');
+
+        const levelDisplay = document.getElementById('level-display');
+        const timerDisplay = document.getElementById('timer-display');
+        const movesDisplay = document.getElementById('moves-display');
+        const scoreDisplay = document.getElementById('score-display');
+
+        let currentLevel = 0;
+        let moves = 0;
+        let score = 0;
+        let timeRemaining = 0;
+        let timerInterval = null;
+        let gameActive = false;
+        let gridState = [];
+
+        /* =========================================================
+   GAME SOUND EFFECTS
+   ========================================================= */
+
+let audioInitialised = false;
+
+const sounds = {
+    rotate: new Audio('https://www.thetoyshop.com/medias/skyscraper-seven-click-buttons-ui-menu-sounds-effects-button-13-205396.mp3?context=bWFzdGVyfHJvb3R8NjUyMDF8dmlkZW8vbXBlZ3xhR1JrTDJnNE1TOHhNamcxTWpjNE5EZzRPVGc0Tmk5emEzbHpZM0poY0dWeVgzTmxkbVZ1TFdOc2FXTnJMV0oxZEhSdmJuTXRkV2t0YldWdWRTMXpiM1Z1WkhNdFpXWm1aV04wY3kxaWRYUjBiMjR0TVRNdE1qQTFNemsyTG0xd013fGY3NzYzZDcyMTZjZjkxMDZlZWEzN2Y4NGE1N2ViZmMzNGZjOTI4NjIyZDRjZmVmNTJlYzk5ZGUzMzYzYzMzOWQ'),
+    connect: new Audio('https://www.thetoyshop.com/medias/soundshelfstudio-ui-success-chime-513565.mp3?context=bWFzdGVyfHJvb3R8NDQzMDN8dmlkZW8vbXBlZ3xhR05qTDJnM1pTOHhNamcxTWpjNE5EazFOVFF5TWk5emIzVnVaSE5vWld4bWMzUjFaR2x2TFhWcExYTjFZMk5sYzNNdFkyaHBiV1V0TlRFek5UWTFMbTF3TXd8YzA2NjE5YzJlMGY3ODkwNjYxMzRjMDc5MWU1OTI5YTljYjU1MzVjYmMzZGMxYjMwMzg3MThjNGE3NTYwNDY0NQ'),
+    disconnect: new Audio('https://www.thetoyshop.com/medias/universfield-computer-mouse-click-02-383961.mp3?context=bWFzdGVyfHJvb3R8MzM3OTJ8dmlkZW8vbXBlZ3xhREV3TDJnek5DOHhNamcxTWpjNE5UQXlNRGsxT0M5MWJtbDJaWEp6Wm1sbGJHUXRZMjl0Y0hWMFpYSXRiVzkxYzJVdFkyeHBZMnN0TURJdE16Z3pPVFl4TG0xd013fGQzMTAwZDQ5NjNhZDc5M2ZhODZhYWJmYjQ1YjdlZmE4ZmNlZTgyMzYzNTVmNjM4Mjg2YWY5MGM3ODhiMGI1ZmM'),
+    collect: new Audio('https://www.thetoyshop.com/medias/liecio-collect-points-190037.mp3?context=bWFzdGVyfHJvb3R8MjA4OTh8dmlkZW8vbXBlZ3xhR1pqTDJneU5TOHhNamcxTWpjNE1EazFOemN5Tmk5c2FXVmphVzh0WTI5c2JHVmpkQzF3YjJsdWRITXRNVGt3TURNM0xtMXdNd3xmMWJhY2ZlYjVlMDQ3ZGEzMzRlZDIyYjA4NWExYzM5OGIxZTc3ZmM5YjI1Mjk3MTA5ZWU5MjU0NmEzNmYxNTA1'),
+    foxRun: new Audio('https://www.thetoyshop.com/medias/universfield-cartoon-running-footsteps-250962.mp3?context=bWFzdGVyfHJvb3R8MTAzNjgwfHZpZGVvL21wZWd8YUdRMkwyZ3lPQzh4TWpnMU1qYzRNVEU0TnpFd01pOTFibWwyWlhKelptbGxiR1F0WTJGeWRHOXZiaTF5ZFc1dWFXNW5MV1p2YjNSemRHVndjeTB5TlRBNU5qSXViWEF6fDI1ZDBhNmZjOWFmZGQzZGViYWMwZGFlMzAzNjgzNDdjZWEzZDdmN2FmZWE0MjhkNGRlNzc4ZWNiYTgyZDJlY2Y'),
+    levelComplete: new Audio('https://www.thetoyshop.com/medias/universfield-level-complete-143022.mp3?context=bWFzdGVyfHJvb3R8NjI2OTN8dmlkZW8vbXBlZ3xhR0poTDJnNVpDOHhNamcxTWpjNE5EQXpOemt4T0M5MWJtbDJaWEp6Wm1sbGJHUXRiR1YyWld3dFkyOXRjR3hsZEdVdE1UUXpNREl5TG0xd013fGQ1M2FjNmJjMmRlNDMwZGYxMzNlODlkYTI1NWQ0NGZlODdkMjFkNzgzZTY2Njg0MTMyNGI4NGM5NjFlYTE4ZjY'),
+    gameOver: new Audio('https://www.thetoyshop.com/medias/freesound-community-negative-beeps-6008-1-.mp3?context=bWFzdGVyfHJvb3R8MjU5MjB8dmlkZW8vbXBlZ3xhRGxoTDJnNE9DOHhNamcxTWpjNE5EWTVNekkzT0M5bWNtVmxjMjkxYm1SZlkyOXRiWFZ1YVhSNUxXNWxaMkYwYVhabFgySmxaWEJ6TFRZd01EZ2dLREVwTG0xd013fGUyMTIzZmE2MTJhMjIzNDBiNTMxZDAyOWUwNWI0NzExOGM4ZTBjOGNhMDhkMjcxMWI0ZjNkNjZmZjExMjU1Zjg'),
+    win: new Audio('https://www.thetoyshop.com/medias/u-3bsnvt0dsu-spin-complete-295086.mp3?context=bWFzdGVyfHJvb3R8NjM1Mjl8dmlkZW8vbXBlZ3xhRGxqTDJnNE5TOHhNamcxTWpjNE5EYzFPRGd4TkM5MVh6TmljMjUyZERCa2MzVXRjM0JwYmkxamIyMXdiR1YwWlMweU9UVXdPRFl1YlhBenwxY2QyN2E5MTBiNTFjOGY4OTUwZmQxOTI1NzgwZTlmZDM4YTc5ODkwZjU2MWZjMGI0MzMxODYzZGQ4Nzc0ODg2'),
+};
+function initAudio() {
+
+    if (audioInitialised) {
+        return;
+    }
+
+    audioInitialised = true;
+
+    Object.keys(sounds).forEach(function(name) {
+
+        const audio = sounds[name];
+
+        audio.preload = 'auto';
+        audio.load();
+
+    });
+}
+
+function playSound(name) {
+
+    initAudio();
+
+    const source = sounds[name];
+
+    if (!source) {
+        return;
+    }
+
+    const audio = source.cloneNode();
+
+    audio.currentTime = 0;
+
+    const playPromise = audio.play();
+
+    if (playPromise && playPromise.catch) {
+
+        playPromise.catch(function() {
+
+        });
+
+    }
+}
+
+function playRotateSound() {
+
+    playSound('rotate');
+
+}
+
+function playConnectSound() {
+
+    playSound('connect');
+
+}
+
+function playDisconnectSound() {
+
+    playSound('disconnect');
+
+}
+
+function playCollectSound() {
+
+    playSound('collect');
+
+}
+
+function playFoxRunSound() {
+
+    playSound('foxRun');
+
+}
+
+function playLevelCompleteSound() {
+
+    playSound('levelComplete');
+
+}
+
+
+/*
+ * Game over
+ */
+function playGameOverSound() {
+
+    playSound('gameOver');
+
+}
+
+
+/*
+ * Entire campaign completed
+ */
+function playWinSound() {
+
+    playSound('win');
+
+}
+
+
+/*
+ * Button click
+ */
+function playButtonSound() {
+
+    playSound('button');
+
+}
+
+        // Pipe Types & Connection Ports [Top, Right, Bottom, Left]
+        const PIPE_TYPES = {
+            'STRAIGHT': { ports: [1, 0, 1, 0], svg: '<path class="pipe-bg" d="M 50 0 L 50 100"/><path class="pipe-inner" d="M 50 0 L 50 100"/>' },
+            'CORNER':   { ports: [1, 1, 0, 0], svg: '<path class="pipe-bg" d="M 50 0 Q 50 50, 100 50"/><path class="pipe-inner" d="M 50 0 Q 50 50, 100 50"/>' },
+            'T_SHAPE':  { ports: [1, 1, 1, 0], svg: '<path class="pipe-bg" d="M 50 0 L 50 100 M 50 50 L 100 50"/><path class="pipe-inner" d="M 50 0 L 50 100 M 50 50 L 100 50"/>' },
+            'CROSS':    { ports: [1, 1, 1, 1], svg: '<path class="pipe-bg" d="M 50 0 L 50 100 M 0 50 L 100 50"/><path class="pipe-inner" d="M 50 0 L 50 100 M 0 50 L 100 50"/>' }
+        };
+
+const LEVEL_COUNT = 10;
+
+const levelSettings = [
+    { timeLimit: 65, pathLength: 12, items: 5 },
+    { timeLimit: 60, pathLength: 14, items: 6 },
+    { timeLimit: 55, pathLength: 16, items: 7 },
+    { timeLimit: 50, pathLength: 18, items: 8 },
+    { timeLimit: 48, pathLength: 20, items: 9 },
+    { timeLimit: 45, pathLength: 22, items: 10 },
+    { timeLimit: 40, pathLength: 24, items: 11 },
+    { timeLimit: 38, pathLength: 26, items: 12 },
+    { timeLimit: 35, pathLength: 28, items: 13 },
+    { timeLimit: 32, pathLength: 30, items: 14 }
+];
+
+function shuffle(array) {
+    const result = array.slice();
+
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+
+        const temp = result[i];
+        result[i] = result[j];
+        result[j] = temp;
+    }
+
+    return result;
+}
+
+
+/*
+ * Return neighbouring tiles.
+ */
+function getNeighbours(index) {
+
+    const row = Math.floor(index / GRID_SIZE);
+    const col = index % GRID_SIZE;
+
+    const result = [];
+
+    if (row > 0) {
+        result.push(index - GRID_SIZE);
+    }
+
+    if (col < GRID_SIZE - 1) {
+        result.push(index + 1);
+    }
+
+    if (row < GRID_SIZE - 1) {
+        result.push(index + GRID_SIZE);
+    }
+
+    if (col > 0) {
+        result.push(index - 1);
+    }
+
+    return shuffle(result);
+}
+
+
+/*
+ * Manhattan distance to the Den.
+ */
+function distanceToEnd(index) {
+
+    const row = Math.floor(index / GRID_SIZE);
+    const col = index % GRID_SIZE;
+
+    const endRow = GRID_SIZE - 1;
+    const endCol = GRID_SIZE - 1;
+
+    return Math.abs(endRow - row) + Math.abs(endCol - col);
+}
+
+function generatePath(minLength) {
+
+    const start = 0;
+    const end = GRID_SIZE * GRID_SIZE - 1;
+
+    /*
+     * Maximum possible simple path on a 6x6 board.
+     */
+    const MAX_PATH = GRID_SIZE * GRID_SIZE;
+
+    /*
+     * Try lots of random paths until we find one
+     * with the requested length.
+     */
+    for (let attempt = 0; attempt < 500; attempt++) {
+
+        const visited = new Set();
+        const path = [];
+
+        function search(current) {
+
+            visited.add(current);
+            path.push(current);
+
+            /*
+             * We have reached the Den.
+             */
+            if (current === end) {
+
+                if (path.length >= minLength) {
+                    return true;
+                }
+
+                /*
+                 * Too short.
+                 */
+                path.pop();
+                visited.delete(current);
+
+                return false;
+            }
+
+            /*
+             * Don't make the path unnecessarily enormous.
+             */
+            if (path.length >= MAX_PATH) {
+                path.pop();
+                visited.delete(current);
+                return false;
+            }
+
+            let options = getNeighbours(current);
+
+            /*
+             * Shuffle but bias towards tiles that are
+             * further from the start and still useful.
+             */
+            options.sort(function(a, b) {
+
+                const da = distanceToEnd(a);
+                const db = distanceToEnd(b);
+
+                /*
+                 * Mostly random, but favour being closer
+                 * to the Den.
+                 */
+                return (da - db) + (Math.random() * 4 - 2);
+            });
+
+            for (let i = 0; i < options.length; i++) {
+
+                const next = options[i];
+
+                if (visited.has(next)) {
+                    continue;
+                }
+
+                /*
+                 * Don't move into the Den too early.
+                 */
+                if (
+                    next === end &&
+                    path.length < minLength - 1
+                ) {
+                    continue;
+                }
+
+                if (search(next)) {
+                    return true;
+                }
+            }
+
+            path.pop();
+            visited.delete(current);
+
+            return false;
+        }
+
+        if (search(start)) {
+            return path.slice();
+        }
+    }
+
+
+    /*
+     * Guaranteed fallback paths.
+     *
+     * These are deliberately long and valid.
+     */
+    const fallbackPaths = [
+
+        /*
+         * Long snake through the board.
+         */
+        [
+            0, 1, 2, 3, 4, 5,
+            11, 10, 9, 8, 7, 6,
+            12, 13, 14, 15, 16, 17,
+            23, 22, 21, 20, 19, 18,
+            24, 25, 26, 27, 28, 29,
+            35, 34, 33, 32, 31, 30
+        ],
+
+        /*
+         * Alternative snake.
+         */
+        [
+            0, 6, 12, 18, 24, 30,
+            31, 25, 19, 13, 7, 1,
+            2, 8, 14, 20, 26, 32,
+            33, 27, 21, 15, 9, 3,
+            4, 10, 16, 22, 28, 34,
+            35
+        ]
+    ];
+
+    /*
+     * Pick a fallback which is long enough.
+     */
+    let fallback = fallbackPaths[0];
+
+    for (let i = 0; i < fallbackPaths.length; i++) {
+
+        if (fallbackPaths[i].length >= minLength) {
+            fallback = fallbackPaths[i];
+            break;
+        }
+    }
+
+    return fallback.slice();
+}
+
+
+/*
+ * Convert two neighbouring tiles into the direction
+ * connecting them.
+ *
+ * 0 = TOP
+ * 1 = RIGHT
+ * 2 = BOTTOM
+ * 3 = LEFT
+ */
+function getDirection(from, to) {
+
+    const fr = Math.floor(from / GRID_SIZE);
+    const fc = from % GRID_SIZE;
+
+    const tr = Math.floor(to / GRID_SIZE);
+    const tc = to % GRID_SIZE;
+
+    if (tr === fr - 1) return 0;
+    if (tc === fc + 1) return 1;
+    if (tr === fr + 1) return 2;
+    if (tc === fc - 1) return 3;
+
+    return -1;
+}
+
+
+/*
+ * Convert ports into a pipe type and rotation.
+ */
+function getPipeForPorts(ports) {
+
+    const key = ports
+        .map(function(value) {
+            return value ? '1' : '0';
+        })
+        .join('');
+
+    const definitions = {
+
+        '1010': {
+            type: 'STRAIGHT',
+            rot: 0
+        },
+
+        '0101': {
+            type: 'STRAIGHT',
+            rot: 1
+        },
+
+        '1100': {
+            type: 'CORNER',
+            rot: 0
+        },
+
+        '0110': {
+            type: 'CORNER',
+            rot: 1
+        },
+
+        '0011': {
+            type: 'CORNER',
+            rot: 2
+        },
+
+        '1001': {
+            type: 'CORNER',
+            rot: 3
+        },
+
+        '1110': {
+            type: 'T_SHAPE',
+            rot: 0
+        },
+
+        '0111': {
+            type: 'T_SHAPE',
+            rot: 1
+        },
+
+        '1011': {
+            type: 'T_SHAPE',
+            rot: 2
+        },
+
+        '1101': {
+            type: 'T_SHAPE',
+            rot: 3
+        },
+
+        '1111': {
+            type: 'CROSS',
+            rot: 0
+        }
+    };
+
+    return definitions[key];
+}
+
+function buildSolvedGrid(path) {
+
+    const pathSet = new Set(path);
+
+    const board = [];
+
+    for (let index = 0; index < GRID_SIZE * GRID_SIZE; index++) {
+
+        /*
+         * Non-path tile.
+         */
+        if (!pathSet.has(index)) {
+
+            const types = [
+                'STRAIGHT',
+                'CORNER',
+                'CORNER',
+                'CORNER',
+                'T_SHAPE'
+            ];
+
+            const type =
+                types[Math.floor(Math.random() * types.length)];
+
+            board.push({
+                type: type,
+                rot: Math.floor(Math.random() * 4),
+                item: null
+            });
+
+            continue;
+        }
+
+
+        /*
+         * Find where this tile sits in the path.
+         */
+        const pathIndex = path.indexOf(index);
+
+        const ports = [0, 0, 0, 0];
+
+
+        /*
+         * START:
+         *
+         * The game expects the Start to enter the first
+         * tile from ABOVE.
+         */
+        if (index === 0) {
+            ports[0] = 1;
+        }
+
+
+        /*
+         * Connect to previous tile.
+         */
+        if (pathIndex > 0) {
+
+            const previous = path[pathIndex - 1];
+
+            const direction = getDirection(
+                index,
+                previous
+            );
+
+            if (direction >= 0) {
+                ports[direction] = 1;
+            }
+        }
+
+
+        /*
+         * Connect to next tile.
+         */
+        if (pathIndex < path.length - 1) {
+
+            const next = path[pathIndex + 1];
+
+            const direction = getDirection(
+                index,
+                next
+            );
+
+            if (direction >= 0) {
+                ports[direction] = 1;
+            }
+        }
+
+
+        /*
+         * Every path tile should now have a valid
+         * pipe configuration.
+         */
+        const pipe = getPipeForPorts(ports);
+
+
+        /*
+         * This should never happen, but prevents a broken
+         * level from ever being created.
+         */
+        if (!pipe) {
+
+            console.warn(
+                'Invalid pipe generated at tile',
+                index,
+                ports
+            );
+
+            /*
+             * Safe fallback.
+             */
+            board.push({
+                type: 'CROSS',
+                rot: 0,
+                item: null
+            });
+
+        } else {
+
+            board.push({
+                type: pipe.type,
+                rot: pipe.rot,
+                item: null
+            });
+        }
+    }
+
+    return board;
+}
+
+
+/*
+ * Add collectibles.
+ */
+function addItems(board, count) {
+
+    const available = shuffle(
+        board
+            .map(function(tile, index) {
+                return index;
+            })
+            .filter(function(index) {
+                return index !== 0 &&
+                       index !== board.length - 1;
+            })
+    );
+
+    const diamondCount = Math.max(
+        1,
+        Math.floor(count / 4)
+    );
+
+    for (
+        let i = 0;
+        i < count && i < available.length;
+        i++
+    ) {
+
+        const index = available[i];
+
+        board[index].item =
+            i < diamondCount
+                ? '💎'
+                : '🌰';
+    }
+
+    return board;
+}
+
+
+/*
+ * Create one level.
+ */
+function generateLevel(settings) {
+
+    const path = generatePath(
+        settings.pathLength
+    );
+
+    let board = buildSolvedGrid(path);
+
+    board = addItems(
+        board,
+        settings.items
+    );
+
+    return {
+        timeLimit: settings.timeLimit,
+        solution: board
+    };
+}
+
+
+/*
+ * Generate all levels once.
+ */
+const levels = levelSettings.map(
+    function(settings) {
+        return generateLevel(settings);
+    }
+);
+
+
+        function startGame() {
+            startScreen.style.display = 'none';
+            score = 0;
+            loadLevel(0);
+        }
+
+        function loadLevel(idx) {
+            currentLevel = idx;
+            const levelData = levels[currentLevel];
+            
+            moves = 0;
+            timeRemaining = levelData.timeLimit;
+            gridEl.innerHTML = '';
+            gridState = [];
+
+            // Reset fox position and hide until puzzle solved
+            runnerFox.style.display = 'none';
+            const firstTileEl = gridEl.firstElementChild; // Will position relative to container once tiles are generated
+
+            levelData.solution.forEach((sol, i) => {
+                const initialRot = (sol.rot + Math.floor(Math.random() * 3) + 1) % 4;
+                const tileObj = {
+                    index: i,
+                    r: Math.floor(i / GRID_SIZE),
+                    c: i % GRID_SIZE,
+                    type: sol.type,
+                    rotation: initialRot,
+                    item: sol.item
+                };
+
+                const div = document.createElement('div');
+                div.className = 'tile';
+
+                if (i === GRID_SIZE * GRID_SIZE - 1) {
+                    div.classList.add('den-tile');
+                }
+                div.onclick = () => rotateTile(i);
+
+                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                svg.setAttribute("viewBox", "0 0 100 100");
+                svg.innerHTML = PIPE_TYPES[sol.type].svg;
+
+                if (sol.item) {
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'tile-item';
+                    itemEl.textContent = sol.item;
+                    itemEl.style.position = 'absolute';
+                    div.appendChild(itemEl);
+                }
+
+                div.appendChild(svg);
+                gridEl.appendChild(div);
+
+                tileObj.element = div;
+                gridState.push(tileObj);
+
+                applyTileRotation(tileObj);
+            });
+
+            // Position fox at start tile (Index 0) immediately upon level load
+            positionFoxAtTile(0);
+
+            updateHUD();
+            gameActive = true;
+            checkConnections();
+            startTimer();
+        }
+
+        function positionFoxAtTile(idx) {
+            const tile = gridState[idx];
+            const rect = tile.element.getBoundingClientRect();
+            const containerRect = document.getElementById('game-container').getBoundingClientRect();
+
+            const x = rect.left - containerRect.left + rect.width / 2;
+            const y = rect.top - containerRect.top + rect.height / 2;
+
+            runnerFox.style.display = 'block';
+            runnerFox.style.left = `${x}px`;
+            runnerFox.style.top = `${y}px`;
+        }
+
+        function applyTileRotation(tile) {
+            const svg = tile.element.querySelector('svg');
+            svg.style.transform = `rotate(${tile.rotation * 90}deg)`;
+        }
+
+        function foxReaction(className, duration = 500) {
+    runnerFox.classList.remove(
+        'fox-excited',
+        'fox-confused',
+        'fox-celebrate'
+    );
+
+    // Force animation to restart
+    void runnerFox.offsetWidth;
+
+    runnerFox.classList.add(className);
+
+    setTimeout(() => {
+        runnerFox.classList.remove(className);
+    }, duration);
+}
+
+function foxExcited() {
+    foxReaction('fox-excited', 500);
+}
+
+function foxConfused() {
+    foxReaction('fox-confused', 450);
+}
+
+function foxCelebrate() {
+    foxReaction('fox-celebrate', 900);
+}
+
+function getConnectedTileCount() {
+    const connectedTiles = new Set();
+    const queue = [];
+
+    const startTile = gridState[0];
+    const startPorts = getEffectivePorts(startTile);
+
+    if (startPorts[0] === 1) {
+        queue.push(0);
+        connectedTiles.add(0);
+    }
+
+    while (queue.length > 0) {
+        const currIdx = queue.shift();
+        const currTile = gridState[currIdx];
+        const currPorts = getEffectivePorts(currTile);
+
+        const neighbors = [
+            {
+                dir: 0,
+                opp: 2,
+                idx: currIdx - GRID_SIZE,
+                valid: currTile.r > 0
+            },
+            {
+                dir: 1,
+                opp: 3,
+                idx: currIdx + 1,
+                valid: currTile.c < GRID_SIZE - 1
+            },
+            {
+                dir: 2,
+                opp: 0,
+                idx: currIdx + GRID_SIZE,
+                valid: currTile.r < GRID_SIZE - 1
+            },
+            {
+                dir: 3,
+                opp: 1,
+                idx: currIdx - 1,
+                valid: currTile.c > 0
+            }
+        ];
+
+        neighbors.forEach(n => {
+            if (!n.valid || currPorts[n.dir] !== 1) return;
+
+            const nextTile = gridState[n.idx];
+            const nextPorts = getEffectivePorts(nextTile);
+
+            if (
+                nextPorts[n.opp] === 1 &&
+                !connectedTiles.has(n.idx)
+            ) {
+                connectedTiles.add(n.idx);
+                queue.push(n.idx);
+            }
+        });
+    }
+
+    return connectedTiles.size;
+}
+
+        function rotateTile(idx) {
+    if (!gameActive) return;
+
+    const beforeConnections = getConnectedTileCount();
+
+    const tile = gridState[idx];
+
+    tile.rotation = (tile.rotation + 1) % 4;
+
+applyTileRotation(tile);
+
+playRotateSound();
+
+moves++;
+    updateHUD();
+
+    const afterConnections = getConnectedTileCount();
+
+    if (afterConnections > beforeConnections) {
+    foxExcited();
+    playConnectSound();
+} else if (afterConnections < beforeConnections) {
+    foxConfused();
+    playDisconnectSound();
+}
+
+    checkConnections();
+}
+
+        function getEffectivePorts(tile) {
+            const basePorts = PIPE_TYPES[tile.type].ports;
+            const r = tile.rotation;
+            return [
+                basePorts[(4 - r) % 4],
+                basePorts[(5 - r) % 4],
+                basePorts[(6 - r) % 4],
+                basePorts[(7 - r) % 4]
+            ];
+        }
+
+        function checkConnections() {
+            document.querySelectorAll('.pipe-inner').forEach(el => el.classList.remove('pipe-connected'));
+
+            const connectedTiles = new Set();
+            const queue = [];
+            
+            const startTile = gridState[0];
+            const startPorts = getEffectivePorts(startTile);
+
+            if (startPorts[0] === 1) {
+                queue.push(0);
+                connectedTiles.add(0);
+            }
+
+            while (queue.length > 0) {
+                const currIdx = queue.shift();
+                const currTile = gridState[currIdx];
+                const currPorts = getEffectivePorts(currTile);
+
+                currTile.element.querySelectorAll('.pipe-inner').forEach(el => el.classList.add('pipe-connected'));
+
+                const neighbors = [
+                    { dir: 0, opp: 2, idx: currIdx - GRID_SIZE, valid: currTile.r > 0 },
+                    { dir: 1, opp: 3, idx: currIdx + 1, valid: currTile.c < GRID_SIZE - 1 },
+                    { dir: 2, opp: 0, idx: currIdx + GRID_SIZE, valid: currTile.r < GRID_SIZE - 1 },
+                    { dir: 3, opp: 1, idx: currIdx - 1, valid: currTile.c > 0 }
+                ];
+
+                neighbors.forEach(n => {
+                    if (n.valid && currPorts[n.dir] === 1) {
+                        const nextTile = gridState[n.idx];
+                        const nextPorts = getEffectivePorts(nextTile);
+
+                        if (nextPorts[n.opp] === 1 && !connectedTiles.has(n.idx)) {
+                            connectedTiles.add(n.idx);
+                            queue.push(n.idx);
+                        }
+                    }
+                });
+            }
+
+            if (connectedTiles.has(35)) {
+                puzzleSolved(Array.from(connectedTiles));
+            }
+        }
+
+        function puzzleSolved(pathIndices) {
+            gameActive = false;
+            if (timerInterval) clearInterval(timerInterval);
+            foxCelebrate();
+            playFoxRunSound();
+
+            pathIndices.forEach(idx => {
+                const tile = gridState[idx];
+                if (tile.item) {
+
+    if (tile.item === '💎') {
+        score += 500;
+        playCollectSound();
+    }
+
+    if (tile.item === '🌰') {
+        score += 200;
+        playCollectSound();
+    }
+
+    const itemEl = tile.element.querySelector('.tile-item');
+
+    if (itemEl) {
+        itemEl.style.display = 'none';
+    }
+}
+            });
+
+            score += timeRemaining * 50;
+            updateHUD();
+
+            runFoxAnimation(pathIndices, () => {
+                if (currentLevel < levels.length - 1) {
+                    document.getElementById('level-title').textContent = `Level ${currentLevel + 1} Cleared!`;
+                    document.getElementById('level-desc').textContent = `Burrows connected in ${moves} moves! Time Bonus: +${timeRemaining * 50}`;
+                    levelScreen.style.display = 'flex';
+                } else {
+
+    document.getElementById('final-score').textContent = score;
+
+    playWinSound();
+
+    winScreen.style.display = 'flex';
+}
+            });
+        }
+
+        function runFoxAnimation(path, callback) {
+            let step = 0;
+
+            const animate = () => {
+                if (step >= path.length) {
+
+    playLevelCompleteSound();
+
+    setTimeout(callback, 300);
+
+    return;
+}
+
+                const tile = gridState[path[step]];
+                const rect = tile.element.getBoundingClientRect();
+                const containerRect = document.getElementById('game-container').getBoundingClientRect();
+
+                const x = rect.left - containerRect.left + rect.width / 2;
+                const y = rect.top - containerRect.top + rect.height / 2;
+
+                runnerFox.style.left = `${x}px`;
+                runnerFox.style.top = `${y}px`;
+
+                step++;
+                setTimeout(animate, 150);
+            };
+
+            animate();
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerDisplay.classList.remove('timer-warning');
+
+            timerInterval = setInterval(() => {
+                if (!gameActive) return;
+
+                timeRemaining--;
+                updateHUD();
+
+                if (timeRemaining <= 10) {
+                    timerDisplay.classList.add('timer-warning');
+                }
+
+                if (timeRemaining <= 0) {
+
+    gameActive = false;
+
+    clearInterval(timerInterval);
+
+    playGameOverSound();
+
+    gameOverScreen.style.display = 'flex';
+}
+            }, 1000);
+        }
+
+        function updateHUD() {
+            levelDisplay.textContent = `${currentLevel + 1} / ${levels.length}`;
+            timerDisplay.textContent = `${timeRemaining}s`;
+            movesDisplay.textContent = moves;
+            scoreDisplay.textContent = score;
+        }
+
+        function nextLevel() {
+            levelScreen.style.display = 'none';
+            loadLevel(currentLevel + 1);
+        }
+
+        function retryLevel() {
+            gameOverScreen.style.display = 'none';
+            loadLevel(currentLevel);
+        }
+
+        function restartGame() {
+            winScreen.style.display = 'none';
+            loadLevel(0);
+        }
+    </script>
+</body>
+</html>

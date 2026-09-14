@@ -1,0 +1,390 @@
+<style>
+  #outdoor-header-area {
+    background-color: #058B99;
+  }
+  .outdoor-header-content {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 0;
+  }
+
+  .outdoor-header-content img {
+    max-width: 70px;
+    min-width: 70px !important;
+    height: auto;
+  }
+
+  .outdoor-header-content h2 {
+    color: #076429;
+    text-shadow:
+    0 0 0 #fff,
+    2px 0 0 #fff,
+    -2px 0 0 #fff,
+    0 2px 0 #fff,
+    0 -2px 0 #fff,
+    2px 2px 0 #fff,
+    -2px -2px 0 #fff,
+    2px -2px 0 #fff,
+    -2px 2px 0 #fff,
+    2px 2px 3px rgba(0,0,0,0.25);
+    font-size: 30px;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+  }
+
+  .outdoor-content {
+    background-color: #87CCCB;
+  }
+
+  .outdoor-content-inner {
+    max-width: 1200px;
+    padding: 20px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  .polaroid-wrapper {
+    width: calc(50% - 18px);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    text-align: center;
+    border: 3px solid #fff;
+    transition: all 0.3s;
+  }
+
+  .polaroid-wrapper:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 18px rgba(3,33,33,.3);
+  }
+
+  .polaroid-wrapper img {
+    width: 100%;
+    height: auto;
+  }
+
+  .polaroid-wrapper-title {
+    display: block;
+    color: #00616B;
+    font-size: 18px;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    padding: 5px;
+  }
+
+  @media (min-width: 1024px) {
+    .polaroid-wrapper {
+      width: calc(25% - 18px);
+    }
+  }
+
+  .jump-hop {
+    width: 100%;
+    background-color: #87CCCB;
+    padding: 30px 20px;
+    border-radius: 8px;
+    border: 3px solid #00ABAB;
+    color: #00616B;
+  }
+
+  @media (min-width: 1024px) {
+    .jump-hop {
+      width: calc(50% - 18px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+  }
+
+  .jump-hop .hop-text {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .jump-hop .hop-text {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .jump-hop .hop-text .title {
+    color: #00616B;
+    font-size: 20px;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+  }
+
+  @media (min-width: 1024px) {
+    .jump-hop .hop-text .title {
+      margin-bottom: 18px;
+      font-size: 26px;
+    }
+  }
+
+  .jump-hop .hop-text .title br {
+    display: none;
+  }
+
+  .jump-hop .hop-text .title span {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .jump-hop .hop-text .title span {
+      display: inline-block;
+    }
+    .jump-hop .hop-text .title br {
+      display: block;
+    }
+  }
+
+  .jump-hop .hop-image {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (min-width: 1024px) {
+    .jump-hop .hop-image {
+      display: flex;
+    }
+  }
+
+  .jump-hop .hop-image img {
+    width: 100%;
+    height: auto;
+  }
+
+  .outdoor-content .outdoor-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #00616B;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 30px;
+    height: 40px;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.3);
+    transition: all 0.3s;
+  }
+
+  .outdoor-content .outdoor-button:hover {
+    background-color: #4F4F4F;
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+    color: #fff;
+  }
+
+  .outdoor-content .outdoor-button .star-start {
+    position: relative;
+    top: -3px;
+  }
+
+  .outdoor-content .outdoor-button .star-end {
+    position: relative;
+    bottom: -5px;
+    transition: all 0.3s;
+  }
+
+  .outdoor-content .outdoor-button:hover .star-end {
+    scale: 1.1;
+    transform: rotate(30deg);
+  }
+
+  .panel {
+    background-color: #058B99;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    color: #fff;
+    font-size: 16px;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    text-align: center;
+    position: relative;
+  }
+
+  .panel .left-image {
+    position: absolute;
+    bottom: -20px;
+    left: -10px;
+    width: 47px;
+  }
+
+  .panel .right-image {
+    position: absolute;
+    bottom: -20px;
+    right: -10px;
+    width: 47px;
+  }
+
+  .panel img {
+    width: 100%;
+    height: auto;
+  }
+
+  .category-title {
+    display: none;
+  }
+  
+</style>
+
+<script>
+	(function() {
+    const scrollToHits = () => {
+        const hitsDiv = document.getElementById("hits");
+        if (hitsDiv) {
+            hitsDiv.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
+    // Track last page to avoid scrolling multiple times unnecessarily
+    let lastPage = new URL(window.location.href).searchParams.get("page");
+
+    // Monkey-patch history.pushState and history.replaceState
+    const pushState = history.pushState;
+    const replaceState = history.replaceState;
+
+    history.pushState = function(...args) {
+        pushState.apply(this, args);
+        checkUrlChange();
+    };
+    history.replaceState = function(...args) {
+        replaceState.apply(this, args);
+        checkUrlChange();
+    };
+
+    // Also catch back/forward navigation
+    window.addEventListener("popstate", checkUrlChange);
+
+    function checkUrlChange() {
+        const currentPage = new URL(window.location.href).searchParams.get("page");
+        if (currentPage && currentPage !== lastPage) {
+            lastPage = currentPage;
+            scrollToHits();
+        }
+    }
+
+    // MutationObserver for dynamically injected #hits (optional, in case Algolia renders after a delay)
+    const observer = new MutationObserver(() => {
+        const currentPage = new URL(window.location.href).searchParams.get("page");
+        if (currentPage && currentPage !== lastPage) {
+            const hitsDiv = document.getElementById("hits");
+            if (hitsDiv) {
+                lastPage = currentPage;
+                hitsDiv.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+})();
+
+document.addEventListener("DOMContentLoaded", function() {
+    if (window.location.search.includes("page=")) {
+        const hitsDiv = document.getElementById("hits");
+        if (hitsDiv) {
+            hitsDiv.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+});
+</script>
+
+
+<div id="outdoor-header-area">
+  <div class="outdoor-header-content">
+    <img src="https://thetoyshop.com/medias/elc-outdoor-toys-2023-purple-left-butterfly.gif?context=bWFzdGVyfHJvb3R8MjAwMTd8aW1hZ2UvZ2lmfGFEVmpMMmd5TXk4eE1qY3hNemsyTmpNd05UTXhNQzlsYkdNdGIzVjBaRzl2Y2kxMGIzbHpMVEl3TWpNdGNIVnljR3hsTFd4bFpuUXRZblYwZEdWeVpteDVMbWRwWmd8Y2JiMTk5OGFiZTE5Y2JmM2Q1ODZiMTFlMGM5MjQwYTFmZTQwZGM0MzZjNTliOTNkYWQ2OTYzNTM0ZGJlMjZlYg" width="70px" height="70px" alt="Purple Butterfly" title="Purple Butterfly" />
+    <h2>Outdoor Toys</h2>
+    <img src="https://thetoyshop.com/medias/elc-outdoor-toys-2023-yellow-right-butterfly.gif?context=bWFzdGVyfHJvb3R8MTc0MTl8aW1hZ2UvZ2lmfGFERmtMMmd5TkM4eE1qY3hNemsyTmpNM01EZzBOaTlsYkdNdGIzVjBaRzl2Y2kxMGIzbHpMVEl3TWpNdGVXVnNiRzkzTFhKcFoyaDBMV0oxZEhSbGNtWnNlUzVuYVdZfGFlYjZkNzNhZTk2OGNkNzNiNzllNmNkNjA3ZGZhMmZkODA4Y2ZkNjgzNjlkZTY1ZThhOTE3MDkyNjg0MjZjY2M" width="70px" height="70px" alt="Yellow Butterfly" title="Yellow Butterfly" />
+  </div>
+</div>
+<div class="outdoor-content">
+  <div class="outdoor-content-inner">
+    <a href="/c/outdoor-toys/play-houses" class="polaroid-wrapper">
+      <img src="https://www.elc.co.uk/medias/elc-outdoor-toys-2023-pod-playhouses.jpg?context=bWFzdGVyfHJvb3R8MTUwNTQ0fGltYWdlL2pwZWd8YURZeUwyZ3lZUzh4TWpBME5UYzNNRFF5TkRNMU1DNXFjR2N8ZGE2MWFjZTg5NTUxMTM2NGYxZmJhZDg2YTJmZGU3MjgyYTk4MDViODk4YmY0Mjk4MGYwMTE2MzM2NjQxZjRiNg" alt="Playhouses" title="Playhouses" />
+      <span class="polaroid-wrapper-title">Playhouses</span>
+    </a>
+
+    <a href="/c/outdoor-toys/trampolines" class="polaroid-wrapper">
+      <img src="https://www.elc.co.uk/medias/Rectangle-52-3-.png?context=bWFzdGVyfHJvb3R8MTEwODg1fGltYWdlL3BuZ3xhRGd5TDJoa1lpOHhNamN4TXprM01URXlNakl3Tmk5U1pXTjBZVzVuYkdVZ05USWdLRE1wTG5CdVp3fDE5YTI4NjU5Y2M2OGI0MWQ5YWRjZGY3MDhjYmE3YzQ3MDY0M2JjOGIyMzgxZDZjZmVjZTU4ZmRjNGZkNmJkNDI" alt="Trampolines" title="Trampolines" />
+      <span class="polaroid-wrapper-title">Trampolines</span>
+    </a>
+
+    <a href="/c/outdoor-toys/garden-toys" class="polaroid-wrapper">
+      <img src="https://www.elc.co.uk/medias/elc-outdoor-toys-2023-pod-garden-toys.png?context=bWFzdGVyfHJvb3R8MTE0MDM4fGltYWdlL3BuZ3xhRGN3TDJobVpTOHhNakExTXpVek1qazVPVGN4TUM1d2JtY3w3NDVhNDAzZWQyMDJiMGQwYjcxZWZiZTBhZTQ5ZGQ0OWM3YzYxNDU5NjUyMTk2MmMzYjRkMjYzNTAzYTZjODY5" alt="Garden Toys" title="Garden Toys" />
+      <span class="polaroid-wrapper-title">Garden Toys</span>
+    </a>
+
+    <a href="/c/outdoor-toys/sand-and-water-tables" class="polaroid-wrapper">
+      <img src="https://www.elc.co.uk/medias/elc-outdoor-toys-2023-pod-sand-water-tables.jpg?context=bWFzdGVyfHJvb3R8MTU1NjU4fGltYWdlL2pwZWd8YURnMEwyZzJZeTh4TWpBME5UYzNNREl5TnpjME1pNXFjR2N8NTQ4NTI0M2Y4NjgxMjQ0ZmNjMGM0NWRhNTZiOTdiYzQ3OGU1MWQwYzZmNTQ0NzU0YzEzMzdiNzhjZjY2OGIwZA" alt="Sand & Water Tables" title="Sans & Water Tables" />
+      <span class="polaroid-wrapper-title">Sand & Water Tables</span>
+    </a>
+
+    <a href="/c/outdoor-toys/bubbles" class="polaroid-wrapper">
+      <img src="https://www.elc.co.uk/medias/1200Wx1200H-540485-540485-6.jpg?context=bWFzdGVyfHJvb3R8MTM4NDg0N3xpbWFnZS9qcGVnfGFETTRMMmc0TXk4eE1qY3hNemszTURZMk16UTFOQzh4TWpBd1YzZ3hNakF3U0MwMU5EQTBPRFV0TlRRd05EZzFMVFl1YW5CbnwwOTYxMDlmZGM3MDY4NDQwOWQ3NzIxMjM0ZDU1NjMzODM3Y2JlZDc1ZTIwOTg4NzY1ODQyODM4MjdmNGNjODM0" alt="Bubbles" title="Bubbles" />
+      <span class="polaroid-wrapper-title">Bubbles</span>
+    </a>
+
+    <a href="/c/outdoor-toys/bikes" class="polaroid-wrapper">
+      <img src="https://www.elc.co.uk/medias/Rectangle-52-2-.png?context=bWFzdGVyfHJvb3R8MTEzNTU2fGltYWdlL3BuZ3xhR1kzTDJnNE5pOHhNamN4TXprM01EYzVORFV5Tmk5U1pXTjBZVzVuYkdVZ05USWdLRElwTG5CdVp3fGVkZTQ3MmI2OGYwYmYxYWZmNDMxNTNkMjQ1MDlmOTY1YTUxOWI2ODQ4MjY5NmNlOWFjZjU1ODNiNjMwNDgxNDQ" alt="Bikes" title="Bikes" />
+      <span class="polaroid-wrapper-title">Bikes</span>
+    </a>
+
+    <div class="jump-hop">
+      <div class="hop-image">
+        <img src="https://www.elc.co.uk/medias/elc-outdoor-toys-2023-header-desktop.gif?context=bWFzdGVyfHJvb3R8MTM0NTcwNHxpbWFnZS9naWZ8YUdNMEwyaG1OeTh4TWpBME5UazBOVFV6TmpVME1pNW5hV1l8NTA5MWY4YTFhMDVkZjg1ZGRjMGUxNTRjMzYxOTMyNjIyNTJjNjVmNTE4ZTViZjMyOGMyN2JmZWI4ZjcxYWRmNQ" alt="Jump, Hop, Explore!" title="Jump, Hop, Explore!" class="elc-outdoor-logo-desktop">
+      </div>
+      <div class="hop-text">
+        <div class="title">See Full<br /><span>Outdoor</span> Range</div>
+        <a href="/c/outdoor-toys#sort-by" class="outdoor-button">
+                  <span class="star-start"><svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 11 11"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z"
+                      fill-opacity="0.5"
+                    ></path></svg></span
+                >
+                Shop Now<span class="star-end"
+                ><svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 11 11"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z"
+                    fill-opacity="0.5"
+                  ></path></svg></span></a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p>Step into the fresh air and play with outdoor toys from our colourful collection. Little ones can swing and slide, splash around, or drive through the garden on their very own outdoor toy vehicle. With so much to choose from, this collection of outdoor toys might justleave you spoilt for choice!</p>
+      <div class="left-image">
+        <img alt="Snail" src="https://www.elc.co.uk/medias/elc-outdoor-toys-2023-snail.png?context=bWFzdGVyfHJvb3R8MTIwNTR8aW1hZ2UvcG5nfGFEYzVMMmd6TWk4eE1qQTBOVGMzTXpjd01URTFNQzV3Ym1jfGFiMWEwNzIzNmJlYzcyMDQyYTczODU1MTZjNzBmYzE5YjA3NTUzY2ZkZjRiNzJiZTU4MTgyODM5ZTQzYjljNDg" title="Snail">
+      </div>
+      <div class="right-image">
+        <img alt="Bee" src="https://www.elc.co.uk/medias/elc-outdoor-toys-2023-bee.png?context=bWFzdGVyfHJvb3R8MTMwNDl8aW1hZ2UvcG5nfGFEUTVMMmhoT1M4eE1qQTBOVGMzTXprMk16STVOQzV3Ym1jfDgwNmViZmQyZmIzNzJkMTA3MGFkOGRlMzkyOWI3Nzc3ZjQzOTc4MGE0NmM5MjMyMjAxN2RiZjRmNmQyNmU1MDY" title="Bee">
+      </div>
+    </div>
+  </div>
+</div>

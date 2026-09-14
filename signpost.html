@@ -1,0 +1,777 @@
+<style>
+  .breadcrumb {
+    display: none;
+  }
+
+  footer {
+    width: 100%;
+  }
+
+  .email-signup-wrapper,
+  footer {
+    position: relative;
+    z-index: 1000;
+  }
+
+  .footer__copyright {
+    z-index: 999;
+  }
+
+  .footer__bottom {
+    position: relative;
+    z-index: 999;
+  }
+
+
+  /* =========================================================
+     WRAPPER
+  ========================================================= */
+
+  .signpost-wrapper {
+    width: 100%;
+    background: rgb(39, 87, 159);
+    position: relative;
+    z-index: 999;
+  }
+
+  .signpost-container {
+    position: relative;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 8px 20px;
+
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+    align-items: center;
+
+    box-sizing: border-box;
+    background: rgb(39, 87, 159);
+
+    z-index: 999;
+
+    --signpost-left: 0px;
+    --signpost-width: 100%;
+  }
+
+
+  /* =========================================================
+     FIXED STATE
+  ========================================================= */
+
+  .signpost-container.signpost-fixed {
+    position: fixed;
+    top: var(--signpost-top, 0px);
+    left: var(--signpost-left);
+    width: var(--signpost-width);
+    z-index: 9999;
+  }
+
+
+  /* =========================================================
+     PLACEHOLDER
+  ========================================================= */
+
+  .signpost-placeholder {
+    display: none;
+    width: 100%;
+    height: 110px;
+  }
+
+  .signpost-placeholder.active {
+    display: block;
+  }
+
+
+  /* =========================================================
+     SIGNS
+  ========================================================= */
+
+  .sign-link {
+    position: relative;
+    z-index: 2;
+
+    flex: 1 1 0;
+    min-width: 0;
+
+    height: 94px;
+    margin: 0;
+
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    transition:
+      transform 0.25s ease,
+      filter 0.25s ease;
+  }
+
+
+  .sign-link:hover {
+    transform: scale(1.04);
+    filter: brightness(1.1);
+  }
+
+
+  /* =========================================================
+     IMAGES
+  ========================================================= */
+
+  .sign-link img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+
+  /* =========================================================
+     DESKTOP
+  ========================================================= */
+
+  @media (min-width: 1201px) {
+
+    .signpost-container {
+      height: 78px;
+      min-height: 78px;
+      padding: 6px 20px;
+      gap: 5px;
+
+      overflow: hidden;
+    }
+
+    .signpost-placeholder {
+      height: 78px;
+    }
+
+    .sign-link {
+      flex: 1 1 0;
+      width: auto;
+      min-width: 0;
+      height: 64px;
+    }
+
+    .sign-link img {
+      width: 100%;
+      height: 64px;
+      object-fit: contain;
+    }
+  }
+
+
+  /* =========================================================
+     TABLET & MOBILE
+  ========================================================= */
+
+  @media (max-width: 1200px) {
+
+    .signpost-container {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+
+      height: 98px;
+      min-height: 98px;
+
+      padding: 4px 10px;
+      gap: 8px;
+    }
+
+    .signpost-placeholder {
+      height: 98px;
+    }
+
+    .sign-link {
+      flex: 0 0 31%;
+      width: auto;
+      min-width: 140px;
+      height: 84px;
+    }
+
+    .sign-link img {
+      width: 100%;
+      height: 84px;
+      object-fit: contain;
+    }
+  }
+
+
+  /* =========================================================
+     MOBILE
+  ========================================================= */
+
+  @media (max-width: 768px) {
+
+    .signpost-container {
+      height: 84px;
+      min-height: 84px;
+
+      padding: 3px 5px;
+      gap: 2px;
+
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    .signpost-placeholder {
+      height: 84px;
+    }
+
+    .sign-link {
+      flex: 0 0 31%;
+      min-width: 120px;
+      height: 74px;
+    }
+
+    .sign-link img {
+      width: 100%;
+      height: 74px;
+      object-fit: contain;
+    }
+  }
+</style>
+
+
+<div class="signpost-wrapper">
+
+  <div class="signpost-container" id="signpostContainer">
+
+    <a href="#toy-appeal" class="sign-link">
+      <img src="https://www.thetoyshop.com/medias/Navigation-10-1-.png?context=bWFzdGVyfHJvb3R8ODA5MnxpbWFnZS9wbmd8YURFMkwyZzFNUzh4TWpnME56RXlNREl5TURFNU1DOU9ZWFpwWjJGMGFXOXVJREV3SUNneEtTNXdibWN8NmYyY2EyNDFjN2E5NThiNWY1ODQ3YzViZTY3ZjdiOWUyNTcyNTBiNWIwMjU2MmJlNzBhZGM3NTFiNGY5NmI3MA" alt="Toy Appeal">
+    </a>
+
+    <a href="#game" class="sign-link">
+      <img src="https://www.thetoyshop.com/medias/Navigation-9.png?context=bWFzdGVyfHJvb3R8ODQ0OXxpbWFnZS9wbmd8YURoaEwyZzJPUzh4TWpnME56RXlNRGszTXpnMU5DOU9ZWFpwWjJGMGFXOXVJRGt1Y0c1bnxiNjEzZWZkNDI1NmY3YjUyN2ExMDg4ODI2YTMwMTAxZWM4ZDE1OWYyNjJlYWMzZDdmMzRmYTQ0ZWVlMzc5NWMy" alt="Play Our Game">
+    </a>
+
+    <a href="#activities" class="sign-link">
+      <img src="https://www.thetoyshop.com/medias/Navigation-8.png?context=bWFzdGVyfHJvb3R8OTYyNXxpbWFnZS9wbmd8YURNekwyaGlOQzh4TWpnME56RXlNVEF6T1RNNU1DOU9ZWFpwWjJGMGFXOXVJRGd1Y0c1bnxlMjhhZDc3NGE0MTY0ODI2ODQ3NDI4ZjgxZWU4OTg1ZDRkODg1N2MxNmJlMGUxMjIzZmIwNGZjYWYyYzczMTYz" alt="Christmas Activities">
+    </a>
+
+    <a href="#events" class="sign-link">
+      <img src="https://www.thetoyshop.com/medias/Navigation-7.png?context=bWFzdGVyfHJvb3R8ODI0MXxpbWFnZS9wbmd8YUdRMEwyaGpNUzh4TWpnME56RXlNVFF6TWpZd05pOU9ZWFpwWjJGMGFXOXVJRGN1Y0c1bnw0ZDM3MDdjZjUwYmEwNjBlMTcyOTc1YTViODE3NjkzZjU3ZmRiYWU3MmM5YmE0NTQ3NWM0ZjE4MGU3M2YxZWE1" alt="Store Events">
+    </a>
+
+    <a href="#guides" class="sign-link">
+      <img src="https://www.thetoyshop.com/medias/Navigation-6.png?context=bWFzdGVyfHJvb3R8OTI3N3xpbWFnZS9wbmd8YURneUwyaGpNaTh4TWpnME56RXlNVFE1T0RFME1pOU9ZWFpwWjJGMGFXOXVJRFl1Y0c1bnw2NTk4ZDQwZmU5MTljNGRlNWM2Y2Y1MmY3ZTU5ZDk4NjU4ZjAwMDU3Zjk3MzFkY2ExZWZlNDdjYWJkZGY2YzNh" alt="Christmas Guides">
+    </a>
+
+    <a href="#shop-by-price" class="sign-link">
+      <img src="https://www.thetoyshop.com/medias/Navigation-5.png?context=bWFzdGVyfHJvb3R8ODQyMHxpbWFnZS9wbmd8YURrekwyaGpOUzh4TWpnME56RXlNVFUyTXpZM09DOU9ZWFpwWjJGMGFXOXVJRFV1Y0c1bnw1ZWI1NDRjZDE2MGJkNzU4ZGNjYTZjY2NmZmUzNGYzNzU2NTE0ZWI5MDhkYTY2ZjdlN2ZkYzA2ZjY5OGZiOTdj" alt="Shop By Price">
+    </a>
+
+    <a href="#win-your-wishlist" class="sign-link">
+      <img src="https://www.thetoyshop.com/medias/Navigation-4.png?context=bWFzdGVyfHJvb3R8OTI1MHxpbWFnZS9wbmd8YURreEwyaGpPQzh4TWpnME56RXlNVFl5T1RJeE5DOU9ZWFpwWjJGMGFXOXVJRFF1Y0c1bnw1NTZiYjc4NTlmZjRiOWNlN2VhZDBlNWY2OTQ1NGY2NDA1MmI0ZWMzOTY4NGM4MTcwMTY2ZjBjMWI1OGQwNWE0" alt="Win Your Wishlist">
+    </a>
+
+    <a href="#top-10-toys" class="sign-link">
+      <img src="https://www.thetoyshop.com/medias/Navigation-3.png?context=bWFzdGVyfHJvb3R8Nzc0OXxpbWFnZS9wbmd8YURVeUwyaGpPUzh4TWpnME56RXlNVFk1TkRjMU1DOU9ZWFpwWjJGMGFXOXVJRE11Y0c1bnxkNTAwOWNlNTM0N2M5NDU2ZmI4ZDI3ZGU5NDVlOGU0YmZiOGM4ZDI0YjQ4MDhhODdhYTQyMGEwM2YzYzNlM2Vi" alt="Top 10 Toys">
+    </a>
+
+    <a href="#christmas-categories" class="sign-link">
+      <img src="https://www.thetoyshop.com/medias/Navigation-2.png?context=bWFzdGVyfHJvb3R8OTk4MnxpbWFnZS9wbmd8YURZMEwyaGpZeTh4TWpnME56RXlNVGMyTURJNE5pOU9ZWFpwWjJGMGFXOXVJREl1Y0c1bnxkM2U0NTI0YjQ0ZWExMTJjM2QxODhhNjcxYTViNGQ1ZTc3OWQxYzc1MDJlYTNiYjk0NDQxM2RkMmM5YzM4ODQ3" alt="Christmas Categories">
+    </a>
+
+    <a href="#gift-by-age" class="sign-link">
+      <img src="https://www.thetoyshop.com/medias/Navigation-1.png?context=bWFzdGVyfHJvb3R8NzkwNXxpbWFnZS9wbmd8YURJd0wyaGtNeTh4TWpnME56RXlNVGsxTmpnNU5DOU9ZWFpwWjJGMGFXOXVJREV1Y0c1bnw5ZDEwODljMzVmMGQzZTY0NDQxNDYyNGFlYjBiZjZiMDQ2ZDBjNzgyNDgyNzQwNjdjYzMyMWQzMGU4NGFlOTdl" alt="Gift By Age">
+    </a>
+
+  </div>
+
+</div>
+
+
+<script>
+(function () {
+
+  var sidebar = null;
+  var placeholder = null;
+
+  var originalTop = 0;
+  var originalLeft = 0;
+  var originalWidth = 0;
+  var signpostTop = 0;
+
+  var ticking = false;
+
+
+  /* =========================================================
+     SETUP
+  ========================================================= */
+
+  function setupSignpost() {
+
+    sidebar = document.getElementById('signpostContainer');
+
+    if (!sidebar) {
+      return;
+    }
+
+    if (!placeholder) {
+
+      placeholder = document.createElement('div');
+
+      placeholder.className = 'signpost-placeholder';
+
+      sidebar.parentNode.insertBefore(
+        placeholder,
+        sidebar
+      );
+    }
+
+    calculateSignpostTop();
+    calculatePosition();
+    updatePosition();
+
+    setupSmoothScroll();
+  }
+
+
+  /* =========================================================
+     CALCULATE POSITION
+  ========================================================= */
+
+  function calculatePosition() {
+
+    if (!sidebar) {
+      return;
+    }
+
+    var wasFixed =
+      sidebar.classList.contains('signpost-fixed');
+
+    /*
+     * Temporarily return the signpost to normal document flow
+     * so we can get its real position and dimensions.
+     */
+
+    if (wasFixed) {
+
+      sidebar.classList.remove('signpost-fixed');
+
+      sidebar.style.removeProperty('--signpost-left');
+      sidebar.style.removeProperty('--signpost-width');
+    }
+
+    var rect =
+      sidebar.getBoundingClientRect();
+
+    originalTop =
+      rect.top + window.pageYOffset;
+
+    originalLeft =
+      rect.left;
+
+    originalWidth =
+      rect.width;
+
+    /*
+     * Restore fixed state if it was already fixed.
+     */
+
+    if (wasFixed) {
+
+      sidebar.style.setProperty(
+        '--signpost-left',
+        originalLeft + 'px'
+      );
+
+      sidebar.style.setProperty(
+        '--signpost-width',
+        originalWidth + 'px'
+      );
+
+      sidebar.classList.add('signpost-fixed');
+    }
+  }
+
+
+  /* =========================================================
+     UPDATE FIXED POSITION
+  ========================================================= */
+
+  function updatePosition() {
+
+    if (!sidebar) {
+      return;
+    }
+
+    var scrollTop =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      0;
+
+    if (scrollTop >= originalTop) {
+
+      if (!sidebar.classList.contains('signpost-fixed')) {
+
+        /*
+         * Capture the current width/position before fixing it.
+         */
+
+        var rect =
+          sidebar.getBoundingClientRect();
+
+        sidebar.style.setProperty(
+          '--signpost-left',
+          rect.left + 'px'
+        );
+
+        sidebar.style.setProperty(
+          '--signpost-width',
+          rect.width + 'px'
+        );
+
+        sidebar.classList.add('signpost-fixed');
+
+        /*
+         * Keep the page layout from jumping when the element
+         * leaves normal document flow.
+         */
+
+        if (placeholder) {
+          placeholder.classList.add('active');
+        }
+      }
+
+    } else {
+
+      if (sidebar.classList.contains('signpost-fixed')) {
+
+        sidebar.classList.remove('signpost-fixed');
+
+        sidebar.style.removeProperty(
+          '--signpost-left'
+        );
+
+        sidebar.style.removeProperty(
+          '--signpost-width'
+        );
+
+        if (placeholder) {
+          placeholder.classList.remove('active');
+        }
+      }
+    }
+  }
+
+
+  /* =========================================================
+     CALCULATE STICKY TOP
+  ========================================================= */
+
+  function calculateSignpostTop() {
+
+    signpostTop = 0;
+
+    /*
+     * On tablet/mobile, position the signpost underneath
+     * the sticky navigation.
+     */
+
+    if (window.innerWidth <= 1200) {
+
+      var nav =
+        document.querySelector('.desktop__nav');
+
+      if (nav) {
+
+        var navRect =
+          nav.getBoundingClientRect();
+
+        signpostTop =
+          navRect.height;
+      }
+    }
+
+    if (sidebar) {
+
+      sidebar.style.setProperty(
+        '--signpost-top',
+        signpostTop + 'px'
+      );
+    }
+  }
+
+
+  /* =========================================================
+     SMOOTH ANCHOR SCROLL
+  ========================================================= */
+
+  function setupSmoothScroll() {
+
+    if (!sidebar) {
+      return;
+    }
+
+    var links =
+      sidebar.querySelectorAll(
+        '.sign-link[href^="#"]'
+      );
+
+    for (var i = 0; i < links.length; i++) {
+
+      /*
+       * Prevent adding the event more than once.
+       */
+
+      if (links[i].getAttribute('data-smooth-scroll') === 'true') {
+        continue;
+      }
+
+      links[i].setAttribute(
+        'data-smooth-scroll',
+        'true'
+      );
+
+      links[i].addEventListener(
+        'click',
+        function (e) {
+
+          var href =
+            this.getAttribute('href');
+
+          if (!href || href === '#') {
+            return;
+          }
+
+          var target =
+            document.getElementById(
+              href.substring(1)
+            );
+
+          if (!target) {
+            return;
+          }
+
+          /*
+           * IMPORTANT:
+           * Stop the browser's normal anchor jump.
+           */
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          /*
+           * Work out the target's absolute position.
+           */
+
+          var targetTop =
+            target.getBoundingClientRect().top +
+            window.pageYOffset;
+
+          /*
+           * Work out how much fixed navigation is
+           * currently covering the page.
+           */
+
+          var offset = 0;
+
+          /*
+           * Desktop has no .desktop__nav offset here,
+           * because the signpost itself is the only fixed
+           * navigation being accounted for.
+           */
+
+          if (window.innerWidth <= 1200) {
+
+            var nav =
+              document.querySelector('.desktop__nav');
+
+            if (nav) {
+
+              offset +=
+                nav.getBoundingClientRect().height;
+            }
+          }
+
+          /*
+           * If the signpost is currently fixed,
+           * account for its height too.
+           */
+
+          if (
+            sidebar &&
+            sidebar.classList.contains('signpost-fixed')
+          ) {
+
+            offset +=
+              sidebar.getBoundingClientRect().height;
+          }
+
+          /*
+           * Small breathing room underneath the
+           * fixed navigation.
+           */
+
+          offset += 10;
+
+          /*
+           * Perform the actual animated scroll.
+           */
+
+          window.scrollTo({
+            top: Math.max(
+              0,
+              targetTop - offset
+            ),
+            behavior: 'smooth'
+          });
+
+          /*
+           * Update the URL without causing the browser
+           * to perform its own anchor jump.
+           */
+
+          if (
+            window.history &&
+            window.history.pushState
+          ) {
+
+            window.history.pushState(
+              null,
+              '',
+              href
+            );
+          }
+
+        },
+        false
+      );
+    }
+  }
+
+
+  /* =========================================================
+     REQUEST UPDATE
+  ========================================================= */
+
+  function requestUpdate() {
+
+    if (!ticking) {
+
+      window.requestAnimationFrame(
+        function () {
+
+          updatePosition();
+
+          ticking = false;
+
+        }
+      );
+
+      ticking = true;
+    }
+  }
+
+
+  /* =========================================================
+     EVENTS
+  ========================================================= */
+
+  window.addEventListener(
+    'scroll',
+    requestUpdate,
+    {
+      passive: true
+    }
+  );
+
+
+  window.addEventListener(
+    'resize',
+    function () {
+
+      calculateSignpostTop();
+      calculatePosition();
+      updatePosition();
+
+    }
+  );
+
+
+  window.addEventListener(
+    'orientationchange',
+    function () {
+
+      setTimeout(
+        function () {
+
+          calculateSignpostTop();
+          calculatePosition();
+          updatePosition();
+
+        },
+        100
+      );
+
+    }
+  );
+
+
+  /* =========================================================
+     INITIALISE
+  ========================================================= */
+
+  function initialise() {
+
+    setTimeout(
+      function () {
+
+        setupSignpost();
+
+      },
+      150
+    );
+  }
+
+
+  if (
+    document.readyState === 'complete' ||
+    document.readyState === 'interactive'
+  ) {
+
+    initialise();
+
+  } else {
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      initialise
+    );
+  }
+
+
+  window.addEventListener(
+    'load',
+    function () {
+
+      setTimeout(
+        function () {
+
+          calculateSignpostTop();
+          calculatePosition();
+          updatePosition();
+
+          /*
+           * Make absolutely sure the anchor handlers
+           * are present after the page has fully loaded.
+           */
+
+          setupSmoothScroll();
+
+        },
+        300
+      );
+
+    }
+  );
+
+
+})();
+</script>

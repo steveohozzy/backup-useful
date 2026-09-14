@@ -1,0 +1,327 @@
+<style>
+  body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(#c8f5ff, #fdf6d8);
+  font-family: sans-serif;
+  gap: 20px;
+  padding-top: 20px;
+}
+
+#eggs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.lego-egg {
+  position: relative;
+  cursor: pointer;
+}
+
+.lego-egg.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+}
+
+.brick {
+  width: 30px;
+  height: 15px;
+  border: 1px solid #aa3366;
+  border-radius: 2px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.brick::before {
+  content:'';
+  position: absolute;
+  top: -4px;
+  left: 4px;
+  width: 8px;
+  height: 4px;
+  border-radius: 50%;
+  border: 1px solid #aa3366;
+}
+
+.egg-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 3px #000;
+  pointer-events: none;
+}
+
+.brick-left, .brick-right {
+  display: inline-block;
+  transition: transform 0.5s ease;
+}
+
+/* Crack wiggle */
+.brick-left.crack-wiggle {
+  transform: translateX(-20px) rotate(-5deg);
+}
+
+.brick-right.crack-wiggle {
+  transform: translateX(20px) rotate(5deg);
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0; top:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  transform: translateY(0);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.modal-content {
+  background: #fff5e6;
+  margin: 0 auto;
+  padding: 20px;
+  width: 320px;
+  text-align:center;
+  border-radius:10px;
+  border: 4px solid #d1a14d;
+  box-shadow: 0 0 20px #0003;
+  position: relative;
+  top: 15%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Lego border */
+.modal-content::before, .modal-content::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg,
+    #d1a14d,
+    #d1a14d 10px,
+    #ffd700 10px,
+    #ffd700 20px
+  );
+  left: 0;
+}
+
+.modal-content::before { top: -4px; }
+.modal-content::after { bottom: -4px; }
+
+/* Voucher box */
+#offer-code {
+  background: #fff3a6;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 20px;
+  border: 2px dashed #d1a14d;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.4s ease, background 0.3s ease;
+  transform: scale(0);
+}
+
+#offer-code.pop { transform: scale(1); }
+#offer-code.copied { background: #a6ffb0; }
+
+#close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 28px;
+  cursor:pointer;
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  opacity: 1;
+  pointer-events: none;
+  transition: transform 1s ease-out, opacity 1s ease-out;
+}
+
+</style>
+
+<div id="eggs"></div>
+<p id="status"></p>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span id="close">&times;</span>
+    <h2>🎁 Easter Offer!</h2>
+    <p>Click the code to copy:</p>
+    <div id="offer-code">EGG1CODE</div>
+  </div>
+</div>
+
+<script>
+  // Advent setup
+const START_DATE = new Date();
+START_DATE.setHours(0,0,0,0);
+
+const TOTAL_EGGS = 6;
+const today = new Date();
+today.setHours(0,0,0,0);
+const daysSinceStart = Math.floor((today - START_DATE)/(1000*60*60*24));
+
+let openedEggs = JSON.parse(localStorage.getItem('openedEggs')) || [];
+const status = document.getElementById('status');
+
+const eggColors = ['#FFB6C1','#FFDAB9','#98FB98','#ADD8E6','#FFFACD','#DDA0DD'];
+const ribbonColor = '#FFD700';
+const brickRows = [1,2,3,4,6,6,5,5,4,3,2];
+
+const eggsContainer = document.getElementById('eggs');
+const modal = document.getElementById('modal');
+const closeModal = document.getElementById('close');
+const offerCodeEl = document.getElementById('offer-code');
+
+// Create eggs
+for (let i=1; i<=TOTAL_EGGS; i++) {
+  const egg = document.createElement('div');
+  egg.classList.add('lego-egg');
+  egg.dataset.egg = i;
+
+  const num = document.createElement('div');
+  num.classList.add('egg-number');
+  num.textContent = i;
+  egg.appendChild(num);
+
+  brickRows.forEach((count,rowIndex)=>{
+    const row = document.createElement('div');
+    row.classList.add('row');
+    const mid = Math.floor(count/2);
+
+    for(let j=0;j<count;j++){
+      const brick = document.createElement('div');
+      brick.classList.add('brick');
+      brick.style.background = (rowIndex===4||rowIndex===5)? ribbonColor : eggColors[i-1];
+      if(j<=mid) brick.classList.add('brick-left');
+      else brick.classList.add('brick-right');
+      row.appendChild(brick);
+    }
+    egg.appendChild(row);
+  });
+
+  // Disable eggs based on advent
+  if(openedEggs.includes(i)) egg.classList.remove('disabled');
+  else if(i > daysSinceStart + 1) egg.classList.add('disabled');
+
+  eggsContainer.appendChild(egg);
+
+  // Click handler
+  egg.addEventListener('click', ()=>{
+    if(egg.classList.contains('disabled')) return;
+
+    const leftBricks = egg.querySelectorAll('.brick-left');
+    const rightBricks = egg.querySelectorAll('.brick-right');
+
+    // Remove class first
+    leftBricks.forEach(b=>b.classList.remove('crack-wiggle'));
+    rightBricks.forEach(b=>b.classList.remove('crack-wiggle'));
+
+    // Force reflow
+    void egg.offsetWidth;
+
+    // Add class to animate
+    leftBricks.forEach(b=>b.classList.add('crack-wiggle'));
+    rightBricks.forEach(b=>b.classList.add('crack-wiggle'));
+
+    // Confetti
+    const colors = ['#FFB6C1','#FFDAB9','#98FB98','#ADD8E6','#FFFACD','#DDA0DD','#FFD700','#FF4500'];
+    for(let k=0;k<20;k++){
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      confetti.style.background = colors[Math.floor(Math.random()*colors.length)];
+      const rect = egg.getBoundingClientRect();
+      confetti.style.left = rect.left + rect.width/2 + 'px';
+      confetti.style.top = rect.top + rect.height/2 + 'px';
+      document.body.appendChild(confetti);
+      const x = (Math.random()-0.5)*200;
+      const y = - (Math.random()*150 + 50);
+      const rotate = Math.random()*360;
+      setTimeout(()=>{
+        confetti.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`;
+        confetti.style.opacity = 0;
+      },50);
+      setTimeout(()=> confetti.remove(),1100);
+    }
+
+    // Wait for crack animation
+    setTimeout(()=>{
+      const rect = egg.getBoundingClientRect();
+      modal.style.display = 'block';
+      modal.style.opacity = 0;
+      const modalContent = modal.querySelector('.modal-content');
+      modalContent.style.transform = `translateY(${rect.top + rect.height/2 - 120}px)`;
+      modal.offsetHeight;
+
+      modal.style.transition = 'opacity 0.5s ease';
+      modal.style.opacity = 1;
+      modalContent.style.transition = 'transform 0.5s ease';
+      modalContent.style.transform = 'translateY(0)';
+
+      offerCodeEl.textContent = `EGG${egg.dataset.egg}CODE`;
+      offerCodeEl.classList.remove('pop');
+      setTimeout(()=> offerCodeEl.classList.add('pop'),50);
+    },500);
+
+    // Mark as opened
+    if(!openedEggs.includes(Number(egg.dataset.egg))){
+      openedEggs.push(Number(egg.dataset.egg));
+      localStorage.setItem('openedEggs', JSON.stringify(openedEggs));
+    }
+  });
+}
+
+// Close modal
+function closeEggModal(){
+  modal.style.transition = 'none';
+  modal.style.opacity = 0;
+  modal.style.display = 'none';
+  document.querySelectorAll('.brick-left, .brick-right').forEach(b=>{
+    b.classList.remove('crack-wiggle');
+  });
+  offerCodeEl.classList.remove('pop');
+}
+
+closeModal.onclick = closeEggModal;
+window.onclick = e=>{
+  if(e.target==modal) closeEggModal();
+}
+
+// Click-to-copy voucher
+offerCodeEl.addEventListener('click', ()=>{
+  navigator.clipboard.writeText(offerCodeEl.textContent).then(()=>{
+    offerCodeEl.classList.add('copied');
+    setTimeout(()=>offerCodeEl.classList.remove('copied'),1000);
+  });
+});
+
+</script>

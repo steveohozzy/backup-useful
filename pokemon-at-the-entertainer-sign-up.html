@@ -1,0 +1,206 @@
+<style>
+  .container-sign-up {
+    max-width: 980px;
+    padding: 20px 20px;
+    margin: 0 auto;
+  }
+
+  .container-sign-up-content {
+    border: 3px solid #fcc80b;
+    border-radius: 8px;
+  }
+
+  .sign-up-title {
+    font-size: 16px;
+  }
+
+  @media (min-width: 1024px) {
+    .sign-up-title {
+      font-size: 24px;
+    }
+  }
+
+  .sign-up-button {
+    max-width: 200px;
+    margin: 0 auto;
+  }
+
+  .sign-up-button .hero-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background-color: #ec7aac;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px;
+    height: 40px;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.3);
+    border: 3px solid #dbe3ff;
+    transition: all 0.3s;
+    margin: 20px auto;
+    width: 100%;
+  }
+
+  .sign-up-button .hero-button.no-icons {
+    padding: 10px;
+  }
+
+  .sign-up-button .hero-button:hover {
+    background-color: #41254b;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+    color: #fff;
+    border-color: #fff;
+  }
+
+  .sign-up-button .hero-button .basket-icon {
+    transition: all 0.3s;
+    transform: rotate(15deg);
+    margin-left: 5px;
+  }
+
+  .sign-up-button .hero-button:hover .basket-icon {
+    transform: rotate(-10deg);
+  }
+
+  .sign-up-button .hero-button .star-start {
+    position: relative;
+    top: -3px;
+  }
+
+  .sign-up-button .hero-button .swoosh-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-right: 5px;
+    width: 25px;
+  }
+
+  .sign-up-button .hero-button .swoosh {
+    display: block;
+    width: 0;
+    height: 3px;
+    margin-top: -3px;
+    margin-left: -2px;
+    transform: rotate(15deg);
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s;
+  }
+
+  .sign-up-button .hero-button:hover .swoosh {
+    width: 7px;
+  }
+
+  .sign-up-button .hero-button .star-end {
+    position: relative;
+    bottom: -5px;
+    transition: all 0.3s;
+  }
+
+  .sign-up-button .hero-button:hover .star-end {
+    scale: 1.1;
+    transform: rotate(30deg);
+  }
+
+  .container-sign-up #pokeball::before {
+    left: 0;
+  }
+
+</style>
+<div id="container">
+  <div class="container-sign-up">
+    <div class="container-sign-up-content">
+  <div class="pokeball-header">
+    <div id="moving-container" class="flipped">
+      <div id="pokeball-container">
+        <!-- pokeball -->
+        <div id="pokeball">
+          <div class="pokeball-details"></div>
+        </div>
+      </div>
+
+      <!-- lightning bolts outside the pokeball -->
+      <div class="lightning lightning1">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="7"
+          height="10"
+          viewBox="0 0 7 10"
+          fill="none"
+        >
+          <path
+            d="M6.65431 5.1175C6.81431 5.2075 6.89432 5.3475 6.89432 5.5275C6.89432 5.7075 6.81431 5.8475 6.65431 5.9375L0.704315 9.3375C0.544315 9.4275 0.394315 9.4275 0.234315 9.3375C0.104315 9.2575 0.0243153 9.1475 0.00431532 8.9975C-0.0156847 8.8475 0.0343153 8.7175 0.144315 8.6075L2.82432 5.7875L0.814315 4.6175C0.694315 4.5475 0.614315 4.4375 0.594315 4.3075C0.564315 4.1775 0.594315 4.0475 0.674315 3.9275L3.56432 0.1775C3.63432 0.0775 3.72432 0.0275 3.84432 0.0075C3.96432 -0.0125 4.07432 0.0075 4.17431 0.0675L6.60432 1.4775C6.73432 1.5575 6.81432 1.6675 6.83432 1.8275C6.85432 1.9775 6.80432 2.1075 6.70432 2.2175L4.72432 3.9975L6.66432 5.1275L6.65431 5.1175Z"
+            fill="#FCC80B"
+          />
+        </svg>
+      </div>
+
+      <div class="lightning lightning2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="7"
+          height="10"
+          viewBox="0 0 7 10"
+          fill="none"
+        >
+          <path
+            d="M6.65431 5.1175C6.81431 5.2075 6.89432 5.3475 6.89432 5.5275C6.89432 5.7075 6.81431 5.8475 6.65431 5.9375L0.704315 9.3375C0.544315 9.4275 0.394315 9.4275 0.234315 9.3375C0.104315 9.2575 0.0243153 9.1475 0.00431532 8.9975C-0.0156847 8.8475 0.0343153 8.7175 0.144315 8.6075L2.82432 5.7875L0.814315 4.6175C0.694315 4.5475 0.614315 4.4375 0.594315 4.3075C0.564315 4.1775 0.594315 4.0475 0.674315 3.9275L3.56432 0.1775C3.63432 0.0775 3.72432 0.0275 3.84432 0.0075C3.96432 -0.0125 4.07432 0.0075 4.17431 0.0675L6.60432 1.4775C6.73432 1.5575 6.81432 1.6675 6.83432 1.8275C6.85432 1.9775 6.80432 2.1075 6.70432 2.2175L4.72432 3.9975L6.66432 5.1275L6.65431 5.1175Z"
+            fill="#FCC80B"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <div class="pokeball-header-text">
+      <div class="sign-up-title">Hear about our Pokemon drops first</div>
+    </div>
+
+    <div id="moving-container">
+      <div id="pokeball-container">
+        <!-- pokeball -->
+        <div id="pokeball">
+          <div class="pokeball-details"></div>
+        </div>
+      </div>
+
+      <!-- lightning bolts outside the pokeball -->
+      <div class="lightning lightning1">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="7"
+          height="10"
+          viewBox="0 0 7 10"
+          fill="none"
+        >
+          <path
+            d="M6.65431 5.1175C6.81431 5.2075 6.89432 5.3475 6.89432 5.5275C6.89432 5.7075 6.81431 5.8475 6.65431 5.9375L0.704315 9.3375C0.544315 9.4275 0.394315 9.4275 0.234315 9.3375C0.104315 9.2575 0.0243153 9.1475 0.00431532 8.9975C-0.0156847 8.8475 0.0343153 8.7175 0.144315 8.6075L2.82432 5.7875L0.814315 4.6175C0.694315 4.5475 0.614315 4.4375 0.594315 4.3075C0.564315 4.1775 0.594315 4.0475 0.674315 3.9275L3.56432 0.1775C3.63432 0.0775 3.72432 0.0275 3.84432 0.0075C3.96432 -0.0125 4.07432 0.0075 4.17431 0.0675L6.60432 1.4775C6.73432 1.5575 6.81432 1.6675 6.83432 1.8275C6.85432 1.9775 6.80432 2.1075 6.70432 2.2175L4.72432 3.9975L6.66432 5.1275L6.65431 5.1175Z"
+            fill="#FCC80B"
+          />
+        </svg>
+      </div>
+
+      <div class="lightning lightning2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="7"
+          height="10"
+          viewBox="0 0 7 10"
+          fill="none"
+        >
+          <path
+            d="M6.65431 5.1175C6.81431 5.2075 6.89432 5.3475 6.89432 5.5275C6.89432 5.7075 6.81431 5.8475 6.65431 5.9375L0.704315 9.3375C0.544315 9.4275 0.394315 9.4275 0.234315 9.3375C0.104315 9.2575 0.0243153 9.1475 0.00431532 8.9975C-0.0156847 8.8475 0.0343153 8.7175 0.144315 8.6075L2.82432 5.7875L0.814315 4.6175C0.694315 4.5475 0.614315 4.4375 0.594315 4.3075C0.564315 4.1775 0.594315 4.0475 0.674315 3.9275L3.56432 0.1775C3.63432 0.0775 3.72432 0.0275 3.84432 0.0075C3.96432 -0.0125 4.07432 0.0075 4.17431 0.0675L6.60432 1.4775C6.73432 1.5575 6.81432 1.6675 6.83432 1.8275C6.85432 1.9775 6.80432 2.1075 6.70432 2.2175L4.72432 3.9975L6.66432 5.1275L6.65431 5.1175Z"
+            fill="#FCC80B"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="sign-up-button">
+      <a href="https://www.thetoyshop.com/be-in-the-know-with-the-entertainer" target="_blank" class="hero-button false"><span class="swoosh-container"><span class="star-start"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span><span class="swoosh">&nbsp;</span></span>Sign Up<span class="basket-icon"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none"><path d="M18.9028 4.35492C19.4873 4.15932 20.0692 4.72983 19.8174 5.31534L14.818 18.0558C14.6532 18.532 14.0752 18.697 13.686 18.4229L10.2385 15.9994L7.77668 17.9694C7.23857 18.3984 6.44087 17.9419 6.59633 17.2082L7.121 14.7319L16.356 7.32912C16.5477 7.17808 16.3485 6.91226 16.1633 7.03273L5.7505 12.9082L2.77086 10.8394C2.26592 10.5088 2.37319 9.70103 2.98825 9.51191L18.9028 4.35492Z" fill="currentColor"></path></svg></span><span class="star-end"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span></a>
+    </div>
+  </div>
+</div>
+</div>
+</div>

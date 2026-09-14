@@ -1,0 +1,259 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <button id="prev-month">&lt;</button>
+    <div id="month-year"></div>
+    <button id="next-month">&gt;</button>
+  </div>
+  <div class="calendar-grid" id="calendar-grid"></div>
+</div>
+
+<div id="event-modal" class="event-modal">
+  <div class="event-modal-content">
+    <span id="close-modal">&times;</span>
+    <div id="modal-events-container"></div>
+  </div>
+</div>
+
+<style>
+.calendar-container {
+  width: 95%;
+  max-width: 900px;
+  margin: 30px auto;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  background: linear-gradient(135deg, #fef6e4, #fff5d4);
+  border: 4px solid #ffcc00;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.calendar-header button {
+  background: #ff4c4c;
+  color: white;
+  border: none;
+  padding: 6px 15px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.calendar-header button:hover {
+  background: #ffee00;
+  color: #ff4c4c;
+  transform: scale(1.1);
+}
+#month-year {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ff4c4c;
+  text-shadow: 2px 2px #ffee00;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 8px;
+}
+.calendar-day {
+  border: 3px dashed #ffcc00;
+  border-radius: 15px;
+  padding: 10px;
+  min-height: 100px;
+  text-align: center;
+  background: #fff9e6;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.calendar-day:hover {
+  background: #fff5d4;
+  transform: scale(1.05);
+}
+.event-indicator {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  pointer-events: none;
+}
+.event-modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  backdrop-filter: blur(3px);
+  overflow-y: auto;
+}
+.event-modal-content {
+  background: linear-gradient(135deg, #fff5d4, #fef6e4);
+  margin: 5% auto;
+  padding: 20px;
+  border: 4px solid #ffcc00;
+  border-radius: 20px;
+  max-width: 500px;
+  position: relative;
+  text-align: center;
+}
+#close-modal {
+  position: absolute;
+  top: 10px; right: 15px;
+  font-size: 1.8rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+.modal-event {
+  margin-bottom: 20px;
+  border: 2px dashed #ffcc00;
+  border-radius: 12px;
+  padding: 10px;
+  background: #fff9e6;
+}
+.modal-event img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+.add-to-calendar {
+  display: inline-block;
+  margin-top: 10px;
+  background: #4cc9f0;
+  color: white;
+  text-decoration: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+.add-to-calendar:hover {
+  background: #4361ee;
+  transform: scale(1.05);
+}
+</style>
+
+<script>
+// Sample events with types for different icons
+const events = [
+  { date: '28/03/2026', title: 'Chase Paw Patrol Visit', type: 'paw', location: 'Milton Keynes', time: '10am-4pm', description: 'Come and meet Chase, the bravest police pup!', url: '/store/milton-keynes', image: 'https://www.thetoyshop.com/medias/Meet-Chase-From-Paw-Patrol.jpg?context=bWFzdGVyfHJvb3R8MTY0MjkyfGltYWdlL2pwZWd8YUdSakwyZ3dZUzh4TWpBek56WTFNVEV6TmpVME1pNXFjR2N8ODNmZTE1YjA0MWVlZjEwN2M3NTc0Y2E1ZWZlODdlNTQ1MzMyMTdhYzE5MWUyNjk5Y2M5YjQzZmFkY2QwMWRlMQ' },
+  { date: '30/05/2026', title: 'Chase Paw Patrol Visit', type: 'paw', location: 'Sheffield Meadowhall', time: '10am-4pm', description: 'Don’t miss the fun with Chase!', url: '/store/sheffield-meadowhall', image: 'https://www.thetoyshop.com/medias/Meet-Chase-From-Paw-Patrol.jpg?context=bWFzdGVyfHJvb3R8MTY0MjkyfGltYWdlL2pwZWd8YUdSakwyZ3dZUzh4TWpBek56WTFNVEV6TmpVME1pNXFjR2N8ODNmZTE1YjA0MWVlZjEwN2M3NTc0Y2E1ZWZlODdlNTQ1MzMyMTdhYzE5MWUyNjk5Y2M5YjQzZmFkY2QwMWRlMQ' },
+  { date: '15/04/2026', title: 'Ice Cream Party', type: 'ice', location: 'Downtown Park', time: '12pm-3pm', description: 'Yummy ice creams for everyone!', url: '#', image: 'https://via.placeholder.com/400x200?text=Ice+Cream+Party' },
+  { date: '20/04/2026', title: 'Storytime with Dragons', type: 'book', location: 'Library', time: '11am-1pm', description: 'Enjoy magical stories with dragons!', url: '#', image: 'https://via.placeholder.com/400x200?text=Storytime+Dragons' },
+  { date: '05/05/2026', title: 'Magic Show', type: 'magic', location: 'Community Center', time: '2pm-5pm', description: 'Amazing tricks and illusions!', url: '#', image: 'https://via.placeholder.com/400x200?text=Magic+Show' },
+  { date: '10/05/2026', title: 'Fun Fair', type: 'fair', location: 'City Park', time: '11am-6pm', description: 'Rides, games and fun for the whole family!', url: '#', image: 'https://via.placeholder.com/400x200?text=Fun+Fair' }
+];
+
+// Map type to icon URL
+const eventIcons = {
+  paw: 'https://images.seeklogo.com/logo-png/43/2/paw-patrol-logo-png_seeklogo-430752.png',
+  ice: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMxLjkgNTcuNUM0Ni42IDU3LjUgNTggNDYuMiA1OCAzMi41UzQ2LjYgNy41IDMxLjkgNy41UzUgMTguOCA1IDMyLjVTMTcuMiA1Ny41IDMxLjkgNTcuNVoiIGZpbGw9IiNGNTYzMTMiLz4KPHBhdGggZD0iTTExIDMyLjVBNi41IDYuNSAwIDEgMCAxNSA0Mi41QTYuNSA2LjUgMCAwIDAgMTEgMzIuNVoiIGZpbGw9IiNGNTYzMTMiLz4KPHBhdGggZD0iTTUyIDMyLjVBNi41IDYuNSAwIDEgMCA1NiA0Mi41QTYuNSA2LjUgMCAwIDAgNTIgMzIuNVoiIGZpbGw9IiNGNTYzMTMiLz4KPHBhdGggZD0iTTI2IDQxLjVBNi41IDYuNSAwIDEgMCAzMCA1MS41QTYuNSA2LjUgMCAwIDAgMjYgNDEuNiIgZmlsbD0iI0ZGMjYyMiIvPgo8L3N2Zz4=',
+  book: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMTIiIHk9IjE0IiB3aWR0aD0iMjAiIGhlaWdodD0iMzIiIGZpbGw9IiMzY2M2ZjgiIHN0cm9rZT0iIzY2NiIgc3Ryb2tlLXdpZHRoPSIzIi8+CjxwYXRoIGQ9Ik0zMiAxNkw1MiAxMk1yMCAxIDIwIDIwTTEzIDIwVjQ4TTE5IDIwVjQ4IiBzdHJva2U9IiM2NjYiIHN0cm9rZS13aWR0aD0iMyIvPgo8L3N2Zz4=',
+  magic: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTI4IDMyTDI0IDM2TDI4IDQwIiBzdHJva2U9IiM2NjYiIHN0cm9rZS13aWR0aD0iMyIvPgo8cGF0aCBkPSJNMjggMjhMNDIgNDRMNDQgNDIiIHN0cm9rZT0iIzY2NiIgc3Ryb2tlLXdpZHRoPSIzIi8+CjxwYXRoIGQ9Ik0yNCAyMEwzMiA0OCIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjMiLz4KPC9zdmc+',
+  fair: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMTYiIHk9IjI0IiB3aWR0aD0iMzAiIGhlaWdodD0iMjAiIHN0cm9rZT0iIzY2NiIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSIjZmY5YzYwIi8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMjQiIHI9IjYiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzY2NiIgc3Ryb2tlLXdpZHRoPSIzIi8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iNzAiIHI9IjgiIGZpbGw9IiNmZjU5NzAiIHN0cm9rZT0iIzY2NiIgc3Ryb2tlLXdpZHRoPSIzIi8+Cjwvc3ZnPg==',
+  default: 'https://images.seeklogo.com/logo-png/43/2/paw-patrol-logo-png_seeklogo-430752.png'
+};
+
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+function generateCalendar(month, year) {
+  const calendarGrid = document.getElementById('calendar-grid');
+  calendarGrid.innerHTML = '';
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('month-year').innerText = `${monthNames[month]} ${year}`;
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+
+  for(let i=0; i<firstDay; i++) { calendarGrid.appendChild(document.createElement('div')); }
+
+  for(let day=1; day<=daysInMonth; day++) {
+    const cell = document.createElement('div');
+    cell.className = 'calendar-day';
+    cell.innerText = day;
+
+    const dayStr = `${String(day).padStart(2,'0')}/${String(month+1).padStart(2,'0')}/${year}`;
+    const dayEvents = events.filter(e => e.date === dayStr);
+
+    if(dayEvents.length) {
+      const indicator = document.createElement('div');
+      indicator.className = 'event-indicator';
+      const firstEventType = dayEvents[0].type;
+      indicator.style.background = `url('${eventIcons[firstEventType] || eventIcons.default}') no-repeat center/contain`;
+      cell.appendChild(indicator);
+    }
+
+    cell.addEventListener('click', () => {
+      if(dayEvents.length) {
+        const modal = document.getElementById('event-modal');
+        const container = document.getElementById('modal-events-container');
+        container.innerHTML = '';
+
+        dayEvents.forEach(event => {
+          const eventDiv = document.createElement('div');
+          eventDiv.className = 'modal-event';
+          eventDiv.innerHTML = `
+            <img src="${event.image}" alt="${event.title}">
+            <h3>${event.title}</h3>
+            <p><strong>Location:</strong> ${event.location}</p>
+            <p><strong>Time:</strong> ${event.time}</p>
+            <p>${event.description}</p>
+          `;
+
+          // ICS link
+          const parts = event.date.split('/');
+          const dateICS = `${parts[2]}${parts[1].padStart(2,'0')}${parts[0].padStart(2,'0')}`;
+          const icsContent = `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//FunEvents//EN
+BEGIN:VEVENT
+UID:${Date.now()}@funevents.com
+DTSTAMP:${dateICS}T000000Z
+DTSTART:${dateICS}T100000Z
+DTEND:${dateICS}T160000Z
+SUMMARY:${event.title}
+DESCRIPTION:${event.url}
+LOCATION:${event.location}
+END:VEVENT
+END:VCALENDAR
+          `.trim();
+
+          const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = `${event.title.replace(/\s+/g,'_')}.ics`;
+          link.className = 'add-to-calendar';
+          link.innerText = 'Add to Calendar';
+          eventDiv.appendChild(link);
+
+          container.appendChild(eventDiv);
+        });
+
+        modal.style.display = 'block';
+      }
+    });
+
+    calendarGrid.appendChild(cell);
+  }
+}
+
+document.getElementById('prev-month').addEventListener('click', () => {
+  currentMonth--; if(currentMonth<0){currentMonth=11; currentYear--;}
+  generateCalendar(currentMonth,currentYear);
+});
+document.getElementById('next-month').addEventListener('click', () => {
+  currentMonth++; if(currentMonth>11){currentMonth=0; currentYear++;}
+  generateCalendar(currentMonth,currentYear);
+});
+document.getElementById('close-modal').addEventListener('click', () => {
+  document.getElementById('event-modal').style.display = 'none';
+});
+
+generateCalendar(currentMonth,currentYear);
+</script>

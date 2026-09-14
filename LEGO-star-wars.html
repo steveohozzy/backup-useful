@@ -1,0 +1,664 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+body { background:black; font-family: Arial,sans-serif; min-height:100vh; color:#ffe81f; }
+
+.grid-header {
+  text-align: center;
+}
+.grid-header img {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+  margin: 20px auto;
+
+}
+
+/* GRID */
+.grid { display: grid; gap: 14px; padding: 14px; font-family: "Orbitron", sans-serif;}
+@media (min-width:900px) { .grid { grid-template-columns: repeat(3,1fr); grid-auto-flow: row dense; }}
+@media (max-width:899px) { .grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width:500px) { .grid { grid-template-columns: 1fr; } }
+
+/* CELL */
+.cell {
+  position: relative; height: 220px; overflow: hidden;
+  background:#050505; border: 2px solid #111;
+  box-shadow: 0 0 15px rgba(255,232,31,.15);
+  max-width: 100vw;
+}
+.label {
+  position: absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-size:3rem; font-weight:bold;
+  color: rgba(255,232,31,0.85);
+  text-shadow: 0 0 10px rgba(255,232,31,.5);
+  pointer-events:none; z-index:5;
+  display: none;
+}
+
+/* LOCKED */
+.cell.locked { filter: brightness(.5); }
+.cell.locked::after {
+  content:'LOCKED'; position:absolute; inset:0;
+  display:grid; place-items:center; font-size:1.2rem; letter-spacing:3px;
+  background: rgba(0,0,0,.5); z-index:6;
+}
+
+/* DOORS */
+.doors { position:absolute; inset:0; }
+
+/* LEGO block doors */
+.door {
+  position:absolute; top:0; width:50%; height:100%;
+  background:#181818;
+  border-radius:2px;
+  overflow:hidden;
+  box-shadow: inset 0 4px 6px rgba(0,0,0,0.6);
+  transition: transform 1.5s cubic-bezier(.77,0,.18,1);
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+/* LEGO studs */
+.door::before {
+  content:'';
+  position:absolute;
+  top:10px; left:10px; right:10px; bottom:10px;
+  background-image: radial-gradient(circle at center, #333 50%, transparent 51%);
+  background-size: 20px 20px;
+  pointer-events:none;
+}
+
+/* Left door: solid parts with gaps */
+.door.left::after {
+  content:'';
+  position:absolute;
+  top:0; right:0; width:24px; height:100%;
+  background:#aaa;
+  clip-path: polygon(
+    0 0, 100% 0, 100% 15%, 80% 15%, 80% 25%, 100% 25%, 100% 40%, 80% 40%, 80% 50%,
+    100% 50%, 100% 65%, 80% 65%, 80% 75%, 100% 75%, 100% 85%, 80% 85%, 80% 100%, 0 100%
+  );
+  z-index:3;
+  box-shadow: inset 0 0 4px rgba(255,255,255,0.2);
+}
+
+/* Right door: fills gaps of left door */
+.door.right::after {
+  content:'';
+  position:absolute;
+  top:0; left:0; width:24px; height:100%;
+  background:#aaa;
+  clip-path: polygon(
+    100% 0, 0 0, 0 15%, 20% 15%, 20% 25%, 0 25%, 0 40%, 20% 40%, 20% 50%,
+    0 50%, 0 65%, 20% 65%, 20% 75%, 0 75%, 0 85%, 20% 85%, 20% 100%, 100% 100%
+  );
+  z-index:3;
+  box-shadow: inset 0 0 4px rgba(255,255,255,0.2);
+}
+
+.left { left:0; }
+.right { right:0; }
+
+/* LIGHTS */
+.light { position:absolute; top:50%; width:auto; height:80px; transform:translateY(-50%); display:flex; flex-direction:column; gap:6px; z-index:4; background: #fcfcfc; padding: 10px;}
+.light img { height: 100%;}
+.light span { width:10px; height:10px; border-radius:50%; animation: blink 1s infinite alternate; display: none;}
+.left .light { right:0; padding-right: 0; border-radius: 8px 0 0 8px;} .left .light span { background:red; box-shadow:0 0 10px red; }
+.right .light { left:0; padding-left: 0; border-radius: 0 8px 8px 0;} .right .light span { background:#00ff88; box-shadow:0 0 10px #00ff88; }
+@keyframes blink { from{opacity:.2} to{opacity:1} }
+
+/* FOG/GLOW */
+.fog { position:absolute; inset:-30%; background: radial-gradient(circle at center, rgba(255,255,255,.08), transparent 60%); filter:blur(50px); opacity:.3; pointer-events:none; }
+.glow { position:absolute; inset:0; background:radial-gradient(circle at center, rgba(255,232,31,.15), transparent 60%); opacity:0; transition:opacity 1s ease; }
+
+/* OPEN STATE */
+.cell.open .door.left { transform: translateX(-100%) rotateZ(-1deg); }
+.cell.open .door.right { transform: translateX(100%) rotateZ(1deg); }
+.cell.open .seam { opacity:0; }
+.cell.open .glow { opacity:1; }
+.cell.open .label { opacity:0; }
+
+/* CLAIMED STATE */
+.cell.claimed { border-color:#00ff88; box-shadow:0 0 20px rgba(0,255,136,0.4); }
+.cell.claimed .label { color: rgba(0,255,136,0.85); }
+
+/* SHAKE */
+.shake { animation: shake 0.4s; }
+@keyframes shake {
+  0%{transform:translateX(0) rotateZ(0deg);}
+  20%{transform:translateX(-2px) rotateZ(-1deg);}
+  40%{transform:translateX(2px) rotateZ(1deg);}
+  60%{transform:translateX(-1px) rotateZ(-0.5deg);}
+  80%{transform:translateX(1px) rotateZ(0.5deg);}
+  100%{transform:translateX(0) rotateZ(0deg);}
+}
+
+/* MODAL */
+.starModal { position:fixed; inset:0; background:rgba(0,0,0,.9); display:none; place-items:center; z-index:99999; color:#ffe81f; overflow:hidden; font-family: "Orbitron", sans-serif;}
+.starModal.show{display:grid !important; background: rgba(0,0,0,.9);}
+.starModal.show.stars{display:grid !important; background: transparent;}
+.starModal-inner{width:90%; max-width:500px; text-align:center; perspective:800px; position:relative; background:radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 80%); padding:20px; box-shadow:0 0 80px rgba(255,232,31,.3);}
+.star-close{position:absolute;top:10px;right:10px;background:none;border:none;color:#ffe81f;font-size:1.8rem;cursor:pointer;z-index:10;}
+.crawl-wrapper{position: relative;height:180px;overflow:hidden;perspective:600px;margin-bottom:20px;border:1px solid #222;background:radial-gradient(circle at center, rgba(0,0,0,0.5), black 80%);}
+.crawl{display:inline-block;white-space:pre-line;text-align:center;font-size:1.2rem;transform-origin:bottom center;animation:crawlScroll 10s linear infinite;color:#ffe81f;text-shadow:0 0 5px #ffe81f,0 0 20px #ffe81f;}
+@keyframes crawlScroll{0%{transform:rotateX(25deg) translateY(100%) scale(1); opacity:1;}50%{transform:rotateX(25deg) translateY(0%) scale(0.8);opacity:1;}100%{transform:rotateX(25deg) translateY(-120%) scale(0.5);opacity:0;}}
+.offer-code{display:flex;justify-content:center;align-items:center;gap:10px;font-size:1.2rem;letter-spacing:1px;}
+#copyBtn{background:black;border:2px solid #ffe81f;color:#ffe81f;padding:6px 12px;cursor:pointer;transition:0.2s all;}
+#copyBtn:hover{background:#ffe81f;color:black;}
+
+/* ============================= */
+/* DEATH STAR FINAL DOOR        */
+/* ============================= */
+
+.death-star-door {
+  height: 520px;
+  max-height: 90vh;
+  margin: auto;
+  border-radius: 50%;
+  /*background: radial-gradient(circle at 30% 30%, #666 0%, #444 40%, #222 70%, #111 100%); */
+  background: transparent !important;
+  /*border: 4px solid #888;*/
+  border: none !important;
+  /*box-shadow:
+    inset -20px -20px 40px rgba(0,0,0,0.8),
+    inset 10px 10px 20px rgba(255,255,255,0.1),
+    0 0 25px rgba(0, 255, 200, 0.4);*/
+    box-shadow: none !important;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+  grid-column: 1 / -1;
+  overflow: visible;
+}
+
+/* Remove the normal split doors */
+.death-star-door .left .light,
+.death-star-door .right .light{
+  top: 0;
+  transform: none;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  background-color: black;
+}
+
+/* Subtle surface panel lines */
+.death-star-door::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 12px 12px;
+  opacity: 0.3;
+  border-radius: 50%;
+}
+
+/* Death Star explosion pieces */
+.death-piece {
+  position: absolute;
+  width: 4%;      /* smaller fragments */
+  height: 4%;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 1;
+
+  /* start at center */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 1s ease-out, opacity 1s ease-out;
+
+  /* random color for pieces: light grey (metal) or explosive bright */
+  background: radial-gradient(circle at 30% 30%, #ccc 0%, #999 60%, #555 100%);
+  box-shadow: 0 0 10px rgba(255,200,100,0.3); /* optional glow for explosion look */
+}
+@keyframes explode {
+  to {
+    transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0.2);
+    opacity: 0;
+  }
+}
+
+/* Particle trail effect */
+.death-piece::after {
+  content:'';
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,200,100,0.5) 0%, transparent 70%);
+  top: -10%;
+  left: -10%;
+  pointer-events: none;
+  opacity: 0.6;
+  filter: blur(2px);
+  animation: trail 0.8s forwards;
+}
+
+@keyframes trail {
+  0% { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.2); }
+}
+
+/* Shockwave */
+.death-shockwave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,180,50,0.8) 0%, rgba(255,50,0,0.4) 60%, transparent 100%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 2;
+  animation: shockwave 0.8s ease-out forwards;
+}
+
+@keyframes shockwave {
+  0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0.8; filter: blur(2px);}
+  50% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; filter: blur(4px);}
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; filter: blur(10px);}
+}
+
+/* Fiery background glow behind explosion */
+.death-star-door.exploding::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,180,50,0.2) 0%, rgba(255,50,0,0.1) 70%, transparent 100%);
+  z-index: 0;
+}
+
+.warp-stars {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* WARP OVERLAY (behind modal) */
+.warp-overlay {
+  position: fixed;
+  inset: 0;
+  background: black;
+  z-index: 9990;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* STAR STREAKS */
+.warp-star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(to bottom, white, rgba(255,255,255,0));
+  transform-origin: center;
+  opacity: 1;
+  filter: blur(1px);
+}
+
+/* MODAL FIX (so warp is visible behind it) */
+.starModal {
+  opacity: 0;
+  background: rgba(0,0,0,0); /* start transparent */
+  transition: opacity 0.6s ease, background 1s ease;
+  z-index: 9999;
+}
+
+.starModal.show {
+  opacity: 1;
+}
+</style>
+
+<div class="grid-header">
+  <img src="https://www.thetoyshop.com/medias/image-7-.png?context=bWFzdGVyfHJvb3R8NzE0NjkzfGltYWdlL3BuZ3xhREJoTDJneVlTOHhNamN6TVRBM09ERTBPREV5Tmk5cGJXRm5aU0FvTnlrdWNHNW58ZmNlMzY4ZTNiNmRjMTkzZTU0YWFiZGUwMjU4ZTExODlhMDVmNmJiYjdlNDBiMWNmNTNjNjhlODBlMzliYmUwZg" />
+</div>
+
+<div class="grid"></div>
+
+<!-- MODAL -->
+<div class="starModal" id="starModal">
+  <div class="starModal-inner">
+    <button class="star-close">✕</button>
+    <div class="crawl-wrapper">
+      <div class="crawl" id="crawlText"></div>
+    </div>
+    <div class="offer-code">
+      <span>CODE:</span> <span id="offerCode">STAROFFER1</span>
+      <button id="copyBtn">COPY</button>
+    </div>
+  </div>
+</div>
+
+<audio id="sound" preload="auto">
+  <source src="https://assets.mixkit.co/active_storage/sfx/1523/1523-preview.mp3">
+</audio>
+
+<script>
+const grid = document.querySelector('.grid');
+const starModal = document.getElementById('starModal');
+const crawlText = document.getElementById('crawlText');
+const offerCode = document.getElementById('offerCode');
+const copyBtn = document.getElementById('copyBtn');
+const sound = document.getElementById('sound');
+
+const START_DATE = new Date("2026-03-13T00:00:00");
+START_DATE.setHours(0,0,0,0);
+
+const offers = [
+  { text: "DAY 1\n\nGALACTIC OFFER!\nGet 10% OFF your order!", code: "STAROFFER1" },
+  { text: "DAY 2\n\nINTERSTELLAR DEAL!\nSave 15% today!", code: "STAROFFER2" },
+  { text: "DAY 3\n\nCOSMIC BONUS!\nFree shipping on all items!", code: "STAROFFER3" },
+  { text: "DAY 4\n\nPLANETARY OFFER!\nBuy 1 get 1 half price!", code: "STAROFFER4" },
+  { text: "DAY 5\n\nGALAXY SPECIAL!\nExtra 20% OFF clearance!", code: "STAROFFER5" },
+  { text: "DAY 6\n\nASTRO DEAL!\nFree gift with purchase!", code: "STAROFFER6" },
+  { text: "DAY 7\n\nLIGHTSPEED OFFER!\nSave 25% storewide!", code: "STAROFFER7" },
+  { text: "DAY 8\n\nSTAR CRUISER DEAL!\nGet a bonus item!", code: "STAROFFER8" },
+  { text: "DAY 9\n\nSOLAR SPECIAL!\nFree shipping plus 10% off!", code: "STAROFFER9" },
+  { text: "DAY 10\n\nORBITAL BONUS!\nDiscount applied at checkout!", code: "STAROFFER10" },
+];
+
+const redImages = [
+  'https://thetoyshop.com/medias/row-1-column-1-2-.png?context=bWFzdGVyfHJvb3R8NjgwNjR8aW1hZ2UvcG5nfGFHSmlMMmc0WVM4eE1qY3dORGcyTXpjNE1EZzVOQzl5YjNjdE1TMWpiMngxYlc0dE1TQW9NaWt1Y0c1bnw3YTkyNDU1NTc2MjQ5OTIxOGY2NzUzZGNhMDdhYjVmMzczNTNlMjY3NmIzNTE5YTVhMTU4M2ZkN2QwNzFkN2Vm','https://thetoyshop.com/medias/row-1-column-1-3-.png?context=bWFzdGVyfHJvb3R8MzU2NjV8aW1hZ2UvcG5nfGFESXlMMmhtWWk4eE1qY3dORGcyTkRrMk1EVTBNaTl5YjNjdE1TMWpiMngxYlc0dE1TQW9NeWt1Y0c1bnwzYTZlOGI1YTVkNTRkNjM4ODlmNWUzMTY1MjRjMmQ2NWJmZjY2NmYzZjI4ZGMxZmU5Yjk5M2JjMjY4NDk1Njdh','https://thetoyshop.com/medias/row-1-column-1-4-.png?context=bWFzdGVyfHJvb3R8NjI3MTJ8aW1hZ2UvcG5nfGFEQmpMMmhpTXk4eE1qY3dORGcyTlRJMU5UUTFOQzl5YjNjdE1TMWpiMngxYlc0dE1TQW9OQ2t1Y0c1bnxmMjk4M2RkYTllODkxODYwMmMyODA2OTM3NTdlM2Q0MWFiNGVlMmRhZmZhZjVlZmEyNTg1NThmYmEzODNmYWVi','https://thetoyshop.com/medias/row-1-column-1-5-.png?context=bWFzdGVyfHJvb3R8MTAwMDB8aW1hZ2UvcG5nfGFHUXpMMmhoT0M4eE1qY3dORGcyTlRVMU1ETTJOaTl5YjNjdE1TMWpiMngxYlc0dE1TQW9OU2t1Y0c1bnxmMzhiMjhmODdmYmQxODEzY2YwYjNjNTQ1Mjk3ODVmNmYwMmJiNzRmZDRjODk2YWJjMmFjNmNlYzY1MGIyMGJm','http://thetoyshop.com/medias/row-1-column-1-7-.png?context=bWFzdGVyfHJvb3R8MzY2MDl8aW1hZ2UvcG5nfGFERTVMMmhtTmk4eE1qY3dORFUzTVRZNE5qazBNaTl5YjNjdE1TMWpiMngxYlc0dE1TQW9OeWt1Y0c1bnxjYTM1NDMwNjhjOTJlYjQ5NmNhZmJhNjZhY2IzZTNmMzU0ODBhZTE1YTU0MDQ3YTQ2MTU0MjU4OTYzMDg4MWUx',
+  'https://www.thetoyshop.com/medias/row-1-column-1-8-.png?context=bWFzdGVyfHJvb3R8MTE2Nzd8aW1hZ2UvcG5nfGFHVXhMMmhsWWk4eE1qY3dORFUzTVRrNE1UZzFOQzl5YjNjdE1TMWpiMngxYlc0dE1TQW9PQ2t1Y0c1bnw1MTgzNTY4YmNhNGEyMmY5ZWY4OTIxMzFiNDU5YWQwNmZmYTJlOWU3ZjhmZWEwOTdlNzZhOGZhZWY2MWYwNjJl','https://www.thetoyshop.com/medias/row-1-column-1-9-.png?context=bWFzdGVyfHJvb3R8Mjg5NjF8aW1hZ2UvcG5nfGFESTJMMmc1WlM4eE1qY3dORFUzTWpFeE1qa3lOaTl5YjNjdE1TMWpiMngxYlc0dE1TQW9PU2t1Y0c1bnxmMDcwNzRjNTU5Zjc5YjVmYzc1ZTdlY2I3YmZiNDRhY2ZhNzhlMzc1MDFjZmFiNWUzYmE5YzNmZGIyM2VjNDg4','https://www.thetoyshop.com/medias/row-1-column-1-10-.png?context=bWFzdGVyfHJvb3R8MTkyMzR8aW1hZ2UvcG5nfGFHVmtMMmd6TUM4eE1qY3dORGcyTmprNU1qRTFPQzl5YjNjdE1TMWpiMngxYlc0dE1TQW9NVEFwTG5CdVp3fDYzYWUwNWViN2UyMmMxNjJmOTk5N2JiMTY0NGEyZTU2OTU3ZTBhMjU4Njk4ZGE3YmYxNzhiN2E0NDYyYzQzMjI','https://www.thetoyshop.com/medias/row-1-column-1-11-.png?context=bWFzdGVyfHJvb3R8MjA0ODl8aW1hZ2UvcG5nfGFEUmlMMmd5TkM4eE1qY3dORGcyTnpNNE5UTTNOQzl5YjNjdE1TMWpiMngxYlc0dE1TQW9NVEVwTG5CdVp3fDljYzNlN2ZlMzI0MGI2YzIyMjQ2MzIxNWViNGYxMTIwMWJjNjhiMjMzMWZjNTQyYTdlODBmN2E3NjIxNzNlZjc','https://www.thetoyshop.com/medias/row-1-column-1-12-.png?context=bWFzdGVyfHJvb3R8ODI2MjYxfGltYWdlL3BuZ3xhRGN4TDJnNE9TOHhNamN3TkRVM01qY3pOVFV4T0M5eWIzY3RNUzFqYjJ4MWJXNHRNU0FvTVRJcExuQnVad3xlYzFiZDkwYmJkZjQ4ZTA2ZDY5MTk0ZDdhYmVlMDQwNzMzMDYwZjNmMzAyYmUxNjg3NWQ1OTAyNzI2MmIwYjU2'
+];
+
+const greenImages = [
+  'https://thetoyshop.com/medias/row-1-column-2.png?context=bWFzdGVyfHJvb3R8NTg5NjF8aW1hZ2UvcG5nfGFHWmhMMmc0T1M4eE1qY3dORGcyTXpjeE5UTTFPQzl5YjNjdE1TMWpiMngxYlc0dE1pNXdibWN8NTdkMTJmN2YxNDYzNmUwNmQ1ZTRkYWI0ZjliNjJlMmY0MWEwMGZiYzkxZGEzYWJjY2ZiOWQzMTFkNWY2YzAwMw','https://thetoyshop.com/medias/row-1-column-2-1-.png?context=bWFzdGVyfHJvb3R8MjQwMzR8aW1hZ2UvcG5nfGFERmtMMmhpTmk4eE1qY3dORGcyTlRFNE9Ua3hPQzl5YjNjdE1TMWpiMngxYlc0dE1pQW9NU2t1Y0c1bnwxN2VjZTk4MTQ0MDFkZmY2OGMzZjI3YWUyN2U4MWI3MTc3NjNkODI3MTIwODdhOTM0MDFhYzczMDU3NzYyNWVh','https://thetoyshop.com/medias/row-1-column-2-2-.png?context=bWFzdGVyfHJvb3R8Mzg4MjJ8aW1hZ2UvcG5nfGFHWmlMMmhoWmk4eE1qY3dORGcyTlRNeU1EazVNQzl5YjNjdE1TMWpiMngxYlc0dE1pQW9NaWt1Y0c1bnxhNWVmMGMyM2M1M2RhNmYyZDBjZmNkMDUzZGZiNTg1YjNiMzc5ZjQ2OGQxNTFiMjhlODczZDVjMzM5NjQzZDAz','https://thetoyshop.com/medias/row-1-column-2-3-.png?context=bWFzdGVyfHJvb3R8ODUyMXxpbWFnZS9wbmd8YUdRMUwyaGhOUzh4TWpjd05EZzJOVFl4TlRrd01pOXliM2N0TVMxamIyeDFiVzR0TWlBb015a3VjRzVufDA1N2IxMDdlMzgyMTM1NjJlMGEwNjljNjI3YjBhM2I5NGQ3MmEyYzUzNGU0ZDYwNzY5OTYyYWFiMGRkNTIyOTU','https://thetoyshop.com/medias/row-1-column-2-5-.png?context=bWFzdGVyfHJvb3R8NDY2MzF8aW1hZ2UvcG5nfGFEQTRMMmhtTXk4eE1qY3dORFUzTVRjMU1qUTNPQzl5YjNjdE1TMWpiMngxYlc0dE1pQW9OU2t1Y0c1bnw0OGNmY2U4ZTFkNjFjM2Q1N2IzODg1YWUxOGZiZmVjNDMyMmYyMTMzNWM1Yzc1ZDUxYzkwNDgzOGQzMDEyMzI5',
+  'https://www.thetoyshop.com/medias/row-1-column-2-6-.png?context=bWFzdGVyfHJvb3R8MTA5OTd8aW1hZ2UvcG5nfGFETTNMMmhoTVM4eE1qY3dORFUzTWpBME56TTVNQzl5YjNjdE1TMWpiMngxYlc0dE1pQW9OaWt1Y0c1bnw0ZjU4OTM1NWY5YjM0MDQzNDkxMjc4Y2FlYzZjM2ZhM2Q3N2Q3NTYxMDIxZmM5ZTZkMWNmYWM1ZWI2N2I1MTkx','https://www.thetoyshop.com/medias/row-1-column-2-7-.png?context=bWFzdGVyfHJvb3R8Mjk5NTl8aW1hZ2UvcG5nfGFEYzRMMmc1WkM4eE1qY3dORFUzTWpFM09EUTJNaTl5YjNjdE1TMWpiMngxYlc0dE1pQW9OeWt1Y0c1bnwzODI0MzBkYzU4ZWI5MTk5ODBlY2QwNGY0ZDE1OTU0NThhZDVhNDM5OGI0MGNlZGM5MmFjMTI5ZDA2ZDA5NDM0','https://www.thetoyshop.com/medias/row-1-column-2-8-.png?context=bWFzdGVyfHJvb3R8MTkxMzB8aW1hZ2UvcG5nfGFEZGhMMmd4WkM4eE1qY3dORGcyTnpFNE9EYzJOaTl5YjNjdE1TMWpiMngxYlc0dE1pQW9PQ2t1Y0c1bnw5MDM5Yjg1NWEwMmI5MThhODk4MWEyNTM4Y2IyODgxMmRlYjFkYmI2N2FkM2VhZGVjNTc4NjNjOWFhOGUyYjg0','https://www.thetoyshop.com/medias/row-1-column-2-9-.png?context=bWFzdGVyfHJvb3R8MjA1NjJ8aW1hZ2UvcG5nfGFEVmlMMmd5Tnk4eE1qY3dORGcyTnpRMU1Ea3hNQzl5YjNjdE1TMWpiMngxYlc0dE1pQW9PU2t1Y0c1bnwwOTA5YTU1NzQ5OGQzNTU1YTNkYjljZjAzODE3NmJmZGNhOTE4NmJkNWY1YTBjNTRiZTljMjcwZGZiZjg1M2Fh','https://www.thetoyshop.com/medias/row-1-column-2-10-.png?context=bWFzdGVyfHJvb3R8ODA4NTkxfGltYWdlL3BuZ3xhRFl3TDJnNE5pOHhNamN3TkRVM01qZ3dNVEExTkM5eWIzY3RNUzFqYjJ4MWJXNHRNaUFvTVRBcExuQnVad3xiNGFmZDM2OGExNmRlNWZmZWQ4MzI1YjY5Zjc4NWQ4NDFlZTQwNTY3NzFmNWMyYmE1ODEzZDRhZDYxNDA2M2Zi'
+];
+
+function daysBetween(a,b){return Math.floor((b-a)/86400000);}
+const today = new Date(); today.setHours(0,0,0,0);
+const dayOffset = daysBetween(START_DATE,today);
+
+let claimedDoors = JSON.parse(localStorage.getItem('claimedDoors')) || [];
+
+offers.forEach((offer,i)=>{
+  const cell = document.createElement('div');
+  cell.className = `cell cell-${i+1}`;
+  //if(i !== dayOffset) cell.classList.add('locked');
+
+  cell.innerHTML = `
+    <div class="label">${i+1}</div>
+    <div class="doors">
+      <div class="fog"></div>
+      <div class="glow"></div>
+      <div class="door left">
+        <div class="light"><span></span><span></span><span></span></div>
+      </div>
+      <div class="seam"></div>
+      <div class="door right">
+        <div class="light"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  `;
+
+  // add unique images per door
+  const leftLight = cell.querySelector('.door.left .light');
+  const rightLight = cell.querySelector('.door.right .light');
+  
+  if (i === offers.length - 1) {
+    cell.classList.add('death-star-door');
+  }
+
+  const leftImg = document.createElement('img');
+  leftImg.src = redImages[i % redImages.length];
+  leftLight.appendChild(leftImg);
+
+  const rightImg = document.createElement('img');
+  rightImg.src = greenImages[i % greenImages.length];
+  rightLight.appendChild(rightImg);
+
+  if(claimedDoors.includes(i)) cell.classList.add('claimed');
+
+  //if(i === dayOffset){
+    cell.addEventListener('click', ()=>{ openDoor(cell, i, offer); });
+  //}
+
+  grid.appendChild(cell);
+});
+
+function openDoor(cell, i, offer){
+  const leftDoor = cell.querySelector('.door.left');
+  const rightDoor = cell.querySelector('.door.right');
+
+  // Warp speed effect for door 2
+  if(i === 1){
+    // Remove old crawl text
+    crawlText.style.display = 'none';
+
+    // Create the image in place of the crawl
+    const warpImage = document.createElement('img');
+    warpImage.src = 'https://www.thetoyshop.com/medias/1200Wx1200H-578321-Primary?context=bWFzdGVyfGltYWdlc3wyNjkwMzh8aW1hZ2UvanBlZ3xhR0U1TDJoaU5pOHhNalk1TXpJeE5qZzFOREEwTmk4eE1qQXdWM2d4TWpBd1NGODFOemd6TWpGZlVISnBiV0Z5ZVF8YTExOWM0ZmQ2YjIxOGM5Zjg2MTQ3ZTNhMTQ3MDdiMDY4NjliOWMxZGNlN2Q1OWE0MjY4YjI3M2QwYTcyMTZjNQ';
+    warpImage.style.maxWidth = '100%';
+    warpImage.style.maxHeight = '100%';
+    warpImage.style.objectFit = 'contain';
+    warpImage.style.margin = 'auto';
+    warpImage.style.display = 'block';
+    starModal.querySelector('.starModal-inner .crawl-wrapper').appendChild(warpImage);
+
+    starModal.classList.add('show');
+    starModal.classList.add('stars');
+
+    leftDoor.style.display = 'none';
+    rightDoor.style.display = 'none';
+
+    // Create warp canvas
+    let warpCanvas = document.createElement('canvas');
+    warpCanvas.id = 'warp';
+    warpCanvas.style.position = 'fixed';
+    warpCanvas.style.inset = '0';
+    warpCanvas.style.zIndex = '9989';
+    document.body.appendChild(warpCanvas);
+
+    const canvas = warpCanvas;
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    const starCount = 800;
+
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Star {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = (Math.random()-0.5)*canvas.width;
+        this.y = (Math.random()-0.5)*canvas.height;
+        this.z = Math.random()*canvas.width;
+        this.pz = this.z;
+      }
+      update() { this.z -= 10; if(this.z<1) this.reset(); }
+      draw() {
+        const sx = (this.x/this.z)*canvas.width + canvas.width/2;
+        const sy = (this.y/this.z)*canvas.height + canvas.height/2;
+        const px = (this.x/this.pz)*canvas.width + canvas.width/2;
+        const py = (this.y/this.pz)*canvas.height + canvas.height/2;
+        this.pz = this.z;
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(px, py);
+        ctx.lineTo(sx, sy);
+        ctx.stroke();
+      }
+    }
+
+    for(let s=0; s<starCount; s++) stars.push(new Star());
+
+    let warpAnimating = true;
+    function animate() {
+      if(!warpAnimating) return; // stop if modal closed
+      ctx.fillStyle='black';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      stars.forEach(s=>{ s.update(); s.draw(); });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Mark claimed
+    if(!claimedDoors.includes(i)){
+      cell.classList.add('claimed');
+      claimedDoors.push(i);
+      localStorage.setItem('claimedDoors', JSON.stringify(claimedDoors));
+    }
+
+    // Save reference for cleanup
+    starModal._warpCanvas = warpCanvas;
+    starModal._warpStop = ()=>{ 
+        warpAnimating=false; 
+        warpCanvas.remove(); 
+        leftDoor.style.display='flex'; 
+        rightDoor.style.display='flex'; 
+        warpImage.remove(); // remove the warp image when closing
+        crawlText.style.display = 'block'; // restore crawl for other doors
+    };
+
+    return; // special warp branch ends here
+}
+
+  if(cell.classList.contains('death-star-door')) {
+    leftDoor.style.display = 'none';
+    rightDoor.style.display = 'none';
+
+    // Add shockwave
+const shockwave = document.createElement('div');
+shockwave.className = 'death-shockwave';
+cell.appendChild(shockwave);
+
+// Remove shockwave after animation
+setTimeout(()=> shockwave.remove(), 1000);
+sound.src = "https://cdn.pixabay.com/download/audio/2024/02/08/audio_afd76d28d1.mp3?filename=daviddumaisaudio-sci-fi-explosion-09-190268.mp3";
+    sound.currentTime = 0;
+    sound.play();
+    cell.querySelectorAll('.death-piece').forEach(p => p.remove());
+    
+
+   const pieceCount = 400; // more fragments
+const centerX = cell.clientWidth / 2;
+const centerY = cell.clientHeight / 2;
+const radius = cell.clientWidth / 2 * 0.9;
+
+for(let p=0; p<pieceCount; p++){
+    const piece = document.createElement('div');
+    piece.className = 'death-piece';
+    cell.appendChild(piece);
+
+    const angle = Math.random() * 2 * Math.PI;
+    const r = Math.sqrt(Math.random()) * radius;
+    const startX = centerX + r * Math.cos(angle);
+    const startY = centerY + r * Math.sin(angle);
+    piece.style.top = `${startY}px`;
+    piece.style.left = `${startX}px`;
+
+    const explodeDistance = 300 + Math.random() * 400; // bigger spread
+    piece.style.setProperty('--x', `${Math.cos(angle)*explodeDistance}px`);
+    piece.style.setProperty('--y', `${Math.sin(angle)*explodeDistance}px`);
+    piece.style.setProperty('--r', `${Math.random()*1080-540}deg`); // more rotation
+
+    // small random scale flicker for fiery effect
+    piece.style.transform = `translate(-50%, -50%) scale(${0.5 + Math.random()*0.5})`;
+
+    // trigger animation
+    setTimeout(()=> piece.style.animation = `explode 1s forwards`, Math.random()*200);
+}
+
+    setTimeout(() => {
+        crawlText.textContent = offer.text;
+        offerCode.textContent = offer.code;
+        starModal.classList.add('show');
+    }, 800);
+} else {
+    // Normal doors (unchanged)
+    leftDoor.classList.add('shake');
+    rightDoor.classList.add('shake');
+    sound.src = "https://assets.mixkit.co/active_storage/sfx/1523/1523-preview.mp3";
+
+    setTimeout(()=>{
+      leftDoor.classList.remove('shake');
+      rightDoor.classList.remove('shake');
+
+      cell.classList.remove('open');
+      void cell.offsetWidth;
+      cell.classList.add('open');
+
+      setTimeout(()=>{ sound.currentTime=0; sound.play(); }, 200);
+
+      if(!claimedDoors.includes(i)){
+        cell.classList.add('claimed');
+        claimedDoors.push(i);
+        localStorage.setItem('claimedDoors', JSON.stringify(claimedDoors));
+      }
+
+      setTimeout(()=>{
+        crawlText.textContent = offer.text;
+        offerCode.textContent = offer.code;
+        starModal.classList.add('show');
+      }, 1500);
+
+    }, 400);
+  }
+}
+
+document.querySelector('.star-close').onclick = () => {
+  starModal.classList.remove('show');
+  starModal.classList.remove('stars');
+
+  // Stop warp effect if exists
+  if(starModal._warpStop){
+    starModal._warpStop();
+    starModal._warpStop = null;
+    starModal._warpCanvas = null;
+  }
+
+  // Restore any open regular doors
+  const openDoor = grid.querySelector('.cell.open');
+  if(openDoor){
+    openDoor.classList.remove('open');
+    void openDoor.offsetWidth;
+    setTimeout(()=>{ sound.currentTime=0; sound.play(); }, 400);
+  }
+
+  // Restore Death Star door if visible
+  const deathDoor = grid.querySelector('.cell.death-star-door');
+  if(deathDoor){
+    // Remove explosion pieces
+    deathDoor.querySelectorAll('.death-piece').forEach(p=>p.remove());
+
+    // Restore Death Star visual
+    deathDoor.style.background = "radial-gradient(circle at 30% 30%, #666 0%, #444 40%, #222 70%, #111 100%)";
+    deathDoor.style.border = "4px solid #888";
+
+    const leftDoor = deathDoor.querySelector('.door.left');
+    const rightDoor = deathDoor.querySelector('.door.right');
+    if(leftDoor) leftDoor.style.display = 'flex';
+    if(rightDoor) rightDoor.style.display = 'flex';
+
+    void deathDoor.offsetWidth; // trigger reflow
+  }
+
+  // Remove 'open' class from any other doors
+  const claimedDoor = grid.querySelector('.cell.open');
+  if(claimedDoor){
+    claimedDoor.classList.remove('open');
+  }
+};
+
+copyBtn.onclick = () => {
+  navigator.clipboard.writeText(offerCode.textContent);
+  copyBtn.textContent = 'COPIED';
+  setTimeout(()=> copyBtn.textContent='COPY',1500);
+};
+
+  </script>

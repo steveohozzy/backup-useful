@@ -1,0 +1,5239 @@
+
+
+<style>
+
+/* =========================================================
+   GIFT GUIDE - EMBED SAFE RESET
+========================================================= */
+
+#gift-guide-app,
+#gift-guide-app * {
+  box-sizing: border-box;
+}
+
+#gift-guide-app {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+
+  position: relative;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  isolation: isolate;
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(255,255,255,.08),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 85%,
+      rgba(215,25,72,.15),
+      transparent 35%
+    ),
+    #07130d;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+#gift-guide-app .gift-guide-inner {
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+}
+
+
+/* =========================================================
+   VIEWER
+========================================================= */
+
+#gift-guide-app .viewer {
+
+  flex: 1;
+
+  min-height: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    20px
+    20px
+    65px;
+
+}
+
+
+/* =========================================================
+   BOOK
+========================================================= */
+
+#gift-guide-app .book {
+
+  width:
+    min(1200px, 94vw);
+
+  height:
+    min(78vh, 850px);
+
+  position: relative;
+
+  perspective:
+    2600px;
+
+  transform-style:
+    preserve-3d;
+
+  filter:
+    drop-shadow(
+      0 35px 55px rgba(0,0,0,.45)
+    );
+
+  outline: none;
+
+}
+
+
+/* =========================================================
+   SPREAD
+========================================================= */
+
+#gift-guide-app .spread {
+
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  overflow: hidden;
+
+  border-radius: 8px;
+
+  background:
+    #f5f1e8;
+
+  z-index: 1;
+
+}
+
+
+#gift-guide-app .spread-page {
+
+  position: relative;
+
+  width: 50%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background:
+    #f5f1e8;
+
+}
+
+
+#gift-guide-app .spread-page.left {
+
+  box-shadow:
+    inset -20px 0 30px -30px rgba(0,0,0,.75);
+
+}
+
+
+#gift-guide-app .spread-page.right {
+
+  box-shadow:
+    inset 20px 0 30px -30px rgba(0,0,0,.75);
+
+}
+
+
+/* =========================================================
+   FLIP SHEET
+========================================================= */
+
+#gift-guide-app .flip-sheet {
+
+  position: absolute;
+
+  top: 0;
+
+  width: 50%;
+  height: 100%;
+
+  z-index: 20;
+
+  display: none;
+
+  transform-style:
+    preserve-3d;
+
+  will-change:
+    transform;
+
+  touch-action:
+    none;
+
+  user-select:
+    none;
+
+  pointer-events:
+    none;
+
+}
+
+
+#gift-guide-app .flip-sheet.forward {
+
+  left: 50%;
+
+  transform-origin:
+    left center;
+
+}
+
+
+#gift-guide-app .flip-sheet.backward {
+
+  left: 0;
+
+  transform-origin:
+    right center;
+
+}
+
+
+/* =========================================================
+   FLIP FACE
+========================================================= */
+
+#gift-guide-app .flip-face {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background:
+    #f5f1e8;
+
+  backface-visibility:
+    hidden;
+
+  -webkit-backface-visibility:
+    hidden;
+
+  transform-style:
+    preserve-3d;
+
+}
+
+
+#gift-guide-app .flip-face.back {
+
+  transform:
+    rotateY(180deg);
+
+}
+
+
+/* =========================================================
+   GENERIC PAGE
+========================================================= */
+
+#gift-guide-app .page {
+
+  width: 100%;
+  height: 100%;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    #f5f1e8;
+
+}
+
+
+/* =========================================================
+   PAGE BACKGROUND
+========================================================= */
+
+#gift-guide-app .page-background {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 0;
+
+  background-position:
+    center;
+
+  background-size:
+    cover;
+
+  background-repeat:
+    no-repeat;
+
+}
+
+
+#gift-guide-app .page-background::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    var(
+      --page-overlay,
+      rgba(255,255,255,.78)
+    );
+
+}
+
+
+/* =========================================================
+   PAGE INNER
+========================================================= */
+
+#gift-guide-app .page-inner {
+
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+  height: 100%;
+
+  padding:
+    clamp(18px, 2.2vw, 32px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+}
+
+
+/* =========================================================
+   CATALOGUE HEADING
+   INTENTIONALLY HIDDEN
+========================================================= */
+
+#gift-guide-app .catalogue-heading {
+
+  display: none;
+
+}
+
+
+/* =========================================================
+   PAGE LOGO
+========================================================= */
+
+#gift-guide-app .page-logo {
+
+  position: absolute;
+
+  top:
+    clamp(13px, 1.5vw, 22px);
+
+  right:
+    clamp(14px, 1.8vw, 25px);
+
+  z-index: 10;
+
+  max-width:
+    90px;
+
+  max-height:
+    45px;
+
+  object-fit:
+    contain;
+
+}
+
+
+/* =========================================================
+   SECTIONS CONTAINER
+========================================================= */
+
+#gift-guide-app .catalogue-sections {
+
+  flex: 1;
+
+  min-height: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap:
+    clamp(8px, 1vw, 13px);
+
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+#gift-guide-app .catalogue-section {
+
+  position: relative;
+
+  min-height: 0;
+
+  flex: 1;
+
+  overflow: hidden;
+
+  border-radius:
+    clamp(9px, 1vw, 15px);
+
+  background:
+    rgba(255,255,255,.52);
+
+  border:
+    1px solid rgba(0,0,0,.06);
+
+}
+
+
+/* =========================================================
+   SECTION BACKGROUND
+========================================================= */
+
+#gift-guide-app .section-background {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 0;
+
+  background-position:
+    center;
+
+  background-size:
+    cover;
+
+  background-repeat:
+    no-repeat;
+
+}
+
+
+#gift-guide-app .section-background::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    var(
+      --section-overlay,
+      rgba(255,255,255,.7)
+    );
+
+}
+
+
+/* =========================================================
+   SECTION INNER
+========================================================= */
+
+#gift-guide-app .section-inner {
+
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+  height: 100%;
+
+  padding:
+    clamp(8px, 1vw, 14px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 0;
+
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+#gift-guide-app .section-top {
+
+  flex:
+    0 0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom:
+    clamp(6px, .7vw, 9px);
+
+}
+
+
+#gift-guide-app .section-brand {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  min-width: 0;
+
+}
+
+
+#gift-guide-app .section-logo {
+
+  width:
+    clamp(22px, 2.5vw, 34px);
+
+  height:
+    clamp(22px, 2.5vw, 34px);
+
+  object-fit:
+    contain;
+
+  flex:
+    0 0 auto;
+
+}
+
+
+#gift-guide-app .section-logo-placeholder {
+
+  width:
+    clamp(22px, 2.5vw, 34px);
+
+  height:
+    clamp(22px, 2.5vw, 34px);
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 7px;
+
+  background:
+    #d71948;
+
+  color:
+    white;
+
+  font-size:
+    12px;
+
+}
+
+
+#gift-guide-app .section-name {
+
+  font-size:
+    clamp(7px, .8vw, 10px);
+
+  font-weight:
+    950;
+
+  white-space:
+    nowrap;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+}
+
+
+#gift-guide-app .section-label {
+
+  padding:
+    4px 7px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(0,0,0,.07);
+
+  font-size:
+    6px;
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    .1em;
+
+  text-transform:
+    uppercase;
+
+  white-space:
+    nowrap;
+
+}
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+#gift-guide-app .section-heading {
+
+  flex:
+    0 0 auto;
+
+  display: flex;
+
+  align-items: baseline;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom:
+    clamp(5px, .6vw, 8px);
+
+}
+
+
+#gift-guide-app .section-title {
+
+  margin: 0;
+
+  font-size:
+    clamp(13px, 1.4vw, 19px);
+
+  line-height:
+    .95;
+
+  letter-spacing:
+    -.035em;
+
+  font-weight:
+    950;
+
+}
+
+
+#gift-guide-app .section-description {
+
+  margin: 0;
+
+  font-size:
+    clamp(6px, .65vw, 9px);
+
+  line-height:
+    1.3;
+
+  opacity:
+    .45;
+
+}
+
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+#gift-guide-app .products {
+
+  flex: 1;
+
+  min-height: 0;
+
+  display: grid;
+
+  gap:
+    clamp(5px, .7vw, 9px);
+
+}
+
+
+/* =========================================================
+   HORIZONTAL
+========================================================= */
+
+#gift-guide-app .layout-horizontal .products {
+
+  grid-template-columns:
+    repeat(
+      var(--product-count, 4),
+      minmax(0, 1fr)
+    );
+
+  grid-template-rows:
+    1fr;
+
+}
+
+
+/* =========================================================
+   FEATURED LEFT
+========================================================= */
+
+#gift-guide-app .layout-featured-left .products {
+
+  grid-template-columns:
+    1.75fr 1fr 1fr;
+
+  grid-template-rows:
+    repeat(2, minmax(0, 1fr));
+
+}
+
+
+#gift-guide-app .layout-featured-left
+.products
+.product:first-child {
+
+  grid-row:
+    1 / 3;
+
+}
+
+
+/* =========================================================
+   FEATURED RIGHT
+========================================================= */
+
+#gift-guide-app .layout-featured-right .products {
+
+  grid-template-columns:
+    1fr 1fr 1.75fr;
+
+  grid-template-rows:
+    repeat(2, minmax(0, 1fr));
+
+}
+
+
+#gift-guide-app .layout-featured-right
+.products
+.product:first-child {
+
+  grid-column:
+    3;
+
+  grid-row:
+    1 / 3;
+
+}
+
+
+/* =========================================================
+   FEATURED TOP
+========================================================= */
+
+#gift-guide-app .layout-featured-top .products {
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  grid-template-rows:
+    1.7fr 1fr;
+
+}
+
+
+#gift-guide-app .layout-featured-top
+.products
+.product:first-child {
+
+  grid-column:
+    1 / 3;
+
+}
+
+
+/* =========================================================
+   FEATURED BOTTOM
+========================================================= */
+
+#gift-guide-app .layout-featured-bottom .products {
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  grid-template-rows:
+    1fr 1.7fr;
+
+}
+
+
+#gift-guide-app .layout-featured-bottom
+.products
+.product:first-child {
+
+  grid-column:
+    3 / 5;
+
+  grid-row:
+    2;
+
+}
+
+
+/* =========================================================
+   TWO COLUMN
+========================================================= */
+
+#gift-guide-app .layout-two-column .products {
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  grid-template-rows:
+    repeat(2, minmax(0, 1fr));
+
+}
+
+
+/* =========================================================
+   PRODUCT
+========================================================= */
+
+#gift-guide-app .product {
+
+  position: relative;
+
+  min-width: 0;
+  min-height: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  padding:
+    clamp(4px, .55vw, 7px);
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(0,0,0,.06);
+
+  border-radius:
+    clamp(7px, .8vw, 12px);
+
+  background:
+    rgba(255,255,255,.94);
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,.055);
+
+  text-decoration:
+    none;
+
+  color:
+    inherit;
+
+  cursor:
+    pointer;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease;
+
+}
+
+
+#gift-guide-app .product:hover {
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 7px 18px rgba(0,0,0,.1);
+
+}
+
+
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
+
+#gift-guide-app .product-image {
+
+  position: relative;
+
+  flex: 1;
+
+  min-height: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  overflow: hidden;
+
+  border-radius:
+    clamp(5px, .6vw, 9px);
+
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      white,
+      transparent 60%
+    ),
+    #edf0eb;
+
+}
+
+
+#gift-guide-app .product-image img {
+
+  width: 100%;
+  height: 100%;
+
+  object-fit:
+    contain;
+
+  user-select:
+    none;
+
+  -webkit-user-drag:
+    none;
+
+}
+
+
+#gift-guide-app .emoji {
+
+  font-size:
+    clamp(24px, 4vw, 58px);
+
+  line-height:
+    1;
+
+}
+
+
+#gift-guide-app .product.featured .emoji {
+
+  font-size:
+    clamp(45px, 7vw, 100px);
+
+}
+
+
+/* =========================================================
+   BADGE
+========================================================= */
+
+#gift-guide-app .badge {
+
+  position: absolute;
+
+  top: 5px;
+  left: 5px;
+
+  z-index: 4;
+
+  padding:
+    4px 6px;
+
+  border-radius:
+    5px;
+
+  color:
+    white;
+
+  background:
+    #d71948;
+
+  font-size:
+    5px;
+
+  line-height:
+    1;
+
+  font-weight:
+    950;
+
+}
+
+
+/* =========================================================
+   PRODUCT INFO
+========================================================= */
+
+#gift-guide-app .product-info {
+
+  flex:
+    0 0 auto;
+
+  padding:
+    5px 2px 1px;
+
+}
+
+
+#gift-guide-app .product-name {
+
+  font-size:
+    clamp(6px, .75vw, 10px);
+
+  line-height:
+    1.1;
+
+  font-weight:
+    850;
+
+}
+
+
+#gift-guide-app .product-meta {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 5px;
+
+  margin-top:
+    3px;
+
+}
+
+
+#gift-guide-app .price {
+
+  font-size:
+    clamp(9px, 1vw, 13px);
+
+  font-weight:
+    950;
+
+}
+
+
+#gift-guide-app .age {
+
+  font-size:
+    5px;
+
+  font-weight:
+    800;
+
+  opacity:
+    .4;
+
+}
+
+
+/* =========================================================
+   FEATURED INFO
+========================================================= */
+
+#gift-guide-app .product.featured .product-info {
+
+  padding:
+    6px 3px 2px;
+
+}
+
+
+#gift-guide-app .product.featured .product-name {
+
+  font-size:
+    clamp(8px, 1vw, 13px);
+
+}
+
+
+#gift-guide-app .product.featured .price {
+
+  font-size:
+    clamp(10px, 1.2vw, 16px);
+
+}
+
+
+/* =========================================================
+   PAGE NUMBER
+========================================================= */
+
+#gift-guide-app .page-number {
+
+  position: absolute;
+
+  right: 14px;
+  bottom: 7px;
+
+  z-index: 10;
+
+  font-size:
+    6px;
+
+  opacity:
+    .3;
+
+  font-weight:
+    900;
+
+}
+
+
+/* =========================================================
+   COVER
+========================================================= */
+
+#gift-guide-app .cover {
+
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  color:
+    white;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(255,255,255,.12),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(255,196,72,.12),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #071b12 0%,
+      #0c3a24 48%,
+      #07150e 100%
+    );
+
+}
+
+
+#gift-guide-app .cover-background {
+
+  position: absolute;
+
+  inset: 0;
+
+  background-position:
+    center;
+
+  background-size:
+    cover;
+
+  background-repeat:
+    no-repeat;
+
+  z-index: 0;
+
+}
+
+
+#gift-guide-app .cover-background::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    rgba(0,0,0,.2);
+
+}
+
+
+#gift-guide-app .cover-inner {
+
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+  height: 100%;
+
+  padding:
+    clamp(22px, 5vw, 70px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+}
+
+
+#gift-guide-app .cover-logo {
+
+  max-width: 180px;
+  max-height: 70px;
+
+  object-fit:
+    contain;
+
+  margin-bottom:
+    clamp(18px, 4vw, 40px);
+
+}
+
+
+#gift-guide-app .cover-logo-text {
+
+  display: inline-flex;
+
+  padding:
+    9px 16px;
+
+  border:
+    1px solid rgba(255,255,255,.2);
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  backdrop-filter:
+    blur(12px);
+
+  font-size:
+    clamp(8px, 1vw, 12px);
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    .12em;
+
+}
+
+
+#gift-guide-app .cover-gift {
+
+  font-size:
+    clamp(65px, 11vw, 140px);
+
+  line-height:
+    1;
+
+  margin-bottom:
+    clamp(15px, 3vw, 28px);
+
+}
+
+
+#gift-guide-app .cover-kicker {
+
+  margin-bottom:
+    8px;
+
+  font-size:
+    clamp(7px, 1vw, 11px);
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .22em;
+
+  text-transform:
+    uppercase;
+
+  opacity:
+    .65;
+
+}
+
+
+#gift-guide-app .cover-title {
+
+  margin: 0;
+
+  font-size:
+    clamp(32px, 5.5vw, 72px);
+
+  line-height:
+    .88;
+
+  letter-spacing:
+    -.07em;
+
+  font-weight:
+    950;
+
+}
+
+
+#gift-guide-app .cover-title span {
+
+  display: block;
+
+  color:
+    #ffd15c;
+
+}
+
+
+#gift-guide-app .cover-subtitle {
+
+  max-width:
+    380px;
+
+  margin:
+    18px auto 0;
+
+  font-size:
+    clamp(8px, 1vw, 13px);
+
+  line-height:
+    1.5;
+
+  opacity:
+    .62;
+
+}
+
+
+#gift-guide-app .cover-year {
+
+  position: absolute;
+
+  left:
+    clamp(18px, 3vw, 35px);
+
+  bottom:
+    clamp(18px, 3vw, 35px);
+
+  font-size:
+    clamp(8px, 1vw, 11px);
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .18em;
+
+  opacity:
+    .55;
+
+}
+
+
+/* =========================================================
+   BACK COVER
+========================================================= */
+
+#gift-guide-app .back-cover {
+
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  color:
+    white;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(215,25,72,.25),
+      transparent 35%
+    ),
+    linear-gradient(
+      150deg,
+      #07150e,
+      #09291a 55%,
+      #041009
+    );
+
+}
+
+
+#gift-guide-app .back-cover-background {
+
+  position: absolute;
+
+  inset: 0;
+
+  background-position:
+    center;
+
+  background-size:
+    cover;
+
+  background-repeat:
+    no-repeat;
+
+  z-index: 0;
+
+}
+
+
+#gift-guide-app .back-cover-background::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    rgba(0,0,0,.25);
+
+}
+
+
+#gift-guide-app .back-cover-inner {
+
+  position: relative;
+
+  z-index: 2;
+
+  padding:
+    30px;
+
+}
+
+
+#gift-guide-app .back-gift {
+
+  font-size:
+    clamp(55px, 9vw, 105px);
+
+  margin-bottom:
+    20px;
+
+}
+
+
+#gift-guide-app .back-logo-image {
+
+  max-width:
+    180px;
+
+  max-height:
+    60px;
+
+  object-fit:
+    contain;
+
+}
+
+
+#gift-guide-app .back-logo {
+
+  font-size:
+    clamp(12px, 1.4vw, 18px);
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    .15em;
+
+}
+
+
+#gift-guide-app .back-message {
+
+  margin-top:
+    12px;
+
+  font-size:
+    clamp(8px, 1vw, 12px);
+
+  opacity:
+    .5;
+
+}
+
+
+#gift-guide-app .back-url {
+
+  margin-top:
+    35px;
+
+  padding:
+    8px 13px;
+
+  display:
+    inline-block;
+
+  border:
+    1px solid rgba(255,255,255,.15);
+
+  border-radius:
+    999px;
+
+  font-size:
+    8px;
+
+  opacity:
+    .5;
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+#gift-guide-app .navigation {
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 13px;
+
+  transform:
+    translateX(-50%);
+
+  z-index: 100;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 7px;
+
+  border-radius: 15px;
+
+  background:
+    rgba(3,8,6,.86);
+
+  border:
+    1px solid rgba(255,255,255,.1);
+
+  backdrop-filter:
+    blur(18px);
+
+}
+
+
+#gift-guide-app .navigation button {
+
+  width: 42px;
+  height: 42px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  color:
+    white;
+
+  font-size:
+    20px;
+
+  cursor:
+    pointer;
+
+}
+
+
+#gift-guide-app .navigation button:disabled {
+
+  opacity:
+    .22;
+
+}
+
+
+#gift-guide-app .counter {
+
+  min-width:
+    85px;
+
+  text-align:
+    center;
+
+  color:
+    white;
+
+}
+
+
+#gift-guide-app .counter strong {
+
+  font-size:
+    10px;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+
+  #gift-guide-app {
+
+    min-height:
+      500px;
+
+  }
+
+
+  #gift-guide-app .viewer {
+
+    padding:
+      8px
+      3px
+      65px;
+
+  }
+
+
+  #gift-guide-app .book {
+
+    width:
+      93vw;
+
+    height:
+      min(
+        78vh,
+        calc(93vw * 1.36)
+      );
+
+  }
+
+
+  #gift-guide-app .spread {
+
+    display:
+      block;
+
+  }
+
+
+  #gift-guide-app .spread-page {
+
+    width:
+      100%;
+
+  }
+
+
+  #gift-guide-app .spread-page.left {
+
+    display:
+      none;
+
+  }
+
+
+  #gift-guide-app .spread-page.right {
+
+    display:
+      block;
+
+  }
+
+
+  #gift-guide-app .flip-sheet {
+
+    width:
+      100%;
+
+  }
+
+
+  #gift-guide-app .flip-sheet.forward,
+  #gift-guide-app .flip-sheet.backward {
+
+    left:
+      0;
+
+  }
+
+
+  #gift-guide-app .flip-sheet.forward {
+
+    transform-origin:
+      left center;
+
+  }
+
+
+  #gift-guide-app .flip-sheet.backward {
+
+    transform-origin:
+      right center;
+
+  }
+
+
+  #gift-guide-app .page-inner {
+
+    padding:
+      12px;
+
+  }
+
+
+  #gift-guide-app .page-logo {
+
+    max-width:
+      65px;
+
+    max-height:
+      30px;
+
+  }
+
+
+  #gift-guide-app .catalogue-sections {
+
+    gap:
+      6px;
+
+  }
+
+
+  #gift-guide-app .section-inner {
+
+    padding:
+      6px;
+
+  }
+
+
+  #gift-guide-app .section-top {
+
+    margin-bottom:
+      5px;
+
+  }
+
+
+  #gift-guide-app .section-name {
+
+    font-size:
+      7px;
+
+  }
+
+
+  #gift-guide-app .section-label {
+
+    font-size:
+      5px;
+
+  }
+
+
+  #gift-guide-app .section-title {
+
+    font-size:
+      12px;
+
+  }
+
+
+  #gift-guide-app .section-description {
+
+    display:
+      none;
+
+  }
+
+
+  #gift-guide-app .products {
+
+    gap:
+      4px;
+
+  }
+
+
+  #gift-guide-app .product {
+
+    padding:
+      3px;
+
+    border-radius:
+      7px;
+
+  }
+
+
+  #gift-guide-app .product-name {
+
+    font-size:
+      6px;
+
+  }
+
+
+  #gift-guide-app .price {
+
+    font-size:
+      9px;
+
+  }
+
+
+  #gift-guide-app .age {
+
+    display:
+      none;
+
+  }
+
+
+  #gift-guide-app .badge {
+
+    top:
+      3px;
+
+    left:
+      3px;
+
+    padding:
+      3px 4px;
+
+    font-size:
+      4px;
+
+  }
+
+
+  #gift-guide-app .navigation {
+
+    bottom:
+      8px;
+
+  }
+
+}
+
+
+/* =========================================================
+   SMALL PHONE
+========================================================= */
+
+@media (max-width: 370px) {
+
+  #gift-guide-app .section-title {
+
+    font-size:
+      10px;
+
+  }
+
+
+  #gift-guide-app .product-name {
+
+    font-size:
+      5.5px;
+
+  }
+
+}
+
+
+/* =========================================================
+   FULLSCREEN
+========================================================= */
+
+#gift-guide-app:fullscreen .book {
+
+  width:
+    min(1400px, 94vw);
+
+  height:
+    min(86vh, 900px);
+
+}
+
+</style>
+
+
+<div
+  id="gift-guide-app"
+  tabindex="0"
+  aria-label="Interactive Gift Guide"
+>
+
+
+<div class="gift-guide-inner">
+
+
+<main class="viewer">
+
+
+<div
+  class="book"
+  id="gift-guide-book"
+>
+
+
+<div
+  class="spread"
+  id="gift-guide-spread"
+>
+
+
+<div
+  class="spread-page left"
+  id="gift-guide-left-page"
+></div>
+
+
+<div
+  class="spread-page right"
+  id="gift-guide-right-page"
+></div>
+
+
+</div>
+
+
+<div
+  class="flip-sheet"
+  id="gift-guide-flip-sheet"
+>
+
+
+<div
+  class="flip-face front"
+  id="gift-guide-flip-front"
+></div>
+
+
+<div
+  class="flip-face back"
+  id="gift-guide-flip-back"
+></div>
+
+
+</div>
+
+
+</div>
+
+
+</main>
+
+
+<nav
+  class="navigation"
+  aria-label="Gift guide navigation"
+>
+
+
+<button
+  type="button"
+  id="gift-guide-previous"
+  aria-label="Previous page"
+>
+‹
+</button>
+
+
+<div class="counter">
+
+<strong id="gift-guide-counter">
+1–2
+</strong>
+
+</div>
+
+
+<button
+  type="button"
+  id="gift-guide-next"
+  aria-label="Next page"
+>
+›
+</button>
+
+
+</nav>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/*
+=========================================================
+ GIFT GUIDE EMBED-SAFE SCRIPT
+=========================================================
+
+ IMPORTANT:
+
+ This script is deliberately scoped to #gift-guide-app.
+
+ It does NOT attach keyboard/double-click behaviour to
+ the parent SAP page.
+
+ This is important when running inside SAP SmartEdit.
+
+=========================================================
+*/
+
+
+(function () {
+
+"use strict";
+
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+const app =
+  document.getElementById(
+    "gift-guide-app"
+  );
+
+
+if (!app) {
+
+  return;
+
+}
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const book =
+  app.querySelector(
+    "#gift-guide-book"
+  );
+
+
+const leftPage =
+  app.querySelector(
+    "#gift-guide-left-page"
+  );
+
+
+const rightPage =
+  app.querySelector(
+    "#gift-guide-right-page"
+  );
+
+
+const flipSheet =
+  app.querySelector(
+    "#gift-guide-flip-sheet"
+  );
+
+
+const flipFront =
+  app.querySelector(
+    "#gift-guide-flip-front"
+  );
+
+
+const flipBack =
+  app.querySelector(
+    "#gift-guide-flip-back"
+  );
+
+
+const previousButton =
+  app.querySelector(
+    "#gift-guide-previous"
+  );
+
+
+const nextButton =
+  app.querySelector(
+    "#gift-guide-next"
+  );
+
+
+const counter =
+  app.querySelector(
+    "#gift-guide-counter"
+  );
+
+
+if (
+  !book ||
+  !leftPage ||
+  !rightPage ||
+  !flipSheet ||
+  !flipFront ||
+  !flipBack ||
+  !previousButton ||
+  !nextButton ||
+  !counter
+) {
+
+  return;
+
+}
+
+
+/* =========================================================
+   CATALOGUE
+========================================================= */
+
+const catalogue = [
+
+/* =========================================================
+   PAGE 1
+========================================================= */
+
+{
+
+  type:
+    "cover",
+
+  backgroundImage:
+    "https://www.thetoyshop.com/medias/cover.png?context=bWFzdGVyfHJvb3R8MzE1Nzc0NHxpbWFnZS9wbmd8YUdZM0wyaGpOQzh4TWpnME1UZzRPRGcwTVRjMU9DOWpiM1psY2k1d2JtY3w1N2Q2NDY2MzE2YjgyMzVmZjJhNGM3YzVmOTA5N2M1NTYxMGNhZGFlYjMwMDg2ODVjOGNlZThlZjA3ZmZjNmZh",
+},
+
+
+/* =========================================================
+   PAGE 2
+========================================================= */
+
+{
+
+  type:
+    "products",
+
+  title:
+    "Christmas favourites",
+
+  kicker:
+    "TOP GIFTS",
+
+  description:
+    "The toys everyone wants to find under the tree.",
+
+  logoImage:
+    "",
+
+  backgroundImage:
+    "",
+
+  backgroundOverlay:
+    "rgba(255,255,255,.78)",
+
+  layout:
+    "featured-left",
+
+  sections: [
+
+    {
+
+      title:
+        "The big ones",
+
+      description:
+        "Stand-out presents for Christmas morning.",
+
+      logo:
+        "THE TOY SHOP",
+
+      logoImage:
+        "",
+
+      label:
+        "BESTSELLERS",
+
+      backgroundImage:
+        "",
+
+      overlay:
+        "rgba(255,255,255,.65)",
+
+      products: [
+
+        {
+
+          name:
+            "Ultimate Adventure Playset",
+
+          price:
+            "£39.99",
+
+          age:
+            "3+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🏰",
+
+          badge:
+            "BESTSELLER",
+
+          featured:
+            true,
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Cuddle Bear",
+
+          price:
+            "£19.99",
+
+          age:
+            "3+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🧸",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Dino Explorer",
+
+          price:
+            "£24.99",
+
+          age:
+            "4+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🦖",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Magic Playset",
+
+          price:
+            "£29.99",
+
+          age:
+            "4+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🪄",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Rescue Truck",
+
+          price:
+            "£21.99",
+
+          age:
+            "3+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🚑",
+
+          url:
+            "#"
+
+        }
+
+      ]
+
+    }
+
+  ]
+
+},
+
+
+/* =========================================================
+   PAGE 3
+========================================================= */
+
+{
+
+  type:
+    "products",
+
+  title:
+    "Little adventurers",
+
+  kicker:
+    "AGES 3–6",
+
+  description:
+    "Big ideas for curious little people.",
+
+  logoImage:
+    "",
+
+  backgroundImage:
+    "",
+
+  layout:
+    "featured-right",
+
+  sections: [
+
+    {
+
+      title:
+        "Ready for adventure",
+
+      logo:
+        "THE TOY SHOP",
+
+      logoImage:
+        "",
+
+      label:
+        "3–6 YEARS",
+
+      backgroundImage:
+        "",
+
+      products: [
+
+        {
+
+          name:
+            "Mega Building Box",
+
+          price:
+            "£34.99",
+
+          age:
+            "5+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🧱",
+
+          featured:
+            true,
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Interactive Puppy",
+
+          price:
+            "£39.99",
+
+          age:
+            "5+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🐶",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Fire Station",
+
+          price:
+            "£27.99",
+
+          age:
+            "4+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🚒",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Explorer Set",
+
+          price:
+            "£19.99",
+
+          age:
+            "4+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🔭",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Dinosaur Truck",
+
+          price:
+            "£22.99",
+
+          age:
+            "5+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🚚",
+
+          url:
+            "#"
+
+        }
+
+      ]
+
+    }
+
+  ]
+
+},
+
+
+/* =========================================================
+   PAGE 4
+========================================================= */
+
+{
+
+  type:
+    "products",
+
+  title:
+    "Big gifts",
+
+  kicker:
+    "WOW GIFTS",
+
+  description:
+    "The presents they'll remember.",
+
+  logoImage:
+    "",
+
+  backgroundImage:
+    "",
+
+  layout:
+    "featured-top",
+
+  sections: [
+
+    {
+
+      title:
+        "Make Christmas memorable",
+
+      logo:
+        "THE TOY SHOP",
+
+      logoImage:
+        "",
+
+      label:
+        "WOW GIFTS",
+
+      backgroundImage:
+        "",
+
+      products: [
+
+        {
+
+          name:
+            "Ultimate Race Track",
+
+          price:
+            "£54.99",
+
+          age:
+            "6+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🏎️",
+
+          badge:
+            "SAVE £15",
+
+          featured:
+            true,
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Build-a-Bot",
+
+          price:
+            "£44.99",
+
+          age:
+            "8+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🤖",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Galaxy Rocket",
+
+          price:
+            "£49.99",
+
+          age:
+            "7+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🚀",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Super Scooter",
+
+          price:
+            "£69.99",
+
+          age:
+            "6+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🛴",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Mega Dollhouse",
+
+          price:
+            "£59.99",
+
+          age:
+            "5+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🏠",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "RC Monster Truck",
+
+          price:
+            "£39.99",
+
+          age:
+            "6+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🚙",
+
+          url:
+            "#"
+
+        }
+
+      ]
+
+    }
+
+  ]
+
+},
+
+
+/* =========================================================
+   PAGE 5
+   TWO SECTION CATALOGUE
+========================================================= */
+
+{
+
+  type:
+    "products",
+
+  title:
+    "Make & create",
+
+  kicker:
+    "CREATIVE PLAY",
+
+  description:
+    "Perfect presents for little makers.",
+
+  logoImage:
+    "",
+
+  backgroundImage:
+    "",
+
+  layout:
+    "horizontal",
+
+  sections: [
+
+    {
+
+      title:
+        "For curious minds",
+
+      logo:
+        "THE TOY SHOP",
+
+      logoImage:
+        "",
+
+      label:
+        "DISCOVER",
+
+      backgroundImage:
+        "",
+
+      products: [
+
+        {
+
+          name:
+            "Science Lab",
+
+          price:
+            "£22.99",
+
+          age:
+            "8+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🧪",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Friendship Maker",
+
+          price:
+            "£18.99",
+
+          age:
+            "7+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🧵",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Art Studio",
+
+          price:
+            "£27.99",
+
+          age:
+            "6+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🖌️",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Pottery Workshop",
+
+          price:
+            "£24.99",
+
+          age:
+            "7+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🏺",
+
+          url:
+            "#"
+
+        }
+
+      ]
+
+    },
+
+
+    {
+
+      title:
+        "Build something brilliant",
+
+      logo:
+        "THE TOY SHOP",
+
+      logoImage:
+        "",
+
+      label:
+        "BUILD",
+
+      backgroundImage:
+        "",
+
+      products: [
+
+        {
+
+          name:
+            "Build-a-Bot",
+
+          price:
+            "£44.99",
+
+          age:
+            "8+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🤖",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Mega Building Box",
+
+          price:
+            "£34.99",
+
+          age:
+            "5+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🧱",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Robot Workshop",
+
+          price:
+            "£29.99",
+
+          age:
+            "7+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "⚙️",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Construction Kit",
+
+          price:
+            "£25.99",
+
+          age:
+            "6+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🔧",
+
+          url:
+            "#"
+
+        }
+
+      ]
+
+    }
+
+  ]
+
+},
+
+
+/* =========================================================
+   PAGE 6
+========================================================= */
+
+{
+
+  type:
+    "products",
+
+  title:
+    "Games for everyone",
+
+  kicker:
+    "FAMILY FUN",
+
+  description:
+    "Bring everyone together this Christmas.",
+
+  logoImage:
+    "",
+
+  backgroundImage:
+    "",
+
+  layout:
+    "featured-bottom",
+
+  sections: [
+
+    {
+
+      title:
+        "Game night starts here",
+
+      logo:
+        "THE TOY SHOP",
+
+      logoImage:
+        "",
+
+      label:
+        "FAMILY FUN",
+
+      backgroundImage:
+        "",
+
+      products: [
+
+        {
+
+          name:
+            "Family Game Night",
+
+          price:
+            "£24.99",
+
+          age:
+            "7+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🎲",
+
+          badge:
+            "BESTSELLER",
+
+          featured:
+            true,
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Quick Fire",
+
+          price:
+            "£12.99",
+
+          age:
+            "6+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🃏",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Mega Quiz",
+
+          price:
+            "£19.99",
+
+          age:
+            "8+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🏆",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Mystery Mission",
+
+          price:
+            "£29.99",
+
+          age:
+            "8+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🕵️",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Party Challenge",
+
+          price:
+            "£16.99",
+
+          age:
+            "7+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🎉",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Family Charades",
+
+          price:
+            "£14.99",
+
+          age:
+            "6+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🎭",
+
+          url:
+            "#"
+
+        }
+
+      ]
+
+    }
+
+  ]
+
+},
+
+
+/* =========================================================
+   PAGE 7
+========================================================= */
+
+{
+
+  type:
+    "products",
+
+  title:
+    "Stocking fillers",
+
+  kicker:
+    "UNDER £20",
+
+  description:
+    "Small gifts. Big reactions.",
+
+  logoImage:
+    "",
+
+  backgroundImage:
+    "",
+
+  layout:
+    "horizontal",
+
+  sections: [
+
+    {
+
+      title:
+        "Little surprises",
+
+      logo:
+        "THE TOY SHOP",
+
+      logoImage:
+        "",
+
+      label:
+        "UNDER £20",
+
+      backgroundImage:
+        "",
+
+      products: [
+
+        {
+
+          name:
+            "Mini Mystery Box",
+
+          price:
+            "£9.99",
+
+          age:
+            "5+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🎁",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Pocket Puzzle",
+
+          price:
+            "£7.99",
+
+          age:
+            "6+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🧩",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Mini Car",
+
+          price:
+            "£5.99",
+
+          age:
+            "3+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🚙",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Squishy Friend",
+
+          price:
+            "£8.99",
+
+          age:
+            "5+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🐙",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Magic Tricks",
+
+          price:
+            "£11.99",
+
+          age:
+            "6+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🎩",
+
+          url:
+            "#"
+
+        },
+
+        {
+
+          name:
+            "Pocket Games",
+
+          price:
+            "£6.99",
+
+          age:
+            "5+",
+
+          image:
+            "https://www.thetoyshop.com/medias/515Wx515H-583184-Primary?context=bWFzdGVyfGltYWdlc3wxNDMzMzF8aW1hZ2UvanBlZ3xhRFV5TDJnM01TOHhNamM0TVRFMU5qYzVORE01T0M4MU1UVlhlRFV4TlVoZk5UZ3pNVGcwWDFCeWFXMWhjbmt8NWVhNDZhMjMyMDEwYzUzN2U4MjcyYmQ2ZTgzZjBmOTg5ZjY2NDU4MzY4MWY4NDRjYTgyYTU1NTYwZTc4MGJjZQ",
+emoji:
+            "🎮",
+
+          url:
+            "#"
+
+        }
+
+      ]
+
+    }
+
+  ]
+
+},
+
+
+/* =========================================================
+   BACK COVER
+========================================================= */
+
+{
+
+  type:
+    "back-cover",
+
+  logo:
+    "THE TOY SHOP",
+
+  logoImage:
+    "",
+
+  message:
+    "More magical gifts online.",
+
+  url:
+    "www.thetoyshop.com",
+
+  backgroundImage:
+    ""
+
+}
+
+];
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentSpread =
+  0;
+
+let isAnimating =
+  false;
+
+let isDragging =
+  false;
+
+let dragDirection =
+  null;
+
+let dragStartX =
+  0;
+
+let dragProgress =
+  0;
+
+let animationHandler =
+  null;
+
+let zoom =
+  1;
+
+let wasMobile =
+  window.innerWidth <= 760;
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+function mobile() {
+
+  return window.innerWidth <= 760;
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value) {
+
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================================
+   ESCAPE CSS VALUE
+========================================================= */
+
+function escapeStyle(value) {
+
+  return String(value || "")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "")
+    .replace(/>/g, "");
+
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+function renderBackground(
+  image,
+  className,
+  overlay
+) {
+
+  if (!image) {
+
+    return "";
+
+  }
+
+
+  return `
+
+    <div
+      class="${className}"
+      style="
+        background-image:
+          url('${escapeStyle(image)}');
+
+        ${
+          overlay
+            ? `--section-overlay:${escapeStyle(overlay)};`
+            : ""
+        }
+      "
+    ></div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   FRONT COVER
+========================================================= */
+
+function renderFrontCover(page) {
+
+  const background =
+    page.backgroundImage
+
+      ? `
+
+        <div
+          class="cover-background"
+          style="
+            background-image:
+              url('${escapeStyle(page.backgroundImage)}');
+          "
+        ></div>
+
+      `
+
+      : "";
+
+
+  const logo =
+    page.logoImage
+
+      ? `
+
+        <img
+          class="cover-logo"
+          src="${escapeHTML(page.logoImage)}"
+          alt="${escapeHTML(page.logo || "")}"
+        >
+
+      `
+
+      : `
+
+        <div class="cover-logo-text">
+          ${escapeHTML(page.logo)}
+        </div>
+
+      `;
+
+
+  return `
+
+    <div class="cover">
+
+      ${background}
+
+      <div class="cover-inner">
+
+
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   BACK COVER
+========================================================= */
+
+function renderBackCover(page) {
+
+  const background =
+    page.backgroundImage
+
+      ? `
+
+        <div
+          class="back-cover-background"
+          style="
+            background-image:
+              url('${escapeStyle(page.backgroundImage)}');
+          "
+        ></div>
+
+      `
+
+      : "";
+
+
+  const logo =
+    page.logoImage
+
+      ? `
+
+        <img
+          class="back-logo-image"
+          src="${escapeHTML(page.logoImage)}"
+          alt="${escapeHTML(page.logo || "")}"
+        >
+
+      `
+
+      : `
+
+        <div class="back-logo">
+          ${escapeHTML(page.logo)}
+        </div>
+
+      `;
+
+
+  return `
+
+    <div class="back-cover">
+
+      ${background}
+
+      <div class="back-cover-inner">
+
+        <div class="back-gift">
+          🎄
+        </div>
+
+        ${logo}
+
+        <div class="back-message">
+          ${escapeHTML(page.message)}
+        </div>
+
+        <div class="back-url">
+          ${escapeHTML(page.url)}
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   PRODUCT
+========================================================= */
+
+function renderProduct(product) {
+
+  const badge =
+    product.badge
+
+      ? `
+
+        <div class="badge">
+          ${escapeHTML(product.badge)}
+        </div>
+
+      `
+
+      : "";
+
+
+  const image =
+    product.image
+
+      ? `
+
+        <img
+          src="${escapeHTML(product.image)}"
+          alt="${escapeHTML(product.name)}"
+          draggable="false"
+        >
+
+      `
+
+      : `
+
+        <div class="emoji">
+          ${escapeHTML(product.emoji || "🎁")}
+        </div>
+
+      `;
+
+
+  return `
+
+    <a
+      class="
+        product
+        ${product.featured ? "featured" : ""}
+      "
+      href="${escapeHTML(product.url || "#")}"
+    >
+
+      <div class="product-image">
+
+        ${badge}
+
+        ${image}
+
+      </div>
+
+
+      <div class="product-info">
+
+        <div class="product-name">
+          ${escapeHTML(product.name)}
+        </div>
+
+
+        <div class="product-meta">
+
+          <span class="price">
+            ${escapeHTML(product.price)}
+          </span>
+
+          ${
+            product.age
+
+              ? `
+
+                <span class="age">
+                  AGE ${escapeHTML(product.age)}
+                </span>
+
+              `
+
+              : ""
+          }
+
+        </div>
+
+      </div>
+
+    </a>
+
+  `;
+
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+function renderSection(
+  section,
+  pageLayout
+) {
+
+  const products =
+    section.products || [];
+
+
+  const count =
+    Math.max(
+      1,
+      Math.min(
+        products.length,
+        6
+      )
+    );
+
+
+  const layout =
+    section.layout ||
+    pageLayout ||
+    "horizontal";
+
+
+  const sectionBackground =
+    section.backgroundImage
+
+      ? `
+
+        <div
+          class="section-background"
+          style="
+            background-image:
+              url('${escapeStyle(section.backgroundImage)}');
+
+            ${
+              section.overlay
+                ? `--section-overlay:${escapeStyle(section.overlay)};`
+                : ""
+            }
+          "
+        ></div>
+
+      `
+
+      : "";
+
+
+  const logo =
+    section.logoImage
+
+      ? `
+
+        <img
+          class="section-logo"
+          src="${escapeHTML(section.logoImage)}"
+          alt="${escapeHTML(section.logo || "")}"
+        >
+
+      `
+
+      : section.logo
+
+        ? `
+
+          <div class="section-logo-placeholder">
+            🎁
+          </div>
+
+        `
+
+        : "";
+
+
+  return `
+
+    <section
+      class="
+        catalogue-section
+        layout-${escapeHTML(layout)}
+      "
+      style="
+        --product-count:${count};
+      "
+    >
+
+      ${sectionBackground}
+
+
+      <div class="section-inner">
+
+
+        <div class="section-top">
+
+          <div class="section-brand">
+
+            ${logo}
+
+            ${
+              section.logo
+
+                ? `
+
+                  <div class="section-name">
+                    ${escapeHTML(section.logo)}
+                  </div>
+
+                `
+
+                : ""
+            }
+
+          </div>
+
+
+          ${
+            section.label
+
+              ? `
+
+                <div class="section-label">
+                  ${escapeHTML(section.label)}
+                </div>
+
+              `
+
+              : ""
+          }
+
+        </div>
+
+
+        ${
+          section.title
+
+            ? `
+
+              <div class="section-heading">
+
+                <h3 class="section-title">
+                  ${escapeHTML(section.title)}
+                </h3>
+
+
+                ${
+                  section.description
+
+                    ? `
+
+                      <p class="section-description">
+                        ${escapeHTML(section.description)}
+                      </p>
+
+                    `
+
+                    : ""
+                }
+
+              </div>
+
+            `
+
+            : ""
+        }
+
+
+        <div class="products">
+
+          ${products.map(renderProduct).join("")}
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+  `;
+
+}
+
+
+/* =========================================================
+   PRODUCT PAGE
+========================================================= */
+
+function renderProductPage(
+  page,
+  number
+) {
+
+  const background =
+    page.backgroundImage
+
+      ? `
+
+        <div
+          class="page-background"
+          style="
+            background-image:
+              url('${escapeStyle(page.backgroundImage)}');
+
+            ${
+              page.backgroundOverlay
+                ? `--page-overlay:${escapeStyle(page.backgroundOverlay)};`
+                : ""
+            }
+          "
+        ></div>
+
+      `
+
+      : "";
+
+
+  const pageLogo =
+    page.logoImage
+
+      ? `
+
+        <img
+          class="page-logo"
+          src="${escapeHTML(page.logoImage)}"
+          alt=""
+        >
+
+      `
+
+      : "";
+
+
+  const sections =
+    (page.sections || [])
+      .map(function (section) {
+
+        return renderSection(
+          section,
+          page.layout
+        );
+
+      })
+      .join("");
+
+
+  return `
+
+    <div class="page">
+
+      ${background}
+
+      ${pageLogo}
+
+
+      <div class="page-inner">
+
+
+        <div class="catalogue-sections">
+
+          ${sections}
+
+        </div>
+
+
+        <div class="page-number">
+          ${number}
+        </div>
+
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+function renderPage(
+  page,
+  number
+) {
+
+  if (!page) {
+
+    return `
+      <div class="page"></div>
+    `;
+
+  }
+
+
+  if (
+    page.type === "cover"
+  ) {
+
+    return renderFrontCover(page);
+
+  }
+
+
+  if (
+    page.type === "back-cover"
+  ) {
+
+    return renderBackCover(page);
+
+  }
+
+
+  return renderProductPage(
+    page,
+    number
+  );
+
+}
+
+
+/* =========================================================
+   START PAGE
+========================================================= */
+
+function getStartPage() {
+
+  if (mobile()) {
+
+    return currentSpread;
+
+  }
+
+
+  return currentSpread * 2;
+
+}
+
+
+/* =========================================================
+   SPREAD COUNT
+========================================================= */
+
+function spreadCount() {
+
+  if (mobile()) {
+
+    return catalogue.length;
+
+  }
+
+
+  return Math.ceil(
+    catalogue.length / 2
+  );
+
+}
+
+
+/* =========================================================
+   COUNTER
+========================================================= */
+
+function updateCounter() {
+
+  const total =
+    spreadCount();
+
+
+  if (mobile()) {
+
+    counter.textContent =
+      `${currentSpread + 1} / ${catalogue.length}`;
+
+  }
+
+  else {
+
+    const first =
+      currentSpread * 2 + 1;
+
+
+    const second =
+      Math.min(
+        first + 1,
+        catalogue.length
+      );
+
+
+    counter.textContent =
+      `${first}–${second} / ${catalogue.length}`;
+
+  }
+
+
+  previousButton.disabled =
+    currentSpread <= 0;
+
+
+  nextButton.disabled =
+    currentSpread >= total - 1;
+
+}
+
+
+/* =========================================================
+   RENDER CURRENT
+========================================================= */
+
+function renderCurrentSpread() {
+
+  const start =
+    getStartPage();
+
+
+  if (mobile()) {
+
+    leftPage.innerHTML =
+      "";
+
+    rightPage.innerHTML =
+      renderPage(
+        catalogue[start],
+        start + 1
+      );
+
+  }
+
+  else {
+
+    leftPage.innerHTML =
+      renderPage(
+        catalogue[start],
+        start + 1
+      );
+
+
+    rightPage.innerHTML =
+      renderPage(
+        catalogue[start + 1],
+        start + 2
+      );
+
+  }
+
+
+  updateCounter();
+
+}
+
+
+/* =========================================================
+   CAN TURN
+========================================================= */
+
+function canTurn(direction) {
+
+  if (
+    direction === "forward"
+  ) {
+
+    return (
+      currentSpread <
+      spreadCount() - 1
+    );
+
+  }
+
+
+  return (
+    currentSpread > 0
+  );
+
+}
+
+
+/* =========================================================
+   PREPARE FORWARD
+========================================================= */
+
+function prepareForward() {
+
+  const current =
+    getStartPage();
+
+
+  const next =
+    mobile()
+      ? current + 1
+      : current + 2;
+
+
+  if (
+    next >= catalogue.length
+  ) {
+
+    return false;
+
+  }
+
+
+  const frontIndex =
+    mobile()
+      ? current
+      : current + 1;
+
+
+  const backIndex =
+    next;
+
+
+  flipFront.innerHTML =
+    renderPage(
+      catalogue[frontIndex],
+      frontIndex + 1
+    );
+
+
+  flipBack.innerHTML =
+    renderPage(
+      catalogue[backIndex],
+      backIndex + 1
+    );
+
+
+  if (mobile()) {
+
+    rightPage.innerHTML =
+      renderPage(
+        catalogue[next],
+        next + 1
+      );
+
+  }
+
+  else {
+
+    leftPage.innerHTML =
+      renderPage(
+        catalogue[next],
+        next + 1
+      );
+
+
+    rightPage.innerHTML =
+      renderPage(
+        catalogue[next + 1],
+        next + 2
+      );
+
+  }
+
+
+  flipSheet.className =
+    "flip-sheet forward";
+
+
+  flipSheet.style.display =
+    "block";
+
+
+  flipSheet.style.transition =
+    "none";
+
+
+  flipSheet.style.transform =
+    "rotateY(0deg)";
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   PREPARE BACKWARD
+========================================================= */
+
+function prepareBackward() {
+
+  const current =
+    getStartPage();
+
+
+  const previous =
+    mobile()
+      ? current - 1
+      : current - 2;
+
+
+  if (
+    previous < 0
+  ) {
+
+    return false;
+
+  }
+
+
+  const frontIndex =
+    current;
+
+
+  const backIndex =
+    mobile()
+      ? previous
+      : previous + 1;
+
+
+  flipFront.innerHTML =
+    renderPage(
+      catalogue[frontIndex],
+      frontIndex + 1
+    );
+
+
+  flipBack.innerHTML =
+    renderPage(
+      catalogue[backIndex],
+      backIndex + 1
+    );
+
+
+  if (mobile()) {
+
+    rightPage.innerHTML =
+      renderPage(
+        catalogue[previous],
+        previous + 1
+      );
+
+  }
+
+  else {
+
+    leftPage.innerHTML =
+      renderPage(
+        catalogue[previous],
+        previous + 1
+      );
+
+
+    rightPage.innerHTML =
+      renderPage(
+        catalogue[previous + 1],
+        previous + 2
+      );
+
+  }
+
+
+  flipSheet.className =
+    "flip-sheet backward";
+
+
+  flipSheet.style.display =
+    "block";
+
+
+  flipSheet.style.transition =
+    "none";
+
+
+  flipSheet.style.transform =
+    "rotateY(0deg)";
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   REMOVE ANIMATION HANDLER
+========================================================= */
+
+function removeAnimationHandler() {
+
+  if (!animationHandler) {
+
+    return;
+
+  }
+
+
+  flipSheet.removeEventListener(
+    "transitionend",
+    animationHandler
+  );
+
+
+  animationHandler =
+    null;
+
+}
+
+
+/* =========================================================
+   FINISH ANIMATION
+========================================================= */
+
+function finishAnimation() {
+
+  if (
+    dragDirection ===
+    "forward"
+  ) {
+
+    currentSpread++;
+
+  }
+
+  else if (
+    dragDirection ===
+    "backward"
+  ) {
+
+    currentSpread--;
+
+  }
+
+
+  flipSheet.style.display =
+    "none";
+
+
+  flipSheet.style.transition =
+    "none";
+
+
+  flipSheet.style.transform =
+    "rotateY(0deg)";
+
+
+  updateCounter();
+
+
+  isAnimating =
+    false;
+
+
+  isDragging =
+    false;
+
+
+  dragDirection =
+    null;
+
+
+  dragProgress =
+    0;
+
+}
+
+
+/* =========================================================
+   WAIT FOR ANIMATION
+========================================================= */
+
+function waitForAnimation() {
+
+  removeAnimationHandler();
+
+
+  animationHandler =
+    function (event) {
+
+      if (
+        event.propertyName !==
+        "transform"
+      ) {
+
+        return;
+
+      }
+
+
+      removeAnimationHandler();
+
+
+      finishAnimation();
+
+    };
+
+
+  flipSheet.addEventListener(
+    "transitionend",
+    animationHandler
+  );
+
+}
+
+
+/* =========================================================
+   START TURN
+========================================================= */
+
+function startTurn(
+  direction
+) {
+
+  if (
+    isAnimating ||
+    !canTurn(direction)
+  ) {
+
+    return;
+
+  }
+
+
+  let prepared;
+
+
+  if (
+    direction ===
+    "forward"
+  ) {
+
+    dragDirection =
+      "forward";
+
+
+    prepared =
+      prepareForward();
+
+  }
+
+  else {
+
+    dragDirection =
+      "backward";
+
+
+    prepared =
+      prepareBackward();
+
+  }
+
+
+  if (!prepared) {
+
+    dragDirection =
+      null;
+
+    return;
+
+  }
+
+
+  isAnimating =
+    true;
+
+
+  waitForAnimation();
+
+
+  requestAnimationFrame(function () {
+
+    requestAnimationFrame(function () {
+
+      flipSheet.style.transition =
+        "transform 650ms cubic-bezier(.2,.72,.2,1)";
+
+
+      flipSheet.style.transform =
+        direction === "forward"
+
+          ? "rotateY(-180deg)"
+
+          : "rotateY(180deg)";
+
+    });
+
+  });
+
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+nextButton.addEventListener(
+  "click",
+  function () {
+
+    startTurn("forward");
+
+  }
+);
+
+
+previousButton.addEventListener(
+  "click",
+  function () {
+
+    startTurn("backward");
+
+  }
+);
+
+
+/* =========================================================
+   POINTER DOWN
+========================================================= */
+
+book.addEventListener(
+  "pointerdown",
+  function (event) {
+
+    if (isAnimating) {
+
+      return;
+
+    }
+
+
+    const product =
+      event.target.closest(
+        ".product"
+      );
+
+
+    if (product) {
+
+      return;
+
+    }
+
+
+    const rect =
+      book.getBoundingClientRect();
+
+
+    const x =
+      event.clientX -
+      rect.left;
+
+
+    const direction =
+      x >
+      rect.width / 2
+
+        ? "forward"
+        : "backward";
+
+
+    if (
+      !canTurn(direction)
+    ) {
+
+      return;
+
+    }
+
+
+    let prepared;
+
+
+    if (
+      direction ===
+      "forward"
+    ) {
+
+      dragDirection =
+        "forward";
+
+
+      prepared =
+        prepareForward();
+
+    }
+
+    else {
+
+      dragDirection =
+        "backward";
+
+
+      prepared =
+        prepareBackward();
+
+    }
+
+
+    if (!prepared) {
+
+      dragDirection =
+        null;
+
+      return;
+
+    }
+
+
+    isAnimating =
+      true;
+
+
+    isDragging =
+      true;
+
+
+    dragStartX =
+      event.clientX;
+
+
+    dragProgress =
+      0;
+
+
+    try {
+
+      book.setPointerCapture(
+        event.pointerId
+      );
+
+    }
+
+    catch (error) {}
+
+
+    event.preventDefault();
+
+  }
+);
+
+
+/* =========================================================
+   POINTER MOVE
+========================================================= */
+
+book.addEventListener(
+  "pointermove",
+  function (event) {
+
+    if (
+      !isDragging ||
+      !isAnimating
+    ) {
+
+      return;
+
+    }
+
+
+    const rect =
+      book.getBoundingClientRect();
+
+
+    const width =
+      mobile()
+        ? rect.width
+        : rect.width / 2;
+
+
+    const delta =
+      event.clientX -
+      dragStartX;
+
+
+    if (
+      dragDirection ===
+      "forward"
+    ) {
+
+      dragProgress =
+        Math.max(
+          0,
+          Math.min(
+            1,
+            -delta / width
+          )
+        );
+
+    }
+
+    else {
+
+      dragProgress =
+        Math.max(
+          0,
+          Math.min(
+            1,
+            delta / width
+          )
+        );
+
+    }
+
+
+    const rotation =
+      dragDirection ===
+      "forward"
+
+        ? -180 *
+          dragProgress
+
+        : 180 *
+          dragProgress;
+
+
+    flipSheet.style.transition =
+      "none";
+
+
+    flipSheet.style.transform =
+      "rotateY(" +
+      rotation +
+      "deg)";
+
+
+    event.preventDefault();
+
+  }
+);
+
+
+/* =========================================================
+   RELEASE DRAG
+========================================================= */
+
+function releaseDrag() {
+
+  if (
+    !isDragging
+  ) {
+
+    return;
+
+  }
+
+
+  isDragging =
+    false;
+
+
+  if (
+    dragProgress >= .35
+  ) {
+
+    waitForAnimation();
+
+
+    requestAnimationFrame(function () {
+
+      flipSheet.style.transition =
+        "transform 550ms cubic-bezier(.2,.72,.2,1)";
+
+
+      flipSheet.style.transform =
+        dragDirection === "forward"
+
+          ? "rotateY(-180deg)"
+
+          : "rotateY(180deg)";
+
+    });
+
+
+    return;
+
+  }
+
+
+  removeAnimationHandler();
+
+
+  animationHandler =
+    function (event) {
+
+      if (
+        event.propertyName !==
+        "transform"
+      ) {
+
+        return;
+
+      }
+
+
+      removeAnimationHandler();
+
+
+      flipSheet.style.display =
+        "none";
+
+
+      flipSheet.style.transition =
+        "none";
+
+
+      flipSheet.style.transform =
+        "rotateY(0deg)";
+
+
+      isAnimating =
+        false;
+
+
+      isDragging =
+        false;
+
+
+      dragDirection =
+        null;
+
+
+      dragProgress =
+        0;
+
+    };
+
+
+  flipSheet.addEventListener(
+    "transitionend",
+    animationHandler
+  );
+
+
+  requestAnimationFrame(function () {
+
+    flipSheet.style.transition =
+      "transform 350ms cubic-bezier(.2,.8,.2,1)";
+
+
+    flipSheet.style.transform =
+      "rotateY(0deg)";
+
+  });
+
+}
+
+
+book.addEventListener(
+  "pointerup",
+  releaseDrag
+);
+
+
+book.addEventListener(
+  "pointercancel",
+  releaseDrag
+);
+
+
+/* =========================================================
+   KEYBOARD
+   IMPORTANT:
+   ONLY WORKS WHEN FLIPBOOK HAS FOCUS
+========================================================= */
+
+app.addEventListener(
+  "keydown",
+  function (event) {
+
+    if (
+      event.key === "ArrowRight"
+    ) {
+
+      event.preventDefault();
+
+      startTurn("forward");
+
+    }
+
+
+    if (
+      event.key === "ArrowLeft"
+    ) {
+
+      event.preventDefault();
+
+      startTurn("backward");
+
+    }
+
+
+    if (
+      event.key === "+" ||
+      event.key === "="
+    ) {
+
+      event.preventDefault();
+
+      setZoom(
+        zoom + .05
+      );
+
+    }
+
+
+    if (
+      event.key === "-"
+    ) {
+
+      event.preventDefault();
+
+      setZoom(
+        zoom - .05
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   ZOOM
+========================================================= */
+
+function setZoom(value) {
+
+  zoom =
+    Math.max(
+      .85,
+      Math.min(
+        1.15,
+        value
+      )
+    );
+
+
+  book.style.transform =
+    "scale(" +
+    zoom +
+    ")";
+
+}
+
+
+/* =========================================================
+   FOCUS
+=========================================================
+
+   Clicking the book gives the component focus so keyboard
+   controls work without interfering with SAP.
+
+========================================================= */
+
+book.addEventListener(
+  "pointerdown",
+  function () {
+
+    try {
+
+      app.focus({
+        preventScroll:
+          true
+      });
+
+    }
+
+    catch (error) {
+
+      app.focus();
+
+    }
+
+  },
+  {
+    passive:
+      true
+  }
+);
+
+
+/* =========================================================
+   DOUBLE CLICK
+   FLIPBOOK ONLY
+========================================================= */
+
+book.addEventListener(
+  "dblclick",
+  async function (event) {
+
+    if (
+      event.target.closest(
+        ".product"
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    try {
+
+      if (
+        !document.fullscreenElement
+      ) {
+
+        if (
+          app.requestFullscreen
+        ) {
+
+          await app.requestFullscreen();
+
+        }
+
+      }
+
+      else {
+
+        if (
+          document.exitFullscreen
+        ) {
+
+          await document.exitFullscreen();
+
+        }
+
+      }
+
+    }
+
+    catch (error) {
+
+      console.log(
+        "Gift guide fullscreen:",
+        error
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   RESIZE
+========================================================= */
+
+window.addEventListener(
+  "resize",
+  function () {
+
+    const nowMobile =
+      mobile();
+
+
+    if (
+      nowMobile ===
+      wasMobile
+    ) {
+
+      return;
+
+    }
+
+
+    wasMobile =
+      nowMobile;
+
+
+    removeAnimationHandler();
+
+
+    isAnimating =
+      false;
+
+
+    isDragging =
+      false;
+
+
+    dragDirection =
+      null;
+
+
+    dragProgress =
+      0;
+
+
+    flipSheet.style.display =
+      "none";
+
+
+    flipSheet.style.transition =
+      "none";
+
+
+    flipSheet.style.transform =
+      "rotateY(0deg)";
+
+
+    if (nowMobile) {
+
+      currentSpread =
+        Math.min(
+          currentSpread * 2,
+          catalogue.length - 1
+        );
+
+    }
+
+    else {
+
+      currentSpread =
+        Math.floor(
+          currentSpread / 2
+        );
+
+    }
+
+
+    renderCurrentSpread();
+
+  }
+);
+
+
+/* =========================================================
+   INITIALISE
+========================================================= */
+
+renderCurrentSpread();
+
+
+})();
+
+</script>

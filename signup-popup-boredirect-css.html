@@ -1,0 +1,276 @@
+.dy-modal-container {
+    z-index: 9999999;
+}
+
+.dy-modal-container .dy-modal-wrapper .dy-modal-contents .dy-lb-close {
+        width: 40px !important;
+        height: 40px !important;
+        background:  url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTUgNTUiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDU1IDU1IiB4bWw6c3BhY2U9InByZXNlcnZlIj48ZyBpZD0iY2xvc2UiPjxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iNDMuNSwxNC43IDQwLjMsMTEuNSAyNy41LDI0LjMgMTQuNywxMS41IDExLjUsMTQuNyAyNC4zLDI3LjUgMTEuNSw0MC4zIDE0LjcsNDMuNSAyNy41LDMwLjcgNDAuMyw0My41IDQzLjUsNDAuMyAzMC43LDI3LjUgIi8+PC9nPjwvc3ZnPg==) #407EC9 no-repeat 6px!important;
+        background-size: 28px!important;
+        opacity: 1 !important;
+    }
+
+    #dytmpl-${dyVariationId} {
+        display: flex;
+        flex-wrap: wrap;
+        width: 90vw;
+        height: 400px;
+        vertical-align: top;
+        max-width: 900px;
+        background: #26456c;
+    }
+    
+    .img_${dyVariationId} {
+        display: block;
+        width: 100%;
+        height: 76vw;
+        max-height: 450px;
+        background-image: url('${Image}');
+        background-size: cover;
+        background-position: top center;
+        box-sizing: border-box;
+    }
+
+    .content_${dyVariationId} {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        text-align: center;
+        width: 100%;
+        max-height: 450px;
+    }
+
+        .email-sign-up-overlay form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 0;
+            max-width: 944px;
+        }
+
+            .email-sign-up-overlay h3 {
+                margin: 0 0 15px;
+                padding: 0;
+                font: 26px/120% "Billy Bold", "Tahoma Bold", sans-serif;
+                text-shadow: 2px 2px 0px #ffffff;
+                text-transform: none;
+                letter-spacing: 0.2px;
+            }
+
+            .email-sign-up-overlay p {
+                margin: 0 0 15px;
+                color: #ffffff;
+                text-align: left;
+                line-height: 140%;
+            }
+	
+				.email-sign-up-overlay p.paragraph-mobile {
+					display: block;
+					text-align: center;
+				}
+	
+				.email-sign-up-overlay p.paragraph-desktop {
+					display: none;
+				}
+
+            .email-sign-up-overlay .email-signup-title-field-container {
+                margin: 0 0 15px;
+                width: 100%;
+            }
+    
+            .email-sign-up-overlay .mobile-width-field {
+                width: calc(100% / 2 - 7px);
+            }
+
+                .email-sign-up-overlay .email-signup-title-field-container legend {
+                    margin: 0 0 5px;
+                    color:#ffffff;
+                    font-size: 14px;
+                    font-family: "Nunito Bold", Tahoma, sans-serif;
+                    line-height: 100%;
+                }
+
+                .email-sign-up-overlay input {
+                    padding: 10px;
+                    font-size: 14px;
+                    line-height: 100%;
+                    border: solid 1px #1075a9;
+                    border-radius: 8px;
+                    width: 100%;
+                    height: 40px;
+                }
+                
+                .email-sign-up-overlay p.sign-up-disclaimer {
+					margin: 0 0 20px;
+					font-size: 12px;
+					line-height: 140%;
+				}
+	
+				.email-signup-opt-in {
+					width: 0;
+					height: 0;
+					overflow: hidden;
+				}
+    
+                .email-sign-up-overlay select {
+                    visibility: visible;
+                    padding: 10px;
+                    font-size: 14px;
+                    border: solid 1px #1075a9;
+                    border-radius: 8px;
+                    height: 40px;
+                }
+
+                .email-sign-up-overlay label.checkbox-inline {
+                    margin: 0;
+                    padding: 0 0 0 30px;
+                    color: #ffffff;
+                    font-size: 12px;
+                    text-align: left;
+                    line-height: 140%;
+                    font-family: "Nunito Regular", "Tahoma Bold", sans-serif;
+                }
+
+                    .email-sign-up-overlay label.checkbox-inline input[type="checkbox"] {
+                        margin: 0 0 0 -30px;
+                        width: 20px;
+                        height: 20px;
+                    }
+
+                .email-sign-up-overlay .email-sign-up-cta {
+                    margin: 0 auto;
+                    padding: 0 20px;
+                    font: 16px/100% "Nunito Bold", "Tahoma Bold", sans-serif;
+                    letter-spacing: 0.5px;
+                    color: #26456c;
+                    transition: background-color 0.5s;
+                    -webkit-transition: background-color 0.5s;
+                    opacity: 1;
+                    border: solid 1px #ffffff;
+                    border-radius: 8px;
+                    width: 100%;
+                    height: 40px;
+                    background-color: #f6e82f;
+                }
+
+                    .email-sign-up-overlay .email-sign-up-cta:hover  {
+                        color: #1075a9;
+                        background-color: #ffffff;
+                        border: solid 1px #1075a9;
+                    }
+    
+
+    @media only screen and (max-width: 600px) {
+        
+        #dytmpl-${dyVariationId} {
+            height:initial;
+        }
+
+    }
+    
+    
+    @media (min-width:430px) {
+        
+        .img_${dyVariationId} {
+            height: 88vw;
+        }
+        
+        .content_${dyVariationId} {
+            padding: 30px;
+        }
+        
+    }
+    
+
+    @media (min-width:768px) {
+        
+        #dytmpl-${dyVariationId} {
+            height: 354px;
+        }
+        
+            .img_${dyVariationId}, .content_${dyVariationId} {
+                width: calc(100% / 2);
+            }
+        
+            .img_${dyVariationId}, .content_${dyVariationId} {
+                height: 46vw;
+            }
+        
+            .content_${dyVariationId} {
+                padding: 0 20px;
+            }
+
+            .email-sign-up-overlay h3 {
+                font: 22px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+            }
+
+                .email-sign-up-overlay h3 img {
+                    position: relative;
+                    top: -10px;
+                    margin-left: 5px;
+                }
+
+            .email-sign-up-overlay .email-signup-title-field-container {
+                text-align: left;
+            }
+
+                .email-signup-opt-in {
+                    text-align: left;
+                    width: calc(100% / 1.5 - 20px);
+                }
+		
+	}
+    
+	
+	@media (min-width:1024px) {
+        
+        #dytmpl-${dyVariationId} {
+            height: 450px;
+        }
+        
+            .content_104068694 {
+                padding: 0 30px;
+            }
+        
+                .email-sign-up-overlay p.paragraph-mobile {
+					display: none;
+				}
+	
+				.email-sign-up-overlay p.paragraph-desktop {
+					display: block;
+				}
+
+                .email-sign-up-overlay form {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    margin: 0 auto;
+                }
+
+                    .email-sign-up-overlay .email-signup-title-field-container:first-child {
+                        margin: 0 0 20px;
+                        width: 100%;
+                    }
+		
+	}
+	
+	.email-sign-up-success {
+    width: 100%;
+    text-align: center;
+}
+
+.email-sign-up-success h3 {
+    margin: 0 0 15px;
+    padding: 0;
+    color: #ffffff;
+    font: 26px/120% "Billy Bold", "Tahoma Bold", sans-serif;
+    letter-spacing: 0.2px;
+    text-shadow: none;
+}
+
+.email-sign-up-success p {
+    margin: 0;
+    color: #ffffff;
+    text-align: center;
+    line-height: 140%;
+}

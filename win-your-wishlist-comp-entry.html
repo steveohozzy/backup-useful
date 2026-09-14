@@ -1,0 +1,1005 @@
+<style>
+  .category-title {
+    display: none;
+  }
+
+  .win-wishlist {
+    background-color: rgb(39, 87, 159);
+    color: #fff;
+    padding-bottom: 20px;
+  }
+
+  .win-wishlist a {
+    color: #fff;
+  }
+
+  #win-wishlist-header-area {
+    background-color: rgb(39, 87, 159);
+    color: #fff;
+  }
+
+  .win-wishlist-header-content {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .win-wishlist-header-content h2 {
+    text-transform: uppercase;
+    background-color: #537fa4;
+    color: #fff;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 24px;
+    border-radius: 8px;
+  }
+
+  .win-wishlist-header-content p {
+    font-size: 16px;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    color: #fff;
+    margin: 0 0 20px;
+  }
+</style>
+
+<style>
+  .comp-terms {
+    margin: 0 auto;
+    max-width: 900px;
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+  }
+</style>
+
+<div class="win-wishlist">
+
+  <style>
+    .media-module-banner-wrapper {
+      margin: 0 auto;
+      max-width: 1024px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .media-module-banner {
+      position: relative;
+      margin: 0 auto;
+      width: 100%;
+      text-align: center;
+      overflow: hidden;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .media-module-banner img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  </style>
+
+  <style>
+  /* =========================================================
+     CHRISTMAS COMPETITION FORM
+  ========================================================= */
+
+  .comp-form {
+    width: 100%;
+    max-width: 760px;
+    margin: 30px auto 0;
+    text-align: left;
+  }
+
+  .comp-content {
+    width: 100%;
+  }
+
+  /* Intro copy */
+
+  .comp-content > p {
+    color: #fff;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: center;
+    margin: 0 0 18px;
+  }
+
+    .comp-content > h3 {
+    color: #fff;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .comp-content > p a {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* =========================================================
+     FORM CARD
+  ========================================================= */
+
+  .comp-content form {
+    width: 100%;
+    margin: 30px auto 0;
+    padding: 30px;
+    background: #fff;
+    border-radius: 18px;
+    box-sizing: border-box;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  /* =========================================================
+     FIELD CONTAINERS
+  ========================================================= */
+
+  .title-field-container {
+    width: 100%;
+    margin: 0 0 22px;
+    box-sizing: border-box;
+  }
+
+  .title-field-container > div:first-child {
+    margin-bottom: 8px;
+  }
+
+  .title-field-container legend {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    color: #003c49;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .mandatory-asterisks {
+    color: #d32f2f;
+  }
+
+  /* =========================================================
+     TEXT / EMAIL / NUMBER INPUTS
+  ========================================================= */
+
+  .comp-content form input.form-control,
+  .comp-content form select.form-control {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 15px;
+    margin: 0;
+    box-sizing: border-box;
+
+    background: #fff;
+    border: 2px solid #d8e1e5;
+    border-radius: 10px;
+
+    color: #003c49;
+    font-family: "Nunito", "Tahoma", sans-serif;
+    font-size: 16px;
+    line-height: 1.4;
+
+    outline: none;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .comp-content form input.form-control:hover,
+  .comp-content form select.form-control:hover {
+    border-color: #9eb7c0;
+  }
+
+  .comp-content form input.form-control:focus,
+  .comp-content form select.form-control:focus {
+    border-color: #537fa4;
+    box-shadow: 0 0 0 3px rgba(83, 127, 164, 0.15);
+  }
+
+  /* Remove browser number arrows */
+
+  .comp-content form input[type="number"]::-webkit-inner-spin-button,
+  .comp-content form input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .comp-content form input[type="number"] {
+    appearance: textfield;
+  }
+
+  /* =========================================================
+     STORE SELECT
+  ========================================================= */
+
+  .comp-content form select.form-control {
+    cursor: pointer;
+    appearance: auto;
+  }
+
+  .comp-content form .nice-select {
+    color: #003c49;
+  }
+
+   .comp-content form .nice-select .current:after {
+     background-color: #003c49;
+   }
+
+   .nice-select:active .current, .nice-select.infocus .current,
+   .comp-content .nice-select .current {
+    box-shadow: inset 0 0 0 2px #003c49;
+   }
+
+   .comp-content form .nice-select .list {
+    border-color: #003c49;
+    color: #003c49;
+   }
+
+  /* =========================================================
+     CHECKBOX SECTIONS
+  ========================================================= */
+
+  .comp-content .title-field-container:has(.checkbox-inline) {
+    padding: 15px;
+    background: #f4f7f8;
+    border-radius: 12px;
+    border: 1px solid #e1e8eb;
+  }
+
+  .comp-content .title-field-container:has(.checkbox-inline) > div:last-child {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px 10px;
+  }
+
+  .comp-content .checkbox-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    width: auto;
+    min-height: 38px;
+    padding: 8px 12px 8px 30px;
+
+    box-sizing: border-box;
+
+    background: #fff;
+    border: 1px solid #d8e1e5;
+    border-radius: 8px;
+
+    color: #003c49;
+    font-family: "Nunito", "Tahoma", sans-serif;
+    font-size: 14px;
+    line-height: 1.3;
+
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .comp-content .checkbox-inline:hover {
+    border-color: #537fa4;
+    background-color: #f8fbfc;
+  }
+
+  .comp-content .checkbox-inline input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    margin: 0;
+    accent-color: #537fa4;
+    cursor: pointer;
+    left: 5px;
+  }
+
+  /* Mailing list checkbox */
+
+  .comp-content .email-signup-opt-in {
+    padding: 0;
+    background: #f4f7f8;
+    border-radius: 12px;
+    border: 1px solid #e1e8eb;
+    display: none;
+  }
+
+  .comp-content .email-signup-opt-in .checkbox-inline {
+    width: 100% !important;
+    padding: 0 0 0 30px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  .comp-content .email-signup-opt-in .checkbox-inline:hover {
+    background: transparent;
+    border: none;
+  }
+
+  .comp-content .email-signup-opt-in .checkbox-inline input[type="checkbox"] {
+    left: 0;
+  }
+
+  /* =========================================================
+     DISCLAIMER
+  ========================================================= */
+
+  .sign-up-disclaimer {
+    margin: 5px 0 18px;
+    padding: 0 3px;
+
+    color: #53666d;
+    font-family: "Nunito", "Tahoma", sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  /* =========================================================
+     SUBMIT BUTTON
+  ========================================================= */
+
+  .comp-content form input.btn,
+  .comp-content form input[type="button"] {
+    display: block;
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 24px;
+
+    box-sizing: border-box;
+
+    background: #003c49;
+    border: 3px solid #003c49;
+    border-radius: 10px;
+
+    color: #fff;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.2;
+
+    box-shadow: none;
+
+    cursor: pointer;
+
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease,
+      transform 0.15s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .comp-content form input.btn:hover,
+  .comp-content form input[type="button"]:hover {
+    background: #537fa4;
+    border-color: #537fa4;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 60, 73, 0.2);
+    transform: translateY(-1px);
+  }
+
+  .comp-content form input.btn:active,
+  .comp-content form input[type="button"]:active {
+    transform: translateY(0);
+  }
+
+  .comp-content form .radio-inline+.radio-inline,
+  .comp-content form .checkbox-inline+.checkbox-inline {
+    margin-left: 0;
+  }
+
+
+  /* =========================================================
+     MOBILE
+  ========================================================= */
+
+  @media (max-width: 767px) {
+
+    .comp-content > p {
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .comp-content form {
+      margin-top: 25px;
+      padding: 20px 15px;
+      border-radius: 14px;
+    }
+
+    .title-field-container {
+      margin-bottom: 20px;
+    }
+
+    .title-field-container:has(.checkbox-inline) {
+      padding: 15px;
+    }
+
+    .title-field-container:has(.checkbox-inline) > div:last-child {
+      gap: 7px;
+    }
+
+    .checkbox-inline {
+      min-height: 36px;
+      padding: 7px 10px;
+      font-size: 13px;
+    }
+
+    .comp-content form input.form-control,
+    .comp-content form select.form-control {
+      min-height: 48px;
+      font-size: 16px;
+    }
+
+    .comp-content form input.btn,
+    .comp-content form input[type="button"] {
+      min-height: 52px;
+      font-size: 16px;
+    }
+  }
+</style>
+
+<style>
+
+  .comp-content > ol {
+    list-style: none;
+    counter-reset: christmas-steps;
+
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto 28px;
+    padding: 0;
+
+    text-align: left;
+  }
+
+  .comp-content > ol > li {
+    counter-increment: christmas-steps;
+
+    position: relative;
+
+    margin: 0 0 12px;
+    padding: 14px 18px 14px 62px;
+
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+
+    color: #fff;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+
+    box-sizing: border-box;
+  }
+
+  /* Number */
+
+  .comp-content > ol > li::before {
+    content: counter(christmas-steps);
+
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    background: #fff;
+    color: #27579f;
+
+    border-radius: 50%;
+
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* Links */
+
+  .comp-content > ol > li a {
+    color: #fff;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+  }
+
+  .comp-content > ol > li a:hover {
+    color: #afcb17;
+  }
+
+  /* Robin image */
+
+  .comp-content > ol > li img#robin {
+    width: 30px;
+    height: 30px;
+
+    margin: 0 3px;
+    vertical-align: middle;
+
+    object-fit: contain;
+  }
+
+  /* Subtle alternating treatment */
+
+  .comp-content > ol > li:nth-child(even) {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* =========================================================
+     MOBILE
+  ========================================================= */
+
+  @media (max-width: 767px) {
+
+    .comp-content > ol {
+      margin: 18px auto 24px;
+    }
+
+    .comp-content > ol > li {
+      margin-bottom: 10px;
+      padding: 12px 12px 12px 55px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .comp-content > ol > li::before {
+      left: 12px;
+
+      width: 30px;
+      height: 30px;
+
+      font-size: 15px;
+    }
+
+    .comp-content > ol > li img#robin {
+      width: 26px;
+      height: 26px;
+    }
+  }
+</style>
+
+  <div class="media-module-banner-wrapper-outer" style="background-color: rgb(39, 87, 159);">
+    <div class="media-module-banner-wrapper">
+      <div class="media-module-banner">
+        <picture><source media="(max-width: 767px)" srcset="https://thetoyshop.com/medias/Win-Wishlist-2026-banners-POD-Header-500x500px.jpg?context=bWFzdGVyfHJvb3R8MTU0MDU2fGltYWdlL2pwZWd8YURsakwyZzVPQzh4TWpnME9ETXlNRFkwTXpFd01pOVhhVzR0VjJsemFHeHBjM1F0TWpBeU5pMWlZVzV1WlhKelgxQlBSRjlJWldGa1pYSmZOVEF3ZURVd01IQjRMbXB3Wnd8OTk3ZjM3YzQzYTZiOWYwMTdhZDQzZWVlYWFiNGExMDZlYjVlZjY1OGE4YjMwNTU2MThiNTExZDk1ZmI4OTJiZA"><img alt="" src="https://thetoyshop.com/medias/Win-Wishlist-2026-banners-Comp-Tile-Header-944x200px.jpg?context=bWFzdGVyfHJvb3R8MTI4NzAwfGltYWdlL2pwZWd8YUdOakwyZzVNUzh4TWpnME9ETXlNRFEwTmpRNU5DOVhhVzR0VjJsemFHeHBjM1F0TWpBeU5pMWlZVzV1WlhKelgwTnZiWEJmVkdsc1pWOUlaV0ZrWlhKZk9UUTBlREl3TUhCNExtcHdad3w4ZGE0Y2Q3ZWYyMDcyMzE4ODQ2MmZmNmY2ZmI1MTRkM2Y3NjE2MGY3MTcyM2FmYmE4NDdkMGJiMjc0NjdhZDEy"></picture>
+    </div>
+    </div>
+  </div>
+
+  <div id="win-wishlist-header-area">
+    <div class="win-wishlist-header-content">
+
+      <h2>Win Your Wishlist Competition</h2>
+
+      <div class="comp-form">
+	
+	
+	<!-- FORM CONTENT -->
+	
+	<div class="comp-content">
+
+    <h3>How to enter:</h3>
+		
+		<ol>
+      <li>Create a new wishlist in your account <a href="https://www.thetoyshop.com/my-account/wishlist" title="Create a wishlist">here</a>.</li>
+      <li>Add items to your wishlist from any product page by clicking the "Add to your Wishlist" button.</li>
+      <li style="position: relative;"><img src="https://www.thetoyshop.com/medias/Robin-Flying-3x.png?context=bWFzdGVyfHJvb3R8Mjk2NDF8aW1hZ2UvcG5nfGFHRTNMMmhqWXk4eE1qZzBOekV4T0RFMU5UZ3dOaTlTYjJKcGJpQkdiSGxwYm1kQU0zZ3VjRzVufDk1NzUwODIzZjkyYjk3MDVkYTViMjU5OGY4MmM4OTNlYTUyYWNkNzM5ZTBkZGZhNDQ3MGQ2YTg1MzA4OTVlNGQ" alt="robin flying" style="position: absolute; left: -15px; top: -15px; width: 55px; height: 55px; object-fit: contain;" /> Get a copy of our gift guide in store or view the <a href="https://www.thetoyshop.com/christmas-gift-guide-26" target="_blank">online version</a> and count the number of robins <img id="robin"
+         src="https://www.thetoyshop.com/medias/Robin-game-50px.svg?context=bWFzdGVyfHJvb3R8MTU5MjB8aW1hZ2Uvc3ZnK3htbHxhREEwTDJoaVpTOHhNamd6T0Rjd01qVTNPVGMwTWk5U2IySnBiaTFuWVcxbExUVXdjSGd1YzNabnxiOWUzZTE5ODdmOTUyNWEyMzUzOTM5MmFkNTMwZGJjMjY3ZTE5OWQ0Y2ZkZWM0ZjZlODRmOTk1MjE2MzIwYWQy" width="30px"> in the guide.</li>
+      <li>Enter your answer below and submit your entry.</li>
+    </ol>
+		
+		<p>More details can be found in our <a href="#terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>. (* Mandatory fields)</p>
+		
+		<form name="CompForm" onsubmit="return CheckCompInputs();" action="https://link.thetoyshop.com/u/register.php" method=get>
+			
+			<input type=hidden name="CID" value="1049437855">
+			<input type=hidden name="SID" value="">
+			<input type=hidden name="UID" value="">
+			<input type=hidden name="f" value="2484">
+			<input type=hidden name="p" value="2">
+			<input type=hidden name="a" value="r">
+			<input type=hidden name="el" value="">
+			<input type=hidden name="llid" value="">
+			<input type=hidden name="c" value="">
+			<input type=hidden name="counted" value="">
+			<input type=hidden name="RID" value="">
+			<input type=hidden name="mailnow" value="">
+			
+			
+			<!-- EMAIL FIELD -->
+			
+			<div class="title-field-container">
+							
+				<div>
+								
+					<legend>Email address <span class="mandatory-asterisks">(*)</span></legend>
+							
+				</div>
+							
+				<div>
+								
+					<input type=email name="inp_3" maxlength=255 value="" class="form-control">
+							
+				</div>
+					
+			</div>
+			
+			
+			<!-- FIRST NAME FIELD -->
+			
+			<div class="title-field-container">
+							
+				<div>
+
+					<legend>First Name <span class="mandatory-asterisks">(*)</span></legend>
+
+				</div>
+
+				<div>
+
+					<input type=text name="inp_1" maxlength=60 value="" class="form-control">
+
+				</div>
+				
+			</div>
+			
+			
+			<!-- LAST NAME FIELD -->
+						
+			<div class="title-field-container">
+							
+				<div>
+								
+					<legend>Last Name <span class="mandatory-asterisks">(*)</span></legend>
+							
+				</div>
+				
+				<div>
+						
+					<input type=text name="inp_2" maxlength=60 value="" class="form-control">
+							
+				</div>
+					
+			</div>
+			
+			
+			<!-- SECRET WORD -->
+						
+			<div class="title-field-container">
+							
+				<div>
+								
+					<legend>How many robins did you find?</legend>
+							
+				</div>
+				
+				<div>
+					
+					<input type=number name="inp_14799" maxlength=24 class="form-control">
+							
+				</div>
+					
+			</div>
+			
+			
+			<!-- BRAND INTEREST TICKBOXES -->
+			
+			<div class="title-field-container">
+				
+				<div>
+								
+					<legend>Which toys are you interested in?<!--<span class="mandatory-asterisks">(*)</span>--></legend>
+							
+				</div>
+				
+				<div>
+					
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="1">Barbie</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="17">Batman</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="5">Bluey</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="2">Disney Princess</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="10">Fuggler</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="13">Gabby's Dollhouse</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="25">Harry Potter</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="8">Hot Wheels</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="18">L.O.L. Surprise!</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="21">LEGO</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="4">Marvel</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="22">Mini Brands/Miniverse</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="11">Monster Jam</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="14">NERF</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="23">Nintendo</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="6">Paw Patrol</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="3">Peppa Pig</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="24">Pokemon</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="26">Sony PlayStation</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="16">Spider-Man</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="7">Squishmallows</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="9">Star Wars</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="20">Teenage Mutant Ninja Turtles</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13841[]" value="19">Transformers</label>
+					
+				</div>
+							
+			</div>
+			
+			
+			<!-- BRAND INTEREST TICKBOXES -->
+			
+			<div class="title-field-container">
+				
+				<div>
+								
+					<legend>The birthday month/s of children I buy for are:<!--<span class="mandatory-asterisks">(*)</span>--></legend>
+							
+				</div>
+				
+				<div>
+					
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="1">January</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="2">February</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="3">March</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="4">April</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="5">May</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="6">June</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="7">July</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="8">August</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="9">September</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="10">October</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="11">November</label>
+					<label class="checkbox-inline"><input type=checkbox name="inp_13561[]" value="12">December</label>
+					
+				</div>
+							
+			</div>
+			
+			
+			<!-- DROPDOWN FOR STORE SELECT -->
+						
+			<div class="title-field-container">
+				
+				<legend>Please select your local store</legend>
+					
+				<select name="inp_12451" size=1 class="form-control">
+						
+					<option value="">Select Store</option><option value="165">Aberdeen</option><option value="1">Altrincham</option><option value="2">Amersham</option><option value="3">Antrim</option><option value="4">Ashford</option><option value="5">Aylesbury</option><option value="6">Banbury</option><option value="7">Barnsley</option><option value="8">Barnstaple</option><option value="10">Basildon</option><option value="11">Basingstoke</option><option value="12">Bath</option><option value="13">Belfast</option><option value="14">Beverley</option><option value="15">Bexleyheath</option><option value="16">Birkenhead</option><option value="17">Bishop Stortford</option><option value="18">Blackburn</option><option value="19">Bluewater</option><option value="20">Bolton</option><option value="21">Bournemouth</option><option value="169">Bracknell</option><option value="22">Bradford</option><option value="23">Braehead</option><option value="24">Brighton</option><option value="25">Bristol Cabot Circus</option><option value="26">Bromley Lower</option><option value="27">Bromley Upper</option><option value="28">Broughton Park</option><option value="29">Bullring</option><option value="30">Burnley</option><option value="31">Burton upon Trent</option><option value="32">Bury</option><option value="33">Camberley</option><option value="34">Cambridge</option><option value="35">Cardiff</option><option value="36">Carlisle</option><option value="37">Carmarthen</option><option value="38">Chatham</option><option value="39">Chelmsford</option><option value="40">Chester</option><option value="41">Chesterfield</option><option value="42">Chichester</option><option value="43">Clydebank</option><option value="44">Colchester</option><option value="45">Coliseum</option><option value="46">Corby</option><option value="47">Coventry</option><option value="48">Crawley</option><option value="49">Cribbs Causeway</option><option value="50">Cumbernauld</option><option value="51">Cwmbran</option><option value="163">Dalton Park</option><option value="52">Derby</option><option value="53">Didcot</option><option value="54">Doncaster</option><option value="55">Douglas</option><option value="56">Dover</option><option value="57">Dundee</option><option value="58">Dunfermline</option><option value="59">East Kilbride</option><option value="60">Eastleigh</option><option value="166">Edinburgh Gyle</option><option value="61">Exeter</option><option value="62">Gateshead Metro Centre</option><option value="63">Glasgow Buchanan Galleries</option><option value="64">Glasgow Silverburn</option><option value="128">Glasgow St Enoch</option><option value="65">Gloucester</option><option value="66">Grimsby</option><option value="67">Guildford</option><option value="68">Hanley</option><option value="69">Harlow Harvey</option><option value="71">Haywards Heath</option><option value="72">Hemel Hempstead</option><option value="73">Hereford</option><option value="74">Huddersfield</option><option value="75">Hull</option><option value="76">Ilford</option><option value="77">Inverness</option><option value="78">Ipswich</option><option value="79">Jersey</option><option value="80">Keynsham</option><option value="81">Kidderminster</option><option value="82">King's Lynn, Vancouver Quarter</option><option value="83">Kingston Bentalls</option><option value="84">Lakeside</option><option value="85">Lancaster</option><option value="86">Leamington Spa</option><option value="87">Leeds Springs</option><option value="88">Leeds Trinity</option><option value="89">Leeds White Rose</option><option value="90">Leicester</option><option value="91">Lichfield</option><option value="92">Lincoln</option><option value="93">Liverpool One</option><option value="94">Liverpool St Johns</option><option value="95">Livingston</option><option value="96">Llandudno</option><option value="97">Macclesfield</option><option value="98">Manchester Arndale</option><option value="170">Manchester Trafford Centre</option><option value="99">Merry Hill</option><option value="100">Middlesbrough</option><option value="101">Midsomer Norton</option><option value="102">Milton Keynes</option><option value="103">Newbury</option><option value="104">Newport IOW</option><option value="105">Newport Wales</option><option value="106">Northampton</option><option value="107">Northwich</option><option value="108">Norwich</option><option value="109">Nottingham</option><option value="110">Oldham</option><option value="111">Orpington</option><option value="112">Peterborough</option><option value="113">Plymouth</option><option value="114">Poole</option><option value="115">Port Talbot</option><option value="168">Portsmouth Gunwharf Quays</option><option value="116">Preston</option><option value="117">Reading</option><option value="118">Redditch</option><option value="119">Romford Brewery</option><option value="120">Romford Mercury</option><option value="164">Rushden Lakes</option><option value="121">Scunthorpe</option><option value="122">Sheffield</option><option value="123">Sheffield Meadowhall</option><option value="124">Shrewsbury</option><option value="125">Solihull</option><option value="126">Southport</option><option value="127">St Albans</option><option value="129">Staines</option><option value="130">Stevenage</option><option value="131">Stirling</option><option value="132">Stockport</option><option value="133">Stratford</option><option value="134">Sunderland</option><option value="135">Sutton Coldfield</option><option value="136">Swansea</option><option value="137">Swindon</option><option value="138">Taunton</option><option value="139">Telford</option><option value="167">The O2</option><option value="140">Torquay</option><option value="141">Truro</option><option value="142">Uxbridge</option><option value="143">Wakefield</option><option value="144">Walsall</option><option value="145">Wandsworth</option><option value="146">Warrington</option><option value="147">Watford</option><option value="148">Welwyn Garden City</option><option value="149">West Bromwich</option><option value="150">White City</option><option value="151">Whiteley</option><option value="152">Wimbledon</option><option value="153">Winchester</option><option value="154">Witney</option><option value="155">Woking</option><option value="156">Wolverhampton</option><option value="157">Worcester</option><option value="158">Workington</option><option value="159">Wrexham</option><option value="160">Yate</option><option value="161">Yeovil</option><option value="162">York</option>
+				
+				</select>
+			
+			</div>
+			
+			
+			<div class="sign-up-disclaimer">By submitting your name and email address, you agree to receive emails about special offers, new toys and inspiration from The Entertainer.</div>
+			
+			
+			<!-- THE ENTERTAINER MAILING LIST CHECKBOX -->
+						
+			<div class="title-field-container email-signup-opt-in">
+								
+				<label class="checkbox-inline" style="width: 100%;"><input tabindex='882' type=checkbox name="optin" value="y" checked > Tick here if you would like to receive email marketing communications from The Entertainer</label>
+							
+			</div>
+			
+			
+			<!-- SUBMIT BUTTON -->
+			
+			<input class="btn btn-default btn-block" aria-label='Register' tabindex='993' type=button onclick="javascript:SubmitComp()" name="submit2" value="Enter Prize Draw">
+		
+		</form>		
+	
+	</div>
+
+</div>
+
+    </div>
+</div>
+
+<div id="terms" class="comp-terms">
+  TERMS WILL GO HERE 
+</div>
+
+<div class="win-wishlist-footer">
+
+<style>
+.christmas-bottom-image-wrapper {
+  width: 100%;
+}
+
+.christmas-bottom-image-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+  </style><div class="christmas-bottom-image-wrapper"><picture><source media="(max-width: 767px)" srcset="https://thetoyshop.com/medias/Xmas-Hub-Footer-Mob-500xx0244px.jpg?context=bWFzdGVyfHJvb3R8NzU5OTh8aW1hZ2UvanBlZ3xhREZpTDJneE55OHhNamcwTnprek5EVTNNRFV5Tmk5WWJXRnpJRWgxWWlCR2IyOTBaWElnVFc5aUlEVXdNSGg0TURJME5IQjRMbXB3Wnd8YTgyMTY1YTU5OTdkOTAzMDFkMTY3NjI2NGE5ODgwZjMwNzNiOTBjMDA1MTkzMmNmYTJhMzcxODhjZDcyMzJjNQ"><img alt="" src="https://thetoyshop.com/medias/Xmas-Hub-Footer-DT-2800x706px.jpg?context=bWFzdGVyfHJvb3R8MjY0NzM0fGltYWdlL2pwZWd8YURWaEwyZ3hOaTh4TWpnME56a3pORFV3TkRrNU1DOVliV0Z6SUVoMVlpQkdiMjkwWlhJZ1JGUWdJREk0TURCNE56QTJjSGd1YW5CbnxiZGI2NzdlZDQ5ZjhkYWU5NDkwYjIwOWIzMmVlNjZkNjE3N2Y5OGNhYWE4YjFkMmM4YTNiYTUzZGJkOTRlY2U3"></picture></div>
+
+</div>
+
+<script>
+
+	setTimeout(function () {
+
+		var current = new Date();
+		var expiry  = new Date("December 31, 2026 23:59:59")
+
+		if(current.getTime()>expiry.getTime()){
+			$('.comp-form').hide();
+		}
+		
+	}, 500);
+
+</script>
+
+
+<!-- PLEASE DO NOT TOUCH THE SCRIPTS BELOW -->
+
+<script language="javascript">
+	<!--
+	function onbeforesubmit() {
+		return true;
+	}
+	//-->
+</script>
+
+<script language="javascript">
+	<!--
+	var error;
+	var form_lanuage = 'en';
+	
+	function is_0_valid(){
+		count = 0;
+		if(document.CompForm.optin){
+			if(document.CompForm.optin.checked){
+				if(document.getElementsByName('interest[]')){
+					if(document.getElementsByName('interest[]').length > 0 ){
+						Interest = document.getElementsByName('interest[]');
+						for(i = 0 ; i < Interest.length;i++){
+							if(Interest[i].checked)
+								++count;
+						}
+						if(count == 0) {
+							error  += "Interests:";
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return  true;
+	}
+	
+	function is_1_valid(input) {
+		if(input == "") {
+			error += "First Name: missing data!\n";
+			return false;
+		}
+		return true;
+	}
+	
+	function is_2_valid(input) {
+		if(input == "") {
+			error += "Last Name: missing data!\n";
+			return false;
+		}
+		return true;
+	}
+	
+	function is_3_valid(input) {
+		if(input == "") {
+			error += "Email: missing data!\n";
+			return false;
+		}
+		return true;
+	}
+	
+	function CheckCompInputs() {
+		var check_ok = true;
+		error = "Please enter mandatory fields for the prize draw...\n";
+		
+		check_ok = (is_0_valid('null') && check_ok);
+		check_ok = (is_1_valid(document.CompForm.inp_1.value) && check_ok);
+		check_ok = (is_2_valid(document.CompForm.inp_2.value) && check_ok);
+		check_ok = (is_3_valid(document.CompForm.inp_3.value) && check_ok);
+		if(check_ok == false)
+			alert(error);
+		return check_ok;
+	}
+	
+	//-->
+
+</script>
+
+<script language="javascript">
+	
+	function SubmitComp(){
+		if(CheckCompInputs() == true){
+			if(window.onbeforesubmit)
+				onbeforesubmit();
+			document.CompForm.submit();
+		}
+	}
+	
+	function MailIt(){
+		if(CheckCompInputs()){
+			if((document.CompForm.subject.value=='') || (document.CompForm.msg.value==''))
+				alert('Bitte f\u00fcr Sie die Nachrichtenfelder aus!');
+			else
+				document.CompForm.submit();
+		}
+	}
+	
+	function FieldWithName(frm, fieldname, numofield) {
+		if(!numofield)
+			numofield = 0;
+		field_count = 0;
+		for(i = 0; i < frm.elements.length; ++i) {
+			if(frm.elements[i].name == fieldname) {
+				if(field_count == numofield)
+					return frm.elements[i];
+				else
+					field_count++;
+			}
+		}
+	}
+	
+	function NumChecked(frm, fieldname) {
+		var count = 0;
+		for(i = 0; i < frm.elements.length; ++i) {
+			if(frm.elements[i].name == fieldname && frm.elements[i].checked == true)
+				++count;
+		}
+		return count;
+	}
+	
+	function NumSel(field) {
+		var count = 0;
+		for(i = 0; i < field.length; ++i)
+			if(field[i].selected == true) ++count;
+		return count;
+	}
+
+</script>
+
+<script language="javascript">
+	var multiFields = new Array();
+	var dateFields = new Array();
+	multiFields["interest[]"] = "interest"
+	multiFields["optin"] = "optin"
+	var arr_optin = new Array();
+	arr_optin["True"] = "y";
+	var arr_interest = new Array();
+</script>
+
+<script>
+	
+	setTimeout(function () {
+
+		$('.email-signup-opt-in input').prop('checked', true);
+		
+	}, 500);
+	
+</script>
+		
+<script language="javascript" src="https://link.thetoyshop.com/u/nprefill.js" type="text/javascript"></script>
+

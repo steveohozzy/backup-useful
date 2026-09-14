@@ -1,0 +1,427 @@
+  <style>
+    category-title {
+    display: none;
+  }
+  #world-cup-header-area {
+    background-color: #fff;
+  }
+  .world-cup-header-content {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .world-cup-header-content h2 {
+    text-transform: uppercase;
+    background-color: #1f2b91;
+    color: #fff;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 24px;
+    border-radius: 8px;
+  }
+
+  .world-cup-header-content p {
+    font-size: 16px;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    color: #1f2b91;
+    margin: 0 0 20px;
+  }
+
+  #uploadForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 565px;
+    padding: 0 20px;
+    margin: 0 auto;
+  }
+
+    /* Custom file input */
+    #image {
+      display: none;
+    }
+
+    #uploadForm .custom-file-label {
+      background-color: #1f2b91;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+      cursor: pointer;
+      height: 40px;
+      border-radius: 8px;
+      border: 3px solid transparent;
+      width: 100%;
+      transition: all 0.3s;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    #uploadForm .custom-file-label:hover {
+      background-color: #fff;
+      color: #1f2b91;
+      border: 3px solid #1f2b91;
+    }
+
+    /* Floating label inputs */
+    #uploadForm .form-group {
+      position: relative;
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
+    #uploadForm .form-group input,
+    #uploadForm .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 3px solid #1f2b91;
+      border-radius: 8px;
+      outline: none;
+      font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+      color: #1f2b91;
+      background: none;
+    }
+
+    #uploadForm .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    #uploadForm .form-group label {
+      position: absolute;
+      top: 25px;
+      left: 12px;
+      transform: translateY(-50%);
+      background: #fff;
+      padding: 0 4px;
+      color: #1f2b91;
+      font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+      pointer-events: none;
+      transition: 0.2s ease all;
+    }
+
+    #uploadForm .form-group input:focus + label,
+    #uploadForm .form-group input:not(:placeholder-shown) + label,
+    #uploadForm .form-group textarea:focus + label,
+    #uploadForm .form-group textarea:not(:placeholder-shown) + label {
+      top: -10px;
+      font-size: 12px;
+      color: #1f2b91;
+    }
+
+    /* Submit button */
+    #uploadForm button {
+      background-color: #1f2b91;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+      cursor: pointer;
+      height: 40px;
+      border-radius: 8px;
+      border: 3px solid transparent;
+      width: 100%;
+      transition: all 0.3s;
+    }
+
+    #uploadForm button:hover {
+      background-color: #fff;
+      color: #1f2b91;
+      border: 3px solid #1f2b91;
+    }
+
+    /* Status and preview */
+    #status {
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #preview {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      display: none;
+      border: 3px solid #1f2b91;
+      border-radius: 8px;
+      padding: 5px;
+    }
+
+    .promo-banner {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .promo-banner img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .download-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0;
+    }
+  </style>
+  <div id="world-cup-header-area">
+    <div class="world-cup-header-content">
+      <h2>Enter Competition</h2>
+      <p>Use the form below to enter our competition. Simply upload your colouring-in entry. Then enter your name, email, phone number, and address so we can contact you if you are our lucky winner!</p>
+      <p><strong>GOOD LUCK!</strong><br />
+      <a href="https://www.thetoyshop.com/football-hub-comp-download#terms">Terms and Conditions</a></p>
+    </div>
+  </div>
+
+  <form id="uploadForm">
+    <label for="image" class="custom-file-label">Choose File</label>
+    <input type="file" id="image" accept="image/*" required />
+
+    <div class="form-group">
+      <input type="text" id="name" placeholder=" " required />
+      <label for="name">Name</label>
+    </div>
+
+    <div class="form-group">
+      <input type="email" id="email" placeholder=" " required />
+      <label for="email">Email</label>
+    </div>
+
+    <div class="form-group">
+      <input type="tel" id="phone" placeholder=" " required />
+      <label for="phone">Phone Number</label>
+    </div>
+
+    <div class="form-group">
+      <textarea id="address" placeholder=" " required></textarea>
+      <label for="address">Address</label>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="status"></p>
+  <img id="preview" />
+
+  <div class="promo-banner">
+    <a href="https://www.thetoyshop.com/c/football" target="_blank">
+    <img src="https://thetoyshop.com/medias/Football-Hub-Digital-Assets-V3-Comp-tile-DT-944x200px.jpg?context=bWFzdGVyfHJvb3R8MTYxNDU1fGltYWdlL2pwZWd8YURVMUwyZzJaUzh4TWpjek9UWTFPREUxTkRBeE5DOUdiMjkwWW1Gc2JDQklkV0lnUkdsbmFYUmhiQ0JCYzNObGRITmZWak5mUTI5dGNDQjBhV3hsSUVSVVh6azBOSGd5TURCd2VDNXFjR2N8YWQyNGViN2UwMjQyODVjMTRlOWM4YjhlMGEzMWRjZTc0MzEwYWUzZDVjNzYyZGUzY2Y0MWY4ZGMxODY1MzVjNw" alt="Promo Banner" title="Promo Banner" />
+    </a>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } 
+    from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+
+    const adminEmails = [
+      "steve.hoskins@theentertainer.com",
+      "hasina.bhatti@theentertainer.com"
+    ];
+
+    // Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyCDZV0dYL32XUo0i_VXEcqDC-YI7M9GaVk",
+  authDomain: "comp-image-upload.firebaseapp.com",
+  projectId: "comp-image-upload",
+  storageBucket: "comp-image-upload.firebasestorage.app",
+  messagingSenderId: "1075579373754",
+  appId: "1:1075579373754:web:de8c1e266ac0ba1323da83"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+    const form = document.getElementById("uploadForm");
+    const status = document.getElementById("status");
+    const preview = document.getElementById("preview");
+    const fileInput = document.getElementById("image");
+    const fileLabel = document.querySelector(".custom-file-label");
+
+    const CLOUD_NAME = "dzo7qxreh";
+    const UPLOAD_PRESET = "world-cup-comp";
+
+    // Update file label
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files.length > 0) {
+        fileLabel.textContent = fileInput.files[0].name;
+      } else {
+        fileLabel.textContent = "Choose File";
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const file = fileInput.files[0];
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const address = document.getElementById("address").value;
+
+  if (!file) return alert("Please select an image");
+
+  status.textContent = "Uploading image...";
+
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+    if (!data.secure_url) throw new Error("Image upload failed");
+
+    const imageUrl = data.secure_url;
+
+    // Show uploaded image
+    preview.src = imageUrl;
+    preview.style.display = "block";
+
+    status.textContent = "Saving entry to database...";
+
+    await addDoc(collection(db, "submissions"), {
+      imageUrl,
+      name,
+      email,
+      phone,
+      address,
+      createdAt: serverTimestamp()
+    });
+
+    // ✅ Replace only form fields with thank-you message
+    form.innerHTML = `<p style="text-align:center; font-size:18px; color:#1f2b91; font-weight:bold; margin: 20px 0;">
+                        Thanks for your entry and good luck!
+                      </p>`;
+
+    // Update status message
+    status.textContent = "✅ Entry submitted successfully!";
+
+  } catch (err) {
+    console.error(err);
+    status.textContent = "❌ Something went wrong!";
+  }
+});
+
+function showLogin() {
+  return new Promise((resolve) => {
+    const modal = document.createElement("div");
+    modal.style.position = "fixed";
+    modal.style.top = "0";
+    modal.style.left = "0";
+    modal.style.width = "100%";
+    modal.style.height = "100%";
+    modal.style.background = "rgba(0,0,0,0.5)";
+    modal.style.display = "flex";
+    modal.style.alignItems = "center";
+    modal.style.justifyContent = "center";
+    modal.style.zIndex = "99999";
+
+    modal.innerHTML = `
+      <div style="background:#fff;padding:20px;border-radius:8px;width:300px;">
+        <h3>Admin Login</h3>
+        <input id="loginEmail" placeholder="Email" style="width:100%;margin-bottom:10px;" />
+        <input id="loginPass" type="password" placeholder="Password" style="width:100%;margin-bottom:10px;" />
+        <button id="loginBtn">Login</button>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    document.getElementById("loginBtn").onclick = async () => {
+      try {
+        await signInWithEmailAndPassword(
+          auth,
+          document.getElementById("loginEmail").value,
+          document.getElementById("loginPass").value
+        );
+
+        modal.remove();
+        resolve(true);
+
+      } catch (err) {
+        alert("Login failed");
+      }
+    };
+  });
+}
+
+async function exportCSV() {
+  const querySnapshot = await getDocs(collection(db, "submissions"));
+
+  const rows = [];
+  rows.push(["Image URL","Name","Email","Phone","Address","Created At"].join(","));
+
+  querySnapshot.forEach(doc => {
+    const data = doc.data();
+    const createdAt = data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : "";
+
+    rows.push([
+      `"${data.imageUrl || ""}"`,
+      `"${data.name || ""}"`,
+      `"${data.email || ""}"`,
+      `"${data.phone || ""}"`,
+      `"${data.address || ""}"`,
+      `"${createdAt}"`
+    ].join(","));
+  });
+
+  const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "submissions.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+    if (window.location.search.includes("download")) {
+
+  const downloadBtn = document.createElement("button");
+  downloadBtn.textContent = "Download CSV";
+  downloadBtn.classList.add("download-btn");
+  document.body.appendChild(downloadBtn);
+
+  downloadBtn.addEventListener("click", async () => {
+
+    // ❌ BLOCK 1: must be logged in
+    if (!auth.currentUser) {
+      await showLogin();
+      return;
+    }
+
+    // ❌ BLOCK 2: must be admin email
+    const email = auth.currentUser.email;
+
+    if (!adminEmails.includes(email)) {
+      alert("Not authorised");
+      return;
+    }
+
+    // ✅ allowed → export
+    exportCSV();
+
+  });
+}
+
+
+  </script>

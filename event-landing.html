@@ -1,0 +1,160 @@
+<div class="event-container" id="chase">
+  <div class="image-container">
+    <div class="event-title">Ready for action, Ryder, Sir!</div>
+    <img src="https://www.thetoyshop.com/medias/Meet-Chase-From-Paw-Patrol.jpg?context=bWFzdGVyfHJvb3R8MTY0MjkyfGltYWdlL2pwZWd8YUdSakwyZ3dZUzh4TWpBek56WTFNVEV6TmpVME1pNXFjR2N8ODNmZTE1YjA0MWVlZjEwN2M3NTc0Y2E1ZWZlODdlNTQ1MzMyMTdhYzE5MWUyNjk5Y2M5YjQzZmFkY2QwMWRlMQ" alt="Meet Chase From Paw Patrol" title="Meet Chase From Paw Patrol">
+    <a href="https://www.thetoyshop.com/brands/paw-patrol" class="hero-button">Our Paw Patrol Range</a>
+  </div>
+
+  <div class="event-details">
+    <div class="character-intro">
+      <p>Come and meet the bravest police pup, Chase, at your local The Entertainer store! Chase will be appearing at intervals between <strong>10am-4pm</strong>. It’s free to meet Chase but arriving early is recommended.</p>
+      <p>Chase is visiting all of the stores below throughout the year. Can’t make this one? Maybe catch him at the next!</p>
+      <p>Bring your camera, your biggest smile, and practice your best Chase catchphrases.</p>
+      <p>Share your photos with us on social media!</p>
+    </div>
+
+    <ul class="event-dates">
+      <li><span><strong>28/03/2026</strong></span><span><a href="/store/milton-keynes" target="_blank" title="The Entertainer in Milton Keynes">Milton Keynes</a></span><span class="price">FREE</span></li>
+      <li><span><strong>30/05/2026</strong></span><span><a href="/store/sheffield-meadowhall " target="_blank" title="The Entertainer in Sheffield Meadowhall">Sheffield Meadowhall</a></span><span class="price">FREE</span></li>
+      <li><span><strong>01/08/2026</strong></span><span><a href="/store/kings-lynn-vancouver" target="_blank" title="The Entertainer in Kings Lynn Vancouver">Kings Lynn Vancouver</a></span><span class="price">FREE</span></li>
+      <li><span><strong>02/08/2026</strong></span><span><a href="/store/kings-lynn-vancouver" target="_blank" title="The Entertainer in Kings Lynn Vancouver">Kings Lynn Vancouver</a></span><span class="price">FREE</span></li>
+      <li><span><strong>29/08/2026</strong></span><span><a href="/store/metro-centre" target="_blank" title="The Entertainer in Metro Centre">Metro Centre</a></span><span class="price">FREE</span></li>
+      <li><span><strong>26/09/2026</strong></span><span><a href="/store/braehead" target="_blank" title="The Entertainer in Braehead">Braehead</a></span><span class="price">FREE</span></li>
+      <li><span><strong>28/03/2026</strong></span><span><a href="/store/bluewater" target="_blank" title="The Entertainer in Bluewater">Bluewater</a></span><span class="price">FREE</span></li>
+      <li><span><strong>28/11/2026</strong></span><span><a href="/store/arndale" target="_blank" title="The Entertainer in Arndale">Arndale</a></span><span class="price">FREE</span></li>
+    </ul>
+  </div>
+</div>
+
+<style>
+.event-container {
+  background: #fef6e4;
+  border: 4px solid #ffcc00;
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 900px;
+  margin: 40px auto;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+.image-container {
+  text-align: center;
+}
+.event-title {
+  font-size: 2rem;
+  color: #ff4c4c;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px #ffee00;
+}
+.image-container img {
+  max-width: 100%;
+  border: 4px solid #ffcc00;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+.hero-button {
+  display: inline-block;
+  background: #ff4c4c;
+  color: white;
+  padding: 10px 20px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+.hero-button:hover {
+  background: #ffee00;
+  color: #ff4c4c;
+  transform: scale(1.05);
+}
+.character-intro p {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.event-dates {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+.event-dates li {
+  background: #fffbf0;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border: 2px dashed #ffcc00;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.event-dates li span {
+  display: inline-block;
+}
+.add-to-calendar {
+  background: #4cc9f0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.add-to-calendar:hover {
+  background: #4361ee;
+  transform: scale(1.05);
+}
+.price {
+  font-weight: bold;
+  color: #2a9d8f;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const events = document.querySelectorAll('.event-dates li');
+
+  events.forEach(li => {
+    if (li.dataset.expired === "true") return;
+
+    const btn = document.createElement('button');
+    btn.className = 'add-to-calendar';
+    btn.innerText = 'Add to Calendar';
+    li.appendChild(btn);
+
+    btn.addEventListener('click', () => {
+      const dateText = li.querySelector('strong').innerText;
+      const location = li.querySelector('a').innerText;
+      const url = li.querySelector('a').href;
+      const title = li.querySelector('a').title || "Event";
+
+      const parts = dateText.split('/');
+      const date = `${parts[2]}${parts[1].padStart(2,'0')}${parts[0].padStart(2,'0')}`;
+
+      const icsContent = `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//PawPatrol//Event Calendar//EN
+BEGIN:VEVENT
+UID:${Date.now()}@pawpatrol.com
+DTSTAMP:${date}T000000Z
+DTSTART:${date}T100000Z
+DTEND:${date}T160000Z
+SUMMARY:${title}
+DESCRIPTION:${url}
+LOCATION:${location}
+END:VEVENT
+END:VCALENDAR
+      `.trim();
+
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${title.replace(/\s+/g, '_')}.ics`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  });
+});
+</script>

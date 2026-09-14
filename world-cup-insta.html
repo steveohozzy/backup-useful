@@ -1,0 +1,251 @@
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+<style>
+  .instagram-carousel .carousel-cell {
+  width: 25%;
+  padding: 10px;
+}
+
+.instagram-carousel blockquote {
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .instagram-carousel .carousel-cell {
+    width: 70%;
+  }
+}
+
+.instagram-carousel .carousel-cell,
+.social-carousel .carousel-cell{
+  width: 25%;
+  padding: 10px;
+}
+
+.fb-post,
+.instagram-media{
+  width:100% !important;
+}
+
+@media (max-width:768px){
+  .instagram-carousel .carousel-cell,
+  .social-carousel .carousel-cell{
+    width:70%;
+  }
+}
+
+.carousel-cell {
+  height: 100%;
+}
+
+.carousel-cell .fb-post,
+.carousel-cell .fb-post span,
+.carousel-cell .fb-post iframe {
+  width: 100% !important;
+  height: 100% !important;
+}
+</style>
+
+<div class="instagram-carousel">
+
+  <div class="carousel-cell">
+    <blockquote class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/p/DVl67IxjhKY/"
+      data-instgrm-version="14"
+      style="background:#FFF;border:0;margin:0;max-width:100%;">
+    </blockquote>
+  </div>
+
+  <div class="carousel-cell">
+    <blockquote class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/p/DVl67IxjhKY/"
+      data-instgrm-version="14">
+    </blockquote>
+  </div>
+
+  <div class="carousel-cell">
+    <blockquote class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/p/DVl67IxjhKY/"
+      data-instgrm-version="14">
+    </blockquote>
+  </div>
+
+  <div class="carousel-cell">
+    <blockquote class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/p/DVl67IxjhKY/"
+      data-instgrm-version="14">
+    </blockquote>
+  </div>
+
+  <div class="carousel-cell">
+    <blockquote class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/p/DVl67IxjhKY/"
+      data-instgrm-version="14">
+    </blockquote>
+  </div>
+
+  <div class="carousel-cell">
+    <blockquote class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/p/DVl67IxjhKY/"
+      data-instgrm-version="14">
+    </blockquote>
+  </div>
+
+  <div class="carousel-cell">
+    <blockquote class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/p/DVl67IxjhKY/"
+      data-instgrm-version="14">
+    </blockquote>
+  </div>
+
+  <div class="carousel-cell">
+    <blockquote class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/p/DVl67IxjhKY/"
+      data-instgrm-version="14">
+    </blockquote>
+  </div>
+
+  <div class="carousel-cell">
+    <blockquote class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/p/DVl67IxjhKY/"
+      data-instgrm-version="14">
+    </blockquote>
+  </div>
+
+</div>
+
+<div class="social-carousel">
+
+  <!-- Instagram post -->
+  <div class="carousel-cell">
+    <blockquote class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/p/DVl67IxjhKY/"
+      data-instgrm-version="14">
+    </blockquote>
+  </div>
+
+  
+
+  <!-- Facebook post -->
+  <div class="carousel-cell">
+    <div class="fb-post"
+      data-href="https://www.facebook.com/TheEntertainerToyShop/posts/939341622163909"
+      data-width="500">
+    </div>
+  </div>
+
+  <!-- Instagram post -->
+  <div class="carousel-cell">
+    <blockquote class="instagram-media"
+      data-instgrm-permalink="https://www.instagram.com/p/DVl67IxjhKY/"
+      data-instgrm-version="14">
+    </blockquote>
+  </div>
+
+  <!-- Facebook post -->
+  <div class="carousel-cell">
+    <div class="fb-post"
+      data-href="https://www.facebook.com/TheEntertainerToyShop/posts/939341622163909"
+      data-width="500">
+    </div>
+  </div>
+
+</div>
+
+<script async src="https://www.instagram.com/embed.js"></script>
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v19.0">
+</script>
+
+<script>
+var instaCarousel = new Flickity('.instagram-carousel',{
+  cellAlign:'left',
+  contain:true,
+  wrapAround:true,
+  pageDots:false
+});
+
+var socialCarousel = new Flickity('.social-carousel',{
+  cellAlign:'left',
+  contain:true,
+  wrapAround:true,
+  pageDots:false
+});
+
+function resizeCarousels(){
+  setTimeout(function(){
+    instaCarousel.resize();
+    socialCarousel.resize();
+  },1200);
+}
+
+window.addEventListener('load',resizeCarousels);
+</script>
+
+<script>
+var flkty = new Flickity('.social-carousel', {
+  cellAlign: 'left',
+  contain: true,
+  wrapAround: true,
+  pageDots: false
+});
+
+function resizeCarousel(){
+  setTimeout(function(){
+    flkty.resize();
+  }, 1000);
+}
+
+window.addEventListener('load', resizeCarousel);
+
+// Instagram render callback
+if (window.instgrm) {
+  window.instgrm.Embeds.process();
+  resizeCarousel();
+}
+
+// Facebook render callback
+window.fbAsyncInit = function() {
+  FB.XFBML.parse();
+  resizeCarousel();
+};
+</script>
+
+<script>
+function fixFacebookEmbeds() {
+  const fbPosts = document.querySelectorAll('.fb-post');
+  fbPosts.forEach(post => {
+    const iframe = post.querySelector('iframe');
+    if (iframe) {
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+    }
+    const innerSpan = post.querySelector('span');
+    if(innerSpan){
+      innerSpan.style.width = '100%';
+      innerSpan.style.height = '100%';
+    }
+  });
+}
+
+// Call after FB SDK parses
+window.fbAsyncInit = function() {
+  FB.init({xfbml:true, version:'v19.0'});
+  FB.XFBML.parse();
+
+  // Wait a moment for iframe to appear
+  setTimeout(() => {
+    fixFacebookEmbeds();
+
+    // Resize Flickity
+    if (window.socialCarousel) socialCarousel.resize();
+  }, 1500);
+};
+</script>
+
+<!-- Elfsight Instagram Feed | Entertainer feed -->
+<script src="https://elfsightcdn.com/platform.js" async></script>
+<div class="elfsight-app-312d0e60-448f-4963-a404-c88808b2a439" data-elfsight-app-lazy></div>

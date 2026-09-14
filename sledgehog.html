@@ -1,0 +1,72 @@
+<style>
+/* Hedgehog Sledge Parallax Element */
+#flying-hedgehog {
+  position: fixed;
+  top: -150px;
+  right: -300px;
+  width: 300px;
+  height: auto;
+  z-index: 0; /* Behind everything */
+  pointer-events: none;
+  will-change: transform;
+  opacity: 0; 
+  transform: translate(0, 0) rotate(0deg) scaleX(1);
+  transition: opacity 0.3s ease;
+}
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const hedgehog = document.createElement("img");
+    hedgehog.id = "flying-hedgehog";
+    hedgehog.src = "https://www.thetoyshop.com/medias/Xmas-Hub-Footer-2800x706px.png?context=bWFzdGVyfHJvb3R8NTIxNDN8aW1hZ2UvcG5nfGFHSTFMMmcwTUM4eE1qZzBNelV3TmpneU56STVOQzlZYldGekxVaDFZaTFHYjI5MFpYSXRNamd3TUhnM01EWndlQzV3Ym1jfGQwZDlkMTViMDJhMDMyYThiMmIxZmQyZDU5NWFhN2JkNjAyNzA1NGI3NzllMmZlYjAyM2YzM2FmYWVlMjVlZmI";
+    hedgehog.alt = "Hedgehog on a sledge";
+    document.body.appendChild(hedgehog);
+
+    let lastScrollY = window.scrollY || document.documentElement.scrollTop;
+
+    function updateHedgehogParallax() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+      // Determine scroll direction (true = down, false = up)
+      const isScrollingDown = scrollTop >= lastScrollY;
+      lastScrollY = scrollTop;
+
+      // Define the active scroll window (from 50% down to 85% down the page)
+      const startPercent = 50;
+      const endPercent = 85;
+
+      if (scrollPercent < startPercent) {
+        // Before 50%: Hidden off-screen
+        hedgehog.style.opacity = "0";
+        hedgehog.style.transform = "translate(0, 0) rotate(0deg) scaleX(1)";
+      } else {
+        // Calculate progress from 0 (at 50%) to 1 (at 85%)
+        let progress = (scrollPercent - startPercent) / (endPercent - startPercent);
+        progress = Math.max(0, Math.min(1, progress));
+
+        const maxDistX = window.innerWidth + 500;
+        const maxDistY = window.innerHeight + 500;
+
+        const currentX = -progress * maxDistX;
+        const currentY = progress * maxDistY;
+
+        hedgehog.style.opacity = "1";
+
+        // If scrolling down: normal orientation (scaleX(1))
+        // If scrolling up: flipped horizontally (scaleX(-1)) to face the return trip
+        const flipFactor = isScrollingDown ? 1 : -1;
+        const rotation = isScrollingDown ? 0 : -25;
+
+        hedgehog.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotation}deg) scaleX(${flipFactor})`;
+      }
+    }
+
+    window.addEventListener("scroll", updateHedgehogParallax);
+    window.addEventListener("resize", updateHedgehogParallax);
+    
+    updateHedgehogParallax();
+  });
+</script>

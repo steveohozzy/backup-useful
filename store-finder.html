@@ -1,0 +1,346 @@
+<!-- Store finder and delivery messaging panels -->
+ <style type="text/css">
+    .store-delivery-container {
+        padding: 0;
+        background-color: #dbe3ff;
+    }
+
+    .store-delivery-panels {
+        display: flex;
+        flex-flow: column;
+        padding: 0 20px 20px;
+        max-width: 980px;
+        margin: 0 auto;
+    }
+
+    .store-delivery-panels .store-finder,
+    .store-delivery-panels .delivery-panel {
+        background-color: #fff;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-content {
+        display: block;
+        width: 100%;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-content .store-locator-message {
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50px;
+        background-color: #EE3224;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 10px 30px 10px 10px;
+        height: 40px;
+        box-shadow: 0 0 5px rgba(3,33,33,.1);
+        border: 3px solid #DBE3FF;
+        width: 100%;
+        transition: all 0.3s;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button:hover {
+        background-color: rgba(238, 50, 36, 0.7);
+        scale: 1.05;
+        box-shadow: 0 0 18px rgba(3,33,33,.2);
+        color: #fff;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button .send-icon {
+        transition: all 0.3s;
+        transform: rotate(15deg);
+        margin-left: 5px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button:hover .send-icon {
+        transform: rotate(-10deg)
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button .star-start {
+        position: relative;
+        top: -3px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button .swoosh-container {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        margin-right: 5px;
+        width: 25px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button .swoosh {
+        display: block;
+        width: 0;
+        height: 3px;
+        margin-top: -3px;
+        margin-left: -2px;
+        transform: rotate(15deg);
+        background-color: rgba(255, 255, 255, 0.7);
+        transition: all 0.3s;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button:hover .swoosh {
+        width: 7px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button .star-end {
+        position: relative;
+        bottom: -5px;
+        transition: all 0.3s;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button:hover .star-end {
+        scale: 1.1;
+        transform: rotate(30deg);
+    }
+
+    .store-delivery-panels .delivery-panel {
+        position: relative;
+        margin-top: 20px;
+    }
+
+    .heading-ribbon-container {
+        text-align: center;
+        position: relative;
+    }
+
+    .heading-ribbon {
+        position: relative;
+        padding: 0 23px;
+        display: block;
+    }
+
+    .heading-ribbon .delivery-panel-title {
+        color: #fff;
+        font: 24px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+        background-color: #EE3224;
+        height: 48px;
+        line-height: 48px;
+        padding: 0 40px;
+        margin: 0;
+        text-transform: none;
+    }
+
+    .heading-ribbon .ribbon-start {
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .heading-ribbon .ribbon-end {
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .heading-ribbon .ribbon-start,
+    .heading-ribbon .ribbon-start svg,
+    .heading-ribbon .ribbon-end,
+    .heading-ribbon .ribbon-end svg {
+        height: 100%;
+        width: 24px;
+    }
+
+    .heading-ribbon .ribbon-end {
+        transform: scale(-1, -1);
+    }
+
+    .delivery-panel .delivery-icons {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        height: 100%;
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+
+    .delivery-panel .delivery-icons .delivery-icon-title {
+        font-weight: bold;
+        margin: 10px 0 5px;
+    }
+
+    .delivery-panel .delivery-icons .delivery-icon-section {
+        width: 50%;
+        padding: 10px;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-align: center;
+    }
+
+    .desktop-graphic {
+        display: none;
+    }
+
+    .store-locator-footer {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+        .store-delivery-panels .store-finder .store-locator-content {
+            display: flex;
+            flex-flow: row;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .store-delivery-panels .store-finder .store-locator-button {
+            width: 90%;
+        }
+
+        .mobile-graphic { 
+            display: none;
+        }
+
+        .store-locator-footer .desktop-graphic {
+            margin-bottom: 0;
+            margin-left: 20px;
+        }
+
+        .desktop-graphic {
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .store-delivery-panels .store-finder .delivery-message {
+            margin-bottom: 20px;
+        }
+
+        .store-delivery-panels .store-finder .delivery-message .delivery-item.desktop-only {
+            display: flex;
+        }
+    }
+ </style>
+ <div class="store-delivery-container">
+    <div class="store-delivery-panels">
+        <div class="store-finder">
+            <div class="store-locator-content">
+                <img class="desktop-graphic" src="https://www.thetoyshop.com/medias/hp-redesign-map.png?context=bWFzdGVyfHJvb3R8OTg4OXxpbWFnZS9wbmd8YURFM0wyZzNOUzh4TWpVMU5qSTJORGt6TVRNMU9DOW9jQzF5WldSbGMybG5iaTF0WVhBdWNHNW58YWEyNjA2ZDA0MzA2Mzk0NjQ1ZTdmMTg0YWZkMmQzN2M1MTQ1Nzc3YmI4NTkwY2Q4NDAyMmZlODI4ZjdhZWU3NA" alt="Find your local The Entertainer store or locker" title="Find your local The Entertainer store or locker" />
+                <div class="store-locator-message">
+                    <img class="desktop-graphic" src="https://www.thetoyshop.com/medias/hp-redesign-store-locator-title-crop.png?context=bWFzdGVyfHJvb3R8NDgyOHxpbWFnZS9wbmd8YURKbEwyaGpOaTh4TWpVMk1qYzBORGd3TXpNMU9DOW9jQzF5WldSbGMybG5iaTF6ZEc5eVpTMXNiMk5oZEc5eUxYUnBkR3hsTFdOeWIzQXVjRzVufGIwM2Y3MjgzMjIxNDU0ZDFkZjRmZjZlZjdmZTZiYWFmMmE4MjQ2NjBjYzk4MTJiNjlkYjdhZjllNjI1YTAwOWE" alt="Find your local The Entertainer store or locker" title="Find your local The Entertainer store or locker" />
+                    <img class="mobile-graphic" src="https://www.thetoyshop.com/medias/store-locator-map-graphic.png?context=bWFzdGVyfHJvb3R8MjAxNjR8aW1hZ2UvcG5nfGFHWm1MMmhqWXk4eE1qVTJNamMwTkRZd05qYzFNQzl6ZEc5eVpTMXNiMk5oZEc5eUxXMWhjQzFuY21Gd2FHbGpMbkJ1Wnd8NzgzM2ViNzA5YTk0OGRlYjQ0NDQ4M2YxMTJhY2RiMWQwYzNlMDE3ZTZmODY0NGU2NzkyZjIzOGJjNzg1MzM2YQ" alt="Find your local The Entertainer store or locker" title="Find your local The Entertainer store or locker" />
+
+                    <div class="store-locator-footer">
+                        <img class="desktop-graphic" src="https://www.thetoyshop.com/medias/hp-redesign-store-locator-locations-text.png?context=bWFzdGVyfHJvb3R8NTczMHxpbWFnZS9wbmd8YURJNUwyZzNPQzh4TWpVMU5qSTJORGcyTlRneU1pOW9jQzF5WldSbGMybG5iaTF6ZEc5eVpTMXNiMk5oZEc5eUxXeHZZMkYwYVc5dWN5MTBaWGgwTG5CdVp3fDM1YzA3YTY3Y2E2Njg2NjVjNzk4OGQyMjJiOWI2N2Q2MTVhMGRkZTk0YWQ4YjJmOWM4NTY4NzY4MmY1MDc0Mzc" alt="1000+ locations in the UK" title="1000+ locations in the UK" />
+                        <a href="/store-finder" class="store-locator-button">
+                            <span class="swoosh-container">
+                                <span class="star-start">
+                                    <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                    </svg>
+                                </span>
+                                <span class="swoosh">&nbsp;</span>
+                            </span>
+                            Search for stores
+                            <span class="send-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none">
+                                    <path d="M10.5124 13.7391L11.3721 9.13113L13.1951 9.56975L11.8195 16.9425C11.7228 17.4609 11.2203 17.7613 10.736 17.6448L3.44414 15.8903C2.93143 15.7669 2.60788 15.2678 2.70461 14.7494L4.08023 7.37662L5.9032 7.81525L5.04344 12.4232L10.5124 13.7391ZM20.7513 8.95035C21.0373 9.6511 20.4596 10.3547 19.7475 10.1834L3.3407 6.23571C2.60011 6.05752 2.32331 5.14832 2.83493 4.63947L5.94388 1.53564C6.16315 1.31756 6.48023 1.2133 6.79355 1.28869L18.3296 4.06437C18.6429 4.13976 18.8955 4.3811 19.018 4.68142L20.7513 8.95035ZM15.3794 18.2806L16.841 10.447L18.664 10.8856L17.2024 18.7192C17.1541 18.9784 16.8886 19.1252 16.6607 19.0703L15.7492 18.851C15.4929 18.7893 15.3311 18.5398 15.3794 18.2806Z" fill="white"/>
+                                </svg>
+                            </span>
+                            <span class="star-end">
+                                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="heading-ribbon-container">
+            <div class="heading-ribbon">
+                <span class="ribbon-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="48" viewBox="0 0 24 48" fill="none">
+                        <g clip-path="url(#clip0_2260_15)">
+                        <path d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z" fill="#EE3224"/>
+                        <path d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z" fill="#EE3224"/>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_2260_15">
+                        <rect width="335" height="48" fill="white"/>
+                        </clipPath>
+                        </defs>
+                    </svg>
+                </span>
+                <div class="delivery-panel-title">We love to deliver</div>
+                <span class="ribbon-end">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="48" viewBox="0 0 24 48" fill="none">
+                        <g clip-path="url(#clip0_2260_15)">
+                        <path d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z" fill="#EE3224"/>
+                        <path d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z" fill="#EE3224"/>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_2260_15">
+                        <rect width="335" height="48" fill="white"/>
+                        </clipPath>
+                        </defs>
+                    </svg>
+                </span>
+            </div>
+        </div>
+        <div class="delivery-panel">
+            <div class="delivery-icons">
+                <div class="delivery-icon-section">
+                    <a href="https://theentertainer.zendesk.com/hc/en-gb/articles/6480509734289-Delivery-information" title="see delivery information">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="37" height="29" viewBox="0 0 37 29" fill="none">
+                            <path d="M18.5547 21.5V12.75H22.0547V26.75C22.0547 27.224 21.8724 27.625 21.5078 27.9531C21.1797 28.3177 20.7786 28.5 20.3047 28.5H6.30469C5.83073 28.5 5.41146 28.3177 5.04688 27.9531C4.71875 27.625 4.55469 27.224 4.55469 26.75V12.75H8.05469V21.5H18.5547ZM35.7812 8.26562C36.1458 8.84896 36.1641 9.45052 35.8359 10.0703C35.5078 10.6901 34.9974 11 34.3047 11H2.80469C2.11198 11 1.60156 10.6901 1.27344 10.0703C0.945312 9.45052 0.981771 8.84896 1.38281 8.26562L6.03125 1.26562C6.35938 0.755208 6.83333 0.5 7.45312 0.5H29.6562C30.276 0.5 30.75 0.755208 31.0781 1.26562L35.7812 8.26562ZM29.0547 27.625V12.75H32.5547V27.625C32.5547 27.8802 32.4635 28.0807 32.2812 28.2266C32.1354 28.4089 31.9349 28.5 31.6797 28.5H29.9297C29.6745 28.5 29.4557 28.4089 29.2734 28.2266C29.1276 28.0807 29.0547 27.8802 29.0547 27.625Z" fill="#00548B"/>
+                        </svg>
+                        <div class="delivery-icon-title">
+                            FREE Click & Collect
+                        </div>
+                        <div class="delivery-icon-details">
+                            <!--In as little as
+                            30 minutes-->
+                        </div>
+                    </a>
+                </div>
+                <div class="delivery-icon-section">
+                    <a href="https://theentertainer.zendesk.com/hc/en-gb/articles/6480509734289-Delivery-information" title="see delivery information">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="29" viewBox="0 0 35 29" fill="none">
+                            <path d="M34.125 19.75C34.5625 19.75 35 20.1875 35 20.625V22.375C35 22.8672 34.5625 23.25 34.125 23.25H31.5C31.5 26.1484 29.1484 28.5 26.25 28.5C23.3516 28.5 21 26.1484 21 23.25H14C14 26.1484 11.6484 28.5 8.75 28.5C5.85156 28.5 3.5 26.1484 3.5 23.25H2.625C1.14844 23.25 0 22.1016 0 20.625V3.125C0 1.70312 1.14844 0.5 2.625 0.5H20.125C21.5469 0.5 22.75 1.70312 22.75 3.125V5.75H25.1562C25.8125 5.75 26.5234 6.07812 27.0156 6.57031L32.4297 11.9844C32.9219 12.4766 33.25 13.1875 33.25 13.8438V19.75H34.125ZM8.75 25.875C10.1719 25.875 11.375 24.7266 11.375 23.25C11.375 21.8281 10.1719 20.625 8.75 20.625C7.27344 20.625 6.125 21.8281 6.125 23.25C6.125 24.7266 7.27344 25.875 8.75 25.875ZM26.25 25.875C27.6719 25.875 28.875 24.7266 28.875 23.25C28.875 21.8281 27.6719 20.625 26.25 20.625C24.7734 20.625 23.625 21.8281 23.625 23.25C23.625 24.7266 24.7734 25.875 26.25 25.875ZM30.625 14.5V13.8438L25.1562 8.375H22.75V14.5H30.625Z" fill="#00548B"/>
+                        </svg>
+                        <div class="delivery-icon-title">
+                            Standard Delivery
+                        </div>
+                        <div class="delivery-icon-details">
+                            Within 3 working days
+                        </div>
+                    </a>
+                </div>
+                <!--<div class="delivery-icon-section">
+                    <a href="https://theentertainer.zendesk.com/hc/en-gb/articles/6480509734289-Delivery-information" title="see delivery information">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="29" viewBox="0 0 35 29" fill="none">
+                            <path d="M34.125 19.75C34.5625 19.75 35 20.1875 35 20.625V22.375C35 22.8672 34.5625 23.25 34.125 23.25H31.5C31.5 26.1484 29.1484 28.5 26.25 28.5C23.3516 28.5 21 26.1484 21 23.25H14C14 26.1484 11.6484 28.5 8.75 28.5C5.85156 28.5 3.5 26.1484 3.5 23.25V16.25H11.8125C12.0312 16.25 12.25 16.0859 12.25 15.8125V14.9375C12.25 14.7188 12.0312 14.5 11.8125 14.5H0.4375C0.164062 14.5 0 14.3359 0 14.0625V13.1875C0 12.9688 0.164062 12.75 0.4375 12.75H13.5625C13.7812 12.75 14 12.5859 14 12.3125V11.4375C14 11.2188 13.7812 11 13.5625 11H2.1875C1.91406 11 1.75 10.8359 1.75 10.5625V9.6875C1.75 9.46875 1.91406 9.25 2.1875 9.25H15.3125C15.5312 9.25 15.75 9.08594 15.75 8.8125V7.9375C15.75 7.71875 15.5312 7.5 15.3125 7.5H0.4375C0.164062 7.5 0 7.33594 0 7.0625V6.1875C0 5.96875 0.164062 5.75 0.4375 5.75H3.5V3.125C3.5 1.70312 4.64844 0.5 6.125 0.5H20.125C21.5469 0.5 22.75 1.70312 22.75 3.125V5.75H25.1562C25.8125 5.75 26.5234 6.07812 27.0156 6.57031L32.4297 11.9844C32.9219 12.4766 33.25 13.1875 33.25 13.8438V19.75H34.125ZM8.75 25.875C10.1719 25.875 11.375 24.7266 11.375 23.25C11.375 21.8281 10.1719 20.625 8.75 20.625C7.27344 20.625 6.125 21.8281 6.125 23.25C6.125 24.7266 7.27344 25.875 8.75 25.875ZM26.25 25.875C27.6719 25.875 28.875 24.7266 28.875 23.25C28.875 21.8281 27.6719 20.625 26.25 20.625C24.7734 20.625 23.625 21.8281 23.625 23.25C23.625 24.7266 24.7734 25.875 26.25 25.875ZM30.625 14.5V13.8438L25.1562 8.375H22.75V14.5H30.625Z" fill="#00548B"/>
+                        </svg>
+                        <div class="delivery-icon-title">
+                            Next Day Delivery
+                        </div>
+                        <div class="delivery-icon-details">
+                            If you order by 7pm
+                        </div>
+                    </a>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</div>

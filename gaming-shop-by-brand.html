@@ -1,0 +1,109 @@
+<style>
+#gaming-shop-by-brand-area {
+    background-color: #fff;
+  }
+.gaming-shop-by-brand-brands {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 400px;
+  margin: 10px auto;
+  box-sizing: border-box; 
+}
+.gaming-shop-by-brand-brands-item {
+  text-align: center;
+}
+.gaming-shop-by-brand-brands-item-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: transparent;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  box-shadow: 0 0 0 4px rgba(255,255,255,0);
+}
+
+.gaming-shop-by-brand-brands-item-link::before {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  margin: 3px;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  transition: all 0.3s;
+}
+
+.gaming-shop-by-brand-brands-item:nth-child(1) .gaming-shop-by-brand-brands-item-link:before {
+  background: #0070D1;
+}
+
+.gaming-shop-by-brand-brands-item:nth-child(2) .gaming-shop-by-brand-brands-item-link:before {
+  background: #E60012;
+}
+
+.gaming-shop-by-brand-brands-item:nth-child(3) .gaming-shop-by-brand-brands-item-link:before {
+  background: #107C10;
+}
+
+/* Gradient shimmer overlay */
+.gaming-shop-by-brand-brands-item-link::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  background: linear-gradient(
+      270deg,
+      rgba(255,110,199,0.8),
+      rgba(0,255,255,0.8),
+      rgba(255,110,199,0.8)
+  );
+  background-size: 600% 600%;
+  z-index: 0;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Make sure your shimmer keyframes exist */
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gaming-shop-by-brand-brands-item-link img {
+  width: calc(100% - 30px);
+  height: calc(100% - 30px);
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  z-index: 2;
+  min-width: unset !important;
+}
+</style>
+
+<div id="gaming-shop-by-brand-area">
+  <div class="gaming-shop-by-brand-brands">
+    <div class="gaming-shop-by-brand-brands-item">
+      <a href="https://www.thetoyshop.com/brands/sony-playstation" class="gaming-shop-by-brand-brands-item-link">
+        <img alt="Playstation" src="https://www.thetoyshop.com/medias/playstaion-logo.svg?context=bWFzdGVyfHJvb3R8OTI2fGltYWdlL3N2Zyt4bWx8YURNMUwyZ3pOaTh4TWpZek5ESTVOREUxTnpNME1pOXdiR0Y1YzNSaGFXOXVMV3h2WjI4dWMzWm58NTQ2ZjY3YTczMzY1MmVjMDkzYzAzMDBhN2JhNjljMTE1ZTE0NzI4ODZlNTJkNWU5ZmVkNTgwNDg0MTczODMwMg">
+      </a>
+    </div>
+    <div class="gaming-shop-by-brand-brands-item">
+      <a href="https://www.thetoyshop.com/brands/nintendo" class="gaming-shop-by-brand-brands-item-link">
+        <img alt="Nintendo" src="https://www.thetoyshop.com/medias/nintendo.svg?context=bWFzdGVyfHJvb3R8NDUzNHxpbWFnZS9zdmcreG1sfGFERmtMMmd3TXk4eE1qWXlNVFk0TnpNMU56UTNNQzl1YVc1MFpXNWtieTV6ZG1jfDdmNDY4MDNkZGViMzNlYzA5ODIxMWJiOGViODk2ZGIwODYwNGVjMjA1NzgyMGI1MGY2NWY0MjA5OGU5OGE0ODk">
+      </a>
+    </div>
+    <div class="gaming-shop-by-brand-brands-item">
+      <a href="https://www.thetoyshop.com/brands/xbox" class="gaming-shop-by-brand-brands-item-link">
+        <img alt="Xbox" src="https://www.thetoyshop.com/medias/RW4ESm.png?context=bWFzdGVyfHJvb3R8MTAyODF8aW1hZ2UvcG5nfGFHUTBMMmd3WVM4eE1qY3hPREk0TXpNMU9ESXpPQzlTVnpSRlUyMHVjRzVufDg1NDZjYTI1MTZkNjU3ZDg3NTg2YjExM2MwOWIzMGNmY2YwZDRjYzcxNWZiYmM5MTY4MTllMDUxMTY3YzFkYTY">
+      </a>
+    </div>
+  </div>
+</div>

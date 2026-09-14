@@ -1,0 +1,2567 @@
+<!-- tabs homepage -->
+ <style type="text/css">
+    :root {
+        --nav-height: 270px;
+    }
+    .homepage-container {
+        background-color: #dbe3ff;
+        /*min-height: calc(100vh - var(--nav-height));*/
+        overflow: hidden;
+    }
+    
+    .homepage-content {
+        padding: 0 20px 20px;
+        max-width: 980px;
+        margin: 0 auto;
+    }
+
+    .homepage-content .top-tabs,
+    .homepage-content .bottom-tabs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 10px;
+        margin: 20px 0;
+    }
+
+    .homepage-content .tab-button {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        border: none;
+        outline: 0;
+        border-radius: 50px;
+        color: #00548B;
+        box-shadow: 0 0 5px rgba(3,33,33,.1);
+        font-size: 14px;
+        font-weight: bold;
+        transition: all 0.3s;
+        min-height: 40px;
+        padding: 10px;
+    }
+
+    .homepage-content .tab-button:hover {
+        scale: 1.1;
+    }
+
+    .homepage-content .tab-button:hover,
+    .homepage-content .tab-button.active {
+        background-color: #407EC9;
+        box-shadow: 0 0 14px rgba(3,33,33,.3);
+        color: #fff;
+    }
+
+    .homepage-content .tab-button {
+        width: 100%;
+    }
+
+    .homepage-content .bottom-tabs {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .hero-panels {
+        padding: 0 0 30px 0;
+        background-color: #dbe3ff;
+    }
+
+    .carousel {
+        max-width: 940px;
+        margin: 0 auto;
+    }
+
+    .hero-panels .flickity-button {
+        display: none;
+    }
+
+    .hero-panels .carousel-cell {
+        width: 100%;
+        height: 100%;
+        counter-increment: carousel-cell;
+        opacity: 100%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 18px rgba(33,33,33,.15);
+    }
+
+    .hero-panels .carousel-cell.is-selected {
+        opacity: 100%;
+    }
+
+    .hero-panels .carousel-cell .media {
+        aspect-ratio: 335/213;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .hero-panels .carousel-cell .media img,
+    .hero-panels .carousel-cell .media iframe,
+    .hero-panels .carousel-cell .media video {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: #FFD502;
+        border-radius: 8px;
+        position: relative;
+        margin-top: -20px;
+        padding: 40px 20px 20px 20px;
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info .brand-logo {
+        position: absolute;
+        top: -32px;
+        height: 40px;
+        z-index: 2;
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info .brand-logo img,
+    .hero-panels .carousel-cell .hero-tile-info .brand-logo svg {
+        height: 100%;
+        width: auto;
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info h2 {
+        font-size: 18px;
+        line-height: 1.2;
+        font-family: "Nunito Bold","Tahoma Bold",sans-serif;
+        font-weight: bold;
+        color: #00548B;
+        margin: 0 0 20px;
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info .hero-blurb {
+        display: none;
+        color: #00548B;
+        font-size: 14px;
+        font-weight: 200;
+    }
+
+    .hero-panels .flickity-viewport {
+        aspect-ratio: 350/373;
+    }
+
+    .hero-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50px;
+        background-color: #009E44;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 10px 30px 10px 10px;
+        height: 40px;
+        box-shadow: 0 0 5px rgba(3,33,33,.3);
+        transition: all 0.3s;
+    }
+
+    .hero-button:hover {
+        background-color: #AFCB17;
+        scale: 1.05;
+        box-shadow: 0 0 18px rgba(3,33,33,.3);
+        color: #fff;
+    }
+
+    .hero-button .basket-icon {
+        transition: all 0.3s;
+        transform: rotate(15deg);
+        margin-left: 5px;
+    }
+
+    .hero-button:hover .basket-icon {
+        transform: rotate(-10deg)
+    }
+
+    .hero-button .star-start {
+        position: relative;
+        top: -3px;
+    }
+
+    .hero-button .swoosh-container {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        margin-right: 5px;
+        width: 25px;
+    }
+
+    .hero-button .swoosh {
+        display: block;
+        width: 0;
+        height: 3px;
+        margin-top: -3px;
+        margin-left: -2px;
+        transform: rotate(15deg);
+        background-color: rgba(255, 255, 255, 0.7);
+        transition: all 0.3s;
+    }
+
+    .hero-button:hover .swoosh {
+        width: 7px;
+    }
+
+    .hero-button .star-end {
+        position: relative;
+        bottom: -5px;
+        transition: all 0.3s;
+    }
+
+    .hero-button:hover .star-end {
+        scale: 1.1;
+        transform: rotate(30deg);
+    }
+
+    .homepage-tab-content {
+        display: none;
+    }
+
+    .homepage-tab-content.active {
+        display: block;
+    }
+
+    .media-full img {
+        width: 100%;
+        height: auto;
+    }
+
+    .media-full--desktop {
+        display: none;
+    }
+
+
+    @media (min-width: 768px) {
+        .homepage-content .tab-button {
+            font-size: 18px;
+        }
+
+        .media-full--desktop {
+            display: block;
+        }
+
+        .media-full--mobile {
+            display: none;
+        }
+
+        .hero-panels .flickity-viewport {
+            aspect-ratio: 900/280;
+        }
+
+        .hero-panels .carousel-cell {
+            flex-direction: row;
+            flex-flow: row-reverse;
+        }
+
+        .hero-panels .carousel-cell .media {
+            width: 50%;
+            aspect-ratio: 450/280;
+        }
+
+        .hero-panels .carousel-cell .hero-tile-info {
+            padding: 20px 20px 20px 40px;
+            margin-top: 0;
+            margin-right: -20px;
+            width: calc(50% + 20px);
+        }
+
+        .hero-panels .carousel-cell .hero-tile-info .brand-logo {
+            position: relative;
+            top: 0;
+            margin-bottom: 20px;
+            height: 90px;
+        }
+
+        .hero-panels .carousel-cell .hero-tile-info h2 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .hero-panels .carousel-cell .hero-tile-info .hero-blurb {
+            display: block;
+            margin: 12px 0;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .homepage-content .bottom-tabs {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+
+/* gifts content*/
+    .gifts-content {
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+    }
+
+    .gifts-content .gifts-title {
+        color: #407EC9;
+        font-size: 18px;
+        font-family: "Nunito Bold","Tahoma Bold",sans-serif;
+        font-weight: 800;
+        line-height: 1.4;
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .gifts-content .button-container .hero-button .basket-icon {
+        transform: rotate(0deg);
+        margin-top: 5px;
+    }
+
+    .gifts-content .button-container .hero-button:hover .basket-icon {
+        transform: rotate(-10deg);
+    }
+
+    .shop-by-age {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+        margin: 20px 0;
+    }
+
+    .shop-by-age a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        border-radius: 100%;
+        background-color: #E5BB07;
+        color: #fff;
+        aspect-ratio: 1/1;
+        text-decoration: none;
+        font: 28px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+        transition: all 0.3s;
+        line-height: 1.1;
+        box-shadow: 0 0 3px rgba(3,33,33,.4);
+        text-shadow: 0px 0px 4px rgba(0,0,0,0.25);
+    }
+
+    .shop-by-age a.red {
+        background-color: #F23043;
+    }
+
+    .shop-by-age a.orange {
+        background-color: #E8540A;
+    }
+
+    .shop-by-age a.purple {
+        background-color: #9116C4;
+    }
+
+    .shop-by-age a.blue {
+        background-color: #2AB2D1;
+    }
+
+    .shop-by-age a.light-green {
+        background-color: #23C166;
+    }
+
+    .shop-by-age a.green {
+        background-color: #067F3D;
+    }
+
+    .shop-by-age a:hover {
+        box-shadow: 0 0 15px rgba(3,33,33,.4);
+        transform: translateY(-5px) rotate(5deg);
+        scale: 1.05;
+    }
+
+    .shop-by-age span {
+        display: block;
+        font-size: 20px;
+    }
+
+    .gifts-content .hero-button {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+        .gifts-content .gifts-title {
+            font-size: 24px;
+        }
+
+        .shop-by-age {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        .shop-by-age a {
+            font-size: 28px;
+        }
+
+        .shop-by-age span {
+            font-size: 20px;
+        }
+
+        .gifts-content .button-container {
+            width: 295px;
+            margin: 0 auto;
+        }
+    }
+
+    @media (min-width: 1024x) {
+        .shop-by-age a {
+            font-size: 34px;
+        }
+
+        .shop-by-age span {
+            font-size: 30px;
+        }
+    }
+    /* baby styles */
+    .latest-blog-posts {
+        padding: 0 20px 20px;
+    }
+
+    .latest-blog-posts .flickity-button {
+        display: none;
+    }
+
+    .latest-blog-posts .carousel-cell {
+        width: 100%;
+    }
+
+    .latest-blog-posts-content-tile {
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .latest-blog-posts-content-tile .content-tile-image {
+        border-radius: 8px;
+        overflow: hidden;
+        width: 100%;
+        position: relative;
+    }
+
+    .latest-blog-posts-content-tile .content-tile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .latest-blog-posts-content-tile .content-tile-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 20px 50px;
+        background-color: #fff;
+        font-size: 14px;
+    }
+
+    .latest-blog-posts-content-tile .content-tile-title {
+        font-weight: bold;
+        font-size: 18px;
+        font-family: "Nunito Bold","Tahoma Bold",sans-serif;
+        margin: 0 0 10px;
+        padding: 0;
+    }
+
+    .latest-blog-posts-content-tile .details-button {
+        background-color: #009E44;
+        border-radius: 50px;
+        padding: 10px 20px;
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 5px;
+        color: #fff;
+        box-shadow: 0 0 5px rgba(3,33,33,.3);
+        transition: all 0.3s;
+    }
+
+    .latest-blog-posts-content-tile .details-button:hover {
+        background-color: #AFCB17;
+        scale: 1.05;
+        box-shadow: 0 0 18px rgba(3,33,33,.3);
+    }
+
+    .content-tile .cta-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50px;
+        background-color: #009E44;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 10px 30px 10px 10px;
+        height: 40px;
+        box-shadow: 0 0 5px rgba(3,33,33,.3);
+        border: 3px solid #DBE3FF;
+        transition: all 0.3s;
+    }
+
+    .content-tile .cta-button:hover {
+        background-color: #AFCB17;
+        scale: 1.05;
+        box-shadow: 0 0 18px rgba(3,33,33,.3);
+        color: #fff;
+    }
+
+    .content-tile .cta-button .basket-icon {
+        transition: all 0.3s;
+        transform: rotate(15deg);
+        margin-left: 5px;
+    }
+
+    .content-tile .cta-button:hover .basket-icon {
+        transform: rotate(-10deg)
+    }
+
+    .content-tile .cta-button .star-start {
+        position: relative;
+        top: -3px;
+    }
+
+    .content-tile .cta-button .swoosh-container {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        margin-right: 5px;
+        width: 25px;
+    }
+
+    .content-tile .cta-button .swoosh {
+        display: block;
+        width: 0;
+        height: 3px;
+        margin-top: -3px;
+        margin-left: -2px;
+        transform: rotate(15deg);
+        background-color: rgba(255, 255, 255, 0.7);
+        transition: all 0.3s;
+    }
+
+    .content-tile .cta-button:hover .swoosh {
+        width: 7px;
+    }
+
+    .content-tile .cta-button .star-end {
+        position: relative;
+        bottom: -5px;
+        transition: all 0.3s;
+    }
+
+    .content-tile .cta-button:hover .star-end {
+        scale: 1.1;
+        transform: rotate(30deg);
+    }
+
+    .baby-content .shop-by-age-container {
+        padding: 30px 0 0;
+    }
+
+    .baby-content .shop-by-age {
+        padding: 0 20px;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (min-width: 768px) {
+        .baby-content .shop-by-age {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        .latest-blog-posts .carousel-cell {
+            width: 45%;
+            margin-right: 10px;
+        }
+    }
+
+/* Brands tiles */
+    .brands-tiles-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+    }
+
+    .brand-tile {
+        width: 100%;
+        aspect-ratio: 1/1;
+        transition: all 0.3s;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 5px rgba(3,33,33,.1);
+    }
+
+    .brand-tile:hover {
+        box-shadow: 0 0 15px rgba(33,33,33,.3);
+        transform: scale(0.97);
+    }
+
+    .brand-tile img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    @media (min-width: 768px) {
+        .brands-tiles-container {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .brands-tiles-container {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+
+    /* Toy Types */
+    .category-roundels .carousel .item {
+        padding: 0;
+    }
+
+    .category-roundels .carousel-cell {
+        width: 95%;
+        padding-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .category-roundels a,
+    .category-roundels img {
+        aspect-ratio: 1/1;
+    }
+
+    .category-roundels img {
+        width: 70%;
+        margin: 0 10px !important;
+    }
+
+    .category-roundels a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border-radius: 8px;
+        padding: 10px 0;
+        background-color: #fff;
+        color: #00548B;
+        text-decoration: none;
+        font-size: 10px;
+        font-family: "Nunito Bold","Tahoma Bold",sans-serif;
+        font-weight: bold;
+        color: #00548B;
+        margin: 10px;
+        box-shadow: 0 0 5px rgba(3,33,33,.05);
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
+    }
+
+    .category-roundels a:hover {
+        box-shadow: 0 0 18px rgba(33,33,33,.15);
+        transform: translateY(-5px);
+    }
+
+    .category-roundels .flickity-button,
+    .category-roundels .flickity-page-dots {
+        display: none;
+    }
+
+    @media (min-width: 768px) {
+        .category-roundels a {
+            font-size: 14px
+        }
+
+        .category-roundels .carousel-cell {
+            width: 95%;
+            padding-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .category-roundels a {
+            font-size: 16px
+        }
+    }
+
+    /* offers content */
+    .offers-product-tile {
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .offers-product-tile .product-tile-image {
+        border: 3px solid #407EC9;
+        border-radius: 8px;
+        overflow: hidden;
+        width: 100%;
+        position: relative;
+    }
+
+    .offers-product-tile .product-tile-image img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .offers-product-tile .product-tile-image .badge-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        z-index: 2;
+    }
+
+    .offers-product-tile .product-tile-image .badge {
+        background-color: #EE3224;
+        padding: 5px 10px;
+        font-weight: bold;
+        color: #fff;
+        font-size: 10px;
+         text-shadow: -1px -1px 0 #000, 1px -1px 0 #A7170C, -1px 1px 0 #A7170C, 1px 1px 0 #A7170C;
+    }
+
+    .offers-product-tile .product-tile-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 10px 20px;
+    }
+
+    .offers-product-tile .product-title {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .offers-product-tile .price {
+        display: flex;
+        align-items: flex-end;
+        color: #EE3224;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .offers-product-tile .price .was-price {
+        font-size: 12px;
+        color: #9B9B9B;
+        font-weight: normal;
+        margin-left: 3px;
+        text-decoration: line-through;
+    }
+
+    .offers-product-tile .details-button {
+        background-color: #009E44;
+        border-radius: 50px;
+        padding: 10px 20px;
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 5px;
+        color: #fff;
+        box-shadow: 0 0 5px rgba(3,33,33,.3);
+        transition: all 0.3s;
+    }
+
+    .offers-product-tile .details-button:hover {
+        background-color: #AFCB17;
+        scale: 1.05;
+        box-shadow: 0 0 18px rgba(3,33,33,.3);
+    }
+    
+    .offers-content .flickity-button,
+    .offers-content .flickity-page-dots {
+        display: none;
+    }
+
+    .offers-content .carousel-cell {
+        width: 95%;
+        padding-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    @media (min-width: 768px) {
+        .offers-content .carousel-cell {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    /* Top Picks */
+    .top-picks .flickity-button,
+    .top-picks .flickity-page-dots {
+        display: none;
+    }
+
+    .top-picks .carousel-cell {
+        width: 81%;
+        margin-right: 10px;
+    }
+
+    .top-picks-product-tile {
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        flex-flow: column;
+        align-items: stretch;
+    }
+
+    .top-picks-product-tile .product-tile-image {
+        border: 1px solid #407EC9;
+        border-radius: 8px;
+        overflow: hidden;
+        width: 100%;
+        position: relative;
+    }
+
+    .top-picks-product-tile .product-tile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .top-picks-product-tile .product-tile-image .badge-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        z-index: 2;
+    }
+
+    .top-picks-product-tile .product-tile-image .badge {
+        background-color: #EE3224;
+        padding: 5px 10px;
+        font-weight: bold;
+        color: #fff;
+        font-size: 10px;
+         text-shadow: -1px -1px 0 #000, 1px -1px 0 #A7170C, -1px 1px 0 #A7170C, 1px 1px 0 #A7170C;
+    }
+
+    .top-picks-product-tile .product-tile-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 10px 20px;
+    }
+
+    .top-picks-product-tile .product-title {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .top-picks-product-tile .price {
+        display: flex;
+        align-items: flex-end;
+        color: #EE3224;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .top-picks-product-tile .price .was-price {
+        font-size: 12px;
+        color: #9B9B9B;
+        font-weight: normal;
+        margin-left: 3px;
+        text-decoration: line-through;
+    }
+
+    .top-picks-product-tile .details-button {
+        background-color: #009E44;
+        border-radius: 50px;
+        padding: 10px 20px;
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 5px;
+        color: #fff;
+        box-shadow: 0 0 5px rgba(3,33,33,.3);
+        transition: all 0.3s;
+    }
+
+    .top-picks-product-tile .details-button:hover {
+        background-color: #AFCB17;
+        scale: 1.05;
+        box-shadow: 0 0 18px rgba(3,33,33,.3);
+    }
+
+    @media (min-width: 768px) {
+        .top-picks-product-tile {
+            flex-flow: row;
+        }
+
+        .top-picks-product-tile .product-tile-details {
+            width: 60%;
+        }
+
+        .top-picks-product-tile .product-tile-image {
+            width: 40%;
+        }
+
+        .top-picks .carousel-cell {
+            width: 42%;
+        }
+    }
+
+    /* Content Tab */
+    .content-container .heading-ribbon-container {
+        text-align: center;
+    }
+
+    .content-container .heading-ribbon {
+        position: relative;
+        padding: 0 23px;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    .content-container .heading-ribbon h3 {
+        color: #fff;
+        font: 24px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+        background-color: #EE3224;
+        height: 48px;
+        line-height: 48px;
+        padding: 0 40px;
+        margin: 0;
+        text-transform: none;
+    }
+
+    .content-container .heading-ribbon .ribbon-start {
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .content-container .heading-ribbon .ribbon-end {
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .content-container .heading-ribbon .ribbon-start,
+    .content-container .heading-ribbon .ribbon-start svg,
+    .content-container .heading-ribbon .ribbon-end,
+    .content-container .heading-ribbon .ribbon-end svg {
+        height: 100%;
+        width: 24px;
+    }
+
+    .content-container .heading-ribbon .ribbon-end {
+        transform: scale(-1, -1);
+    }
+
+    .content-container .content-panel {
+        border-radius: 8px;
+        background-color: #fff;
+        padding: 20px;
+    }
+
+    .content-pods {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+        margin: 0 0 20px;
+    }
+
+    .content-pod img {
+        width: 100%;
+    }
+    
+    .content-pod .pod-title {
+        position: relative;
+        display: block;
+        margin-top: -20px;
+        padding: 10px;
+        width: 100%;
+        text-align: center;
+        background-color: #7F44CB;
+        z-index: 2;
+        border-radius: 50px;
+        color: #fff;
+        box-shadow: 0 0 5px rgba(3,33,33,.1);
+        font-weight: bold;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .content-pod .pod-title.pink {
+        background-color: #E83A9A;
+    }
+
+    .content-pod .pod-title.green {
+        background-color: #31BC69;
+    }
+
+    .content-pod .pod-title.orange {
+        background-color: #F5911E;
+    }
+
+    .content-pod .pod-title:hover {
+        margin-top: -30px;
+        box-shadow: 0 0 18px rgba(3,33,33,.3);
+    }
+
+    .content-info {
+        text-align: center;
+        color: #717473;
+        font-size: 14px;
+    }
+
+    .content-info .content-info-title {
+        color: #407EC9;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    @media (min-width: 768px) {
+        .content-pods {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .content-pod .pod-title {
+            font-size: 18px;
+        }
+    }
+
+    /* Stores tab */
+    .store-delivery-panels {
+        display: flex;
+        flex-flow: column;
+        padding: 0 20px 20px;
+        max-width: 980px;
+        margin: 0 auto;
+    }
+
+    .store-delivery-panels .store-finder,
+    .store-delivery-panels .delivery-panel {
+        background-color: #fff;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .store-delivery-panels .store-finder .delivery-message {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 10px;
+        border: 3px solid #F2F2F2;
+        border-radius: 8px;
+    }
+
+    .store-delivery-panels .store-finder .delivery-message span {
+        margin-left: 5px;
+        font-size: 12px;
+    }
+
+    .store-delivery-panels .store-finder .delivery-message img {
+        width: 100%;
+        height: auto;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-content .store-locator-message {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-content .store-locator-message form {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-content .store-locator-message form input {
+        border: 3px solid #407EC9;
+        border-radius: 8px;
+        height: 40px;
+        color: #407EC9;
+        padding: 0 10px;
+        margin: 20px 0;
+        width: 100%;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-content .store-locator-message form input::placeholder {
+        color: #407EC9;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50px;
+        background-color: #EE3224;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 10px 30px 10px 10px;
+        height: 40px;
+        box-shadow: 0 0 5px rgba(3,33,33,.1);
+        border: 3px solid #DBE3FF;
+        width: 100%;
+        transition: all 0.3s;
+        margin-top: 20px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button:hover {
+        background-color: rgba(238, 50, 36, 0.7);
+        scale: 1.05;
+        box-shadow: 0 0 18px rgba(3,33,33,.2);
+        color: #fff;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button .send-icon {
+        transition: all 0.3s;
+        transform: rotate(15deg);
+        margin-left: 5px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button:hover .send-icon {
+        transform: rotate(-10deg)
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button .star-start {
+        position: relative;
+        top: -3px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button .swoosh-container {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        margin-right: 5px;
+        width: 25px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button .swoosh {
+        display: block;
+        width: 0;
+        height: 3px;
+        margin-top: -3px;
+        margin-left: -2px;
+        transform: rotate(15deg);
+        background-color: rgba(255, 255, 255, 0.7);
+        transition: all 0.3s;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button:hover .swoosh {
+        width: 7px;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button .star-end {
+        position: relative;
+        bottom: -5px;
+        transition: all 0.3s;
+    }
+
+    .store-delivery-panels .store-finder .store-locator-button:hover .star-end {
+        scale: 1.1;
+        transform: rotate(30deg);
+    }
+
+    .store-delivery-panels .delivery-panel {
+        position: relative;
+        margin-top: 20px;
+    }
+
+    .delivery-panel .heading-ribbon-container {
+        text-align: center;
+        position: relative;
+        top: -20px;
+    }
+
+    .delivery-panel .heading-ribbon {
+        position: relative;
+        padding: 0 23px;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    .delivery-panel .heading-ribbon .delivery-panel-title {
+        color: #fff;
+        font: 24px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+        background-color: #EE3224;
+        height: 48px;
+        line-height: 48px;
+        padding: 0 40px;
+        margin: 0;
+        text-transform: none;
+    }
+
+    .delivery-panel .heading-ribbon .ribbon-start {
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .delivery-panel .heading-ribbon .ribbon-end {
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .delivery-panel .heading-ribbon .ribbon-start,
+    .delivery-panel .heading-ribbon .ribbon-start svg,
+    .delivery-panel .heading-ribbon .ribbon-end,
+    .delivery-panel .heading-ribbon .ribbon-end svg {
+        height: 100%;
+        width: 24px;
+    }
+
+    .delivery-panel .heading-ribbon .ribbon-end {
+        transform: scale(-1, -1);
+    }
+
+    .delivery-panel .delivery-icons {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        height: 100%;
+        margin-bottom: 20px;
+    }
+
+    .delivery-panel .delivery-icons .delivery-icon-title {
+        font-weight: bold;
+        margin: 10px 0 5px;
+    }
+
+    .delivery-panel .delivery-icons .delivery-icon-section {
+        width: 33.33333%;
+        padding: 10px;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-align: center;
+    }
+
+    @media (min-width: 768px) {
+        .store-delivery-panels {
+            flex-direction: row;
+            gap: 20px;
+        }
+
+        .store-delivery-panels .store-finder,
+        .store-delivery-panels .delivery-panel {
+            width: 50%;
+        }
+
+        .delivery-panel .delivery-icons {
+            margin-top: -60px;
+        }
+    }
+
+    /* Footer color override and main page margin fix DO NOT DELETE */
+    footer {
+        background-color: #dbe3ff;
+    }
+
+    .section1 {
+        margin-bottom: 0;
+    }
+
+    .section1 + .row.no-margin {
+        display: none;
+    }
+
+ </style>
+ <div class="homepage-container">
+    <div class="homepage-content">
+        <div class="top-tabs">
+            <button class="tab-button" data-id="gifts">
+                Gifts
+            </button>
+            <button class="tab-button" data-id="baby">
+                Baby
+            </button>
+            <button class="tab-button" data-id="collect">
+                Collect
+            </button>
+            <button class="tab-button" data-id="offers">
+                Offers
+            </button>
+        </div>
+        <div class="homepage-tab-content active">
+            <div class="hero-panels">
+                <div class="carousel js-flickity flickity-enabled is-draggable" data-flickity="{ &quot;autoPlay&quot;: false, &quot;wrapAround&quot;: true, &quot;imagesLoaded&quot;: true }">
+                        
+                    <div class="carousel-cell">
+                        <div class="media-full media-full--desktop">
+                            <a href="https://www.thetoyshop.com/c/buy-one-get-one-free-toys">
+                            <img src="https://www.thetoyshop.com/medias/ELC-TE-BOGOF-2025-HP-hero-DT-1800x560-28-jul.jpg?context=bWFzdGVyfHJvb3R8MzgyMjI1fGltYWdlL2pwZWd8YURjeEwyZ3dPUzh4TWpVMU16Y3hOVGt3T0RZek9DOUZURU5mVkVWZlFrOUhUMFpmTWpBeU5WOUlVQ0JvWlhKdklFUlVJREU0TURCNE5UWXdYekk0SUdwMWJDNXFjR2N8MjY4ZjllNGFkOTI2YmJlMjBhZGQ0ZDQ5ZTZlODg5Y2EzOTQzNGVjMDFiYzE3MmU0OThhYmNmZDJkNzQ0MjBlOQ" alt="Early Learning Center buy one get one free" />
+                            </a>
+                        </div>
+
+                        <div class="media-full media-full--mobile">
+                        <a href="https://www.thetoyshop.com/c/buy-one-get-one-free-toys">
+                            <img src="https://www.thetoyshop.com/medias/ELC-TE-BOGOF-2025-HP-450x480px-28-jul.jpg?context=bWFzdGVyfHJvb3R8MTUyMTA1fGltYWdlL2pwZWd8YURBM0wyZ3dPUzh4TWpVMU16Y3hOVGswTVRRd05pOUZURU5mVkVWZlFrOUhUMFpmTWpBeU5WOUlVQ0EwTlRCNE5EZ3djSGhmTWpnZ2FuVnNMbXB3Wnd8YjFlNjhhZjRiMDk2ZWU1OTI1N2E3ZWU3OTg0ZjhlMzM5ZDY0MDczNDk2Mzk1OWFkZmVjNzI0ZmI3Y2M5N2MyYw" alt="Early Learning Center buy one get one free" />
+                        </a>
+                        </div>
+                    </div>
+
+                    <div class="carousel-cell">
+                        <div class="media-full media-full--desktop">
+                        <a href="https://www.thetoyshop.com/c/3-for-2-toys">
+                            <img src="https://www.thetoyshop.com/medias/TE-3FOR2-BB-PP-DUO-2025-HP-hero-DT-1800x560.jpg?context=bWFzdGVyfHJvb3R8MzYyNzA2fGltYWdlL2pwZWd8YURabUwyZ3dPUzh4TWpVMU5qSTVORGd4TlRjM05DOVVSVjh6Ums5U01pQkNRaUJRVUNCRVZVOWZNakF5TlY5SVVDQm9aWEp2SUVSVUlERTRNREI0TlRZd0xtcHdad3w4NDg5MzZmOWVjMjg3MDI0OTZmZjRjYTJkMjc1NDhjODE2OWZkMzVjZmIyNjIyMzBmOWZmZGMyZDMzYTU4ODE4" alt="Barbie and Polly 3 for 2" />
+                        </a>
+                        </div>
+
+                        <div class="media-full media-full--mobile">
+                        <a href="https://www.thetoyshop.com/c/3-for-2-toys">
+                            <img src="https://www.thetoyshop.com/medias/TE-3FOR2-BB-PP-DUO-2025-HP-450x480px.jpg?context=bWFzdGVyfHJvb3R8MTU3MzU5fGltYWdlL2pwZWd8YUdGa0wyZ3dPQzh4TWpVMU5qSTVORGc0TVRNeE1DOVVSVjh6Ums5U01pQkNRaUJRVUNCRVZVOWZNakF5TlY5SVVDQTBOVEI0TkRnd2NIZ3VhbkJufGNhMzc5OWMxYTQ2YTdhNTUxZDI1NjQ3N2UyNDAwZjhhNTdkN2U5NzNhMmZhYTg3MGMzOTNmYTc5YjhmZjk3Y2Y" alt="Barbie and Polly 3 for 2" />
+                        </a>
+                        </div>
+                    </div>
+
+                <div class="carousel-cell">
+                        <div class="media">
+                            <video autoplay loop muted>
+                                <source src="https://www.thetoyshop.com/medias/Lego-She-Built-That-2025-module-edit-1.mp4?context=bWFzdGVyfHJvb3R8MzA3ODYzNHx2aWRlby9tcDR8YURaaUwyaGtNUzh4TWpVMU5qSTRPRGt4TnpVek5DOU1aV2R2SUZOb1pTQkNkV2xzZENCVWFHRjBJREl3TWpVZ0xTQnRiMlIxYkdVZ1pXUnBkQ0F4TG0xd05BfGVmZjQ3ODViNGM4YzhlZDc5ZGRhMGVkMTVjNmYyMmZjMmU1MTRmYmFiNjQ4N2E3OTVjYmIwM2M0YzdiYWYwZDQ" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="hero-tile-info">
+                            <div class="brand-logo">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" viewBox="0 0 90 90" fill="none">
+                                    <g clip-path="url(#clip0_2087_234)">
+                                    <path d="M0.615417 0.602844V89.3971H89.4097V0.602844H0.615417Z" fill="white"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.615417 89.3971V0.602844H89.4097V89.3971H0.615417ZM81.6983 46.0299C82.477 43.7315 83.3561 40.2777 83.5069 37.5147C83.6199 35.4298 83.331 32.5035 81.3718 30.4312C79.8019 28.7734 77.403 27.9319 74.2381 27.9319C70.2442 27.9319 67.029 29.3385 64.6679 32.1267L64.0525 32.8551L63.638 31.9886C63.2989 31.2852 63.0603 30.9964 62.6961 30.5819C61.0885 28.7608 58.3882 27.844 54.6707 27.844C51.2671 27.844 48.1901 28.8613 46.0173 30.7201L45.4647 31.1848L45.0879 30.5694C44.0581 28.899 41.496 27.8189 38.5571 27.8189C34.3246 27.8189 30.067 28.3966 27.4923 32.5412L26.4248 34.2492L26.3369 32.2272C26.2741 30.6698 26.1234 30.0167 25.4075 29.2506C24.6037 28.4092 23.2724 27.9947 21.3006 27.9947C18.412 27.9947 16.2518 29.2506 14.6693 31.8378C12.2453 35.7187 6.38014 48.4664 6.50573 54.52C6.59365 58.451 9.21854 60.8624 13.5264 60.9629C17.0807 61.0508 19.9065 60.134 21.7025 58.3254L22.1546 57.8607L22.5942 58.338C24.2018 60.0837 26.6634 61.0508 29.5018 61.0508C33.1189 61.0508 36.2085 59.933 37.9919 57.9612L38.4817 57.4212L38.9339 57.9863C40.5917 60.0335 43.1663 61.101 46.369 61.0885C50.5387 61.0759 54.432 59.1543 57.0569 55.8387L57.7477 54.9721L58.137 56.0145C59.7572 60.4103 64.1278 61.0634 66.602 61.0634C74.9791 61.0634 78.6087 55.3112 81.7234 46.0299H81.6983Z" fill="#FFED00"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.615417 89.3971V0.602844H89.4097V89.3971H0.615417ZM82.2509 52.523C83.4064 50.1368 85.5917 44.146 85.9936 40.9182V40.8805C86.496 36.9369 86.9607 33.2068 84.2981 29.4893C82.4016 26.8518 79.1739 25.0809 74.2758 25.0809C70.5708 25.0809 67.2551 26.0857 64.6051 28.2836C62.3319 26.0354 59.079 25.0181 54.7084 25.0181C51.2797 25.0181 48.4036 25.7968 45.9043 27.3039C44.0832 25.8596 41.9481 24.9553 38.5571 24.9553C35.4801 24.9553 31.1471 25.1186 27.8817 27.8817C27.1281 26.3369 25.5959 25.1312 21.3634 25.1312C17.47 25.1312 14.2799 26.9774 12.1951 30.3935C9.40693 34.8395 3.50406 47.6877 3.65477 54.6958C3.7678 59.9832 7.72399 63.6129 13.4636 63.751C16.9048 63.8264 19.8437 63.098 22.0918 61.6034C24.1139 63.0603 26.7011 63.8515 29.5772 63.8515C33.0184 63.8515 36.1206 62.9473 38.4315 61.3271C40.5163 62.9849 43.2543 63.8766 46.3564 63.8766C50.3754 63.8766 54.1055 62.4951 57.1197 59.8451C59.1795 62.47 62.6961 63.8264 66.9788 63.8264C74.9916 63.8264 79.1488 58.9032 82.2635 52.4853L82.2509 52.523Z" fill="#E3000B"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 90V0H90V89.9874H0V90ZM88.7566 88.7566V1.24337H1.24337V88.7566H88.7566Z" fill="black"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M83.8083 27.1532C83.8083 25.9601 84.7628 24.993 85.9559 24.993C87.149 24.993 88.1161 25.9475 88.1161 27.1407C88.1161 28.3338 87.1616 29.3009 85.9685 29.3009C84.7753 29.3009 83.8208 28.3464 83.8083 27.1532ZM85.9685 25.42C86.923 25.42 87.7017 26.1987 87.7017 27.1532C87.7017 28.1077 86.923 28.8864 85.9685 28.8864C85.014 28.8864 84.2353 28.1077 84.2478 27.1532C84.2478 26.1987 85.014 25.42 85.9685 25.42ZM86.8099 27.8189L87.0737 28.271H86.5211L86.3453 27.9068C86.2699 27.7435 86.1569 27.6054 86.0438 27.4672C85.9559 27.3793 85.8806 27.3542 85.6796 27.3542H85.5917V28.271H85.127V26.0354H86.2448C86.722 26.0354 86.9481 26.2992 86.9481 26.6509C86.9481 26.99 86.722 27.2286 86.3453 27.2788C86.5336 27.3542 86.5964 27.417 86.8225 27.8189H86.8099ZM85.5791 26.3871V27.0025H86.0438C86.3578 27.0025 86.4583 26.8518 86.4583 26.6885C86.4583 26.4876 86.3076 26.3871 85.9936 26.3871H85.5791ZM64.1906 31.7248C66.3634 29.1502 69.5786 27.3039 74.2381 27.3039C82.2886 27.3039 84.3986 32.5663 84.1348 37.5398C83.9841 40.5289 83.017 44.0957 82.3011 46.2183C79.1111 55.688 75.2931 61.6662 66.5895 61.6662C62.6207 61.6662 58.9785 60.1214 57.5468 56.2155C54.9344 59.5311 50.928 61.6913 46.369 61.7039C42.89 61.7164 40.1772 60.4856 38.4566 58.3757C36.4094 60.6363 32.9556 61.6662 29.5144 61.6662C26.4248 61.6662 23.8501 60.5861 22.1546 58.7525C20.2707 60.6615 17.3067 61.6662 13.5264 61.5783C8.69105 61.4653 5.9908 58.5641 5.90288 54.5325C5.76473 48.2905 11.7053 35.4173 14.1543 31.5113C15.8499 28.7357 18.1859 27.3793 21.3132 27.3793C23.0212 27.3793 24.7795 27.6807 25.8722 28.8236C26.7639 29.7656 26.9146 30.607 26.9774 32.2021C29.7153 27.7812 34.3372 27.1909 38.5696 27.1909C41.8099 27.1909 44.4976 28.4092 45.628 30.2428C47.8007 28.3966 50.928 27.2286 54.6832 27.2286C58.5264 27.2286 61.3899 28.1705 63.1733 30.18C63.5627 30.6196 63.8515 30.9587 64.2158 31.7248H64.1906ZM21.803 53.4524C21.9411 51.9453 20.8108 50.3126 16.3145 51.1038C16.7667 50.0991 17.4323 48.7301 18.1859 47.1728C20.6098 42.1742 23.9506 35.2665 24.0134 32.5663C24.0511 31.235 23.511 30.1172 21.3508 30.1298C19.065 30.1298 17.6333 31.0843 16.4653 33.0059C13.9157 37.0625 8.51522 49.3204 8.62825 54.6204C8.69105 57.6472 11.0396 58.8404 13.652 58.9032C17.2439 58.9911 21.3885 57.9738 21.8155 53.465L21.803 53.4524ZM30.9713 46.9341C30.6698 47.7379 30.1047 49.4334 29.6525 51.2169C31.1345 50.8526 32.2397 50.5889 34.1362 50.6391C36.2964 50.6894 37.6905 51.5936 37.6905 53.3771C37.6905 57.71 32.8928 58.9911 29.5772 58.9911C25.9224 58.9911 22.7198 56.9188 22.7198 52.9249C22.7198 48.2403 25.2568 41.1443 27.643 36.4094C30.5694 30.607 33.5585 29.8284 38.7078 29.8284C40.9685 29.8284 43.5808 30.7954 43.5808 32.9305C43.5808 35.8945 41.0815 37.0248 38.5948 37.163C37.5272 37.2258 35.8945 37.2886 34.9149 37.2132C34.9149 37.2132 34.086 38.4817 33.2068 40.7173C37.8161 40.0642 39.7628 41.1192 38.9841 43.7818C37.9291 47.3863 34.8144 47.6123 30.9964 46.9341H30.9713ZM50.9531 37.3765C51.556 36.5225 52.3723 35.7312 53.6157 35.7312C55.1479 35.7312 54.9972 36.535 54.633 37.5775C53.6031 40.5163 56.7178 40.5917 57.4714 40.5289C60.1842 40.3154 61.6788 38.5696 62.043 35.5805C62.5454 31.5113 59.1167 29.954 54.7712 29.954C47.537 29.954 44.686 34.3874 41.9732 40.7173C40.7047 43.6938 39.0971 48.7678 39.0971 52.0081C39.0971 56.5546 41.8602 59.0162 46.3187 59.0162C52.8245 59.0162 57.4212 53.8292 58.7399 47.3612C59.1418 45.3768 59.6442 41.6341 54.5828 41.8476C52.0207 41.9481 50.4633 42.5258 49.6469 45.1382C48.8055 47.8384 51.8574 47.9138 51.8574 47.9138C51.242 50.7019 49.446 52.3974 47.851 52.3974C46.8588 52.3974 45.942 51.9704 46.2434 49.8479C46.6955 46.7583 49.5842 39.2478 50.9154 37.3765H50.9531ZM80.9573 41.0815C80.1912 44.887 78.4706 49.3958 76.5992 52.7617C73.5473 58.2375 69.8549 59.0162 66.6146 58.966C63.3868 58.9283 59.7321 57.7351 59.707 52.7491C59.6818 49.1697 61.2266 44.1083 62.5454 40.8052C64.8312 34.8019 67.1672 29.9037 74.5521 29.9916C83.1552 30.0921 81.6229 37.7533 80.9573 41.0815ZM70.1563 50.8526C71.3494 48.8306 74.7279 39.6246 74.8158 37.3263C74.8409 36.6606 74.7279 35.8819 73.6478 35.8694C72.9068 35.8694 72.2663 36.0075 71.6885 36.8993C70.3824 38.5948 66.5769 48.9939 66.6397 51.0662C66.6648 51.8072 67.0793 52.4602 67.9961 52.4602C69.0511 52.4602 69.6414 51.7318 70.1563 50.8526Z" fill="black"/>
+                                    </g>
+                                    <defs>
+                                    <clipPath id="clip0_2087_234">
+                                    <rect width="90" height="90" fill="white"/>
+                                    </clipPath>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <h2>This is your girl's world. She Built It.</h2>
+                            <div class="hero-blurb">
+                                ...and that's the way it is.  Unleash her creative potential with LEGO sets
+                            </div>
+                            <a href="#" class="hero-button">
+                                <span class="swoosh-container">
+                                    <span class="star-start">
+                                        <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="swoosh">&nbsp;</span>
+                                </span>
+                                Shop Now
+                                <span class="basket-icon">
+                                    <svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path>
+                                    </svg>
+                                </span>
+                                <span class="star-end">
+                                    <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                    </svg>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="homepage-tab-content" id="gifts">
+            <div class="gifts-content">
+                <div class="gifts-title">
+                    What age range are you buying the gift for?
+                </div>
+                <div class="shop-by-age-container">
+                    <div class="shop-by-age">
+                        <a data-element-type="hp-shop-age" data-promotion-index="1" data-promotion-name="Aged 0 to 3 years" href="/c/all-categories?ageRange=0%20-%2018%20months&amp;ageRange=18%20-%2036%20months" title="Aged 0 to 3 years">
+                            0-3
+                            <span>Years</span>
+                        </a>
+                        <a class="red" data-element-type="hp-shop-age" data-promotion-index="2" data-promotion-name="Aged 3 to 5 years" href="/c/all-categories?ageRange=3%20-%205%20years" title="Aged 3 to 5 years">
+                            3-5
+                            <span>Years</span>
+                        </a>
+                        <a class="purple" data-element-type="hp-shop-age" data-promotion-index="3" data-promotion-name="Aged 5 to 8 years" href="/c/all-categories?ageRange=5%20-%208%20years" title="Aged 5 to 8 years">
+                            5-8
+                            <span>Years</span>
+                        </a>
+                        <a class="blue" data-element-type="hp-shop-age" data-promotion-index="4" data-promotion-name="Aged 8 to 11 years" href="/c/all-categories?ageRange=8%20-%2011%20years" title="Aged 8 to 11 years">
+                            8-11
+                            <span>Years</span>
+                        </a>
+                        <a class="light-green" data-element-type="hp-shop-age" data-promotion-index="5" data-promotion-name="Aged 11 years and over" href="/c/all-categories?ageRange=11%2B%20years" title="Aged 11 years and over">
+                            11+
+                            <span>Years</span>
+                        </a>
+                        <a class="green" data-element-type="hp-shop-age" data-promotion-index="6" data-promotion-name="Big Kids" href="/c/shop-by-age/bigkids" title="Big Kids">
+                            Big
+                            <span>Kids</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <a href="/presentfinder" class="hero-button">
+                        <span class="swoosh-container">
+                            <span class="star-start">
+                                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                </svg>
+                            </span>
+                            <span class="swoosh">&nbsp;</span>
+                        </span>
+                        Next
+                        <span class="basket-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="15" viewBox="0 0 10 15" fill="none">
+                                <path d="M8.77602 8.44369L2.6644 14.1639C2.3497 14.4259 1.88184 14.397 1.60392 14.0984L0.893682 13.3355C0.615764 13.0369 0.620427 12.5682 0.904253 12.273L5.75581 7.72583L1.00032 2.61726C0.72271 2.28746 0.727373 1.81873 1.01089 1.55481L1.73542 0.880351C2.01894 0.616432 2.4868 0.645293 2.79591 0.94577L8.78628 7.41249C9.0642 7.71105 9.05954 8.17977 8.77602 8.44369Z" fill="white"/>
+                            </svg>
+                        </span>
+                        <span class="star-end">
+                            <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="homepage-tab-content" id="baby">
+            <div class="baby-content">
+                <div class="latest-blog-posts">
+                    <div class="latest-blog-posts-container">
+                        <div class="carousel baby-carousel js-flickity flickity-enabled is-draggable" data-flickity="{ &quot;autoPlay&quot;: true, &quot;wrapAround&quot;: true, &quot;cellAlign&quot;: &quot;left&quot; }">
+                                
+                            <div class="carousel-cell">
+                                <div class="latest-blog-posts-content-tile">
+                                    <div class="content-tile-image">
+                                        <img src="https://www.thetoyshop.com/medias/blog-post-example-image.png?context=bWFzdGVyfHJvb3R8MTYxMDIyfGltYWdlL3BuZ3xhR001TDJnME5TOHhNalUwTkRBMU1EVXlPREk0Tmk5aWJHOW5MWEJ2YzNRdFpYaGhiWEJzWlMxcGJXRm5aUzV3Ym1jfDk1OThjN2FlY2IwNTE1ZDNjMzYxNmI0YTJiMzAxYzE0NDkwODJhODUyMDhkNzcwZWNjNzNkNmM1NjM2MDdmNjE" alt="blog example" title="blog example" />
+                                    </div>
+                                    <div class="content-tile-details">
+                                        <h4 class="content-tile-title">
+                                            Content Title Here
+                                        </h4>
+                                        <p>Content paragraph copy goes here. Content paragraph copy goes here.</p>
+                                        <a href="#" class="hero-button">
+                                            <span class="swoosh-container">
+                                                <span class="star-start">
+                                                    <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                                    </svg>
+                                                </span>
+                                                <span class="swoosh">&nbsp;</span>
+                                            </span>
+                                            Shop Now
+                                            <span class="basket-icon">
+                                                <svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path>
+                                                </svg>
+                                            </span>
+                                            <span class="star-end">
+                                                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                                </svg>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="carousel-cell">
+                                <div class="latest-blog-posts-content-tile">
+                                    <div class="content-tile-image">
+                                        <img src="https://www.thetoyshop.com/medias/blog-post-example-image.png?context=bWFzdGVyfHJvb3R8MTYxMDIyfGltYWdlL3BuZ3xhR001TDJnME5TOHhNalUwTkRBMU1EVXlPREk0Tmk5aWJHOW5MWEJ2YzNRdFpYaGhiWEJzWlMxcGJXRm5aUzV3Ym1jfDk1OThjN2FlY2IwNTE1ZDNjMzYxNmI0YTJiMzAxYzE0NDkwODJhODUyMDhkNzcwZWNjNzNkNmM1NjM2MDdmNjE" alt="blog example" title="blog example" />
+                                    </div>
+                                    <div class="content-tile-details">
+                                        <h4 class="content-tile-title">
+                                            Content Title Here
+                                        </h4>
+                                        <p>Content paragraph copy goes here. Content paragraph copy goes here.</p>
+                                        <a href="#" class="hero-button">
+                                            <span class="swoosh-container">
+                                                <span class="star-start">
+                                                    <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                                    </svg>
+                                                </span>
+                                                <span class="swoosh">&nbsp;</span>
+                                            </span>
+                                            Shop Now
+                                            <span class="basket-icon">
+                                                <svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path>
+                                                </svg>
+                                            </span>
+                                            <span class="star-end">
+                                                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                                </svg>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="carousel-cell">
+                                <div class="latest-blog-posts-content-tile">
+                                    <div class="content-tile-image">
+                                        <img src="https://www.thetoyshop.com/medias/blog-post-example-image.png?context=bWFzdGVyfHJvb3R8MTYxMDIyfGltYWdlL3BuZ3xhR001TDJnME5TOHhNalUwTkRBMU1EVXlPREk0Tmk5aWJHOW5MWEJ2YzNRdFpYaGhiWEJzWlMxcGJXRm5aUzV3Ym1jfDk1OThjN2FlY2IwNTE1ZDNjMzYxNmI0YTJiMzAxYzE0NDkwODJhODUyMDhkNzcwZWNjNzNkNmM1NjM2MDdmNjE" alt="blog example" title="blog example" />
+                                    </div>
+                                    <div class="content-tile-details">
+                                        <h4 class="content-tile-title">
+                                            Content Title Here
+                                        </h4>
+                                        <p>Content paragraph copy goes here. Content paragraph copy goes here.</p>
+                                        <a href="#" class="hero-button">
+                                            <span class="swoosh-container">
+                                                <span class="star-start">
+                                                    <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                                    </svg>
+                                                </span>
+                                                <span class="swoosh">&nbsp;</span>
+                                            </span>
+                                            Shop Now
+                                            <span class="basket-icon">
+                                                <svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path>
+                                                </svg>
+                                            </span>
+                                            <span class="star-end">
+                                                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                                </svg>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="shop-by-age-container">
+                            <div class="shop-by-age">
+                                <a data-element-type="hp-shop-age" data-promotion-index="1" data-promotion-name="Aged 0 to 3 years" href="/c/all-categories?ageRange=0%20-%2018%20months&amp;ageRange=18%20-%2036%20months" title="Aged 0 to 3 years">
+                                    0-3
+                                    <span>Years</span>
+                                </a>
+                                <a data-element-type="hp-shop-age" data-promotion-index="2" data-promotion-name="Aged 3 to 5 years" href="/c/all-categories?ageRange=3%20-%205%20years" title="Aged 3 to 5 years">
+                                    3-5
+                                    <span>Years</span>
+                                </a>
+                                <a data-element-type="hp-shop-age" data-promotion-index="3" data-promotion-name="Aged 5 to 8 years" href="/c/all-categories?ageRange=5%20-%208%20years" title="Aged 5 to 8 years">
+                                    5-8
+                                    <span>Years</span>
+                                </a>
+                                <a data-element-type="hp-shop-age" data-promotion-index="4" data-promotion-name="Aged 8 to 11 years" href="/c/all-categories?ageRange=8%20-%2011%20years" title="Aged 8 to 11 years">
+                                    8-11
+                                    <span>Years</span>
+                                </a>
+                                <a class="red" data-element-type="hp-shop-age" data-promotion-index="5" data-promotion-name="Aged 11 years and over" href="/c/all-categories?ageRange=11%2B%20years" title="Aged 11 years and over">
+                                    11+
+                                    <span>Years</span>
+                                </a>
+                                <a class="orange" data-element-type="hp-shop-age" data-promotion-index="6" data-promotion-name="Big Kids" href="/c/shop-by-age/bigkids" title="Big Kids">
+                                    Big
+                                    <span>Years</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="homepage-tab-content" id="collect">
+            <div class="brands-tiles">
+                <div class="brands-tiles-container">
+                    <div class="brand-tile">
+                    <a href="https://www.thetoyshop.com/brands/barbie" title="Barbie">
+                        <img
+                        alt="Barbie"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/TE-Homepage-pod-350x350px-Barbie.jpg?context=bWFzdGVyfHJvb3R8NTk4OTh8aW1hZ2UvanBlZ3xhR1V3TDJneU55OHhNak00TlRFMU56QTROekkyTWk5VVJTMUliMjFsY0dGblpTMXdiMlJmTXpVd2VETTFNSEI0WDBKaGNtSnBaUzVxY0djfDBhOTM3YzkwZmEzNGFlOWFiOGIxMTcyMjdkZWY5M2U1Nzc2N2U4ZGI5ZGNmZTg0OGUzMTBjMDAyNmYyMmQ1NmI"
+                        title="Barbie"
+                        />
+                    </a>
+                    </div>
+                    <div class="brand-tile">
+                    <a href="https://www.thetoyshop.com/brands/polly-pocket" title="Polly">
+                        <img
+                        alt="Polly"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/Polly.jpg?context=bWFzdGVyfHJvb3R8NzA0ODF8aW1hZ2UvanBlZ3xhRGxpTDJoaU5pOHhNalUxTmpJM05UVXhOVFF5TWk5UWIyeHNlUzVxY0djfDcyZGE4NzMwMzdiMmFkYTZlZGU2ZDNkMzg3N2I4ZmFkODRmZmZhZTI4Y2MxZDJmZmZmZDY5OGQ5ODA4MmQ0MDY"
+                        title="Polly"
+                        />
+                    </a>
+                    </div>
+                    <div class="brand-tile">
+                    <a href="https://www.thetoyshop.com/brands/tonies" title="Tonies">
+                        <img
+                        alt="Tonies"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/2024-tonies-pod-350x350.png?context=bWFzdGVyfHJvb3R8ODY4MDV8aW1hZ2UvcG5nfGFHUTBMMmc0TkM4eE1qSTNPVEkyT1RrME9UUTNNQzh5TURJMExYUnZibWxsY3kxd2IyUXRNelV3ZURNMU1DNXdibWN8OWQ3MzkwYzlhNTkwNzBlMjE4NTMyZjE1NmIyNmEzZGJmNmJiYzIwZWE3NmZhOWM5MGVhODg5ODZiMjE5NGJlOA"
+                        title="Tonies"
+                        />
+                    </a>
+                    </div>
+                    <div class="brand-tile">
+                    <a href="https://www.thetoyshop.com/brands/paw-patrol" title="Paw Patrol">
+                        <img
+                        alt="Paw Patrol"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/PAW-UK-Entertainer-Digital-Banners-DEL7-350x350.jpg?context=bWFzdGVyfHJvb3R8MTI1NDc2fGltYWdlL2pwZWd8YUdVeUwyZzJZeTh4TWpJeE5UTTBOemt3TkRVME1pOVFRVmRmVlV0ZlJXNTBaWEowWVdsdVpYSmZSR2xuYVhSaGJGOUNZVzV1WlhKelgwUkZURGRmTXpVd2VETTFNQzVxY0djfDViNTU2YWExNGQ4YzczZWJmMDNkOGJkMmQ2ZDk4YjllYmRhMzMwMmE4OThkNGM3MGFlY2JkMGU5M2NjMzk4MjM"
+                        title="Paw Patrol"
+                        />
+                    </a>
+                    </div>
+                    <div class="brand-tile hide-mb">
+                    <a href="https://www.thetoyshop.com/brands/hot-wheels" title="Hot Wheels">
+                        <img
+                        alt="Hot Wheels"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/TE-Homepage-pod-350x350px-HW.jpg?context=bWFzdGVyfHJvb3R8MTAwOTc5fGltYWdlL2pwZWd8YURWaUwyZ3lZUzh4TWpNNE5URTFOamMxT1RVNE1pOVVSUzFJYjIxbGNHRm5aUzF3YjJSZk16VXdlRE0xTUhCNFgwaFhMbXB3Wnd8OTVhMTZmYWVmNTk1N2E1MmRkMTM0NGE5YWE2ZDU4MDc4ZDIzMTE1NjE0YWM5Mzg3ODhiZTE1NWFhNzI3ODU2YQ"
+                        title="Hot Wheels"
+                        />
+                    </a>
+                    </div>
+                    <div class="brand-tile hide-mb">
+                    <a href="https://www.thetoyshop.com/brands/minecraft" title="Minecraft">
+                        <img
+                        alt="Minecraft"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/TE-Homepage-Pod-Minecraft.jpg?context=bWFzdGVyfHJvb3R8MTI2NTg5fGltYWdlL2pwZWd8YUdaakwyZ3hNeTh4TWpRM01qWXpPREUzTnpNeE1DOVVSU0JJYjIxbGNHRm5aU0JRYjJSZlRXbHVaV055WVdaMExtcHdad3w2MTExNDM5NjFhNTFmZmViNGEyNDg1OTYyMTliZjFkYTYwODQ3NzJmYzU3YzVmYTAzNTJkZWRiMWU3NDQ5NGMz"
+                        title="Minecraft"
+                        />
+                    </a>
+                    </div>
+                </div>
+                </div>
+
+        </div>
+        <div class="homepage-tab-content" id="offers">
+            <div class="offers-content">
+                <div class="carousel offers-carousel js-flickity flickity-enabled is-draggable" data-flickity="{ &quot;autoPlay&quot;: true, &quot;wrapAround&quot;: true, &quot;cellAlign&quot;: &quot;left&quot; }">
+                        
+                    <div class="carousel-cell">
+                        <div class="offers-product-tile">
+                            <div class="product-tile-image">
+                                <img src="https://www.thetoyshop.com/medias/product-tile-example-image.png?context=bWFzdGVyfHJvb3R8NTA1Mjd8aW1hZ2UvcG5nfGFEaGpMMmd6WVM4eE1qVTBOREEwTnpJNE5ESTFOQzl3Y205a2RXTjBMWFJwYkdVdFpYaGhiWEJzWlMxcGJXRm5aUzV3Ym1jfDRhOTljODRlMDNjN2MyZjZkYzFiMGYwODc0NGEwNGJlMzQ3MzQyYzgwMWJhZjc1NjUyNjE1NjUwMjM0MmEyM2U" alt="product example" title="product example" />
+                                <div class="badge-container">
+                                    <div class="badge">
+                                        20% OFF
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-tile-details">
+                                <div class="product-title">
+                                    Product name here
+                                </div>
+                                <div class="price">
+                                    £00.00
+                                    <span class="was-price">
+                                        £0.00
+                                    </span>
+                                </div>
+                                <a href="#" class="details-button" title="view more details">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                        <div class="offers-product-tile">
+                            <div class="product-tile-image">
+                                <img src="https://www.thetoyshop.com/medias/product-tile-example-image.png?context=bWFzdGVyfHJvb3R8NTA1Mjd8aW1hZ2UvcG5nfGFEaGpMMmd6WVM4eE1qVTBOREEwTnpJNE5ESTFOQzl3Y205a2RXTjBMWFJwYkdVdFpYaGhiWEJzWlMxcGJXRm5aUzV3Ym1jfDRhOTljODRlMDNjN2MyZjZkYzFiMGYwODc0NGEwNGJlMzQ3MzQyYzgwMWJhZjc1NjUyNjE1NjUwMjM0MmEyM2U" alt="product example" title="product example" />
+                                <div class="badge-container">
+                                    <div class="badge">
+                                        20% OFF
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-tile-details">
+                                <div class="product-title">
+                                    Product name here
+                                </div>
+                                <div class="price">
+                                    £00.00
+                                    <span class="was-price">
+                                        £0.00
+                                    </span>
+                                </div>
+                                <a href="#" class="details-button" title="view more details">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                        <div class="offers-product-tile">
+                            <div class="product-tile-image">
+                                <img src="https://www.thetoyshop.com/medias/product-tile-example-image.png?context=bWFzdGVyfHJvb3R8NTA1Mjd8aW1hZ2UvcG5nfGFEaGpMMmd6WVM4eE1qVTBOREEwTnpJNE5ESTFOQzl3Y205a2RXTjBMWFJwYkdVdFpYaGhiWEJzWlMxcGJXRm5aUzV3Ym1jfDRhOTljODRlMDNjN2MyZjZkYzFiMGYwODc0NGEwNGJlMzQ3MzQyYzgwMWJhZjc1NjUyNjE1NjUwMjM0MmEyM2U" alt="product example" title="product example" />
+                                <div class="badge-container">
+                                    <div class="badge">
+                                        20% OFF
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-tile-details">
+                                <div class="product-title">
+                                    Product name here
+                                </div>
+                                <div class="price">
+                                    £00.00
+                                    <span class="was-price">
+                                        £0.00
+                                    </span>
+                                </div>
+                                <a href="#" class="details-button" title="view more details">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                        <div class="offers-product-tile">
+                            <div class="product-tile-image">
+                                <img src="https://www.thetoyshop.com/medias/product-tile-example-image.png?context=bWFzdGVyfHJvb3R8NTA1Mjd8aW1hZ2UvcG5nfGFEaGpMMmd6WVM4eE1qVTBOREEwTnpJNE5ESTFOQzl3Y205a2RXTjBMWFJwYkdVdFpYaGhiWEJzWlMxcGJXRm5aUzV3Ym1jfDRhOTljODRlMDNjN2MyZjZkYzFiMGYwODc0NGEwNGJlMzQ3MzQyYzgwMWJhZjc1NjUyNjE1NjUwMjM0MmEyM2U" alt="product example" title="product example" />
+                                <div class="badge-container">
+                                    <div class="badge">
+                                        20% OFF
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-tile-details">
+                                <div class="product-title">
+                                    Product name here
+                                </div>
+                                <div class="price">
+                                    £00.00
+                                    <span class="was-price">
+                                        £0.00
+                                    </span>
+                                </div>
+                                <a href="#" class="details-button" title="view more details">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-cell">
+                        <div class="offers-product-tile">
+                            <div class="product-tile-image">
+                                <img src="https://www.thetoyshop.com/medias/product-tile-example-image.png?context=bWFzdGVyfHJvb3R8NTA1Mjd8aW1hZ2UvcG5nfGFEaGpMMmd6WVM4eE1qVTBOREEwTnpJNE5ESTFOQzl3Y205a2RXTjBMWFJwYkdVdFpYaGhiWEJzWlMxcGJXRm5aUzV3Ym1jfDRhOTljODRlMDNjN2MyZjZkYzFiMGYwODc0NGEwNGJlMzQ3MzQyYzgwMWJhZjc1NjUyNjE1NjUwMjM0MmEyM2U" alt="product example" title="product example" />
+                                <div class="badge-container">
+                                    <div class="badge">
+                                        20% OFF
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-tile-details">
+                                <div class="product-title">
+                                    Product name here
+                                </div>
+                                <div class="price">
+                                    £00.00
+                                    <span class="was-price">
+                                        £0.00
+                                    </span>
+                                </div>
+                                <a href="#" class="details-button" title="view more details">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                        <div class="offers-product-tile">
+                            <div class="product-tile-image">
+                                <img src="https://www.thetoyshop.com/medias/product-tile-example-image.png?context=bWFzdGVyfHJvb3R8NTA1Mjd8aW1hZ2UvcG5nfGFEaGpMMmd6WVM4eE1qVTBOREEwTnpJNE5ESTFOQzl3Y205a2RXTjBMWFJwYkdVdFpYaGhiWEJzWlMxcGJXRm5aUzV3Ym1jfDRhOTljODRlMDNjN2MyZjZkYzFiMGYwODc0NGEwNGJlMzQ3MzQyYzgwMWJhZjc1NjUyNjE1NjUwMjM0MmEyM2U" alt="product example" title="product example" />
+                                <div class="badge-container">
+                                    <div class="badge">
+                                        20% OFF
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-tile-details">
+                                <div class="product-title">
+                                    Product name here
+                                </div>
+                                <div class="price">
+                                    £00.00
+                                    <span class="was-price">
+                                        £0.00
+                                    </span>
+                                </div>
+                                <a href="#" class="details-button" title="view more details">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                        <div class="offers-product-tile">
+                            <div class="product-tile-image">
+                                <img src="https://www.thetoyshop.com/medias/product-tile-example-image.png?context=bWFzdGVyfHJvb3R8NTA1Mjd8aW1hZ2UvcG5nfGFEaGpMMmd6WVM4eE1qVTBOREEwTnpJNE5ESTFOQzl3Y205a2RXTjBMWFJwYkdVdFpYaGhiWEJzWlMxcGJXRm5aUzV3Ym1jfDRhOTljODRlMDNjN2MyZjZkYzFiMGYwODc0NGEwNGJlMzQ3MzQyYzgwMWJhZjc1NjUyNjE1NjUwMjM0MmEyM2U" alt="product example" title="product example" />
+                                <div class="badge-container">
+                                    <div class="badge">
+                                        20% OFF
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-tile-details">
+                                <div class="product-title">
+                                    Product name here
+                                </div>
+                                <div class="price">
+                                    £00.00
+                                    <span class="was-price">
+                                        £0.00
+                                    </span>
+                                </div>
+                                <a href="#" class="details-button" title="view more details">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                        <div class="offers-product-tile">
+                            <div class="product-tile-image">
+                                <img src="https://www.thetoyshop.com/medias/product-tile-example-image.png?context=bWFzdGVyfHJvb3R8NTA1Mjd8aW1hZ2UvcG5nfGFEaGpMMmd6WVM4eE1qVTBOREEwTnpJNE5ESTFOQzl3Y205a2RXTjBMWFJwYkdVdFpYaGhiWEJzWlMxcGJXRm5aUzV3Ym1jfDRhOTljODRlMDNjN2MyZjZkYzFiMGYwODc0NGEwNGJlMzQ3MzQyYzgwMWJhZjc1NjUyNjE1NjUwMjM0MmEyM2U" alt="product example" title="product example" />
+                                <div class="badge-container">
+                                    <div class="badge">
+                                        20% OFF
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-tile-details">
+                                <div class="product-title">
+                                    Product name here
+                                </div>
+                                <div class="price">
+                                    £00.00
+                                    <span class="was-price">
+                                        £0.00
+                                    </span>
+                                </div>
+                                <a href="#" class="details-button" title="view more details">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+            </div>
+        </div>
+        <div class="homepage-tab-content" id="top-picks">
+            <div class="top-picks">
+                <div class="top-picks-container">
+                    <div class="carousel carousel-top-picks js-flickity flickity-enabled is-draggable" data-flickity="{ &quot;autoPlay&quot;: true, &quot;wrapAround&quot;: true, &quot;cellAlign&quot;: &quot;left&quot; }">
+                            
+                        <div class="carousel-cell">
+                            <div class="top-picks-product-tile">
+                                <div class="product-tile-image">
+                                    <img src="https://www.thetoyshop.com/medias/515Wx515H-573524-Primary?context=bWFzdGVyfGltYWdlc3wxMDE1MDh8aW1hZ2UvanBlZ3xhREpsTDJneVl5OHhNalV3TVRBM01qYzNNekUxTUM4MU1UVlhlRFV4TlVoZk5UY3pOVEkwWDFCeWFXMWhjbmt8ZTBmMjI2NDcwOTVjYjI1NTg0Zjg1ZTk0NDUwNWIzMDE0ODI0MzBhNDhmZjQ5NTkxNDAwYTE0ZGRhNmFmMWUzYQ" alt="Disney Stitch Many Moods Electronic Pet" title="Disney Stitch Many Moods Electronic Pet" />
+                                    <!-- <div class="badge-container">
+                                        <div class="badge">
+                                            20% OFF
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <div class="product-tile-details">
+                                    <div class="product-title">
+                                        Disney Stitch Many Moods Electronic Pet
+                                    </div>
+                                    <div class="price">
+                                        &pound;39.99
+                                        <!-- <span class="was-price">
+                                            &pound;0.00
+                                        </span> -->
+                                    </div>
+                                    <a href="https://www.thetoyshop.com/electronic-toys/pets/Disney-Stitch-Many-Moods-Electronic-Pet/p/573524" class="details-button" title="view more details">
+                                        Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-cell">
+                            <div class="top-picks-product-tile">
+                                <div class="product-tile-image">
+                                    <img src="https://www.thetoyshop.com/medias/515Wx515H-575030-Primary?context=bWFzdGVyfGltYWdlc3wxMjA1Nzl8aW1hZ2UvanBlZ3xhR0k0TDJobE5pOHhNalV3T0RJNU1qVTBOalU1TUM4MU1UVlhlRFV4TlVoZk5UYzFNRE13WDFCeWFXMWhjbmt8MWQzZjVkNmEyMTQ1YzYwYjY1MWQzNDY4YzdkM2E4Yjc5YTlhZTE3YWRiOTZjYWJjZDIwM2RlNTZlODc5ZWVjYg" alt="Jurassic World Spinosaurus Tail Thrasher Dinosaur Rebirth" title="Jurassic World Spinosaurus Tail Thrasher Dinosaur Rebirth" />
+                                    <div class="badge-container">
+                                        <div class="badge">
+                                            Save &pound;5
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-tile-details">
+                                    <div class="product-title">
+                                        Jurassic World Spinosaurus Tail Thrasher Dinosaur Rebirth
+                                    </div>
+                                    <div class="price">
+                                        &pound;49.99
+                                        <span class="was-price">
+                                            &pound;54.99
+                                        </span>
+                                    </div>
+                                    <a href="https://www.thetoyshop.com/animals/dinosaurs/Jurassic-World-Spinosaurus-Tail-Thrasher-Dinosaur-Rebirth/p/575030" class="details-button" title="view more details">
+                                        Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-cell">
+                            <div class="top-picks-product-tile">
+                                <div class="product-tile-image">
+                                    <img src="https://www.thetoyshop.com/medias/515Wx515H-573114-Primary?context=bWFzdGVyfGltYWdlc3w3MjgwN3xpbWFnZS9qcGVnfGFEY3dMMmcyTUM4eE1qVXlNVEUwTkRFMU5qRTVNQzgxTVRWWGVEVXhOVWhmTlRjek1URTBYMUJ5YVcxaGNua3xhY2QzN2U2MjE5MjUwOTgzNDhkOWRjYWUzNjNkYjk5OGMzMTAxN2NiMTgzODE1YTc2NjViYzljZjRiMGJjNTI0" alt="How To Train Your Dragon Hideous Zippleback Exclusive Figure" title="How To Train Your Dragon Hideous Zippleback Exclusive Figure" />
+                                    <div class="badge-container">
+                                        <div class="badge">
+                                            Exclusive
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-tile-details">
+                                    <div class="product-title">
+                                        How To Train Your Dragon Hideous Zippleback Exclusive Figure
+                                    </div>
+                                    <div class="price">
+                                        &pound;25.00
+                                        <!-- <span class="was-price">
+                                            &pound;0.00
+                                        </span> -->
+                                    </div>
+                                    <a href="https://www.thetoyshop.com/animals/dragons/How-To-Train-Your-Dragon-Hideous-Zippleback-Exclusive-Figure/p/573114" class="details-button" title="view more details">
+                                        Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-cell">
+                            <div class="top-picks-product-tile">
+                                <div class="product-tile-image">
+                                    <img src="https://www.thetoyshop.com/medias/515Wx515H-575938-Primary?context=bWFzdGVyfGltYWdlc3wxMzM0MTd8aW1hZ2UvanBlZ3xhR0ZtTDJneE5pOHhNalV5TWpRMk56UTVNVGczTUM4MU1UVlhlRFV4TlVoZk5UYzFPVE00WDFCeWFXMWhjbmt8MGNkN2JjMmFiOTFmZDA4NDMyYjQ1YTI0ZTA5YjcwOGI5YTE5NDhlNjNkZDliMDZjMDYzZmQ2NjRhNzcyNjFkNA" alt="LEGO Creator 3 in 1 Wild Animals Pink Flamingo Construction Set 31170" title="LEGO Creator 3 in 1 Wild Animals Pink Flamingo Construction Set 31170" />
+                                    <div class="badge-container">
+                                        <div class="badge">
+                                            20% OFF
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-tile-details">
+                                    <div class="product-title">
+                                        LEGO Creator 3 in 1 Wild Animals Pink Flamingo Construction Set 31170
+                                    </div>
+                                    <div class="price">
+                                        &pound;15.99
+                                        <span class="was-price">
+                                            &pound;19.99
+                                        </span>
+                                    </div>
+                                    <a href="https://www.thetoyshop.com/construction-toys/building-blocks/LEGO-Creator-3-in-1-Wild-Animals-Pink-Flamingo-Construction-Set-31170/p/575938" class="details-button" title="view more details">
+                                        Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-cell">
+                            <div class="top-picks-product-tile">
+                                <div class="product-tile-image">
+                                    <img src="https://www.thetoyshop.com/medias/515Wx515H-575353-15733B-Primary?context=bWFzdGVyfGltYWdlc3wxMTc1NjJ8aW1hZ2UvanBlZ3xhRGRrTDJneE15OHhNalV5TlRZM01EZzFPRGM0TWk4MU1UVlhlRFV4TlVoZk5UYzFNelV6WHpFMU56TXpRbDlRY21sdFlYSjV8YjQ4N2NkN2VhMmU4MGI4Y2NjNDNiNGMzMzE3ZDhmYjY1YTgwZjY5ZTQ1ODFkMGU4ZDAwYTNlZDQyNjM2YzE5Yg" alt="Fuggler Bigg Fugg Screech soft Toy by ZURU" title="Fuggler Bigg Fugg Screech soft Toy by ZURU" />
+                                    <div class="badge-container">
+                                        <div class="badge">
+                                            New Toys
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-tile-details">
+                                    <div class="product-title">
+                                        Fuggler Bigg Fugg Screech soft Toy by ZURU
+                                    </div>
+                                    <div class="price">
+                                        &pound;25.00
+                                        <!-- <span class="was-price">
+                                            &pound;19.99
+                                        </span> -->
+                                    </div>
+                                    <a href="https://www.thetoyshop.com/soft-toys/Fuggler-Bigg-Fugg-Screech-soft-Toy-by-ZURU/p/575353_15733B" class="details-button" title="view more details">
+                                        Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-cell">
+                            <div class="top-picks-product-tile">
+                                <div class="product-tile-image">
+                                    <img src="https://www.thetoyshop.com/medias/515Wx515H-573112-Primary?context=bWFzdGVyfGltYWdlc3wxODA2MXxpbWFnZS9qcGVnfGFEUXpMMmczTWk4eE1qVXdPVFF3TVRFMU16VTJOaTgxTVRWWGVEVXhOVWhmTlRjek1URXlYMUJ5YVcxaGNua3w3OWIzNzY5ZDQwNTFkNjRkYmU1N2ZlYjc5OGNkYjNhYzgxMDYyMjc4NWE0ODJjNTAyMTNlY2NiOTllZTg1M2Jm" alt="How to Train Your Dragon Plasma Sounds Night Fury Figure" title="How to Train Your Dragon Plasma Sounds Night Fury Figure" />
+                                    <!-- <div class="badge-container">
+                                        <div class="badge">
+                                            New Toys
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <div class="product-tile-details">
+                                    <div class="product-title">
+                                        How to Train Your Dragon Plasma Sounds Night Fury Figure
+                                    </div>
+                                    <div class="price">
+                                        &pound;17.00
+                                        <!-- <span class="was-price">
+                                            &pound;19.99
+                                        </span> -->
+                                    </div>
+                                    <a href="https://www.thetoyshop.com/animals/dragons/How-to-Train-Your-Dragon-Plasma-Sounds-Night-Fury-Figure/p/573112" class="details-button" title="view more details">
+                                        Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-cell">
+                            <div class="top-picks-product-tile">
+                                <div class="product-tile-image">
+                                    <img src="/medias/515Wx515H-568664-568664-12.jpg?context=bWFzdGVyfGltYWdlc3wyNjUzMjB8aW1hZ2UvanBlZ3xhRFUwTDJnMllTOHhNakkzTURVek1EWXlOVFUyTmk4MU1UVlhlRFV4TlVoZk5UWTROalkwWHpVMk9EWTJOQzB4TWk1cWNHY3wzZjZlM2E3OGI0MjYzN2RiZTViNTA4YWQyZTFkZmM0NjU5NDg1ODU2YTk0Yjc5NGUzMDliOTc4Njk2YmZiNWNk" alt="Disney Stitch Puppetronic Interactive Puppet by RealFX" title="Disney Stitch Puppetronic Interactive Puppet by RealFX" />
+                                    <div class="badge-container">
+                                        <div class="badge">
+                                            Save &pound;10
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-tile-details">
+                                    <div class="product-title">
+                                        Disney Stitch Puppetronic Interactive Puppet by RealFX
+                                    </div>
+                                    <div class="price">
+                                        &pound;69.99
+                                        <span class="was-price">
+                                            &pound;79.99
+                                        </span>
+                                    </div>
+                                    <a href="https://www.thetoyshop.com/soft-toys/puppets/Disney-Stitch-Puppetronic-Interactive-Puppet-by-RealFX/p/568664" class="details-button" title="view more details">
+                                        Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="homepage-tab-content" id="age-range">
+            <div class="shop-by-age-container">
+                <div class="shop-by-age">
+                    <a data-element-type="hp-shop-age" data-promotion-index="1" data-promotion-name="Aged 0 to 3 years" href="/c/all-categories?ageRange=0%20-%2018%20months&amp;ageRange=18%20-%2036%20months" title="Aged 0 to 3 years">
+                        0-3
+                        <span>Years</span>
+                    </a>
+                    <a class="red" data-element-type="hp-shop-age" data-promotion-index="2" data-promotion-name="Aged 3 to 5 years" href="/c/all-categories?ageRange=3%20-%205%20years" title="Aged 3 to 5 years">
+                        3-5
+                        <span>Years</span>
+                    </a>
+                    <a class="purple" data-element-type="hp-shop-age" data-promotion-index="3" data-promotion-name="Aged 5 to 8 years" href="/c/all-categories?ageRange=5%20-%208%20years" title="Aged 5 to 8 years">
+                        5-8
+                        <span>Years</span>
+                    </a>
+                    <a class="blue" data-element-type="hp-shop-age" data-promotion-index="4" data-promotion-name="Aged 8 to 11 years" href="/c/all-categories?ageRange=8%20-%2011%20years" title="Aged 8 to 11 years">
+                        8-11
+                        <span>Years</span>
+                    </a>
+                    <a class="light-green" data-element-type="hp-shop-age" data-promotion-index="5" data-promotion-name="Aged 11 years and over" href="/c/all-categories?ageRange=11%2B%20years" title="Aged 11 years and over">
+                        11+
+                        <span>Years</span>
+                    </a>
+                    <a class="green" data-element-type="hp-shop-age" data-promotion-index="6" data-promotion-name="Big Kids" href="/c/shop-by-age/bigkids" title="Big Kids">
+                        Big
+                        <span>Years</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="homepage-tab-content" id="brands">
+            <div class="brands-tiles">
+                <div class="brands-tiles-container">
+                    <div class="brand-tile">
+                    <a href="https://www.thetoyshop.com/brands/barbie" title="Barbie">
+                        <img
+                        alt="Barbie"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/TE-Homepage-pod-350x350px-Barbie.jpg?context=bWFzdGVyfHJvb3R8NTk4OTh8aW1hZ2UvanBlZ3xhR1V3TDJneU55OHhNak00TlRFMU56QTROekkyTWk5VVJTMUliMjFsY0dGblpTMXdiMlJmTXpVd2VETTFNSEI0WDBKaGNtSnBaUzVxY0djfDBhOTM3YzkwZmEzNGFlOWFiOGIxMTcyMjdkZWY5M2U1Nzc2N2U4ZGI5ZGNmZTg0OGUzMTBjMDAyNmYyMmQ1NmI"
+                        title="Barbie"
+                        />
+                    </a>
+                    </div>
+                    <div class="brand-tile">
+                    <a href="https://www.thetoyshop.com/brands/polly-pocket" title="Polly">
+                        <img
+                        alt="Polly"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/Polly.jpg?context=bWFzdGVyfHJvb3R8NzA0ODF8aW1hZ2UvanBlZ3xhRGxpTDJoaU5pOHhNalUxTmpJM05UVXhOVFF5TWk5UWIyeHNlUzVxY0djfDcyZGE4NzMwMzdiMmFkYTZlZGU2ZDNkMzg3N2I4ZmFkODRmZmZhZTI4Y2MxZDJmZmZmZDY5OGQ5ODA4MmQ0MDY"
+                        title="Polly"
+                        />
+                    </a>
+                    </div>
+                    <div class="brand-tile">
+                    <a href="https://www.thetoyshop.com/brands/tonies" title="Tonies">
+                        <img
+                        alt="Tonies"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/2024-tonies-pod-350x350.png?context=bWFzdGVyfHJvb3R8ODY4MDV8aW1hZ2UvcG5nfGFHUTBMMmc0TkM4eE1qSTNPVEkyT1RrME9UUTNNQzh5TURJMExYUnZibWxsY3kxd2IyUXRNelV3ZURNMU1DNXdibWN8OWQ3MzkwYzlhNTkwNzBlMjE4NTMyZjE1NmIyNmEzZGJmNmJiYzIwZWE3NmZhOWM5MGVhODg5ODZiMjE5NGJlOA"
+                        title="Tonies"
+                        />
+                    </a>
+                    </div>
+                    <div class="brand-tile">
+                    <a href="https://www.thetoyshop.com/brands/paw-patrol" title="Paw Patrol">
+                        <img
+                        alt="Paw Patrol"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/PAW-UK-Entertainer-Digital-Banners-DEL7-350x350.jpg?context=bWFzdGVyfHJvb3R8MTI1NDc2fGltYWdlL2pwZWd8YUdVeUwyZzJZeTh4TWpJeE5UTTBOemt3TkRVME1pOVFRVmRmVlV0ZlJXNTBaWEowWVdsdVpYSmZSR2xuYVhSaGJGOUNZVzV1WlhKelgwUkZURGRmTXpVd2VETTFNQzVxY0djfDViNTU2YWExNGQ4YzczZWJmMDNkOGJkMmQ2ZDk4YjllYmRhMzMwMmE4OThkNGM3MGFlY2JkMGU5M2NjMzk4MjM"
+                        title="Paw Patrol"
+                        />
+                    </a>
+                    </div>
+                    <div class="brand-tile hide-mb">
+                    <a href="https://www.thetoyshop.com/brands/hot-wheels" title="Hot Wheels">
+                        <img
+                        alt="Hot Wheels"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/TE-Homepage-pod-350x350px-HW.jpg?context=bWFzdGVyfHJvb3R8MTAwOTc5fGltYWdlL2pwZWd8YURWaUwyZ3lZUzh4TWpNNE5URTFOamMxT1RVNE1pOVVSUzFJYjIxbGNHRm5aUzF3YjJSZk16VXdlRE0xTUhCNFgwaFhMbXB3Wnd8OTVhMTZmYWVmNTk1N2E1MmRkMTM0NGE5YWE2ZDU4MDc4ZDIzMTE1NjE0YWM5Mzg3ODhiZTE1NWFhNzI3ODU2YQ"
+                        title="Hot Wheels"
+                        />
+                    </a>
+                    </div>
+                    <div class="brand-tile hide-mb">
+                    <a href="https://www.thetoyshop.com/brands/minecraft" title="Minecraft">
+                        <img
+                        alt="Minecraft"
+                        class="item"
+                        src="https://www.thetoyshop.com/medias/TE-Homepage-Pod-Minecraft.jpg?context=bWFzdGVyfHJvb3R8MTI2NTg5fGltYWdlL2pwZWd8YUdaakwyZ3hNeTh4TWpRM01qWXpPREUzTnpNeE1DOVVSU0JJYjIxbGNHRm5aU0JRYjJSZlRXbHVaV055WVdaMExtcHdad3w2MTExNDM5NjFhNTFmZmViNGEyNDg1OTYyMTliZjFkYTYwODQ3NzJmYzU3YzVmYTAzNTJkZWRiMWU3NDQ5NGMz"
+                        title="Minecraft"
+                        />
+                    </a>
+                    </div>
+                </div>
+                </div>
+
+        </div>
+        <div class="homepage-tab-content" id="toy-types">
+            <div class="category-roundels">
+                <div class="carousel toy-types-carousel js-flickity flickity-enabled is-draggable" data-flickity="{ &quot;autoPlay&quot;: true, &quot;wrapAround&quot;: true, &quot;cellAlign&quot;: &quot;left&quot; }">
+                        
+                    <div class="carousel-cell">
+                        <a href="/c/games" title="Games & Puzzles">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-games-puzzles.png?context=bWFzdGVyfHJvb3R8NDQyNXxpbWFnZS9wbmd8YUdReUwyZzVOUzh4TWpVME5EQTBORFk1TlRVNE1pOWpZWFJsWjI5eWVTMTBhV3hsY3kxbllXMWxjeTF3ZFhwNmJHVnpMbkJ1Wnd8NjAzMmE0ZjM3YTNmZjRhMDljZWFiNDY1NDBhM2Q2YzdmNThlM2I0NDUyN2UyZmVjMDdjMWQ2NDUzZGMxODcwYg" alt="Games & Puzzles" title="Games & Puzzles">
+                            <span>Games & Puzzles</span>
+                        </a>
+                        <a href="/c/special-offers" title="Offers">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-offers.png?context=bWFzdGVyfHJvb3R8NDk5N3xpbWFnZS9wbmd8YUdVekwyZzVPQzh4TWpVME5EQTBORGMyTVRFeE9DOWpZWFJsWjI5eWVTMTBhV3hsY3kxdlptWmxjbk11Y0c1bnwzMzg5YzRkNzViZTIyMjMxZGZhNGRjNWUwYTNjMTg5ZjMxOTQ2YjdmNGE1Mjc2YTE1OGUzOWFiNjQ5MTY0Mzg2" alt="Offers" title="Offers">
+                            <span>Offers</span>
+                        </a>
+                        <a href="/c/action-toys" title="Action Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-action-toys.png?context=bWFzdGVyfHJvb3R8NDM0MXxpbWFnZS9wbmd8YUdVeEwyZzVZaTh4TWpVME5EQTBORGd5TmpZMU5DOWpZWFJsWjI5eWVTMTBhV3hsY3kxaFkzUnBiMjR0ZEc5NWN5NXdibWN8ZDgwY2Y5ODNjYTQ3OTBkOGEzYmFhOTIzNGQ5MmQxNjcxOTgxZjAwZGRkOTgzZWFjMDRkN2RmZTJkZjU0ZTM3ZA" alt="Action Toys" title="Action Toys">
+                            <span>Action Toys</span>
+                        </a>
+                        <a href="/c/dress-up" title="Kids Dress-Up">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-kids-dress-up.png?context=bWFzdGVyfHJvb3R8NTU3N3xpbWFnZS9wbmd8YURRNUwyZzVaaTh4TWpVME5EQTBORGt5TkRrMU9DOWpZWFJsWjI5eWVTMTBhV3hsY3kxcmFXUnpMV1J5WlhOekxYVndMbkJ1Wnd8YTQxOWRhOWMxNjVhMmI3OTNiNTA0MzAzNWY1NWMzNDYzNDRmMDhmNGY1Y2ZiMjUxMDEzYjIxYWNkNDAyOTkxMg" alt="Kids Dress-Up" title="Kids Dress-Up">
+                            <span>Kids Dress-Up</span>
+                        </a>
+                        <a href="/c/pocket-money" title="Pocket Money">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-pocket-money.png?context=bWFzdGVyfHJvb3R8MTE5NzJ8aW1hZ2UvcG5nfGFETTBMMmd6WWk4eE1qVTFOakkyTURBeE5qRTFPQzlqWVhSbFoyOXllUzEwYVd4bGN5MXdiMk5yWlhRdGJXOXVaWGt1Y0c1bnwzZGU4MGVkMzQ1YjNlMmYwOGFmZjIwY2RhYjllYTBjYTliZGFlNTE0YmZiMDY2YzI1NDc1MzY3NzRhYzE5OTY1" alt="Pocket Money" title="Pcket Money">
+                            <span>Pocket Money</span>
+                        </a>
+                        <a href="/c/baby-pre-school" title="Pre-School">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-pre-school.png?context=bWFzdGVyfHJvb3R8ODA1NHxpbWFnZS9wbmd8YURjekwyZ3pZUzh4TWpVMU5qSTJNREE0TVRZNU5DOWpZWFJsWjI5eWVTMTBhV3hsY3kxd2NtVXRjMk5vYjI5c0xuQnVad3wyZWQzM2MxZGZmMDE2MWU5ZTdjY2Y5YTVkMTQwNzNjNjI2NzJhNDQzOWYzN2NlYTZlYmNlMWZhZDA3NmM5Yjk5" alt="Pre-School" title="Pre-School">
+                            <span>Pre-School</span>
+                        </a>
+                        <a href="/c/construction-toys" title="Building Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-building-toys.png?context=bWFzdGVyfHJvb3R8MTAyNTB8aW1hZ2UvcG5nfGFEYzFMMmd6Tnk4eE1qVTFOakkyTURFME56SXpNQzlqWVhSbFoyOXllUzEwYVd4bGN5MWlkV2xzWkdsdVp5MTBiM2x6TG5CdVp3fGE3OGZkMDJhOGM4ODBlZWI4ODRiZWFmMWE2YjI3NTQzMDhmZTY5MjU4ZmNlNDU3NDkzZTI5NjY0OGFhZTY5NDM" alt="Building Toys" title="Building Toys">
+                            <span>Building Toys</span>
+                        </a>
+                        <a href="/c/dolls" title="Dolls">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-dolls.png?context=bWFzdGVyfHJvb3R8NjcxNnxpbWFnZS9wbmd8YUdVMkwyZ3lZeTh4TWpVMU5qSTJNRFEzTkRreE1DOWpZWFJsWjI5eWVTMTBhV3hsY3kxa2IyeHNjeTV3Ym1jfGIxNzkyYTQwNjUwNGM2NTAzZjZmYjU4ZWVkYjE3NDFmODkwMDdlMGIwY2QwN2NkNDdkOTkwNDUyMTIyMmIxMjI" alt="Dolls" title="Dolls">
+                            <span>Dolls</span>
+                        </a>
+                        <a href="/search/?text=collectibles" title="Collectibles">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-collectibles.png?context=bWFzdGVyfHJvb3R8OTIwMHxpbWFnZS9wbmd8YURFMUwyZ3lOaTh4TWpVMU5qSTJNRFkzTVRVeE9DOWpZWFJsWjI5eWVTMTBhV3hsY3kxamIyeHNaV04wYVdKc1pYTXVjRzVufDdiNDg1NTQwYTk3ZDRjN2QwMTJlYzFlNTkwYzllY2I1NzYwOGE3NWI3MGFjNzYzNTNjZmI5ZmRiNzEzMDI1NGU" alt="Collectibles" title="Collectibles">
+                            <span>Collectibles</span>
+                        </a>
+                        <a href="/c/arts-creative-play" title="Arts & Crafts">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-arts-and-crafts.png?context=bWFzdGVyfHJvb3R8MTAxOTF8aW1hZ2UvcG5nfGFERTNMMmd5TXk4eE1qVTFOakkyTURjek56QTFOQzlqWVhSbFoyOXllUzEwYVd4bGN5MWhjblJ6TFdGdVpDMWpjbUZtZEhNdWNHNW58ZDNlODFlZjNiYmVkZmMxZjhlNTgzMzUzOTE3NGVlYThlYTc0YmVkMmU3YjU2ZDRkYjgwZWZlMTkxNTRmY2JlMA" alt="Arts & Crafts" title="Arts & Crafts">
+                            <span>Arts & Crafts</span>
+                        </a>
+                        <a href="/c/outdoor-toys" title="Outdoor Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-outdoor-toys.png?context=bWFzdGVyfHJvb3R8MTA5ODh8aW1hZ2UvcG5nfGFEQTJMMmd5TUM4eE1qVTFOakkyTURnd01qVTVNQzlqWVhSbFoyOXllUzEwYVd4bGN5MXZkWFJrYjI5eUxYUnZlWE11Y0c1bnxhY2FiZmRjOWRmMGY1NDFhMzYwY2EwMGU0ODM0NjZjYTk4Yzc3OTFiNjZlOTc4NThkNTc4NjRlMTk5NzgzYzJl" alt="Outdoor Toys" title="Outdoor Toys">
+                            <span>Outdoor Toys</span>
+                        </a>
+                        <a href="/c/soft-toys" title="Soft Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-soft-toys.png?context=bWFzdGVyfHJvb3R8MTAyMzJ8aW1hZ2UvcG5nfGFEUTNMMmd4WXk4eE1qVTFOakkyTURrek16WTJNaTlqWVhSbFoyOXllUzEwYVd4bGN5MXpiMlowTFhSdmVYTXVjRzVufDc4OTc0ZWYyZGNlODlhNGViMmRhN2RhOWM5MjI2MWQ5ZjE3NzY3MzhmZTFmMWE3ZjNjNDU1YmFhYjk0YjIzM2E" alt="Soft Toys" title="Soft Toys">
+                            <span>Soft Toys</span>
+                        </a>
+                    </div>
+                    
+                    <div class="carousel-cell">
+                        <a href="/c/animals" title="Animal Figures">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-animal-figures.png?context=bWFzdGVyfHJvb3R8NzAzNXxpbWFnZS9wbmd8YURrNUwyZ3hZaTh4TWpVMU5qSTJNRGs1T1RFNU9DOWpZWFJsWjI5eWVTMTBhV3hsY3kxaGJtbHRZV3d0Wm1sbmRYSmxjeTV3Ym1jfGZkYzFiMTUzODNiYjY3OGU5MTBjZDhhNTdhNjhkYTJiNDEyOGY0MGRlOWQyYWJkNmRmZDI0NWNmNWZlYzFiYmU" alt="Animal Figures" title="Animal Figures">
+                            <span>Animal Figures</span>
+                        </a>
+                        <a href="/c/electronic-toys" title="Electronic Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-electronic-toys.png?context=bWFzdGVyfHJvb3R8MTAzNDR8aW1hZ2UvcG5nfGFESXlMMmd5Wmk4eE1qVTFOakkyTVRBMk5EY3pOQzlqWVhSbFoyOXllUzEwYVd4bGN5MWxiR1ZqZEhKdmJtbGpMWFJ2ZVhNdWNHNW58YWQ0NDdiOWMzYTVjYjllM2I4ODk4NjlmMWMwODY5N2IwYzhiZjdkYTI3ZGViY2IxZjAwY2ZlZjFjZjY5OGFlZg" alt="Electronic Toys" title="Electronic Toys">
+                            <span>Electronic Toys</span>
+                        </a>
+                        <a href="/c/educational-toys" title="Educational Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-educational-toys.png?context=bWFzdGVyfHJvb3R8MTQyMjV8aW1hZ2UvcG5nfGFHVXhMMmc1Wmk4eE1qVTFOakkyTWpJM056RTFNQzlqWVhSbFoyOXllUzEwYVd4bGN5MWxaSFZqWVhScGIyNWhiQzEwYjNsekxuQnVad3xlM2RiMzM2MTQ5YjZmY2RhOGQxMTg0NDk3MmY1NzdhZjU4ZWE4NGZkYTJkMzdkNmNjYjczZDI5ZWE4NjY1MDgz" alt="Educational Toys" title="Educational Toys">
+                            <span>Educational Toys</span>
+                        </a>
+                        <a href="/c/transport-toys" title="Transport Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-transport-toys.png?context=bWFzdGVyfHJvb3R8Njk1MnxpbWFnZS9wbmd8YUdZeUwyaGhNaTh4TWpVMU5qSTJNak0wTWpZNE5pOWpZWFJsWjI5eWVTMTBhV3hsY3kxMGNtRnVjM0J2Y25RdGRHOTVjeTV3Ym1jfDYyZGYwZTdlZjYwM2QzNTc1NDc4ODk3MGJjYjY5ZmIyZWE5OGU0MTIwODMwYjJlZjU0OTQwZmJjOGI5NmY1NGM" alt="Transport Toys" title="Transport Toys">
+                            <span>Transport Toys</span>
+                        </a>
+                        <a href="/c/soft-toys" title="Soft Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-soft-toys.png?context=bWFzdGVyfHJvb3R8MTAyMzJ8aW1hZ2UvcG5nfGFEUTNMMmd4WXk4eE1qVTFOakkyTURrek16WTJNaTlqWVhSbFoyOXllUzEwYVd4bGN5MXpiMlowTFhSdmVYTXVjRzVufDc4OTc0ZWYyZGNlODlhNGViMmRhN2RhOWM5MjI2MWQ5ZjE3NzY3MzhmZTFmMWE3ZjNjNDU1YmFhYjk0YjIzM2E" alt="Soft Toys" title="Soft Toys">
+                            <span>Soft Toys</span>
+                        </a>
+                        <a href="/search/?text=collectibles" title="Collectibles">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-collectibles.png?context=bWFzdGVyfHJvb3R8OTIwMHxpbWFnZS9wbmd8YURFMUwyZ3lOaTh4TWpVMU5qSTJNRFkzTVRVeE9DOWpZWFJsWjI5eWVTMTBhV3hsY3kxamIyeHNaV04wYVdKc1pYTXVjRzVufDdiNDg1NTQwYTk3ZDRjN2QwMTJlYzFlNTkwYzllY2I1NzYwOGE3NWI3MGFjNzYzNTNjZmI5ZmRiNzEzMDI1NGU" alt="Collectibles" title="Collectibles">
+                            <span>Collectibles</span>
+                        </a>
+                        <a href="/c/outdoor-toys" title="Outdoor Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-outdoor-toys.png?context=bWFzdGVyfHJvb3R8MTA5ODh8aW1hZ2UvcG5nfGFEQTJMMmd5TUM4eE1qVTFOakkyTURnd01qVTVNQzlqWVhSbFoyOXllUzEwYVd4bGN5MXZkWFJrYjI5eUxYUnZlWE11Y0c1bnxhY2FiZmRjOWRmMGY1NDFhMzYwY2EwMGU0ODM0NjZjYTk4Yzc3OTFiNjZlOTc4NThkNTc4NjRlMTk5NzgzYzJl" alt="Outdoor Toys" title="Outdoor Toys">
+                            <span>Outdoor Toys</span>
+                        </a>
+                        <a href="/c/pocket-money" title="Pocket Money">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-pocket-money.png?context=bWFzdGVyfHJvb3R8MTE5NzJ8aW1hZ2UvcG5nfGFETTBMMmd6WWk4eE1qVTFOakkyTURBeE5qRTFPQzlqWVhSbFoyOXllUzEwYVd4bGN5MXdiMk5yWlhRdGJXOXVaWGt1Y0c1bnwzZGU4MGVkMzQ1YjNlMmYwOGFmZjIwY2RhYjllYTBjYTliZGFlNTE0YmZiMDY2YzI1NDc1MzY3NzRhYzE5OTY1" alt="Pocket Money" title="Pcket Money">
+                            <span>Pocket Money</span>
+                        </a>
+                        <a href="/c/games" title="Offers">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-offers.png?context=bWFzdGVyfHJvb3R8NDk5N3xpbWFnZS9wbmd8YUdVekwyZzVPQzh4TWpVME5EQTBORGMyTVRFeE9DOWpZWFJsWjI5eWVTMTBhV3hsY3kxdlptWmxjbk11Y0c1bnwzMzg5YzRkNzViZTIyMjMxZGZhNGRjNWUwYTNjMTg5ZjMxOTQ2YjdmNGE1Mjc2YTE1OGUzOWFiNjQ5MTY0Mzg2" alt="Offers" title="Offers">
+                            <span>Offers</span>
+                        </a>
+                        <a href="/c/games" title="Action Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-action-toys.png?context=bWFzdGVyfHJvb3R8NDM0MXxpbWFnZS9wbmd8YUdVeEwyZzVZaTh4TWpVME5EQTBORGd5TmpZMU5DOWpZWFJsWjI5eWVTMTBhV3hsY3kxaFkzUnBiMjR0ZEc5NWN5NXdibWN8ZDgwY2Y5ODNjYTQ3OTBkOGEzYmFhOTIzNGQ5MmQxNjcxOTgxZjAwZGRkOTgzZWFjMDRkN2RmZTJkZjU0ZTM3ZA" alt="Action Toys" title="Action Toys">
+                            <span>Action Toys</span>
+                        </a>
+                        <a href="/c/games" title="Kids Dress-Up">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-kids-dress-up.png?context=bWFzdGVyfHJvb3R8NTU3N3xpbWFnZS9wbmd8YURRNUwyZzVaaTh4TWpVME5EQTBORGt5TkRrMU9DOWpZWFJsWjI5eWVTMTBhV3hsY3kxcmFXUnpMV1J5WlhOekxYVndMbkJ1Wnd8YTQxOWRhOWMxNjVhMmI3OTNiNTA0MzAzNWY1NWMzNDYzNDRmMDhmNGY1Y2ZiMjUxMDEzYjIxYWNkNDAyOTkxMg" alt="Kids Dress-Up" title="Kids Dress-Up">
+                            <span>Kids Dress-Up</span>
+                        </a>
+                        <a href="/c/games" title="Games & Puzzles">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-games-puzzles.png?context=bWFzdGVyfHJvb3R8NDQyNXxpbWFnZS9wbmd8YUdReUwyZzVOUzh4TWpVME5EQTBORFk1TlRVNE1pOWpZWFJsWjI5eWVTMTBhV3hsY3kxbllXMWxjeTF3ZFhwNmJHVnpMbkJ1Wnd8NjAzMmE0ZjM3YTNmZjRhMDljZWFiNDY1NDBhM2Q2YzdmNThlM2I0NDUyN2UyZmVjMDdjMWQ2NDUzZGMxODcwYg" alt="Games & Puzzles" title="Games & Puzzles">
+                            <span>Games & Puzzles</span>
+                        </a>
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
+        <div class="homepage-tab-content" id="content">
+            <div class="content-container">
+                 <div class="heading-ribbon-container">
+                    <div class="heading-ribbon">
+                        <span class="ribbon-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="48" viewBox="0 0 24 48" fill="none">
+                                <g clip-path="url(#clip0_2260_15)">
+                                <path d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z" fill="#EE3224"/>
+                                <path d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z" fill="#EE3224"/>
+                                </g>
+                                <defs>
+                                <clipPath id="clip0_2260_15">
+                                <rect width="335" height="48" fill="white"/>
+                                </clipPath>
+                                </defs>
+                            </svg>
+                        </span>
+                        <h3>Latest Content</h3>
+                        <span class="ribbon-end">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="48" viewBox="0 0 24 48" fill="none">
+                                <g clip-path="url(#clip0_2260_15)">
+                                <path d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z" fill="#EE3224"/>
+                                <path d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z" fill="#EE3224"/>
+                                </g>
+                                <defs>
+                                <clipPath id="clip0_2260_15">
+                                <rect width="335" height="48" fill="white"/>
+                                </clipPath>
+                                </defs>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="content-panel">
+                    <div class="content-pods">
+                        <div class="content-pod">
+                            <img src="https://www.thetoyshop.com/medias/blog-tab-stitch.png?context=bWFzdGVyfHJvb3R8MzU1NzR8aW1hZ2UvcG5nfGFEUmlMMmd3WXk4eE1qVTBOVEkwTnpZME1UWXpNQzlpYkc5bkxYUmhZaTF6ZEdsMFkyZ3VjRzVufDJmMThkOTE2YzYxMDhlN2U0YTJjMTllNDUzMmY5MjMwYjdhZGUyMjUzNmNiNTkyYjBjZjc0MTcxMzQ1NGU2NDg" alt="Discover Brands" title="Discover Brands" />
+                            <a href="/childhood-adventures/category/discover-brands" title="Discover Brands" class="pod-title">
+                                Discover Brands
+                            </a>
+                        </div>
+                        <div class="content-pod">
+                            <img src="https://www.thetoyshop.com/medias/hp-redesign-blog-family.png?context=bWFzdGVyfHJvb3R8NDAxNDl8aW1hZ2UvcG5nfGFHTTRMMmhtWlM4eE1qVTFOak13TnpRek1UUTFOQzlvY0MxeVpXUmxjMmxuYmkxaWJHOW5MV1poYldsc2VTNXdibWN8NzJmNDRhOWFlYmE0YTI3YjQ4M2RjODg0Njg1NGI4MGMyZmI3OWQwMjJiNGUwZjc0MWM4NWU0NzQ4YTcyNDkzYw" alt="Family" title="Family" />
+                            <a href="/childhood-adventures/category/family-advice" title="Family" class="pod-title pink">
+                                Family
+                            </a>
+                        </div>
+                        <div class="content-pod">
+                            <img src="https://www.thetoyshop.com/medias/ho-redesign-blog-buying-advice.png?context=bWFzdGVyfHJvb3R8MzU4NzZ8aW1hZ2UvcG5nfGFERmhMMmhtWlM4eE1qVTFOak13TnpRNU5qazVNQzlvYnkxeVpXUmxjMmxuYmkxaWJHOW5MV0oxZVdsdVp5MWhaSFpwWTJVdWNHNW58MjhlYzE0N2QxMGY3NDcyODY5M2E4ZjYxZGIyMDNlYmFmOWIzMWRiOGQyM2JmZjEyMTdiZGFhYzAzOTViZWU1ZA" alt="Buying Advice" title="Buying Advice" />
+                            <a href="/childhood-adventures/category/buying-advice" title="Buying Advice" class="pod-title green">
+                                Buying Advice
+                            </a>
+                        </div>
+                        <div class="content-pod">
+                            <img src="https://www.thetoyshop.com/medias/hp-redesign-blog-activities.png?context=bWFzdGVyfHJvb3R8NDQxNDB8aW1hZ2UvcG5nfGFEQTRMMmhtWWk4eE1qVTFOak13TnpVMk1qVXlOaTlvY0MxeVpXUmxjMmxuYmkxaWJHOW5MV0ZqZEdsMmFYUnBaWE11Y0c1bnwzZWRiYjI5ZmI0MGExMDY1ZTYxYTY0MzVhZTYxMmU4NjY0MjA0ZDllOWVhYmE5NWQyYzE3ZDY2ZDFkNTlkMDVh" alt="Activities" title="Activities" />
+                            <a href="/childhood-adventures/category/activities" title="Activities" class="pod-title orange">
+                                Activities
+                            </a>
+                        </div>
+                    </div>
+                    <div class="content-info">
+                        <div class="content-info-title">
+                            Welcome to our blog!
+                        </div>
+                        <p>Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum</p>
+                        <p>Lorem ipsum lorem ipsum lorem ipsum lorem</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="homepage-tab-content" id="our-stores">
+            <div class="store-delivery-panels">
+                <div class="store-finder">
+                    <div class="delivery-message">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="21" viewBox="0 0 24 21" fill="none">
+                            <path d="M22.9808 14.5961C23.1443 14.5961 23.2885 14.6538 23.3943 14.7692C23.5 14.8846 23.5577 15.0385 23.5577 15.2211V16.4808C23.5577 16.6635 23.5 16.8173 23.3943 16.9327C23.2885 17.0481 23.1443 17.1058 22.9808 17.1058H21.2597C21.2597 18.1538 20.9231 19.0481 20.2597 19.7885C19.5866 20.5288 18.7789 20.8942 17.8173 20.8942C16.8558 20.8942 16.0481 20.5288 15.375 19.7885C14.702 19.0481 14.375 18.1538 14.375 17.1058H9.7885C9.7885 18.1538 9.45196 19.0481 8.7885 19.7885C8.11542 20.5288 7.30773 20.8942 6.34619 20.8942C5.38465 20.8942 4.57696 20.5288 3.90389 19.7885C3.23081 19.0481 2.90389 18.1538 2.90389 17.1058V12.0577H8.35581C8.54811 12.0577 8.64427 11.9519 8.64427 11.7404V11.1058C8.64427 10.8942 8.54811 10.7885 8.35581 10.7885H0.89427C0.701962 10.7885 0.605809 10.6827 0.605809 10.4711V9.83653C0.605809 9.62499 0.701962 9.51922 0.89427 9.51922H9.50004C9.69235 9.51922 9.7885 9.41345 9.7885 9.20191V8.5673C9.7885 8.35576 9.69235 8.24999 9.50004 8.24999H2.0385C1.84619 8.24999 1.75004 8.14422 1.75004 7.93268V7.29807C1.75004 7.08653 1.84619 6.98076 2.0385 6.98076H10.6443C10.8366 6.98076 10.9327 6.87499 10.9327 6.66345V6.02884C10.9327 5.8173 10.8366 5.71153 10.6443 5.71153H0.884652C0.692345 5.71153 0.596191 5.60576 0.596191 5.39422V4.75961C0.596191 4.54807 0.692345 4.4423 0.884652 4.4423H2.89427V2.54807C2.89427 2.01922 3.05773 1.57691 3.39427 1.21153C3.73081 0.846144 4.13465 0.663452 4.61542 0.663452H13.7981C14.2789 0.663452 14.6827 0.846144 15.0193 1.21153C15.3558 1.57691 15.5193 2.02884 15.5193 2.54807V4.4423H17.0962C17.577 4.4423 17.9808 4.62499 18.3173 4.99038L21.9039 8.93268C22.2404 9.29807 22.4039 9.74999 22.4039 10.2692V14.5288H22.9808V14.5961ZM5.12504 18.4615C5.46158 18.8269 5.86542 19.0096 6.34619 19.0096C6.82696 19.0096 7.23081 18.8269 7.56735 18.4615C7.90388 18.0961 8.06735 17.6442 8.06735 17.125C8.06735 16.6058 7.90388 16.1538 7.56735 15.7885C7.23081 15.4231 6.82696 15.2404 6.34619 15.2404C5.86542 15.2404 5.46158 15.4231 5.12504 15.7885C4.7885 16.1538 4.62504 16.6058 4.62504 17.125C4.62504 17.6442 4.7885 18.0961 5.12504 18.4615ZM20.6923 10.8077V10.3365L17.1058 6.39422H15.5289V10.8077H20.6923ZM16.6058 18.4615C16.9423 18.8269 17.3462 19.0096 17.827 19.0096C18.3077 19.0096 18.7116 18.8269 19.0481 18.4615C19.3847 18.0961 19.5481 17.6442 19.5481 17.125C19.5481 16.6058 19.3847 16.1538 19.0481 15.7885C18.7116 15.4231 18.3077 15.2404 17.827 15.2404C17.3462 15.2404 16.9423 15.4231 16.6058 15.7885C16.2693 16.1538 16.1058 16.6058 16.1058 17.125C16.1058 17.6442 16.2693 18.0961 16.6058 18.4615Z" fill="#00548B"/>
+                        </svg>
+                        <span>
+                            Free Express Delivery on orders over £75
+                        </span>
+                    </div>
+                    <div class="store-locator-content">
+                        <div class="store-locator-message">
+                            <img src="https://www.thetoyshop.com/medias/store-locator-title-graphic.png?context=bWFzdGVyfHJvb3R8MTg0MjJ8aW1hZ2UvcG5nfGFHRTNMMmhtTUM4eE1qVTBOREExTXpNeE16VTJOaTl6ZEc5eVpTMXNiMk5oZEc5eUxYUnBkR3hsTFdkeVlYQm9hV011Y0c1bnw2YjEzMjZmMjRhNzBjMjY3MWRmZDVkN2U4MTQzNGI3MGMwOGIwNjBlMzkwYzUyNmRjNTJhYTUyZWJiYjBhZDI5" alt="Find your local The Entertainer store or locker" title="Find your local The Entertainer store or locker" />
+
+                            <a href="/store-finder" class="store-locator-button">
+                                <span class="swoosh-container">
+                                    <span class="star-start">
+                                        <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="swoosh">&nbsp;</span>
+                                </span>
+                                Search for stores
+                                <span class="send-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none">
+                                        <path d="M10.5124 13.7391L11.3721 9.13113L13.1951 9.56975L11.8195 16.9425C11.7228 17.4609 11.2203 17.7613 10.736 17.6448L3.44414 15.8903C2.93143 15.7669 2.60788 15.2678 2.70461 14.7494L4.08023 7.37662L5.9032 7.81525L5.04344 12.4232L10.5124 13.7391ZM20.7513 8.95035C21.0373 9.6511 20.4596 10.3547 19.7475 10.1834L3.3407 6.23571C2.60011 6.05752 2.32331 5.14832 2.83493 4.63947L5.94388 1.53564C6.16315 1.31756 6.48023 1.2133 6.79355 1.28869L18.3296 4.06437C18.6429 4.13976 18.8955 4.3811 19.018 4.68142L20.7513 8.95035ZM15.3794 18.2806L16.841 10.447L18.664 10.8856L17.2024 18.7192C17.1541 18.9784 16.8886 19.1252 16.6607 19.0703L15.7492 18.851C15.4929 18.7893 15.3311 18.5398 15.3794 18.2806Z" fill="white"/>
+                                    </svg>
+                                </span>
+                                <span class="star-end">
+                                    <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                    </svg>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="delivery-panel">
+                    <div class="heading-ribbon-container">
+                        <div class="heading-ribbon">
+                            <span class="ribbon-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="48" viewBox="0 0 24 48" fill="none">
+                                    <g clip-path="url(#clip0_2260_15)">
+                                    <path d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z" fill="#EE3224"/>
+                                    <path d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z" fill="#EE3224"/>
+                                    </g>
+                                    <defs>
+                                    <clipPath id="clip0_2260_15">
+                                    <rect width="335" height="48" fill="white"/>
+                                    </clipPath>
+                                    </defs>
+                                </svg>
+                            </span>
+                            <div class="delivery-panel-title">We love to deliver</div>
+                            <span class="ribbon-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="48" viewBox="0 0 24 48" fill="none">
+                                    <g clip-path="url(#clip0_2260_15)">
+                                    <path d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z" fill="#EE3224"/>
+                                    <path d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z" fill="#EE3224"/>
+                                    </g>
+                                    <defs>
+                                    <clipPath id="clip0_2260_15">
+                                    <rect width="335" height="48" fill="white"/>
+                                    </clipPath>
+                                    </defs>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="delivery-icons">
+                        <div class="delivery-icon-section">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="37" height="29" viewBox="0 0 37 29" fill="none">
+                                <path d="M18.5547 21.5V12.75H22.0547V26.75C22.0547 27.224 21.8724 27.625 21.5078 27.9531C21.1797 28.3177 20.7786 28.5 20.3047 28.5H6.30469C5.83073 28.5 5.41146 28.3177 5.04688 27.9531C4.71875 27.625 4.55469 27.224 4.55469 26.75V12.75H8.05469V21.5H18.5547ZM35.7812 8.26562C36.1458 8.84896 36.1641 9.45052 35.8359 10.0703C35.5078 10.6901 34.9974 11 34.3047 11H2.80469C2.11198 11 1.60156 10.6901 1.27344 10.0703C0.945312 9.45052 0.981771 8.84896 1.38281 8.26562L6.03125 1.26562C6.35938 0.755208 6.83333 0.5 7.45312 0.5H29.6562C30.276 0.5 30.75 0.755208 31.0781 1.26562L35.7812 8.26562ZM29.0547 27.625V12.75H32.5547V27.625C32.5547 27.8802 32.4635 28.0807 32.2812 28.2266C32.1354 28.4089 31.9349 28.5 31.6797 28.5H29.9297C29.6745 28.5 29.4557 28.4089 29.2734 28.2266C29.1276 28.0807 29.0547 27.8802 29.0547 27.625Z" fill="#00548B"/>
+                            </svg>
+                            <div class="delivery-icon-title">
+                                FREE Click & Collect
+                            </div>
+                            <div class="delivery-icon-details">
+                                In as little as
+                                30 minutes
+                            </div>
+                        </div>
+                        <div class="delivery-icon-section">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="29" viewBox="0 0 35 29" fill="none">
+                                <path d="M34.125 19.75C34.5625 19.75 35 20.1875 35 20.625V22.375C35 22.8672 34.5625 23.25 34.125 23.25H31.5C31.5 26.1484 29.1484 28.5 26.25 28.5C23.3516 28.5 21 26.1484 21 23.25H14C14 26.1484 11.6484 28.5 8.75 28.5C5.85156 28.5 3.5 26.1484 3.5 23.25H2.625C1.14844 23.25 0 22.1016 0 20.625V3.125C0 1.70312 1.14844 0.5 2.625 0.5H20.125C21.5469 0.5 22.75 1.70312 22.75 3.125V5.75H25.1562C25.8125 5.75 26.5234 6.07812 27.0156 6.57031L32.4297 11.9844C32.9219 12.4766 33.25 13.1875 33.25 13.8438V19.75H34.125ZM8.75 25.875C10.1719 25.875 11.375 24.7266 11.375 23.25C11.375 21.8281 10.1719 20.625 8.75 20.625C7.27344 20.625 6.125 21.8281 6.125 23.25C6.125 24.7266 7.27344 25.875 8.75 25.875ZM26.25 25.875C27.6719 25.875 28.875 24.7266 28.875 23.25C28.875 21.8281 27.6719 20.625 26.25 20.625C24.7734 20.625 23.625 21.8281 23.625 23.25C23.625 24.7266 24.7734 25.875 26.25 25.875ZM30.625 14.5V13.8438L25.1562 8.375H22.75V14.5H30.625Z" fill="#00548B"/>
+                            </svg>
+                            <div class="delivery-icon-title">
+                                Standard Delivery
+                            </div>
+                            <div class="delivery-icon-details">
+                                Within 3 working days
+                            </div>
+                        </div>
+                        <div class="delivery-icon-section">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="29" viewBox="0 0 35 29" fill="none">
+                                <path d="M34.125 19.75C34.5625 19.75 35 20.1875 35 20.625V22.375C35 22.8672 34.5625 23.25 34.125 23.25H31.5C31.5 26.1484 29.1484 28.5 26.25 28.5C23.3516 28.5 21 26.1484 21 23.25H14C14 26.1484 11.6484 28.5 8.75 28.5C5.85156 28.5 3.5 26.1484 3.5 23.25V16.25H11.8125C12.0312 16.25 12.25 16.0859 12.25 15.8125V14.9375C12.25 14.7188 12.0312 14.5 11.8125 14.5H0.4375C0.164062 14.5 0 14.3359 0 14.0625V13.1875C0 12.9688 0.164062 12.75 0.4375 12.75H13.5625C13.7812 12.75 14 12.5859 14 12.3125V11.4375C14 11.2188 13.7812 11 13.5625 11H2.1875C1.91406 11 1.75 10.8359 1.75 10.5625V9.6875C1.75 9.46875 1.91406 9.25 2.1875 9.25H15.3125C15.5312 9.25 15.75 9.08594 15.75 8.8125V7.9375C15.75 7.71875 15.5312 7.5 15.3125 7.5H0.4375C0.164062 7.5 0 7.33594 0 7.0625V6.1875C0 5.96875 0.164062 5.75 0.4375 5.75H3.5V3.125C3.5 1.70312 4.64844 0.5 6.125 0.5H20.125C21.5469 0.5 22.75 1.70312 22.75 3.125V5.75H25.1562C25.8125 5.75 26.5234 6.07812 27.0156 6.57031L32.4297 11.9844C32.9219 12.4766 33.25 13.1875 33.25 13.8438V19.75H34.125ZM8.75 25.875C10.1719 25.875 11.375 24.7266 11.375 23.25C11.375 21.8281 10.1719 20.625 8.75 20.625C7.27344 20.625 6.125 21.8281 6.125 23.25C6.125 24.7266 7.27344 25.875 8.75 25.875ZM26.25 25.875C27.6719 25.875 28.875 24.7266 28.875 23.25C28.875 21.8281 27.6719 20.625 26.25 20.625C24.7734 20.625 23.625 21.8281 23.625 23.25C23.625 24.7266 24.7734 25.875 26.25 25.875ZM30.625 14.5V13.8438L25.1562 8.375H22.75V14.5H30.625Z" fill="#00548B"/>
+                            </svg>
+                            <div class="delivery-icon-title">
+                                Next Day Delivery
+                            </div>
+                            <div class="delivery-icon-details">
+                                If you order by 7pm
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-tabs">
+            <button class="tab-button" data-id="top-picks">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="19" viewBox="0 0 21 19" fill="currentColor">
+                        <path d="M19.0985 4.20293C19.3057 4.22456 19.4743 4.31547 19.6042 4.47566C19.7341 4.63585 19.7882 4.81955 19.7666 5.02675L19.5849 6.76729C19.4637 7.92765 18.7122 8.90699 17.3301 9.7053C16.262 10.306 15.078 10.6118 13.7782 10.6227C13.4362 11.0897 13.0696 11.4913 12.6784 11.8275C12.2872 12.1637 11.9804 12.3935 11.7581 12.5169L11.4245 12.7021L11.1909 14.9399L12.6828 15.0956C13.2423 15.154 13.6923 15.3581 14.0328 15.7079C14.394 16.0598 14.5465 16.5051 14.4903 17.0438L14.4513 17.4168C14.4254 17.6655 14.2881 17.7768 14.0394 17.7509L4.83943 16.7904C4.59079 16.7644 4.47944 16.6271 4.5054 16.3785L4.54434 16.0055C4.60058 15.4668 4.83141 15.0615 5.23683 14.7896C5.66298 14.5199 6.15578 14.4142 6.71524 14.4726L8.20713 14.6284L8.44076 12.3905C8.3622 12.3405 8.25581 12.256 8.12158 12.1373C7.98735 12.0185 7.7543 11.7429 7.42243 11.3102C7.09055 10.8776 6.80553 10.3975 6.56736 9.8699C5.29782 9.59074 4.20252 9.04699 3.28148 8.23865C2.09414 7.1721 1.56104 6.05864 1.68218 4.89828L1.86389 3.15774C1.88552 2.95053 1.97643 2.78198 2.13662 2.65207C2.2968 2.52217 2.4805 2.46804 2.68771 2.48967L5.92014 2.82713L6.04993 1.58389C6.07156 1.37668 6.16247 1.20812 6.32266 1.07822C6.48285 0.948319 6.66655 0.894184 6.87375 0.915816L15.3278 1.79841C15.535 1.82004 15.7036 1.91095 15.8335 2.07114C15.9634 2.23132 16.0175 2.41502 15.9959 2.62223L15.8661 3.86547L19.0985 4.20293ZM4.60021 6.74249C4.96578 7.05296 5.3782 7.31595 5.83747 7.53147C5.69824 6.65813 5.65657 5.75308 5.71247 4.81632L3.72328 4.60865L3.67137 5.10595C3.62161 5.58252 3.93123 6.12804 4.60021 6.74249ZM17.5957 6.55963L17.6476 6.06233L15.6584 5.85466C15.5196 6.78277 15.2919 7.6597 14.9753 8.48545C15.4692 8.36944 15.927 8.1973 16.3489 7.96903C17.1303 7.506 17.5459 7.0362 17.5957 6.55963Z" />
+                    </svg>
+                </span>
+                <span>
+                    Top Picks
+                </span>
+            </button>
+            <button class="tab-button" data-id="age-range">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="currentColor">
+                        <path d="M1.79738 15.1491C2.07711 15.1199 2.43062 14.8945 2.8579 14.4728C3.26186 14.0536 3.74358 13.8148 4.30304 13.7564C4.83919 13.7004 5.35984 13.8346 5.86499 14.1589C6.34683 14.4856 6.72762 14.6344 7.00735 14.6052C7.28708 14.576 7.64058 14.3506 8.06786 13.9289C8.47183 13.5097 8.95354 13.2709 9.513 13.2125C10.0492 13.1565 10.5698 13.2907 11.075 13.615C11.5801 13.9393 11.9609 14.0881 12.2173 14.0613C12.5204 14.0296 12.8855 13.803 13.3128 13.3814C13.7168 12.9621 14.1985 12.7233 14.7579 12.6649C15.2941 12.609 15.8147 12.7431 16.3199 13.0674C16.8017 13.3942 17.1825 13.5429 17.4622 13.5137L17.1702 10.7164C17.1215 10.2502 16.917 9.87096 16.5566 9.57868C16.1962 9.2864 15.7828 9.16459 15.3166 9.21327L14.7572 9.27167L14.2315 4.23654L11.9937 4.47017L12.5193 9.5053L10.2815 9.73893L9.75582 4.70379L7.51798 4.93742L8.04364 9.97255L5.80581 10.2062L5.28015 5.17105L3.04231 5.40467L3.56797 10.4398L3.00851 10.4982C2.54229 10.5469 2.16304 10.7514 1.87076 11.1119C1.57848 11.4723 1.45668 11.8856 1.50535 12.3518L1.79738 15.1491ZM2.26464 19.6248L17.9295 17.9894L17.5791 14.6326C17.0196 14.691 16.499 14.5569 16.0171 14.2301C15.512 13.9058 15.1195 13.7583 14.8398 13.7875C14.5601 13.8167 14.2182 14.0409 13.8142 14.4601C13.387 14.8818 12.9052 15.1206 12.3691 15.1766C11.8096 15.235 11.289 15.1008 10.8071 14.7741C10.302 14.4498 9.90955 14.3022 9.62982 14.3314C9.35009 14.3606 9.00824 14.5848 8.60427 15.004C8.17699 15.4257 7.69528 15.6645 7.15913 15.7205C6.59967 15.7789 6.07902 15.6447 5.59718 15.318C5.09202 14.9937 4.68793 14.8473 4.38488 14.879C4.12847 14.9057 3.79827 15.1287 3.3943 15.548C2.96703 15.9696 2.47366 16.2096 1.9142 16.268L2.26464 19.6248ZM13.0542 3.79389C13.3572 3.76226 13.6143 3.62937 13.8255 3.39524C14.011 3.14023 14.0879 2.8612 14.0563 2.55816C14.0222 2.23181 13.8016 1.92493 13.3946 1.63751C12.9876 1.3501 12.7573 0.949974 12.7037 0.437136C12.4706 0.461472 12.249 0.708477 12.0388 1.17815C11.8262 1.62452 11.743 2.06915 11.7892 2.51206C11.8355 2.95496 11.9769 3.29367 12.2134 3.52819C12.4476 3.7394 12.7278 3.82796 13.0542 3.79389ZM8.5785 4.26115C8.88154 4.22951 9.13866 4.09662 9.34987 3.86249C9.53533 3.60748 9.61224 3.32845 9.5806 3.02541C9.54653 2.69906 9.32597 2.39218 8.91893 2.10477C8.51189 1.81735 8.2816 1.41723 8.22806 0.904389C7.99495 0.928725 7.7733 1.17573 7.56312 1.64541C7.35051 2.09177 7.26732 2.53641 7.31356 2.97931C7.3598 3.42222 7.5012 3.76093 7.73777 3.99544C7.9719 4.20665 8.25214 4.29522 8.5785 4.26115ZM4.10282 4.7284C4.40586 4.69676 4.66298 4.56388 4.87419 4.32974C5.05965 4.07473 5.13656 3.79571 5.10493 3.49267C5.07086 3.16632 4.8503 2.85943 4.44326 2.57202C4.03621 2.28461 3.80592 1.88448 3.75238 1.37164C3.51927 1.39598 3.29763 1.64298 3.08745 2.11266C2.87483 2.55902 2.79165 3.00366 2.83789 3.44656C2.88412 3.88947 3.02553 4.22818 3.26209 4.4627C3.49623 4.6739 3.77647 4.76247 4.10282 4.7284Z" />
+                    </svg>
+                </span>
+                <span>
+                    Age Range
+                </span>
+            </button>
+            <button class="tab-button" data-id="brands">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="25" viewBox="0 0 26 25" fill="currentColor">
+                        <path d="M20.5149 7.57425L16.7187 1.48951C16.4705 1.09181 16.1204 0.840612 15.6684 0.73591C15.2163 0.631208 14.7914 0.702918 14.3937 0.95104L8.30898 4.74731C7.91128 4.99543 7.66008 5.34553 7.55538 5.7976L5.17716 16.0661C5.07246 16.5182 5.14417 16.9431 5.39229 17.3408C5.64041 17.7385 5.99051 17.9897 6.44258 18.0944L16.3236 20.3828C16.7757 20.4875 17.2006 20.4158 17.5982 20.1677C17.9959 19.9196 18.2471 19.5695 18.3518 19.1174L20.7301 8.84891C20.8348 8.39683 20.7631 7.97195 20.5149 7.57425ZM12.9222 5.10126C13.0269 4.64919 13.2781 4.29909 13.6758 4.05097C14.0735 3.80284 14.4983 3.73113 14.9504 3.83584C15.4025 3.94054 15.7526 4.19174 16.0007 4.58943C16.2488 4.98713 16.3205 5.41201 16.2158 5.86408C16.1111 6.31616 15.8599 6.66625 15.4622 6.91438C15.0646 7.1625 14.6397 7.23421 14.1876 7.12951C13.7355 7.02481 13.3854 6.77361 13.1373 6.37591C12.8892 5.97822 12.8175 5.55333 12.9222 5.10126Z" />
+                    </svg>
+                </span>
+                <span>
+                    Brands
+                </span>
+            </button>
+            <button class="tab-button" data-id="toy-types">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" viewBox="0 0 25 20" fill="currentColor">
+                        <path d="M12.7257 14.3463L12.3372 8.73473L10.0926 8.89012L10.7141 17.8686C10.7352 18.1726 10.8699 18.4217 11.1183 18.6159C11.3449 18.8352 11.6102 18.9343 11.9141 18.9132L20.8926 18.2917C21.1966 18.2707 21.4574 18.1351 21.675 17.8851C21.8709 17.6601 21.9583 17.3957 21.9373 17.0917L21.3157 8.11319L19.0711 8.26858L19.4596 13.8801L12.7257 14.3463ZM1.09035 6.62359C0.88243 7.01388 0.897446 7.40048 1.1354 7.7834C1.37335 8.16632 1.71445 8.3424 2.15869 8.31165L22.3603 6.91318C22.8046 6.88243 23.1182 6.66103 23.3011 6.24897C23.484 5.83692 23.4339 5.45274 23.1508 5.09644L19.8589 0.813557C19.6258 0.500783 19.3105 0.358154 18.913 0.38567L4.67369 1.37139C4.2762 1.39891 3.98357 1.58362 3.7958 1.92553L1.09035 6.62359ZM6.26372 18.7406L5.60333 9.20089L3.3587 9.35627L4.01909 18.8959C4.03042 19.0596 4.09777 19.1842 4.22116 19.2696C4.32278 19.38 4.45542 19.4296 4.61909 19.4183L5.74141 19.3406C5.90508 19.3292 6.04132 19.2611 6.15013 19.1361C6.23719 19.0361 6.27505 18.9042 6.26372 18.7406Z" />
+                    </svg>
+                </span>
+                <span>
+                    Toy Types
+                </span>
+            </button>
+            <button class="tab-button" data-id="content">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M4.08816 3.46611C5.94062 1.9095 8.06936 1.23556 10.4744 1.44428C12.8794 1.653 14.8485 2.68258 16.3818 4.53301C17.9404 6.36212 18.6154 8.47919 18.4067 10.8842C18.1979 13.2892 17.1673 15.27 15.3149 16.8266C13.4878 18.3619 11.3718 19.0252 8.96673 18.8165C6.56171 18.6078 4.57989 17.5888 3.02126 15.7597C1.488 13.9093 0.825738 11.7816 1.03446 9.37656C1.24318 6.97153 2.26108 5.00138 4.08816 3.46611ZM13.7105 11.3236C14.0048 11.1844 14.1662 10.9514 14.1946 10.6245C14.223 10.2976 14.1041 10.0403 13.8381 9.85254L7.99903 5.56993C7.73302 5.38217 7.45283 5.35785 7.15844 5.49698C6.86406 5.63611 6.70269 5.86912 6.67432 6.19602L6.04208 13.4811C6.01371 13.808 6.13253 14.0654 6.39854 14.2531C6.66455 14.4409 6.94475 14.4652 7.23913 14.3261L13.7105 11.3236Z" />
+                    </svg>
+                </span>
+                <span>
+                    Content
+                </span>
+            </button>
+            <button class="tab-button" data-id="our-stores">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="19" viewBox="0 0 16 19" fill="currentColor">
+                        <path d="M9.71009 17.2836C10.158 16.4579 10.6727 15.525 11.254 14.4851C11.8134 13.4474 12.2155 12.7155 12.4603 12.2894C12.7051 11.8632 12.9848 11.3444 13.2993 10.7329C13.6115 10.0994 13.821 9.65468 13.9278 9.39871C14.0126 9.14505 14.1126 8.82304 14.2276 8.43268C14.3206 8.04462 14.3753 7.7162 14.3918 7.44741C14.3839 7.15891 14.3605 6.82752 14.3214 6.45326C14.1375 4.692 13.3648 3.25928 12.0032 2.15511C10.6416 1.05094 9.08017 0.590787 7.31891 0.774659C5.55765 0.958532 4.12493 1.73127 3.02076 3.09286C1.91659 4.45445 1.45644 6.01588 1.64031 7.77714C1.67939 8.15141 1.73588 8.47935 1.80979 8.76096C1.85939 9.02285 1.98078 9.33288 2.17396 9.69106C2.34513 10.0515 2.5094 10.346 2.66678 10.5744C2.80214 10.805 3.08798 11.1981 3.52431 11.7534C3.95833 12.2867 4.33913 12.7366 4.66671 13.103C4.99429 13.4694 5.54988 14.1013 6.3335 14.9988C7.09511 15.8985 7.78032 16.7061 8.38914 17.4215C8.56624 17.6256 8.79789 17.7126 9.08409 17.6828C9.3703 17.6529 9.57896 17.5198 9.71009 17.2836ZM10.0597 8.80103C9.5842 9.36256 8.98318 9.68124 8.25666 9.75709C7.53014 9.83294 6.88727 9.64411 6.32804 9.19061C5.7445 8.7174 5.41481 8.11753 5.33896 7.39101C5.26311 6.66449 5.46295 6.02047 5.93846 5.45894C6.38966 4.8777 6.97852 4.54916 7.70504 4.47331C8.43156 4.39746 9.08659 4.59614 9.67013 5.06936C10.2294 5.52286 10.5469 6.11287 10.6227 6.83939C10.6986 7.56591 10.5109 8.21979 10.0597 8.80103Z" />
+                    </svg>
+                </span>
+                <span>
+                    Our Stores
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.homepage-tab-content');
+
+        if (tabButtons && tabContents) {
+            tabButtons.forEach((tabBtn) => {
+                tabBtn.addEventListener('click', () => {
+                const tabId = tabBtn.getAttribute('data-id');
+
+                tabButtons.forEach((btn) => btn.classList.remove('active'));
+                tabBtn.classList.add('active');
+
+                tabContents.forEach((content) => {
+                    content.classList.remove('active');
+
+                    if (content.id === tabId) {
+                    content.classList.add('active');
+                    }
+                });
+
+                var flkty1 = new Flickity('.toy-types-carousel ');
+                flkty1.resize();
+
+                var flkty2 = new Flickity('.baby-carousel ');
+                flkty2.resize();
+
+                var flkty3 = new Flickity('.offers-carousel ');
+                flkty3.resize();
+
+                var flkty4 = new Flickity('.carousel-top-picks ');
+                flkty4.resize();
+            });
+        });
+        }
+        // const r = document.querySelector(':root');
+        // let navHeightTest = document.querySelector(".js-mainHeader").offsetHeight;
+        // r.style.setProperty('--nav-height', navHeightTest + 'px');
+</script>

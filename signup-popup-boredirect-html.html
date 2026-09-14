@@ -1,0 +1,49 @@
+<div id="dytmpl-${dyVariationId}">
+    
+    <div class="img_${dyVariationId}" target="_blank"></div>
+    
+    <div class="content_${dyVariationId}">
+        
+        <div class="email-sign-up-overlay">
+			
+			<p>${Form Intro Text}</p>
+
+            <form name="EmailOverlayProfileForm" onsubmit="return CheckEmailFormOverlayInputs();" action="https://link.thetoyshop.com/u/register.php" method=get>
+
+                <input type=hidden name="CID" value="1049437855">
+                <input type=hidden name="SID" value="">
+                <input type=hidden name="UID" value="">
+                <input type=hidden name="f" value="${Form ID}">
+                <input type=hidden name="p" value="2">
+                <input type=hidden name="a" value="r">
+                <input type=hidden name="el" value="">
+                <input type=hidden name="llid" value="">
+                <input type=hidden name="c" value="">
+                <input type=hidden name="counted" value="">
+                <input type=hidden name="RID" value="">
+                <input type=hidden name="mailnow" value="">
+
+                <div class="email-signup-title-field-container">
+
+                    <div><legend>Email address <!--<span class="mandatory-asterisks">(*)</span>--></legend></div>
+                    <div><input type=email name="inp_3" maxlength=255 value="" class="form-control"></div>
+
+                </div>
+				
+				<p class="sign-up-disclaimer">By submitting your email address, you agree to receive emails about special offers, new toys and inspiration from The Entertainer</p>
+            
+				<div class="email-signup-opt-in">
+
+					<label class="checkbox-inline"><input tabindex="882" type="checkbox" name="optin" value="y"> Tick here to receive email marketing communications from The Entertainer</label>
+
+				</div>
+
+                <input aria-label="Register" tabindex="993" type=button onclick="javascript:SubmitEmailFormOverlay()" name="submit1" value="Submit" class="email-sign-up-cta">
+
+            </form>
+
+        </div>
+        
+    </div>
+    
+</div>

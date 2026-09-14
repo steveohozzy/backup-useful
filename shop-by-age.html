@@ -1,0 +1,120 @@
+<!-- Shop By Age -->
+ <style type="text/css">
+    .shop-by-age-container {
+        background-color: #dbe3ff;
+    }
+    .shop-by-age {
+        max-width: 980px;
+        margin: 0 auto;
+        display: flex;
+        gap: 10px;
+        padding: 20px;
+    }
+
+    .shop-by-age a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: calc(100%/6);
+        border-radius: 100%;
+        background-color: #E5BB07;
+        color: #fff;
+        aspect-ratio: 1/1;
+        text-decoration: none;
+        font: 15px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+        transition: all 0.3s;
+        line-height: 1.1;
+        box-shadow: 0 0 3px rgba(3,33,33,.4);
+        text-shadow: 0px 0px 4px rgba(0,0,0,0.25);
+    }
+
+    .shop-by-age a.red {
+        background-color: #F23043;
+    }
+
+    .shop-by-age a.purple {
+        background-color: #9116C4;
+    }
+
+    .shop-by-age a.blue {
+        background-color: #2AB2D1;
+    }
+
+    .shop-by-age a.light-green {
+        background-color: #23C166;
+    }
+
+    .shop-by-age a.green {
+        background-color: #067F3D;
+    }
+
+    .shop-by-age a.black {
+        background-color: #000;
+    }
+
+    .shop-by-age a .text {
+        filter: drop-shadow(0 2px rgb(147 51 234)) drop-shadow(0 -2px rgb(147 51 234)) drop-shadow(2px 0 rgb(147 51 234)) drop-shadow(-2px 0 rgb(147 51 234));
+        color: #000;
+    }
+
+    .shop-by-age a:hover {
+        box-shadow: 0 0 15px rgba(3,33,33,.4);
+        transform: translateY(-5px) rotate(5deg);
+        scale: 1.05;
+    }
+
+    .shop-by-age span {
+        display: block;
+        font-size: 10px;
+    }
+
+    @media (min-width: 768px) {
+        .shop-by-age a {
+            font-size: 28px;
+        }
+
+        .shop-by-age span {
+            font-size: 20px;
+        }
+    }
+
+    @media (min-width: 1024x) {
+        .shop-by-age a {
+            font-size: 34px;
+        }
+
+        .shop-by-age span {
+            font-size: 30px;
+        }
+    }
+ </style>
+ <div class="shop-by-age-container">
+    <div class="shop-by-age">
+        <a data-element-type="hp-shop-age" data-promotion-index="1" data-promotion-name="Aged 0 to 3 years" href="/c/all-categories?ageRange=0%20-%2018%20months&amp;ageRange=18%20-%2036%20months" title="Aged 0 to 3 years">
+            0-3
+            <span>Years</span>
+        </a>
+        <a class="red" data-element-type="hp-shop-age" data-promotion-index="2" data-promotion-name="Aged 3 to 5 years" href="/c/all-categories?ageRange=3%20-%205%20years" title="Aged 3 to 5 years">
+            3-5
+            <span>Years</span>
+        </a>
+        <a class="purple" data-element-type="hp-shop-age" data-promotion-index="3" data-promotion-name="Aged 5 to 8 years" href="/c/all-categories?ageRange=5%20-%208%20years" title="Aged 5 to 8 years">
+            5-8
+            <span>Years</span>
+        </a>
+        <a class="blue" data-element-type="hp-shop-age" data-promotion-index="4" data-promotion-name="Aged 8 to 11 years" href="/c/all-categories?ageRange=8%20-%2011%20years" title="Aged 8 to 11 years">
+            8-11
+            <span>Years</span>
+        </a>
+        <a class="light-green" data-element-type="hp-shop-age" data-promotion-index="5" data-promotion-name="Aged 11 years and over" href="/c/all-categories?ageRange=11%2B%20years" title="Aged 11 years and over">
+            11+
+            <span>Years</span>
+        </a>
+        <a class="black" data-element-type="hp-shop-age" data-promotion-index="6" data-promotion-name="Big Kids" href="/c/shop-by-age/bigkids" title="Big Kids">
+            <div class="text">Grown
+            <span>Ups</span></div>
+        </a>
+    </div>
+ </div>

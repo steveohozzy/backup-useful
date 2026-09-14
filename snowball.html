@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fox's Ultimate Fort Adventure!</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+body{
+    background:#9fdfff;
+    font-family: 'Arial Rounded MT Bold', sans-serif;
+    overflow:hidden;
+    user-select: none;
+    cursor: crosshair; /* Makes aiming feel like an arcade machine */
+}
+#game{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    background: linear-gradient(#7fd0ff 0%, #bfeaff 55%, #ffffff 100%);
+    transition: transform 0.1s ease-out; /* Used for the screen-shake effect */
+}
+/* Snow hills */
+#game::after{
+
+    content:"";
+
+    position:absolute;
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+    height:220px;
+
+    background:
+    radial-gradient(
+        ellipse at center top,
+        #fff8f8 0%,
+        #e7fdff 70%
+    );
+
+    border-radius:
+    50% 50% 0 0;
+
+    z-index:1;
+
+}
+/* HUD styling */
+#hud{
+    position:absolute;
+    top:20px;
+    left:20px;
+    z-index:20;
+    color:#2c3e50;
+    font-weight: bold;
+}
+.stats{
+    display:flex;
+    gap:25px;
+    margin-top:8px;
+    font-size: 18px;
+}
+#weaponDock {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    z-index: 25;
+}
+.weapon-slot {
+    background: rgba(255,255,255,0.9);
+    border: 3px solid #bdc3c7;
+    border-radius: 12px;
+    padding: 10px 15px;
+    font-size: 14px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.weapon-slot.active {
+    border-color: #ff8c42;
+    background: #fff3eb;
+    transform: scale(1.05);
+}
+/* Center Fort Structure */
+#fortContainer {
+    position: absolute;
+    bottom: 85px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* Bigger Fox Den Fortress */
+#fort{
+    position:relative;
+    width:320px;
+    height:220px;
+}
+
+
+/* Main snow cave */
+.denSnow{
+
+    position:absolute;
+
+    bottom:0;
+    left:0;
+
+    width:320px;
+    height:170px;
+
+    background:
+    linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #e8faff 100%
+    );
+
+    border-radius:
+    160px 160px 35px 35px;
+
+    box-shadow:
+    0 -15px 35px rgba(255,255,255,.9),
+    inset 0 -20px 30px rgba(160,220,255,.25);
+
+}
+
+
+/* entrance */
+.denHole{
+
+    position:absolute;
+
+    bottom:20px;
+
+    left:105px;
+
+    width:110px;
+
+    height:120px;
+
+    background:
+
+    radial-gradient(
+        circle,
+        #ffcc66 0%,
+        #7a4525 40%,
+        #21140d 75%
+    );
+
+    border-radius:
+    60px 60px 10px 10px;
+
+    box-shadow:
+    0 0 25px rgba(255,180,70,.5);
+
+}
+
+
+/* wooden supports */
+
+.beam{
+
+    position:absolute;
+
+    bottom:30px;
+
+    width:18px;
+
+    height:100px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #5c321b,
+        #a96b3d,
+        #5c321b
+    );
+
+    border-radius:8px;
+
+}
+
+
+.beam.left{
+
+    left:90px;
+
+}
+
+
+.beam.right{
+
+    right:90px;
+
+}
+
+
+/* snow cap decoration */
+
+.denSnow::before{
+
+    content:"❄️";
+
+    position:absolute;
+
+    top:-35px;
+
+    left:145px;
+
+    font-size:45px;
+
+}
+
+
+/* extra roof snow lump */
+
+.denSnow::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:-35px;
+
+    left:45px;
+
+    width:230px;
+
+    height:60px;
+
+    background:white;
+
+    border-radius:50%;
+
+    filter:drop-shadow(0 5px 5px rgba(0,0,0,.05));
+
+}
+
+/* Fox character placement inside the fort */
+#fox{
+
+    position:absolute;
+
+    bottom:55px;
+
+    left:110px;
+
+    width:120px;
+
+    z-index:5;
+
+    transform-origin:center bottom;
+
+}
+#startBtn{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    padding:18px 45px;
+    font-size:24px;
+    border:none;
+    border-radius:50px;
+    background:#ff8c42;
+    color:white;
+    cursor:pointer;
+    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+    z-index: 30;
+    font-family: inherit;
+}
+#startBtn:hover{
+    transform: translate(-50%,-50%) scale(1.05);
+}
+#shadow{
+    position:absolute;
+    bottom:80px;
+    left:calc(50% - 40px);
+    width:80px;
+    height:18px;
+    background:rgba(0,0,0,0.15);
+    border-radius:50%;
+    filter:blur(5px);
+    z-index:2;
+}
+.flake{
+    position:absolute;
+    background:white;
+    border-radius:50%;
+    pointer-events:none;
+    opacity:.85;
+    z-index: 2;
+}
+.snowball{
+
+    position:absolute;
+
+    width:28px;
+    height:28px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(
+        circle at 30% 30%,
+        white,
+        #dff6ff
+    );
+
+    border:2px solid #b8e6ff;
+
+    box-shadow:
+    0 0 10px white,
+    0 0 20px #7fd0ff;
+
+    z-index:4;
+
+    animation:
+    snowSpin .25s linear infinite;
+
+}
+
+
+@keyframes snowSpin{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+.snowTrail{
+
+    position:absolute;
+
+    width:12px;
+    height:12px;
+
+    border-radius:50%;
+
+    background:white;
+
+    opacity:.8;
+
+    pointer-events:none;
+
+    z-index:3;
+
+    animation:
+    trailFade .5s forwards;
+
+}
+
+
+@keyframes trailFade{
+
+    from{
+        transform:scale(1);
+        opacity:.8;
+    }
+
+    to{
+        transform:scale(2);
+        opacity:0;
+    }
+
+}
+.enemy{
+    position:absolute;
+    z-index:4;
+}
+.puff{
+    position:absolute;
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    background:white;
+    opacity:0.85;
+    pointer-events:none;
+    animation:puff 0.4s forwards;
+    z-index: 10;
+}
+@keyframes puff{
+    from{ transform:scale(0.2); opacity:1; }
+    to{ transform:scale(2); opacity:0; }
+}
+
+#message{
+
+    position:fixed;
+
+    top:45%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    font-size:40px;
+
+    font-weight:bold;
+
+    color:white;
+
+    text-shadow:2px 2px 5px #000;
+
+    opacity:0;
+
+    z-index:50;
+
+    pointer-events:none;
+
+}
+
+.snowPile{
+
+    position:absolute;
+
+    font-size:35px;
+
+    cursor:pointer;
+
+    z-index:5;
+
+    animation:bounce 1s infinite alternate;
+
+}
+
+
+@keyframes bounce{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(-10px);
+    }
+
+}
+</style>
+</head>
+<body>
+
+<div id="game">
+    <div id="hud">
+        <h1>🦊 Fox's 360° Blast Adventure</h1>
+        <p style="color:#555; font-size:14px; margin-top:4px;">Aim with Mouse • Click to Shoot • Keys 1, 2, 3 to Swap Skills</p>
+        <div class="stats">
+
+    <div>
+        ⭐ Score:
+        <span id="score">0</span>
+    </div>
+
+    <div>
+        🌊 Danger:
+        <span id="waveLevel">1</span>
+    </div>
+
+    <div>
+        ❄️ Snowballs:
+        <span id="ammo">50</span>
+    </div>
+
+    <div id="livesDisplay">
+        ❤️❤️❤️
+    </div>
+
+    <div id="message"></div>
+
+</div>
+    </div>
+
+    <div id="weaponDock">
+        <div class="weapon-slot active" id="slot1">
+    [1] Classic Blaster
+    <small>READY</small>
+</div>
+
+<div class="weapon-slot" id="slot2">
+    [2] Triple Spray
+    <small id="tripleTimer">READY</small>
+</div>
+
+<div class="weapon-slot" id="slot3">
+    [3] Ice Freeze
+    <small id="freezeTimer">READY</small>
+</div>
+    </div>
+
+    <button id="startBtn">Start Adventure!</button>
+    <div id="snow"></div>
+    <div id="snowballs"></div>
+    <div id="enemies"></div>
+    <div id="effects"></div>
+    <div id="shadow"></div>
+    
+    <div id="fortContainer">
+        <img id="fox" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5" alt="Fox">
+        <div id="fort">
+
+    <div class="denSnow">
+
+</div>
+
+
+<div class="denHole">
+
+</div>
+
+
+<div class="beam left"></div>
+
+<div class="beam right"></div>
+
+</div>
+    </div>
+</div>
+
+<script>
+const gameContainer = document.getElementById("game");
+const fox = document.getElementById("fox");
+const startBtn = document.getElementById("startBtn");
+const snowLayer = document.getElementById("snow");
+const snowballsLayer = document.getElementById("snowballs");
+const enemiesLayer = document.getElementById("enemies");
+const effects = document.getElementById("effects");
+const scoreText = document.getElementById("score");
+const waveText = document.getElementById("waveLevel");
+const livesDisplay = document.getElementById("livesDisplay");
+const ammoText = document.getElementById("ammo");
+
+const tripleTimer =
+document.getElementById("tripleTimer");
+
+const freezeTimer =
+document.getElementById("freezeTimer");
+
+let score = 0;
+let lives = 3;
+let wave = 1;
+
+let canThrow = true;
+
+
+// Player supplies
+let ammo = 50;
+let maxAmmo = 50;
+let running = false;
+let selectedWeapon = 1;
+
+// Weapon cooldowns
+
+let weaponCooldowns = {
+
+    2:{
+        ready:true,
+        time:5,
+        remaining:0
+    },
+
+    3:{
+        ready:true,
+        time:15,
+        remaining:0
+    }
+
+};
+
+let mouseX = 0;
+let mouseY = 0;
+
+function startCooldown(weapon){
+
+    weaponCooldowns[weapon].ready=false;
+
+    weaponCooldowns[weapon].remaining =
+    weaponCooldowns[weapon].time;
+
+
+    const interval=setInterval(()=>{
+
+        weaponCooldowns[weapon].remaining--;
+
+
+        updateWeaponDisplay();
+
+
+        if(weaponCooldowns[weapon].remaining<=0){
+
+            weaponCooldowns[weapon].ready=true;
+
+            clearInterval(interval);
+
+            updateWeaponDisplay();
+
+        }
+
+
+    },1000);
+
+}
+
+function updateWeaponDisplay(){
+
+    if(weaponCooldowns[2].ready){
+
+        tripleTimer.innerHTML="READY ✅";
+
+    }
+    else{
+
+        tripleTimer.innerHTML=
+        weaponCooldowns[2].remaining+"s ⏳";
+
+    }
+
+
+
+    if(weaponCooldowns[3].ready){
+
+        freezeTimer.innerHTML="READY ✅";
+
+    }
+    else{
+
+        freezeTimer.innerHTML=
+        weaponCooldowns[3].remaining+"s ⏳";
+
+    }
+
+}
+
+// Dynamic Enemy Profiles
+const ENEMY_TYPES = [
+    {
+        type: 'snowman',
+        src: 'https://www.thetoyshop.com/medias/5c04d53604b9c-snowman.png?context=bWFzdGVyfHJvb3R8NjM4NTF8aW1hZ2UvcG5nfGFEYzJMMmcyWkM4eE1qZ3hOelF4TlRNM01qZ3pNQzgxWXpBMFpEVXpOakEwWWpsakxYTnViM2R0WVc0dWNHNW58NTVmNDNiN2UxMmZlYzU0YTllYjdmNTUxNTE1YWM3YTQ0NWQ5YzkwMjhhYjRhMDg2NmVlNTY3OGI0NzAzMzNmNw',
+        width: 80,
+        height: 90,
+        behavior: 'ground',
+        hp: 1
+    },
+    {
+        type: 'bat',
+        src: 'https://www.thetoyshop.com/medias/Robbin.png?context=bWFzdGVyfHJvb3R8NDk1OHxpbWFnZS9wbmd8YUdFMEwyaGpPQzh4TWpneE56UXlNVGMyTWpVNU1DOVNiMkppYVc0dWNHNW58MDZjNjFhNzU0N2NmNTQ5OGJhZWNhYTIwYWU3YTAxMDVjYjIzZWY3ZTk4ZDZjNDk4YzE1NmVmYzA4ZmJjZGExYQ', // Using existing site patterns cleanly
+        width: 60,
+        height: 60,
+        behavior: 'air', // Flies diagonally down from the sky corners
+        hp: 1
+    }
+];
+
+startBtn.onclick = () => {
+    running = true;
+    score = 0;
+    lives = 3;
+    wave = 1;
+    ammo = maxAmmo;
+    ammoText.innerHTML = ammo;
+    scoreText.innerHTML = score;
+    waveText.innerHTML = wave;
+    livesDisplay.innerHTML = "❤️❤️❤️";
+    startBtn.style.display = "none";
+    
+    enemiesLayer.innerHTML = "";
+    snowballsLayer.innerHTML = "";
+};
+
+// Listen for mouse coordinates to calculate angling updates
+window.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    if (!running) return;
+
+    // Point the fox face towards the mouse pointer position
+    const fortRect = document.getElementById("fortContainer").getBoundingClientRect();
+    const fortCenterX = fortRect.left + fortRect.width / 2;
+    
+    if (mouseX < fortCenterX) {
+        fox.style.transform = "scaleX(-1)";
+    } else {
+        fox.style.transform = "scaleX(1)";
+    }
+});
+
+document.addEventListener("keydown", (e) => { 
+    if(e.key === "1" || e.key === "2" || e.key === "3") {
+        document.getElementById(`slot${selectedWeapon}`).classList.remove('active');
+        selectedWeapon = parseInt(e.key);
+        document.getElementById(`slot${selectedWeapon}`).classList.add('active');
+    }
+});
+
+function triggerScreenShake() {
+    gameContainer.style.transform = `translate(${(Math.random()-0.5)*15}px, ${(Math.random()-0.5)*15}px)`;
+    setTimeout(() => {
+        gameContainer.style.transform = "translate(0px, 0px)";
+    }, 80);
+}
+
+function launchSnowball(originX, originY, angleVectorX, angleVectorY) {
+    const ball = document.createElement("div");
+    ball.className = "snowball";
+    ball.style.left = originX + "px";
+    ball.style.top = originY + "px";
+    snowballsLayer.appendChild(ball);
+
+    let bx = originX;
+    let by = originY;
+
+    const fly = setInterval(() => {
+        bx += angleVectorX;
+        by += angleVectorY;
+        ball.style.top = by + "px";
+        ball.style.left = bx + "px";
+
+        if(Math.random()>0.5){
+
+const trail=document.createElement("div");
+
+trail.className="snowTrail";
+
+trail.style.left=bx+"px";
+trail.style.top=by+"px";
+
+snowballsLayer.appendChild(trail);
+
+
+setTimeout(()=>{
+
+trail.remove();
+
+},500);
+
+}
+
+        const b = ball.getBoundingClientRect();
+        const targets = document.querySelectorAll(".enemy");
+        
+        for (let enemy of targets) {
+            const e = enemy.getBoundingClientRect();
+
+            if (b.left < e.right && b.right > e.left && b.top < e.bottom && b.bottom > e.top) {
+                // Visual explosion poof
+                const puff = document.createElement("div");
+                puff.className = "puff";
+                puff.style.left = (e.left + (e.width / 2) - 30) + "px";
+                puff.style.top = (e.top + (e.height / 2) - 30) + "px";
+                effects.appendChild(puff);
+                setTimeout(() => puff.remove(), 400);
+
+                enemy.remove();
+                score += 10;
+                scoreText.innerHTML = score;
+
+                ball.remove();
+                clearInterval(fly);
+                return;
+            }
+        }
+
+        // Clean up boundary escapes
+        if (by > window.innerHeight || by < -20 || bx < -20 || bx > window.innerWidth + 20) {
+            clearInterval(fly);
+            ball.remove();
+        }
+    }, 16);
+}
+
+window.addEventListener("mousedown", () => {
+
+    if (!running || !canThrow) return;
+
+    if(
+        selectedWeapon === 2 &&
+        !weaponCooldowns[2].ready
+    ){
+
+        showMessage("Triple Shot recharging 🎯");
+        return;
+
+    }
+
+
+    if(
+        selectedWeapon === 3 &&
+        !weaponCooldowns[3].ready
+    ){
+
+        showMessage("Freeze recharging 🧊");
+        return;
+
+    }
+
+
+    // NOW REMOVE AMMO
+    if(ammo <= 0){
+
+        showMessage("No snowballs! ❄️");
+        return;
+
+    }
+
+
+    ammo--;
+
+    ammoText.innerHTML = ammo;
+
+    canThrow = false;
+
+    // Get the exact center coordinate point of the center fort setup
+    const fortRect = document.getElementById("fortContainer").getBoundingClientRect();
+    let bx = fortRect.left + (fortRect.width / 2) - 8;
+    let by = fortRect.top + 20;
+
+    // Compute the direct vector angle between the fort center and mouse position
+    let baseAngle = Math.atan2(mouseY - by, mouseX - bx);
+
+    // Juice animation response loop bounce effect
+    fox.style.transform += " scale(1.2)";
+    setTimeout(() => {
+        const fortCenterX = fortRect.left + fortRect.width / 2;
+        fox.style.transform = mouseX < fortCenterX ? "scaleX(-1)" : "scaleX(1)";
+    }, 100);
+
+    if (selectedWeapon === 1) {
+        launchSnowball(bx, by, Math.cos(baseAngle) * 16, Math.sin(baseAngle) * 16);
+    } else if (selectedWeapon === 2) {
+        launchSnowball(bx, by, Math.cos(baseAngle - 0.2) * 15, Math.sin(baseAngle - 0.2) * 15);
+        launchSnowball(bx, by, Math.cos(baseAngle) * 15, Math.sin(baseAngle) * 15);
+        launchSnowball(bx, by, Math.cos(baseAngle + 0.2) * 15, Math.sin(baseAngle + 0.2) * 15);
+        startCooldown(2);
+    } else if (selectedWeapon === 3) {
+        const targets = document.querySelectorAll(".enemy");
+        targets.forEach(enemy => {
+            enemy.dataset.slowed = "true";
+            enemy.style.opacity = "0.6";
+            enemy.style.boxShadow = "0px 0px 15px #7fd0ff";
+            setTimeout(() => {
+                enemy.dataset.slowed = "false";
+                enemy.style.opacity = "1";
+                enemy.style.boxShadow = "none";
+            }, 4000);
+        });
+        const fullFlash = document.createElement("div");
+        fullFlash.setAttribute("style", "position:absolute; width:100vw; height:100vh; background:rgba(127,208,255,0.35); z-index:15; pointer-events:none;");
+        effects.appendChild(fullFlash);
+        setTimeout(() => fullFlash.remove(), 300);
+
+        startCooldown(3);
+    }
+
+    setTimeout(() => { canThrow = true; }, selectedWeapon === 2 ? 350 : 180);
+});
+
+function spawnEnemy() {
+    let rng = Math.random();
+    let typeConfig = rng > 0.5 ? ENEMY_TYPES[0] : ENEMY_TYPES[1]; 
+
+    const enemy = document.createElement("img");
+    enemy.src = typeConfig.src;
+    enemy.className = "enemy";
+    enemy.style.width = typeConfig.width + "px";
+    enemy.style.height = typeConfig.height + "px";
+    enemy.dataset.slowed = "false";
+
+    // Randomize entry side: true = left side, false = right side
+    const fromLeft = Math.random() > 0.5;
+    let ex = fromLeft ? -100 : window.innerWidth + 100;
+    let ey = 0;
+
+    if (typeConfig.behavior === 'ground') {
+        ey = window.innerHeight - 165; // On the snowbank floor line
+    } else {
+        ey = Math.random() * (window.innerHeight * 0.4); // Air lanes down high up in sky zone
+    }
+
+    enemy.style.left = ex + "px";
+    enemy.style.top = ey + "px";
+    enemiesLayer.appendChild(enemy);
+
+    const fortRect = document.getElementById("fortContainer").getBoundingClientRect();
+    const targetX = fortRect.left + (fortRect.width / 2) - (typeConfig.width / 2);
+    const targetY = typeConfig.behavior === 'ground' ? ey : fortRect.top + 30;
+
+    // Point the enemy assets towards the center fort directly
+    enemy.style.transform = ex < targetX ? "scaleX(1)" : "scaleX(-1)";
+
+    // Compute straight vector line heading directly toward the castle
+    let angleToFort = Math.atan2(targetY - ey, targetX - ex);
+
+    const walk = setInterval(() => {
+        if (!running) { clearInterval(walk); return; }
+
+        let currentSpeed = (1.3 + (wave * 0.2));
+        if (typeConfig.behavior === 'air') currentSpeed *= 1.4; // Flying moves quicker!
+        if (enemy.dataset.slowed === "true") currentSpeed *= 0.4;
+
+        ex += Math.cos(angleToFort) * currentSpeed;
+        ey += Math.sin(angleToFort) * currentSpeed;
+
+        enemy.style.left = ex + "px";
+        enemy.style.top = ey + "px";
+
+        // Calculate distance to center castle structures midpoint
+        let distToFort = Math.hypot(targetX - ex, targetY - ey);
+
+        if (distToFort < 45) {
+            clearInterval(walk);
+            enemy.remove();
+            triggerScreenShake();
+            
+            lives--;
+            livesDisplay.innerHTML = "❤️".repeat(lives) + "🖤".repeat(3 - lives);
+            
+            if (lives <= 0) {
+                running = false;
+                startBtn.style.display = "block";
+                startBtn.innerHTML = "Fort Fallen! Play Again 🦊🏰";
+            }
+        }
+
+        if (!enemy.isConnected) { clearInterval(walk); }
+    }, 16);
+}
+
+function createSnow() {
+    const flake = document.createElement("div");
+    flake.className = "flake";
+    const size = 3 + Math.random() * 8;
+    flake.style.width = size + "px";
+    flake.style.height = size + "px";
+    flake.style.left = Math.random() * window.innerWidth + "px";
+    flake.style.top = "-20px";
+    snowLayer.appendChild(flake);
+
+    let y = -20;
+    let drift = (Math.random() - 0.5) * 1.5;
+
+    const fall = setInterval(() => {
+        y += 2 + size / 3;
+        flake.style.top = y + "px";
+        flake.style.left = parseFloat(flake.style.left) + drift + "px";
+
+        if (y > window.innerHeight) {
+            clearInterval(fall);
+            flake.remove();
+        }
+    }, 16);
+}
+
+function showMessage(text){
+
+    const message =
+    document.getElementById("message");
+
+    message.innerHTML=text;
+
+    message.style.opacity=1;
+
+    setTimeout(()=>{
+
+        message.style.opacity=0;
+
+    },1000);
+
+}
+
+function spawnSnowPile(){
+
+    const pile=document.createElement("div");
+
+    pile.className="snowPile";
+
+    pile.innerHTML="❄️";
+
+    pile.style.left=
+    Math.random()*(window.innerWidth-50)+"px";
+
+
+    pile.style.top=
+    Math.random()*300+100+"px";
+
+
+    snowLayer.appendChild(pile);
+
+
+    pile.onclick=()=>{
+
+        ammo=Math.min(
+            maxAmmo,
+            ammo+10
+        );
+
+        ammoText.innerHTML=ammo;
+
+        showMessage("+10 Snowballs ❄️");
+
+        pile.remove();
+
+    };
+
+
+    setTimeout(()=>{
+
+        pile.remove();
+
+    },8000);
+
+}
+
+
+setInterval(()=>{
+
+    if(running){
+
+        spawnSnowPile();
+
+    }
+
+},10000);
+
+// Wave Level Ramping Interval System Loop setup
+setInterval(() => {
+    if (running) {
+        wave++;
+        waveText.innerHTML = wave;
+    }
+}, 12000); // Ramps up difficulty danger levels faster (every 12 seconds)
+
+setInterval(() => {
+    if (running) {
+        spawnEnemy();
+    }
+}, 1600); 
+
+
+setInterval(createSnow, 100);
+</script>
+</body>
+</html>

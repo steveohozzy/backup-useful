@@ -1,0 +1,136 @@
+<!-- Category tiles -->
+ <style type="text/css">
+    .category-roundels {
+        padding: 10px 0 20px;
+        background-color: #dbe3ff;
+    }
+
+    .category-roundels .carousel {
+        padding: 0 20px;
+        max-width: 980px;
+        margin: 0 auto;
+    }
+
+    .category-roundels .carousel .item {
+        padding: 0;
+    }
+
+    .category-roundels .carousel-cell {
+        width: 31%;
+        padding-top: 10px;
+    }
+
+    .category-roundels .carousel-cell,
+    .category-roundels a,
+    .category-roundels img {
+        aspect-ratio: 1/1;
+    }
+
+    .category-roundels img {
+        width: 70%;
+        margin: 0 10px !important;
+    }
+
+    .category-roundels a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border-radius: 8px;
+        padding: 10px 0;
+        background-color: #fff;
+        color: #00548B;
+        text-decoration: none;
+        font-size: 10px;
+        font-family: "Nunito Bold","Tahoma Bold",sans-serif;
+        font-weight: bold;
+        color: #00548B;
+        margin: 0 10px 0 0;
+        box-shadow: 0 0 5px rgba(3,33,33,.05);
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
+    }
+
+    .category-roundels a:hover {
+        box-shadow: 0 0 18px rgba(33,33,33,.15);
+        transform: translateY(-5px);
+    }
+
+    .category-roundels .flickity-button,
+    .category-roundels .flickity-page-dots {
+        display: none;
+    }
+
+    @media (min-width: 768px) {
+        .category-roundels .carousel-cell {
+            width: 22%;
+        }
+
+        .category-roundels a {
+            font-size: 14px
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .category-roundels a {
+            font-size: 16px
+        }
+    }
+    
+ </style>
+ <div class="category-roundels">
+    <div class="carousel js-flickity flickity-enabled is-draggable" data-flickity="{ &quot;autoPlay&quot;: true, &quot;wrapAround&quot;: true, &quot;cellAlign&quot;: &quot;left&quot; }">
+			
+        <div class="carousel-cell">
+            <a href="https://www.thetoyshop.com/c/dolls" title="Dolls">
+                <img class="item" src="https://www.thetoyshop.com/medias/300Wx300H-564426-Primary?context=bWFzdGVyfGltYWdlc3wzNTAxOXxpbWFnZS9qcGVnfGFHSmtMMmhoTWk4eE1qQTROVGMwTlRZeE5EZzNPQzh6TURCWGVETXdNRWhmTlRZME5ESTJYMUJ5YVcxaGNua3xlNTliZmI5ZGE0MTMwNjI1YjNiNDg0NzU4OWM1NjBlY2U2Y2JhMWFmNjNkNDY5NjM3N2U5YmNlMTViZDhmNzlh" alt="Dollss" title="Dolls">
+                <span>Dolls</span>
+            </a>
+        </div>
+
+        <div class="carousel-cell">
+            <a href="https://www.thetoyshop.com/c/action-toys" title="Action Toys">
+                <img class="item" src="https://www.thetoyshop.com/medias/300Wx300H-573193-Primary?context=bWFzdGVyfGltYWdlc3w0MTkxN3xpbWFnZS9qcGVnfGFERTFMMmd5TlM4eE1qVXlNVEUwTlRrNU1URTVPQzh6TURCWGVETXdNRWhmTlRjek1Ua3pYMUJ5YVcxaGNua3xiMjYwOTU4ZDk0OWQ0YmNmNjY2ODIzMDNmMDc2Yjk3ZWIzMzRjNTljOWY1MzJkMTYyNWQ2OTUyM2YwYTExYWI5" alt="Action Toys" title="Action Toys">
+                <span>Action Toys</span>
+            </a>
+        </div>
+
+        <div class="carousel-cell">
+            <a href="https://www.thetoyshop.com/c/baby-pre-school" title="Pre-School Toys">
+                <img class="item" src="https://www.thetoyshop.com/medias/300Wx300H-570341-Primary?context=bWFzdGVyfGltYWdlc3wxMDQzMTZ8aW1hZ2UvanBlZ3xhR1ZpTDJoaVppOHhNak01TVRJM05ESXhOelV3TWk4ek1EQlhlRE13TUVoZk5UY3dNelF4WDFCeWFXMWhjbmt8NWI3NDU5MjJmNDIwNzc0ODAxYjA5MmM3YTE0Y2MyYjdkMzdlMTFjNjFjMTIyYjZhODMwMWI2YjA5ZWU3OTEyYw" alt="Pre-School Toys" title="Pre-School Toys">
+                <span>Pre-School Toys</span>
+            </a>
+        </div>
+
+        <div class="carousel-cell">
+            <a href="https://www.thetoyshop.com/c/arts-creative-play" title="Arts &amp; Crafts">
+                <img class="item" src="https://www.thetoyshop.com/medias/300Wx300H-540775-540775-2.jpg?context=bWFzdGVyfGltYWdlc3w2MzgwOXxpbWFnZS9qcGVnfGFHRm1MMmhqT1M4eE1qUXpNemN6T1RRME9ETTFNQzh6TURCWGVETXdNRWhmTlRRd056YzFYelUwTURjM05TMHlMbXB3Wnd8NTgwNjdlMzE3MWEwY2UwMDc4M2IyNDUwMDUzNjc0NDA0Y2U5ODQ4MjEwNTBjMmNmYmJiNjcyYjgwNGJhY2IzMg" alt="Arts &amp; Crafts" title="Arts &amp; Crafts">
+                <span>Arts &amp; Crafts</span>
+            </a>
+        </div>
+        
+        <div class="carousel-cell">
+            <a href="https://www.thetoyshop.com/c/games" title="Games &amp; Puzzles">
+                <img class="item" src="https://www.thetoyshop.com/medias/300Wx300H-530024-530024-2.jpg?context=bWFzdGVyfGltYWdlc3wxMTM4OTB8aW1hZ2UvanBlZ3xhRFE0TDJoaFlTOHhNak0xTVRFNU16TTRNamswTWk4ek1EQlhlRE13TUVoZk5UTXdNREkwWHpVek1EQXlOQzB5TG1wd1p3fDI2YzZkMjcxMzY2ZWQzOGM0ZjIyZWVkNDk4YjE2MjA5MmE3MTIwM2NjZjU3NzI2NmQ0NzcyMGM2MGJmNzgzMjY" alt="Games &amp; Puzzles" title="Games &amp; Puzzles">
+                <span>Games &amp; Puzzles</span>
+            </a>
+        </div>
+
+        <div class="carousel-cell">
+            <a href="https://www.thetoyshop.com/c/construction-toys" title="Construction Toys">
+                <img class="item" src="https://www.thetoyshop.com/medias/Cat-roundels-270x270-Construction-Toys-1.png?context=bWFzdGVyfHJvb3R8MTA3NTJ8aW1hZ2UvcG5nfGFEVmhMMmd6TkM4eE1qVTRNVEV3TlRNek5qTTFNQzlEWVhRZ2NtOTFibVJsYkhOZk1qY3dlREkzTUY5RGIyNXpkSEoxWTNScGIyNGdWRzk1Y3lBeExuQnVad3w0OTRjMGQ3NjM4MzcwY2QzNzZkMGNmYjNjNTNhZWQ1YmNkMjJhNzZmOGVhY2VjNjU2ZjA1ODFhZGMxYTRkYTVi" alt="Construction Toys" title="Construction Toys">
+                <span>Construction Toys</span>
+            </a>
+        </div>
+
+        <div class="carousel-cell">
+            <a href="https://www.thetoyshop.com/c/electronic-toys" title="Electronic Toys">
+                <img class="item" src="https://www.thetoyshop.com/medias/300Wx300H-577630-577630-6.jpg?context=bWFzdGVyfGltYWdlc3w0MjAyM3xpbWFnZS9qcGVnfGFETm1MMmc0WlM4eE1qVTBNek01TURZM09UQTNNQzh6TURCWGVETXdNRWhmTlRjM05qTXdYelUzTnpZek1DMDJMbXB3Wnd8NWEzODVhMzA3YTIxZGY0NDI4ZDM3MDg4MzNhNzhmYmRiNDcyYzIyZTJkMmU4YmNhZjIwM2EyYTI5MWQwMjM2NQ" alt="Electronic Toys" title="Electronic Toys">
+                <span>Electronic Toys</span>
+            </a>
+        </div>
+
+    </div>
+    
+ </div>

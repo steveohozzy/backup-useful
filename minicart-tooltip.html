@@ -1,0 +1,369 @@
+<style>
+
+  .nav-cart-container {
+    position: relative;
+    z-index: 99999999999;
+  }
+  #cboxOverlay {
+      z-index: 999;
+  }
+  
+  .mini-cart-container-wrapper {
+      padding-top: 0px;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      z-index: 999999999999;
+  }
+  .mini-cart-container-wrapper::before {
+        content:'';
+        display: none;
+        width:0;
+        height:0;
+        border:10px solid transparent;
+        vertical-align: middle;
+        border-bottom-color: #fff;
+        margin-left: 84%;
+  }
+  @media (min-width: 1024px) {
+      .mini-cart-container-wrapper::before {
+          margin-left: 140px;
+      }
+  }
+  .mini-cart-container.js-mini-cart-container {
+    display: none;
+    background-color: #fff;
+    padding: 30px 10px;
+    border-radius: 20px;
+    width: 340px;
+    max-height: calc(100vh - 150px);
+    overflow: auto;
+     z-index: 99999999;
+  }
+  
+  .mini-cart-container.js-mini-cart-container.open,
+  .nav-cart-container:hover .mini-cart-container.js-mini-cart-container {
+    display: block;
+  }
+  .nav-cart-container:hover .mini-cart-container-wrapper::before,
+  .nav-cart-container .mini-cart-container-wrapper.open::before{
+      display: inline-block;
+  }
+  .mini-cart-body .legend {
+      color: #000;
+  }
+  
+  .mini-cart-container .item__list__cart .item__list--item .item__image {
+          display: block;
+          width: 50%;
+          padding-left: 0;
+          psdding-right: 10px;
+      }
+  
+  .mini-cart-container .item__list--header,
+  .mini-cart-container .remove-item-action {
+      display: none !important;
+  }
+  
+  .mini-cart-container .batch-header {
+   color: #407ec9;
+   padding: 0;
+   text-align: left;
+  }
+  .mini-cart-container .batch-header span:not(.desktopCheckoutSubHeading) {
+      color: #000;
+      font-size: 12px;
+      display: inline-flex;
+  }
+  .mini-cart-container .desktopCheckoutSubHeading {
+      display: block;
+      margin-bottom: 5px;
+  }
+  .mini-cart-container .item__list__cart li.entryCartItem {
+      border: none;
+      border-bottom: 2px solid #ccc;
+  }
+  
+  .mini-cart-container .item__list__cart li.entryCartItem table td {
+      display: flex;
+  }
+  
+  .mini-cart-container .item__list .item__list--item .item__sku__input, .mini-cart-container .item__list .item__list--item .item__toggle, .mini-cart-container .item__list .item__list--item .item__image, .mini-cart-container .item__list .item__list--item .item__info, .mini-cart-container .item__list .item__list--item .item__price, .mini-cart-container .item__list .item__list--item .item__quantity, .mini-cart-container .item__list .item__list--item .item__delivery, .mini-cart-container .item__list .item__list--item .item__total, .mini-cart-container .item__list .item__list--item .item__remove, .mini-cart-container .item__list .item__list--item .item__menu, .mini-cart-container .item__list .item__list--item .item__quantity__total{
+      display: block;
+  }
+  .mini-cart-container .item__list .item__list--item .item__quantity {
+      display: block !important;
+      margin: 5px 0;
+  }
+  .mini-cart-container .item__list .item__list--item .item__toggle {
+      display: none;
+  }
+  .mini-cart-container .item__list--item {
+      display: flex;
+  }
+  .mini-cart-container .item__total {
+      display: none !important;
+  }
+  .mini-cart-container .item__list--item {
+      display: flex;
+  }
+  .mini-cart-container .item__list__cart .item__list--item .item__info {
+      width: 50%;
+      padding-right: 0;
+  }
+  .mini-cart-container .item__list .item__list--item:last-child {
+      padding-right: 0;
+  }
+  .mini-cart-container .item__list--comment {
+      display: none;
+  }
+  .mini-cart-container .item__name {
+      font-size: 14px;
+      line-height: 16px;
+      text-align: left;
+  }
+  .mini-cart-container .js-update-entry-quantity-input {
+      border: none;
+      padding: 0;
+      pointer-events: none;
+      font-weight: normal;
+      color: #444;
+  }
+  .mini-cart-container .item__list .item__quantity {
+      color: #000;
+      font-size: 14px;
+      text-align: left;
+  }
+  .mini-cart-container .item__list__cart .item__quantity .form-control, .item__list__cart .qty .form-control {
+      color: #000;
+      font-size: 14px;
+      padding: 0;
+      height: auto;
+      width: auto;
+      min-width: unset;
+      font-family: "Nunito Regular",Tahoma,sans-serif;
+      color: #666;
+  }
+  .mini-cart-container .js-qty-form6 {
+      text-align: left;
+  }
+  .mini-cart-container .item__code {
+      display: none;
+  }
+  .mini-cart-container .item__price {
+      display: flex !important;
+      font-size: 14px;
+      gap: 7px;
+  }
+  .mini-cart-container .item__list__cart {
+      border: none;
+  }
+  .mini-cart-container .item__list__cart .item__list--item .item__price span.priceAmount,
+  .mini-cart-container .item__list__cart .item__list--item .wasPrice span {
+      font-family: "Nunito Bold","Tahoma Bold",sans-serif !important;
+      font-size: 14px;
+  }
+  .mini-cart-container .mini-cart-header {
+      font-family: 'Billy Bold',Arial,Helvetica,sans-serif!important;
+      color: #407ec9;
+      display: flex;
+      justify-content: space-between;
+      font-size: 22px;
+  }
+  .mini-cart-container .mini-cart-header .item-count {
+      font-size: 14px;
+      font-family: "Nunito Bold","Tahoma Bold",sans-serif !important;
+  }
+  .mini-cart-container .visible-xs.visible-sm {
+      display: none !important;
+  }
+  .mini-cart-container .item__list__cart .item__list--item .item__info a, .mini-cart-container .item__list__cart .item__list--item .promo, .item__list__cart .item__list--item .item__price {
+      margin-bottom: 0;
+      text-align: left;
+  }
+  .mini-cart-container .label-spacing {
+      margin-left: 5px;
+  }
+  .mini-cart-container .total {
+      display: flex;
+      justify-content: space-between;
+      font-family: "Nunito Bold","Tahoma Bold",sans-serif !important;
+      font-size: 20px;
+      color: #407ec9;
+      margin: 20px 0;
+  }
+  .mini-cart-container .deliveryThresholdPrompt {
+      font-size: 14px;
+      padding: 10px;
+      font-family: "Nunito Bold","Tahoma Bold",sans-serif !important;
+      border-radius: 10px;
+  }
+  .mini-cart-container .deliveryThresholdPrompt, .mini-cart-container .expressDeliveryQualified, .mini-cart-container .sandDeliveryQualified {
+      color: #407ec9;
+      font-size: 14px;
+      font-family: "Nunito Bold","Tahoma Bold",sans-serif !important;
+  }
+  .buttons {
+      display: flex;
+      justify-content: space-bewteen;
+  }
+  .continue-shopping {
+          font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    margin-left: 10px;
+    width: 180px;
+    font-size: 14px;
+    line-height: 54px;
+    height: 54px;
+    font-weight: normal;
+    color: #fff;
+    background-color: #0D5D9C;
+    border-color: #0D5D9C;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .mini-cart-container .btn-primary {
+      margin: 0 0 0 5px !important;
+    width: 150px;
+    display: block;
+    flex: unset;
+    height: 54px;
+    line-height: 54px;
+}
+
+</style>
+
+<script>
+
+function loadURL(u) {
+    $(".js-mini-cart-container").load("/cart .item__list.item__list__cart", function () {
+
+        const itemCount = document.querySelector(".nav-items-total").textContent;
+        console.log(itemCount)
+        const prices = document.querySelectorAll(".item__price");
+
+        $(".mini-cart-container .item__list--item").each(function (index, item) {
+            const nameEl = item.querySelector(".mini-cart-container .item__name");
+            const qtyEl = item.querySelector(".mini-cart-container .item__quantity");
+            const priceEl = item.querySelector(".mini-cart-container .item__price");
+
+            if (nameEl && qtyEl && priceEl) {
+                nameEl.append(qtyEl);
+                nameEl.append(priceEl);
+            }
+
+            $("<span>Qty:</span>").insertBefore(
+                item.querySelector(".mini-cart-container .js-update-entry-quantity-input")
+            );
+        });
+
+        // Mini cart header
+        $(
+            '<div class="mini-cart-header"><span>My Basket</span><span class="item-count">'+ itemCount +' Items</span></div>'
+        ).insertBefore(document.querySelector(".mini-cart-container .item__list.item__list__cart"));
+
+        // Subtotal
+        $(
+            `<div class="total">
+                <span>Sub-Total</span>
+                <span>${document.querySelector(".js-mini-cart-price").textContent}</span>
+            </div>`
+        ).appendTo($(".js-mini-cart-container"));
+
+        // Spend more container
+        $("<div class='spend-more'></div>").appendTo($(".js-mini-cart-container"));
+
+        // Calculate thresholds
+        const subTotalNumber = Number(
+            document
+                .querySelector(".js-mini-cart-price")
+                .textContent.replace(/[^0-9\.-]+/g, "")
+        );
+
+        const toFreeStandard = (39.99 - subTotalNumber).toFixed(2);
+        const toNextDelivery = (75 - subTotalNumber).toFixed(2);
+
+        const thresholdPrompt = `
+            <a href="/c/toys-under-10-pounds" class="deliveryThresholdPrompt inserted">
+                <div>You’ve qualified for FREE standard delivery!</div>
+                <div class="spend-to-next">Spend £${toNextDelivery} more to qualify for FREE express delivery!</div>
+                <span class="expressDisclaimer">Exclusions apply.</span>
+                <div class="callToAction">Shop Now</div>
+            </a>`;
+
+        const freeDelPrompt = `
+            <div class="expressDeliveryQualified inserted">
+                You’ve qualified for FREE Next Day delivery!
+                <span class="expressDisclaimer">Exclusions apply.</span>
+            </div>`;
+
+        const startThreshPrompt = `
+            <a href="/c/toys-under-10-pounds" title="Shop Now" class="deliveryThresholdPrompt inserted">
+                Spend £${toFreeStandard} more to qualify for FREE standard delivery!
+                <div class="callToAction">Shop Now</div>
+            </a>`;
+
+        if (subTotalNumber > 39.99 && subTotalNumber < 75) {
+            $(".spend-more").after(thresholdPrompt);
+        } else if (subTotalNumber > 75) {
+            $(".spend-more").after(freeDelPrompt);
+        } else {
+            $(".spend-more").after(startThreshPrompt);
+        }
+
+        // Buttons
+        $(
+            `<div class="buttons">
+                <a href="#" class="continue-shopping btn-secondary">Continue Shopping</a>
+                <a href="/cart" id="addToCartButton" class="btn btn-primary">Checkout</a>
+            </div>`
+        ).insertBefore($(".mini-cart-container .spend-more"));
+
+        // Continue shopping button behavior
+        $(".continue-shopping").click(function () {
+            $(".mini-cart-container").hide();
+            setTimeout(function () {
+                $(".mini-cart-container").removeAttr("style");
+            }, 100);
+            return false;
+        });
+    });
+}
+
+// Delayed initialization
+setTimeout(function () {
+    loadURL();
+
+    const mutFreeExp = new MutationObserver(function () {
+        setTimeout(function () {
+            loadURL();
+            document.querySelector("#colorbox").style.display = "none";
+            document.querySelector(".js-mini-cart-container").classList.toggle("open");
+            document.querySelector(".mini-cart-container-wrapper").classList.toggle("open");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
+            setTimeout(function () {
+                document.querySelector("#cboxOverlay").click();
+            }, 5000);
+        }, 500);
+    });
+
+    mutFreeExp.observe(document.querySelector(".js-mini-cart-count"), {
+        childList: true,
+    });
+
+    $(".mini-cart-container").wrap("<div class='mini-cart-container-wrapper'></div>");
+
+    // Close cart when clicking outside
+    window.addEventListener("click", function (e) {
+        const cart = document.querySelector(".js-mini-cart-container");
+        if (cart.classList.contains("open") && cart.contains(e.target)) {
+            return;
+        } else {
+            cart.classList.remove("open");
+            document.querySelector(".mini-cart-container-wrapper").classList.remove("open");
+        }
+    });
+}, 1000);
+
+
+</script>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Winter Adventure Wordsearch</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;900&display=swap');
+
+    :root {
+      --primary-blue: #1d3a68;
+      --highlight: #ffd166;
+    }
+
+    * { box-sizing: border-box; user-select: none; -webkit-user-select: none; touch-action: none; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: fixed;
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(180deg, #0b1d3a 0%, #17325c 40%, #466893 75%, #e2eff7 75%, #ffffff 100%);
+    }
+
+    .app-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 6px 10px;
+      overflow: hidden;
+    }
+
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      pointer-events: none;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10px) translateX(0); }
+      50% { transform: translateY(50vh) translateX(15px); }
+      100% { transform: translateY(105vh) translateX(-15px); }
+    }
+
+    .game-header {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+      color: #ffffff;
+      text-shadow: 0 2px 0 #122643, 0 4px 10px rgba(0,0,0,0.4);
+      margin: 0 0 4px 0;
+      text-align: center;
+      letter-spacing: 1px;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+    .game-header span { color: #ff6b6b; }
+
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 720px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(6px);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 12px;
+      padding: 4px 10px;
+      color: white;
+      margin-bottom: 4px;
+      gap: 6px;
+      z-index: 2;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+    }
+
+    .level-info { display: flex; align-items: center; gap: 6px; }
+    .stars { font-size: 0.95rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+    
+    .progress-outer {
+      width: 90px; height: 12px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid white;
+    }
+    .progress-inner {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, #ffb703, #fb8500);
+      transition: width 0.3s ease;
+    }
+
+    .level-nodes {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .node {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #2a5298;
+      border: 2px solid #8ecae6;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 0.65rem;
+      color: white;
+      position: relative;
+    }
+    .node.active { background: #ffb703; border-color: #fff; color: #102a43; transform: scale(1.1); }
+    .node.completed { background: #06d6a0; border-color: #fff; }
+    .node-label {
+      position: absolute; bottom: -12px; font-size: 0.45rem; white-space: nowrap; color: #1d3a68; font-weight: bold;
+      text-shadow: 0 1px 2px white;
+    }
+
+    .stage {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      justify-content: center;
+      z-index: 2;
+      flex-shrink: 1;
+      overflow-y: auto;
+      max-height: calc(100vh - 85px);
+      padding-bottom: 10px;
+    }
+
+    .ice-board {
+      position: relative;
+      width: 100%;
+      max-width: 580px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 10px 12px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.9);
+      border: 4px solid #b8e0f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .character-banner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 4px;
+    }
+    .mascot-avatar {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 2px;
+      background: #90cdef;
+      padding: 4px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto 8px auto;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .cell {
+      background: #ffffff;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      color: var(--primary-blue);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .cell.selected { background: var(--highlight); color: #000; }
+    .cell.found { background: #4ea8de; color: white; }
+
+    .word-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 3px 5px;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .word-item {
+      font-weight: 800;
+      font-size: clamp(0.6rem, 1.4vw, 0.75rem);
+      color: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      background: rgba(230, 243, 250, 0.8);
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    .word-item.found {
+      text-decoration: line-through;
+      color: #8899a6;
+      opacity: 0.6;
+    }
+    .word-item.found::before { content: '✓'; color: #06d6a0; font-weight: bold; }
+
+    .modal {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+      z-index: 20; align-items: center; justify-content: center;
+    }
+    .modal.active { display: flex; }
+    .modal-card {
+      background: #fbf5e6; padding: 25px; border-radius: 22px;
+      text-align: center; border: 5px solid #ffb703;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      max-width: 300px; width: 90%;
+    }
+    .btn {
+      margin-top: 12px; padding: 10px 24px;
+      font-family: 'Fredoka One', cursive; font-size: 1.1rem;
+      color: white; background: #ff6b6b; border: none; border-radius: 20px;
+      cursor: pointer; box-shadow: 0 4px 0 #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="snow-container"></div>
+
+    <div class="game-header">WINTER <span>ADVENTURE</span> WORDSEARCH</div>
+
+    <div class="top-bar">
+      <div class="level-info">
+        <span class="stars">⭐⭐⭐</span>
+        <div class="progress-outer"><div id="progress" class="progress-inner"></div></div>
+      </div>
+
+      <div class="level-nodes">
+        <div class="node active" id="node-1">1<span class="node-label">Forest</span></div>
+        <div class="node" id="node-2">2<span class="node-label">Caves</span></div>
+        <div class="node" id="node-3">3<span class="node-label">Reindeer</span></div>
+        <div class="node" id="node-4">4<span class="node-label">Evdry</span></div>
+        <div class="node" id="node-5">5<span class="node-label">Knitting</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="ice-board">
+        <div class="character-banner">
+          <img src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5" class="mascot-avatar" alt="Fox">
+          <img src="https://www.thetoyshop.com/medias/Seal-of-approval-1.png?context=bWFzdGVyfHJvb3R8MzA1ODV8aW1hZ2UvcG5nfGFEY3dMMmcyWWk4eE1qZ3hOelF6TVRZeU5UYzFPQzlUWldGc0lHOW1JR0Z3Y0hKdmRtRnNJREV1Y0c1bnwyYjJkOGUzODJkZmMzZDViMjBmNzkwMTIzNDEyMzRlMmJhZGVmZDRmMTQwM2EwZTZjMjVjMWE5MTZkZGRhNTNm" class="mascot-avatar" alt="Seal">
+          <img src="https://www.thetoyshop.com/medias/Robbin.png?context=bWFzdGVyfHJvb3R8NDk1OHxpbWFnZS9wbmd8YUdFMEwyaGpPQzh4TWpneE56UXlNVGMyTWpVNU1DOVNiMkppYVc0dWNHNW58MDZjNjFhNzU0N2NmNTQ5OGJhZWNhYTIwYWU3YTAxMDVjYjIzZWY3ZTk4ZDZjNDk4YzE1NmVmYzA4ZmJjZGExYQ" class="mascot-avatar" alt="Robin">
+          <img src="https://www.thetoyshop.com/medias/Sheep-knitting.png?context=bWFzdGVyfHJvb3R8MzE2ODh8aW1hZ2UvcG5nfGFEUXlMMmd5WVM4eE1qZ3hPVFl5T0RreE5qYzJOaTlUYUdWbGNDQnJibWwwZEdsdVp5NXdibWN8NGJkOGUzOThlNmRlYTlmZGE2ZDFjOWYxOWYyYjQwYjRmNjY1ZmZjMGU1NWUzYTk5NWE2YWNmODFkYTNiZjczYQ" class="mascot-avatar" alt="Sheep">
+        </div>
+
+        <div id="grid" class="grid-container"></div>
+        <div id="wordList" class="word-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="victoryModal" class="modal">
+    <div class="modal-card">
+      <h2 style="margin:0 0 8px 0; font-family:'Fredoka One'; color:#ff6b6b;">🎉 LEVEL CLEAR!</h2>
+      <p id="modalDesc" style="margin:0 0 10px 0; font-size:0.95rem;">You found all the winter words!</p>
+      <button class="btn" onclick="nextLevel()">Next Level ➔</button>
+    </div>
+  </div>
+
+  <script>
+    const snowContainer = document.getElementById('snow-container');
+    for (let i = 0; i < 25; i++) {
+      const flake = document.createElement('div');
+      flake.className = 'snowflake';
+      flake.style.left = `${Math.random() * 100}vw`;
+      flake.style.top = `${Math.random() * -100}px`;
+      const size = `${Math.random() * 4 + 2}px`;
+      flake.style.width = size;
+      flake.style.height = size;
+      flake.style.animationDuration = `${Math.random() * 5 + 4}s`;
+      flake.style.animationDelay = `${Math.random() * 5}s`;
+      snowContainer.appendChild(flake);
+    }
+
+    const LEVELS = [
+      { name: "Snowy Forest", words: ["FOX", "SEAL", "ROBIN", "SHEEP", "WOOL", "SNOW", "ICE", "COZY", "SCARF", "HAT"] },
+      { name: "Ice Caves", words: ["EXPLORE", "FAMILY", "FRIENDS", "GIFT", "WISH", "ICICLE", "FROSTY", "POLAR", "IGLOO", "YARN"] },
+      { name: "Reindeer Games", words: ["REINDEER", "SNOWBALL", "MITTEN", "STITCH", "WARM", "TREE", "HOLIDAY", "PURL", "HARP", "WORM"] },
+      { name: "Evdry Nodes", words: ["CELEBRATE", "TOGETHER", "HOTCOCOA", "GINGER", "WINTER", "SLEIGH", "CHILL", "FLAKE", "WHITE", "SKATE"] },
+      { name: "Knitting Nook", words: ["KNITTING", "SWEATER", "THREADS", "NEEDLE", "PATTERN", "CUDDLE", "BLANKET", "CRAFT", "MAGIC", "SNOWY"] }
+    ];
+
+    const GRID_SIZE = 12;
+    let currentLevel = 0;
+    let grid = [];
+    let startCell = null;
+    let currentCell = null;
+    let selectedCells = [];
+    let foundWords = new Set();
+
+    function loadLevel(idx) {
+      currentLevel = idx;
+      foundWords.clear();
+      selectedCells = [];
+      startCell = null;
+      currentCell = null;
+      const lvl = LEVELS[currentLevel];
+
+      for (let i = 1; i <= 5; i++) {
+        const node = document.getElementById(`node-${i}`);
+        node.className = 'node';
+        if (i - 1 < currentLevel) node.classList.add('completed');
+        if (i - 1 === currentLevel) node.classList.add('active');
+      }
+
+      document.getElementById('progress').style.width = '0%';
+      grid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(''));
+
+      const listEl = document.getElementById('wordList');
+      listEl.innerHTML = lvl.words.map(w => `<div class="word-item" id="word-${w}">${w}</div>`).join('');
+
+      lvl.words.forEach(w => placeWord(w));
+
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      for (let r = 0; r < GRID_SIZE; r++) {
+        for (let c = 0; c < GRID_SIZE; c++) {
+          if (!grid[r][c]) {
+            grid[r][c] = letters[Math.floor(Math.random() * letters.length)];
+          }
+        }
+      }
+
+      renderGrid();
+    }
+
+    function placeWord(word) {
+      const dirs = [[0,1], [1,0], [1,1], [-1,1], [1,-1], [-1,-1], [0,-1], [-1,0]];
+      let placed = false;
+      let tries = 0;
+
+      while (!placed && tries < 250) {
+        tries++;
+        const dir = dirs[Math.floor(Math.random() * dirs.length)];
+        const r = Math.floor(Math.random() * GRID_SIZE);
+        const c = Math.floor(Math.random() * GRID_SIZE);
+
+        if (canPlace(word, r, c, dir)) {
+          for (let i = 0; i < word.length; i++) {
+            grid[r + i * dir[0]][c + i * dir[1]] = word[i];
+          }
+          placed = true;
+        }
+      }
+    }
+
+    function canPlace(word, r, c, [dr, dc]) {
+      const endR = r + dr * (word.length - 1);
+      const endC = c + dc * (word.length - 1);
+      if (endR < 0 || endR >= GRID_SIZE || endC < 0 || endC >= GRID_SIZE) return false;
+
+      for (let i = 0; i < word.length; i++) {
+        const curr = grid[r + i * dr][c + i * dc];
+        if (curr && curr !== word[i]) return false;
+      }
+      return true;
+    }
+
+    function renderGrid() {
+      const gridEl = document.getElementById('grid');
+      gridEl.innerHTML = '';
+
+      for (let r = 0; r < GRID_SIZE; r++) {
+        for (let c = 0; c < GRID_SIZE; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          cell.innerText = grid[r][c];
+          cell.dataset.r = r;
+          cell.dataset.c = c;
+          gridEl.appendChild(cell);
+        }
+      }
+    }
+
+    const gridEl = document.getElementById('grid');
+
+    function getCellFromCoordinates(clientX, clientY) {
+      const target = document.elementFromPoint(clientX, clientY);
+      if (target && target.classList.contains('cell')) {
+        return {
+          r: parseInt(target.dataset.r),
+          c: parseInt(target.dataset.c)
+        };
+      }
+      return null;
+    }
+
+    function calculateLine(r1, c1, r2, c2) {
+      const cells = [];
+      const dr = r2 - r1;
+      const dc = c2 - c1;
+      const steps = Math.max(Math.abs(dr), Math.abs(dc));
+
+      if (steps === 0) return [{ r: r1, c: c1 }];
+
+      const stepR = dr === 0 ? 0 : dr / steps;
+      const stepC = dc === 0 ? 0 : dc / steps;
+
+      for (let i = 0; i <= steps; i++) {
+        cells.push({
+          r: Math.round(r1 + stepR * i),
+          c: Math.round(c1 + stepC * i)
+        });
+      }
+      return cells;
+    }
+
+    gridEl.addEventListener('pointerdown', (e) => {
+      const cellCoords = getCellFromCoordinates(e.clientX, e.clientY);
+      if (cellCoords) {
+        startCell = cellCoords;
+        currentCell = cellCoords;
+        selectedCells = [startCell];
+        updateCellClasses();
+      }
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!startCell) return;
+      const cellCoords = getCellFromCoordinates(e.clientX, e.clientY);
+      if (cellCoords && (cellCoords.r !== currentCell?.r || cellCoords.c !== currentCell?.c)) {
+        currentCell = cellCoords;
+        selectedCells = calculateLine(startCell.r, startCell.c, currentCell.r, currentCell.c);
+        updateCellClasses();
+      }
+    });
+
+    window.addEventListener('pointerup', () => {
+      if (!startCell) return;
+      checkWordMatch();
+      startCell = null;
+      currentCell = null;
+      selectedCells = [];
+      updateCellClasses();
+    });
+
+    function checkWordMatch() {
+      const words = LEVELS[currentLevel].words;
+      const str = selectedCells.map(c => grid[c.r]?.[c.c] || '').join('');
+      const rev = str.split('').reverse().join('');
+
+      let match = words.find(w => w === str || w === rev);
+
+      if (match && !foundWords.has(match)) {
+        foundWords.add(match);
+        document.getElementById(`word-${match}`).classList.add('found');
+        
+        selectedCells.forEach(c => {
+          const el = document.querySelector(`[data-r="${c.r}"][data-c="${c.c}"]`);
+          if (el) el.classList.add('found');
+        });
+
+        const pct = (foundWords.size / words.length) * 100;
+        document.getElementById('progress').style.width = pct + '%';
+
+        if (foundWords.size === words.length) {
+          setTimeout(() => {
+            document.getElementById('victoryModal').classList.add('active');
+          }, 300);
+        }
+      }
+    }
+
+    function updateCellClasses() {
+      document.querySelectorAll('.cell').forEach(el => {
+        const r = parseInt(el.dataset.r);
+        const c = parseInt(el.dataset.c);
+        const isSel = selectedCells.some(cell => cell.r === r && cell.c === c);
+        el.classList.toggle('selected', isSel);
+      });
+    }
+
+    function nextLevel() {
+      document.getElementById('victoryModal').classList.remove('active');
+      loadLevel((currentLevel + 1) % LEVELS.length);
+    }
+
+    loadLevel(0);
+  </script>
+</body>
+</html>

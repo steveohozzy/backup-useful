@@ -1,0 +1,745 @@
+<!-- o Carousel -->
+<style type="text/css">
+  .hero-panels {
+    padding: 0 20px 30px 20px;
+    background-color: #dbe3ff;
+  }
+
+  .carousel {
+    max-width: 940px;
+    margin: 0 auto;
+  }
+
+  .hero-panels .flickity-button {
+    display: none;
+  }
+
+  .hero-panels .carousel-cell {
+    width: 100%;
+    height: 100%;
+    counter-increment: carousel-cell;
+    opacity: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 18px rgba(33, 33, 33, 0.15);
+  }
+
+  .hero-panels .carousel-cell.is-selected {
+    opacity: 100%;
+  }
+
+  .hero-panels .carousel-cell .media {
+    aspect-ratio: 335/213;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .hero-panels .carousel-cell .media img,
+  .hero-panels .carousel-cell .media iframe,
+  .hero-panels .carousel-cell .media video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #de1a83;
+    border-radius: 8px;
+    position: relative;
+    margin-top: -20px;
+    padding: 40px 20px 20px 20px;
+    flex-grow: 1;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info.blue {
+    background-color: #0057b8;
+    color: #fff;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info .brand-logo {
+    position: absolute;
+    top: -32px;
+    height: 40px;
+    z-index: 2;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info .brand-logo img,
+  .hero-panels .carousel-cell .hero-tile-info .brand-logo svg {
+    height: 100%;
+    width: auto;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info h2,
+  .hero-panels .carousel-cell .hero-tile-info h2 a {
+    font-size: 18px;
+    line-height: 1.2;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-weight: bold;
+    color: #fff;
+    margin: 0 0 20px;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info .hero-blurb {
+    display: none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 200;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info .hero-blurb a {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 200;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info.blue h2,
+  .hero-panels .carousel-cell .hero-tile-info.blue .hero-blurb,
+  .hero-panels .carousel-cell .hero-tile-info.blue a {
+    color: #fff;
+  }
+
+  .hero-panels .flickity-viewport {
+    aspect-ratio: 350/373;
+  }
+
+  .hero-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background-color: #009e44;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 30px 10px 10px;
+    height: 40px;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.3);
+    transition: all 0.3s;
+  }
+  .blue .hero-button {
+    border: 3px solid #dbe3ff;
+  }
+
+  .hero-button:hover {
+    background-color: #afcb17;
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+    color: #fff;
+  }
+
+  .hero-button .basket-icon {
+    transition: all 0.3s;
+    transform: rotate(15deg);
+    margin-left: 5px;
+  }
+
+  .hero-button:hover .basket-icon {
+    transform: rotate(-10deg);
+  }
+
+  .hero-button .star-start {
+    position: relative;
+    top: -3px;
+  }
+
+  .hero-button .swoosh-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-right: 5px;
+    width: 25px;
+  }
+
+  .hero-button .swoosh {
+    display: block;
+    width: 0;
+    height: 3px;
+    margin-top: -3px;
+    margin-left: -2px;
+    transform: rotate(15deg);
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s;
+  }
+
+  .hero-button:hover .swoosh {
+    width: 7px;
+  }
+
+  .hero-button .star-end {
+    position: relative;
+    bottom: -5px;
+    transition: all 0.3s;
+  }
+
+  .hero-button:hover .star-end {
+    scale: 1.1;
+    transform: rotate(30deg);
+  }
+
+  .media-full img {
+    width: 100%;
+    height: auto;
+  }
+  .media-full--desktop {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .media-full--desktop {
+      display: block;
+    }
+
+    .media-full--mobile {
+      display: none;
+    }
+
+    .hero-panels .flickity-viewport {
+      aspect-ratio: 900/280;
+    }
+
+    .hero-panels .carousel-cell {
+      flex-direction: row;
+      flex-flow: row-reverse;
+    }
+
+    .hero-panels .carousel-cell .media {
+      width: 50%;
+      aspect-ratio: 450/280;
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info {
+      padding: 20px 50px 20px 40px;
+      margin-top: 0;
+      margin-right: -20px;
+      width: calc(50% + 20px);
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info .brand-logo {
+      position: relative;
+      top: 0;
+      margin-bottom: 20px;
+      height: 90px;
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info h2 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info .hero-blurb {
+      display: block;
+      margin: 12px 0;
+    }
+  }
+
+  /* Footer color override and main page margin fix DO NOT DELETE */
+  footer {
+    background-color: #dbe3ff;
+  }
+
+  .section1 {
+    margin-bottom: 0;
+  }
+
+  .section1 + .row.no-margin {
+    display: none;
+  }
+
+  /* hide breadcrumbs */
+  .breadcrumb-section {
+    display: none;
+  }
+</style>
+<div class="hero-panels">
+  <div
+    class="carousel js-flickity flickity-enabled is-draggable"
+    data-flickity='{ "autoPlay": true, "wrapAround": true, "imagesLoaded": true }'
+  >
+    <div class="carousel-cell">
+
+			<a href="https://www.thetoyshop.com/brands/lego" title="LEGO Spend & Save" >
+
+				<img src="https://www.thetoyshop.com/medias/p10-lego-spend-and-save-hero-mobile-450x480.jpg?context=bWFzdGVyfHJvb3R8MTYzNzUwfGltYWdlL2pwZWd8YUdaaUwyaGhOeTh4TWpVNU5UUTVOVEV3T0RZek9DOXdNVEF0YkdWbmJ5MXpjR1Z1WkMxaGJtUXRjMkYyWlMxb1pYSnZMVzF2WW1sc1pTMDBOVEI0TkRnd0xtcHdad3w5M2FjYWEyNGUxYTFjMGUwMzA4OGYzMGVkZTk3NDgwOTIzZTlhNDk0ODhlMjUxY2I0YTMwMDBmOTI5MDIzYWQ4" alt="LEGO Spend & Save" title="LEGO Spend & Save" class="hero-banner-mobile"  />
+
+				<img src="https://www.thetoyshop.com/medias/p10-lego-spend-and-save-hero-desktop-1800x560.jpg?context=bWFzdGVyfHJvb3R8NDk2OTEyfGltYWdlL2pwZWd8YURjMUwyaG1PUzh4TWpVNU5UUTVORGcwTmpRNU5DOXdNVEF0YkdWbmJ5MXpjR1Z1WkMxaGJtUXRjMkYyWlMxb1pYSnZMV1JsYzJ0MGIzQXRNVGd3TUhnMU5qQXVhbkJufGU0NzQxNmE5NmI4NzI2YWIzOGM2NGNmMDY5ZTQxY2U5NTYyZjQyZTUzMTE4MGE2NzY5Y2RjM2RlZWUwMzIwNjM" alt="LEGO Spend & Save" title="LEGO Spend & Save" class="hero-banner-desktop" />
+
+			</a>
+
+		</div>
+
+		<!-- BANNER 1 ENDS -->
+
+		<!-- BANNER 2 STARTS -->
+
+         	<div class="carousel-cell">
+
+<style>
+	
+	.disney-gift-guide .carousel {
+		padding: 0 0 20px;
+		background: url(https://www.thetoyshop.com/medias/Entertainer-Homepage-Multi-click-Hero-2-004-.jpg?context=bWFzdGVyfHJvb3R8NjY4NDZ8aW1hZ2UvanBlZ3xhREUzTDJnd01TOHhNalU1TkRBM01qVTROREl5TWk5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOU5kV3gwYVMxamJHbGphMTlJWlhKdlh6SWdLREF3TkNrdWFuQm58MTNmZDE1OWQ0NzExYWFhNzhiNzM5NWUyYWY1ZWZhMzM3YzIwYTcxNmJhZjVhZDAwNDE0MWI0YWJhN2U1YmVkOA) center;
+		background-size: cover;
+		max-width: 1400px;
+		margin: 0 auto;
+		height: 100%;
+	}
+	
+		.disney-gift-guide .flickity-viewport {
+			overflow: visible;
+			height: 152vw !important;
+		}
+
+			.disney-gift-guide .carousel-cell {
+				width: 100%;
+				height: 100%;
+				counter-increment: carousel-cell;
+				opacity: 100%;
+			}		
+
+				.disney-gift-guide .carousel-cell.is-selected {
+					opacity: 100%;
+				}
+
+				.disney-gift-guide .carousel-cell:before {
+					display: block;
+				}
+	
+		.mixed-hero-area a {
+			display: flex;
+			flex-wrap: wrap;
+			position: relative;
+			height: 100%;
+		}
+	
+			.mixed-hero-area .mixed-hero-image {
+				margin: 0;
+				padding: 0;
+			}
+	
+				.mixed-hero-area .mixed-hero-image img {
+					width: 100%;
+				}
+	
+					.mixed-hero-area .mixed-hero-image img.mixed-hero-desktop {
+						display: none;
+					}
+
+			.mixed-hero-area .mixed-hero-copy {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				align-content: center;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				margin: 0;
+				padding: 20px 20px 50px;
+			}
+
+				.mixed-hero-area .mixed-hero-copy h1 {
+					margin: 0 0 20px;
+					padding: 0;
+					font: 32px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+					letter-spacing: 0;
+				}
+
+				.mixed-hero-area .mixed-hero-copy p {
+					margin: 0 0 20px;
+					padding: 0;
+					font : 16px/140% "Nunito Regular", "Tahoma Bold", sans-serif;
+				}
+
+				.mixed-hero-area .mixed-hero-copy span {
+					display: inline-block;
+					margin: 0;
+					padding: 12px 20px;
+					font : 16px/140% "Nunito Bold", "Tahoma Bold", sans-serif;
+					background: #ffffff;
+					border-radius: 8px;
+				}
+
+				.hero-banner-mobile, .hero-banner-desktop {
+					width: 100%;
+				}
+
+				.hero-banner-desktop {
+					display: none;
+					width: 100%;
+					max-width: 1400px;
+					margin: 0 auto;
+				}
+	
+		.flickity-prev-next-button {
+			top: 46%;
+		}
+	
+			.disney-gift-guide .flickity-page-dots {
+				bottom: 30px;
+			}
+
+				.disney-gift-guide .flickity-page-dots li {
+					width: 15px;
+					height: 15px;
+					background: #ffffff;
+				}
+
+					.disney-gift-guide .flickity-prev-next-button, .disney-gift-guide .flickity-page-dots {
+						display: none;
+					}
+	
+		.disney-gift-guide {
+			height: 100%;
+			background: #dbe3ff;
+		}
+	
+			.disney-gift-guide h2 {
+				margin: 5px 0;
+			}
+	
+			.disney-gift-guide-logo-mobile {
+				display: block;
+				margin: 0 auto;
+				width: 230px;
+			}
+
+			.disney-gift-guide-logo-desktop {
+				display: none;
+				margin: 0 auto;
+				width: 300px;
+			}
+
+			.disney-sub-cats {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				margin: 0 auto 0 auto;
+				padding: 0 50px;
+				list-style: none;
+				max-width: 944px;
+				gap: 10px;
+			}
+
+				.disney-sub-cats li {
+					position: relative; 
+					margin: 0;
+					width: calc(100% / 3 - 10px);
+					z-index: 0;
+				}
+
+				.disney-sub-cats li img {
+					border: 3px solid white;
+				}
+
+					.disney-sub-cats li a {
+						display: block;
+					}
+
+						.disney-sub-cats li a:hover {
+							animation: shake 1s;
+							animation-iteration-count: infinite;
+						}
+
+						.disney-sub-cats li img {
+							padding: 0;
+							width: 100%;
+						}
+
+						.disney-sub-cats li span {
+							display: block;
+							padding: 10px 0;
+							width: 100%;
+							font: 12px / 140% "Nunito Bold", "Tahoma Bold", sans-serif;
+							color: #ffffff;
+							text-align: center;
+						}
+
+						@keyframes shake {
+							0% { transform: translate(1px, 1px) rotate(0deg); }
+							10% { transform: translate(-1px, -2px) rotate(-1deg); }
+							20% { transform: translate(-3px, 0px) rotate(1deg); }
+							30% { transform: translate(3px, 2px) rotate(0deg); }
+							40% { transform: translate(1px, -1px) rotate(1deg); }
+							50% { transform: translate(-1px, 2px) rotate(-1deg); }
+							60% { transform: translate(-3px, 1px) rotate(0deg); }
+							70% { transform: translate(3px, 1px) rotate(-1deg); }
+							80% { transform: translate(-1px, -1px) rotate(1deg); }
+							90% { transform: translate(1px, 2px) rotate(0deg); }
+							100% { transform: translate(1px, -2px) rotate(-1deg); }
+						}
+
+
+    @media (min-width: 430px) {
+	
+		.disney-gift-guide .flickity-viewport {
+			overflow: visible;
+			height: 138vw !important;
+		}
+		
+	}
+	
+	
+	@media (min-width: 768px) {
+		
+		.disney-gift-guide .carousel {
+			padding: 0 0 30px;
+		}
+		
+		.disney-gift-guide .flickity-viewport {
+			height: 58vw !important
+		}
+		
+			.mixed-hero-area div {
+				width: 50%;
+			}
+
+				.mixed-hero-area .mixed-hero-copy {
+					padding: 30px;
+					height: 100%;
+				}
+		
+				.mixed-hero-area .mixed-hero-image img.mixed-hero-mobile {
+					display: none;
+				}
+		
+				.mixed-hero-area .mixed-hero-image img.mixed-hero-desktop {
+					display: block;
+				}
+
+			.hero-banner-mobile {
+				display: none;
+			}
+
+			.hero-banner-desktop {
+				display: block;
+			}
+
+			.disney-gift-guide .flickity-prev-next-button.previous {
+				left: 20px;
+			}
+
+			.disney-gift-guide .flickity-prev-next-button.next {
+				right: 20px;
+			}
+		
+		.disney-gift-guide .flickity-page-dots {
+			bottom: 50px;
+		}
+		
+		
+			.disney-gift-guide h2 {
+				margin: 30px 0;
+			}
+
+			.disney-sub-cats li {
+				width: calc(100% / 6 - 20px);
+			}
+
+    }
+	
+	
+	@media (min-width: 1024px) {
+
+		.disney-gift-guide {
+			height: 103%;
+		}
+
+		.disney-sub-cats {
+			justify-content: space-between;
+				padding: 0 100px;
+				gap: 0;
+			}
+		
+		.disney-gift-guide .flickity-viewport {
+			height: 44vw !important;
+			max-height: 500px;
+		}
+		
+			.disney-sub-cats li {
+				width: calc(100% / 6 - 20px);
+			}
+
+			.disney-sub-cats li span {
+							display: block;
+							padding: 10px 0;
+							width: 100%;
+							font: 14px / 140% "Nunito Bold", "Tahoma Bold", sans-serif;
+							color: #ffffff;
+							text-align: center;
+						}
+	
+	}
+
+
+    @media (min-width: 1400px) {
+		
+		.disney-gift-guide .carousel {
+			padding: 10px 0;
+		}
+		
+			.mixed-hero-area .mixed-hero-copy {
+				padding: 40px;
+			}
+		
+			.flickity-prev-next-button {
+				top: 50%;
+			}
+		
+				.disney-gift-guide h2 {
+					margin: 0 0 10px;
+				}
+
+					.disney-gift-guide-logo-mobile {
+						display: none;
+					}
+
+					.disney-gift-guide-logo-desktop {
+						display: block;
+					}
+
+    }
+	
+	
+	@media (min-width: 1600px) {
+		
+			.disney-gift-guide .flickity-prev-next-button.previous {
+				left: 9vw;
+			}
+
+			.disney-gift-guide .flickity-prev-next-button.next {
+				right: 9vw;
+			}
+
+    }
+
+    .carousel-cell .carousel-cell {
+      display: block;
+    }
+
+</style>
+
+
+<div class="disney-gift-guide">
+
+    <div class="carousel">
+		
+		<!-- BANNER 2 STARTS -->
+		
+		<div class="carousel-cell multi">
+			
+			<h2>
+				
+				<img src="https://www.thetoyshop.com/medias/Homepage-Multi-click-Hero-Banner-Mobile-395x160px.png?context=bWFzdGVyfHJvb3R8MzMwOTl8aW1hZ2UvcG5nfGFEbGxMMmd6WVM4eE1qVTVNVEV4TURnME9EVTBNaTlJYjIxbGNHRm5aVjlOZFd4MGFTMWpiR2xqYTE5SVpYSnZYMEpoYm01bGNsOU5iMkpwYkdWZk16azFlREUyTUhCNExuQnVad3xjZWM4MjYwMDkyZGUyYmExMGYyMGUyNWJmMTljZTMzMjExOGMxNjkzN2VmN2ZiYTE0MzQ0NzI0ZjIxNjRlZjYy" alt="Disney" title="Disney" class="disney-gift-guide-logo-mobile" />
+				
+				<img src="https://www.thetoyshop.com/medias/Homepage-Multiclick-Hero-Banner-Logo-800x288px.png?context=bWFzdGVyfHJvb3R8NjI4NTl8aW1hZ2UvcG5nfGFHSXdMMmd6WWk4eE1qVTRPVFUzTmpFNU1qQXpNQzlJYjIxbGNHRm5aVjlOZFd4MGFXTnNhV05yWDBobGNtOWZRbUZ1Ym1WeVgweHZaMjlmT0RBd2VESTRPSEI0TG5CdVp3fGNmMmY3YzljODE0MDQ0ODhkOWE4NzNiOGJhMzM2M2JhZTRlMTdiOGFkMjU4MWYyMjAyNGRmMGQxZjNmYmQzMTM" alt="Disney" title="Disney" class="disney-gift-guide-logo-desktop" />
+			
+			</h2>
+			
+			<ul class="disney-sub-cats">
+				
+				<!-- 1 -->
+				<li>
+					
+					<a href="https://www.thetoyshop.com/brands/disney/disney-princess/moana" title="Moana">
+						
+						<img alt="Moana" src="https://www.thetoyshop.com/medias/Entertainer-Homepage-PodMOANA-Homepage-Pod-350x350px-copy.jpg?context=bWFzdGVyfHJvb3R8NjU4MjZ8aW1hZ2UvanBlZ3xhR1V5TDJnek1TOHhNalU0T1RVM05qUTFOREUzTkM5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOVFiMlJOVDBGT1FTQkliMjFsY0dGblpTQlFiMlFnTXpVd2VETTFNSEI0SUdOdmNIa3VhbkJufGE0NWJmY2FiNjhmOGNjOGM4N2NjN2QzM2U5YThlZTExMGRhNDNlNTdkMWVlNjk3MDM4MzJmMGIzZTQzMTZjNjc" alt="Moana" title="Moana" />
+						
+						<span>MOANA</span>
+						
+					</a>
+					
+				</li>
+
+		
+		<!-- 2 -->
+				
+			<li>
+					
+					<a href="https://www.thetoyshop.com/brands/disney/toy-story" title="Toy Story">
+						
+						<img src="https://www.thetoyshop.com/medias/Entertainer-Homepage-PodPIXAR-Homepage-Pod-350x350px-copy-2.jpg?context=bWFzdGVyfHJvb3R8NjYwMzB8aW1hZ2UvanBlZ3xhR1UwTDJneVpTOHhNalU0T1RVM05qVXhPVGN4TUM5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOVFiMlJRU1ZoQlVpQkliMjFsY0dGblpTQlFiMlFnTXpVd2VETTFNSEI0SUdOdmNIa2dNaTVxY0djfGZiODk0YzEyODc1NTc4NWE5NjhhMTFjMDQ2NjQ3MDgyMzUwMjkxMGEzMGM0NmExZTQ2ZDZiYjMyYjE1YmMwZjA" alt="Toy Story" title="Toy Story" />
+						
+						<span>TOY STORY</span>
+						
+					</a>
+					
+				</li>
+				
+				<!-- 3 -->
+				
+				<li>
+					
+					<a href="https://www.thetoyshop.com/brands/star-wars" title="Star Wars">
+						
+						<img src="https://www.thetoyshop.com/medias/Entertainer-Homepage-PodSTAR-WARS-Homepage-Pod-350x350px-copy-3.jpg?context=bWFzdGVyfHJvb3R8NjI0NDR8aW1hZ2UvanBlZ3xhRFEwTDJneU1TOHhNalU0T1RVM05qa3hNamt5Tmk5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOVFiMlJUVkVGU0lGZEJVbE1nSUVodmJXVndZV2RsSUZCdlpDQXpOVEI0TXpVd2NIZ2dZMjl3ZVNBekxtcHdad3wyN2ZkOWE3YzI5MDUxZjM2M2U5OGJmZDE4NzM5NzZhZGYwM2VlY2JhODA4MzcyYjA4NmEwOTFkYWE3ZjNjMjE5" alt="Star Wars" title="Star Wars" />
+						
+						<span>STAR WARS</span>
+												
+					</a>
+					
+				</li>
+		
+						
+				<!-- 4 -->
+			
+				<li>
+					
+					<a href="https://www.thetoyshop.com/brands/disney/disney-lilo-and-stitch" title="Lilo & Stitch">
+						
+						<img src="https://www.thetoyshop.com/medias/Entertainer-Homepage-PodSTITCH-Homepage-Pod-350x350px.jpg?context=bWFzdGVyfHJvb3R8NjQ3OTF8aW1hZ2UvanBlZ3xhREkwTDJneVpDOHhNalU0T1RVM056RXdPVFV6TkM5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOVFiMlJUVkVsVVEwZ2dTRzl0WlhCaFoyVWdVRzlrSURNMU1IZ3pOVEJ3ZUM1cWNHY3xkMjI1MjM3YjUyNjI2Y2Y5ODhhMzk1YWUwMDQ3MTdhNDcyYzEyYjFjNGNjNmFjNmZmNzM5ZjEyM2E2YzZjMjli" alt="Lilo & Stitch" title="Lilo & Stitch" />
+						
+						<span>LILO & STITCH</span>
+						
+					</a>
+					
+				</li>
+				
+				<!-- 5 -->
+				<li>
+					
+					<a href="https://www.thetoyshop.com/brands/marvel" title="Marvel">
+						
+						<img src="https://www.thetoyshop.com/medias/Entertainer-Homepage-PodMARVEL-Homepage-Pod-350x350px-copy-4.jpg?context=bWFzdGVyfHJvb3R8NzM4NDl8aW1hZ2UvanBlZ3xhR016TDJnME5DOHhNalU1TVRFeE1EVTFNell6TUM5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOVFiMlJOUVZKV1JVd2dJRWh2YldWd1lXZGxJRkJ2WkNBek5UQjRNelV3Y0hnZ1kyOXdlU0EwTG1wd1p3fDY3OTUwZWIwOGE0MDkzZjEyNDgyMTk5ZGMwNmFlZmVhMjczMTQ1NTYwNzMxZjlhNzI3MmE5MWY1YWQwNGY5ZDM" alt="Marvel" title="Marvel" />
+						
+						<span>MARVEL</span>
+						
+					</a>
+					
+				</li>					
+
+				
+			</ul>
+		</div>
+		</div>
+		</div>
+		</div>
+		
+		<!-- BANNER 2 ENDS -->
+		
+		<!-- BANNER 3 STARTS -->
+
+         	<div class="carousel-cell">
+
+
+			<a href="https://www.thetoyshop.com/c/half-price-toys" title="Half Price Toy Sale" >
+
+				<img src="https://www.thetoyshop.com/medias/Half-Price-2025-HP-Hero-MOB-450x480px.jpg?context=bWFzdGVyfHJvb3R8NzE4MTExfGltYWdlL2pwZWd8YURCaUwyZ3hNaTh4TWpVNU1UYzNOamcxT0RFME1pOUlZV3htSUZCeWFXTmxJREl3TWpVZ1NGQWdTR1Z5YnlCTlQwSWdORFV3ZURRNE1IQjRMbXB3Wnd8MDRlYTM5YWU5MjQ1ZDZmMjM1MDQwYmM0NzRlZjQyZjZkMTk1OWI5MDMxNTRiMWUzNmVmNjFlYjlmZmY3YTk1Nw" alt="Half Price Toy Sale" title="Half Price Toy Sale" class="hero-banner-mobile"  />
+
+				<img src="https://www.thetoyshop.com/medias/Half-Price-2025-HP-Hero-DT-1800x560px.jpg?context=bWFzdGVyfHJvb3R8OTQwODE4fGltYWdlL2pwZWd8YURSakwyZ3daUzh4TWpVNU1UYzNOamN5TnpBM01DOUlZV3htSUZCeWFXTmxJREl3TWpVZ1NGQWdTR1Z5YnlCRVZDQXhPREF3ZURVMk1IQjRMbXB3Wnd8ODBjOGVmZWU2MjFjNmY0ZmZiNzg0MDA4MzlmMmRjNmZmNDFmZTYzODg5MDA4YTE4NTBhNDNjNTA2ODE1ZDczMg" alt="Half Price Toy Sale" title="Half Price Toy Sale" class="hero-banner-desktop" />
+
+			</a>
+
+		<!-- BANNER 3 ENDS -->		
+
+			
+	
+	</div>
+  </div>
+</div>

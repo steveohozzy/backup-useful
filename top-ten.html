@@ -1,0 +1,555 @@
+<style>
+          :root {
+            --primary: #29527a;
+            --primary-dark: #14324f;
+            --yellow: #ffd166;
+            --teal: #3b8ea5;
+            --cream: #f2f7fc;
+            --text-color: #1b263b;
+            --line: #d6e4f0;
+            --radius: 20px;
+            --radius-sm: 12px;
+            --shadow: 0 14px 30px -18px rgba(27, 38, 59, 0.35);
+            --shadow-lg: 0 30px 60px -30px rgba(27, 38, 59, 0.45);
+            --nav-w: 300px;
+            --maxw: 1180px;
+            --lozenge-color: #ffffff;
+            --lozenge-bg: #29527a;
+          }
+
+          .top-ten-wrapper {
+            font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+            color:#fff;
+            background: rgb(39, 87, 159);
+            min-height: 100vh;
+          }
+
+          .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+          /* --- Full Width Header / Footer Sections --- */
+          .full-width-section {
+            padding: 40px 0 20px;
+          }
+          .full-width-section h2,
+          .full-width-section .footer-lozenge-title {
+            text-transform: uppercase;
+            background: var(--lozenge-bg);
+            color: var(--lozenge-color);
+            font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+            font-size: 18px;
+            border-radius: 8px;
+            margin: 0;
+            box-shadow: inset 0 4px 10px rgba(255,255,255,0.1); /* subtle inner highlight */
+            backdrop-filter: blur(2px); /* optional slight blur for glass effect */
+            -webkit-backdrop-filter: blur(2px);
+            padding: 5px 0;
+            text-align: center;
+            margin-bottom: 20px;
+          }
+          .full-width-section div {
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 0;
+            color: var(--text-color);
+            max-width: 1200px;
+            text-align: center;
+          }
+
+          .full-width-section p {
+            margin: 0 0 15px;
+          }
+
+          .layout-container {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          .layout { display: grid; grid-template-columns: var(--nav-w) 1fr; gap: 44px; align-items: start; padding: 20px 0 80px; }
+
+          .toc-wrapper {
+            align-self: start;
+            position: sticky;
+            top: 30px;
+          }
+
+          .toc {
+            background: #fff; border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow);
+            border: 1px solid var(--line);
+          }
+          .toc .title { font-family: "Nunito Bold", "Tahoma Bold", sans-serif; font-size: 16px; text-transform: capitalize; color: var(--text-color); margin: 0 0 4px; }
+          .toc .sub { font-size: 14px; color: var(--text-color); margin: 0 0 14px; }
+          .toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+          .toc li { margin: 2px 0; }
+          .toc a {
+            counter-increment: toc; display: flex; align-items: center; gap: 12px;
+            padding: 9px 10px; border-radius: 12px; color: var(--text-color); font-weight: 700; font-size: 15px;
+            transition: background .18s, transform .18s, color .18s; position: relative; text-decoration: none;
+          }
+          .toc a::before {
+            content: counter(toc); flex: none; width: 28px; height: 28px; border-radius: 9px;
+            background: var(--cream); color: #5c6b82; display: grid; place-items: center;
+            font-size: 12px;
+          }
+          .toc a .t { line-height: 1.2; }
+          .toc a:hover { background: var(--cream); transform: translateX(3px); }
+          .toc a.active { background: var(--primary); color: #fff; }
+          .toc a.active::before { background: var(--yellow); color: #1b263b; }
+
+          /* --- Content --- */
+          .content { min-width: 0; }
+
+          .toy { scroll-margin-top: 84px; padding: 26px 0 40px; border-bottom: 2px dashed var(--line); }
+          .toy:last-child { border-bottom: 0; }
+
+          .toy-head { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+          
+          /* --- Star Rank Badge --- */
+          .rank {
+            flex: none; 
+            width: 78px; 
+            height: 78px; 
+            display: grid; 
+            place-items: center;
+            font-weight: 800; 
+            font-size: 22px; 
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            transform: rotate(-5deg);
+            box-shadow: none;
+          }
+          .toy:nth-child(odd) .rank { background: #3b8ea5; color: #ffffff; }
+          .toy:nth-child(even) .rank { background: #29527a; color: #ffffff; }
+          
+          .toy-head h2 { font-family: "Nunito Bold", "Tahoma Bold", sans-serif; font-size: clamp(26px, 4.4vw, 40px); margin: 0; }
+
+          .showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+          .showcase .blurb p { margin: 0 0 16px; font-size: 18px; line-height: 1.5; }
+
+          .photo {
+            position: relative; border-radius: var(--radius); overflow: hidden; background: #fff;
+            border: 1px solid var(--line); box-shadow: var(--shadow-lg);
+          }
+          .photo img { width: 100%; height: auto; display: block; }
+
+          .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 26px; }
+          .panel { border-radius: var(--radius); padding: 22px 24px; }
+          .panel h3 { font-family: "Nunito Bold", "Tahoma Bold", sans-serif; display: flex; align-items: center; gap: 10px; font-size: 20px; margin: 0 0 10px; text-transform: capitalize; }
+          .panel .ico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+          .love { background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow); }
+          .love .ico { background: #e0f0ff; }
+          .tip { background: var(--primary); color: #fff; position: relative; overflow: hidden; }
+          .tip h3 { font-family: "Nunito Bold", "Tahoma Bold", sans-serif; color: var(--yellow); }
+          .tip .ico { background: var(--yellow); color: #1b263b; }
+          .tip p { color: #f2f7fc; margin: 0; }
+          .tip::after {
+            content: "★";
+            position: absolute;
+            right: -6px;
+            bottom: -14px;
+            font-size: 90px;
+            opacity: .15;
+            transform: rotate(-12deg);
+          }
+
+          .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
+          .gallery figure { margin: 0; position: relative; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); }
+          .gallery img { width: 100%; height: auto; }
+
+          .reviews { margin-top: 26px; }
+          .rev { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 16px 18px; box-shadow: var(--shadow); max-width: 600px; color: var(--text-color); }
+          .rev .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+          .rev .name { font-weight: 700; }
+          .stars { color: var(--yellow); letter-spacing: 2px; font-size: 20px; }
+          .rev p { margin: 0; font-size: 15px; }
+
+          .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+          .reveal.in { opacity: 1; transform: translateY(0); }
+
+          @media (max-width: 1200px) {
+            .layout { display: block; gap: 0; padding-top: 0; }
+            .toc-wrapper {
+              position: sticky; top: 160px; z-index: 55; margin: 0 -20px 22px;
+            }
+            .toc {
+              border-radius: 0;
+              padding: 10px 0; box-shadow: 0 8px 16px -12px rgba(0,0,0,.4); border: 0; border-bottom: 1px solid var(--line);
+              background: rgba(242,247,252,.94); backdrop-filter: blur(8px); overflow: hidden;
+            }
+            .toc h2, .toc .sub { display: none; }
+            .toc ol { display: flex; gap: 8px; overflow-x: auto; padding: 4px 20px; scroll-snap-type: x proximity; scrollbar-width: none; }
+            .toc ol::-webkit-scrollbar { display: none; }
+            .toc li { margin: 0; scroll-snap-align: start; }
+            .toc a { white-space: nowrap; background: #fff; border: 1px solid var(--line); padding: 8px 14px 8px 8px; gap: 8px; }
+            .toc a .t { max-width: 128px; overflow: hidden; text-overflow: ellipsis; font-size: 14px; }
+          }
+
+          @media (max-width: 720px) {
+            .showcase { grid-template-columns: 1fr; }
+            .showcase .photo { order: -1; }
+            .panels, .gallery { grid-template-columns: 1fr; }
+          }
+
+          /* --- Character Speech Bubbles & Themes --- */
+.character-panel {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  position: relative;
+  margin-top: 20px;
+}
+
+.character-panel.reverse {
+  flex-direction: row-reverse;
+}
+
+.character-mascot {
+  width: 105px;
+  height: auto;
+  flex: none;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.18));
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.character-panel:hover .character-mascot {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+.speech-bubble {
+  position: relative;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  box-shadow: var(--shadow);
+  flex-grow: 1;
+  border: none; /* Removes any border */
+  height: 100%;
+}
+
+/* Speech Bubble Tails */
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  top: 30px;
+  left: -10px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-right-color: rgba(240, 246, 252, 0.75); /* Matches background for seamless look */
+  border-left: 0;
+}
+
+.character-panel.reverse .speech-bubble::after {
+  left: auto;
+  right: -10px;
+  top: auto;
+  top: 30px;
+  border-right: 0;
+  border-left: 10px solid rgba(240, 246, 252, 0.75); /* Matches background */
+}
+
+/* --- Theme 1: Sheep Theme (Cozy Blue / Crafty) --- */
+.speech-bubble.theme-sheep {
+  background: rgba(240, 246, 252, 0.75); /* Semi-transparent blue */
+  border: none;
+  color: #1b263b;
+}
+
+.speech-bubble.theme-sheep h3 {
+  color: #29527a;
+}
+
+/* --- Theme 2: Fox Theme (Warm Amber / Clever Tips) --- */
+.speech-bubble.theme-fox {
+  background: rgba(255, 248, 240, 0.85); /* Semi-transparent warm amber */
+  border: none;
+  color: #29180b;
+}
+
+.speech-bubble.theme-fox::after {
+  border-right-color: rgba(255, 248, 240, 0.85); /* Matches background for left-pointing tail */
+}
+
+.character-panel.reverse .speech-bubble.theme-fox::after {
+  border-left-color: rgba(255, 248, 240, 0.85); /* Matches background for right-pointing tail */
+}
+
+.speech-bubble.theme-fox h3 {
+  color: #b45309;
+}
+
+/* --- Theme 3: Seal Theme (Ice Blue / Official Approval) --- */
+.speech-bubble.theme-seal {
+  background: #eef8ff;
+  border-color: #0284c7;
+  color: #0c4a6e;
+}
+.speech-bubble.theme-seal::after {
+  border-right-color: #0284c7;
+}
+.speech-bubble.theme-seal h3 {
+  color: #0369a1;
+}
+
+/* --- Theme 4: Robin Theme (Festive Red/Gold / Cheerful) --- */
+.speech-bubble.theme-robin {
+  background: rgba(255, 241, 242, 0.85); /* Semi-transparent festive red/gold tint */
+  border: none;
+  color: #4c0519;
+}
+
+.speech-bubble.theme-robin::after {
+  border-right-color: rgba(255, 241, 242, 0.85); /* Matches background for left-pointing tail */
+}
+
+.character-panel.reverse .speech-bubble.theme-robin::after {
+  border-left-color: rgba(255, 241, 242, 0.85); /* Matches background for right-pointing tail */
+}
+
+.speech-bubble.theme-robin h3 {
+  color: #be123c;
+}
+
+.speech-bubble h3 {
+  font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  margin: 0 0 8px;
+  text-transform: capitalize;
+}
+
+.speech-bubble p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media (max-width: 720px) {
+  .character-panel, .character-panel.reverse {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .character-mascot {
+    width: 85px;
+    margin-bottom: -12px;
+  }
+  .speech-bubble::after, .character-panel.reverse .speech-bubble::after {
+    display: none;
+  }
+}
+        </style><div class="top-ten-wrapper"><div class="full-width-section"><img alt="Top Ten Toys" src="https://www.thetoyshop.com/medias/Top-Ten-Toys-Editorial-Header-2000x300px-V2-01.jpg?context=bWFzdGVyfHJvb3R8MTY5NTk5fGltYWdlL2pwZWd8YUdVMUwyaG1OaTh4TWpnME9UTTJNelExTVRrek5DOVViM0FnVkdWdUlGUnZlWE1nUldScGRHOXlhV0ZzSUVobFlXUmxjaUF5TURBd2VETXdNSEI0WDFZeUxUQXhMbXB3Wnd8MTRkMWY4ZTQ3NWU2MWE2NmI0NzViMDY0NjQ4MTU2YTRhMGI4NTk4MDllNDIwMDFjNWI5NGMyMzliODRhODc2MA"></div><div class="wrap"><div class="layout-container"><div class="layout"><div class="toc-wrapper"><nav class="toc" id="toc" aria-label="Jump to a toy"><div class="title">Top 10 Toys</div><p class="sub">Tap a toy to jump straight to it</p><ol id="tocList"><li><a href="#toy-1" data-target="toy-1" class="active"><span class="t">Bluey Muffin’s Home Playset</span></a></li><li><a href="#toy-2" data-target="toy-2"><span class="t">Meccano Pro Aston Martin Aramco Formula One Race Car Construction Set</span></a></li><li><a href="#toy-3" data-target="toy-3"><span class="t">Early Learning Centre Wooden Little Chefs Kitchen</span></a></li><li><a href="#toy-4" data-target="toy-4"><span class="t">Clickeez Bubble Pops Keyboard Mega Mystery Figure Pack</span></a></li><li><a href="#toy-5" data-target="toy-5"><span class="t">FurReal Gabby The Grow and Roar Tiger Interactive Pet</span></a></li><li><a href="#toy-6" data-target="toy-6"><span class="t">Pokémon Battle Action Pikachu 30cm Figure</span></a></li><li><a href="#toy-7" data-target="toy-7"><span class="t">LEGO Botanicals Rocking Plants Construction Set 11506</span></a></li><li><a href="#toy-8" data-target="toy-8"><span class="t">Mini Brands Really Works Vinyl Playset Series 1 by ZURU</span></a></li><li><a href="#toy-9" data-target="toy-9"><span class="t">Slime Mart Disney Cake Basket Craft Set by ZURU</span></a></li><li><a href="#toy-10" data-target="toy-10"><span class="t">Primal Hatch Megalodon Electronic Pet</span></a></li></ol></nav></div><main class="content" id="content"><section class="toy" id="toy-1" aria-labelledby="toy-1-title"><div class="toy-head reveal in"><div class="rank" aria-hidden="true">1</div><div><h2 id="toy-1-title">Bluey Muffin’s Home Playset</h2></div></div><div class="showcase reveal in"><div class="blurb"><p>There’s always something going on at Muffin’s house, now kids can jump right into the fun.  With 2 levels of rooms to explore, 10 accessories including furniture, pizza and a tablet and characters with articulated arms and legs of Muffin and Socks, kids can recreate favourite moments from Bluey or start their own brand-new story play. </p><div style="margin-top: 16px;"><a href="https://www.thetoyshop.com/exclusive-to-the-entertainer/Bluey-Muffin%27s-Home-Playset/p/582642" class="primary-cta-button cta-shop-now"><span class="swoosh-container"><span class="star-start"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span><span class="swoosh">&nbsp;</span></span>Shop Now<span class="cta-icon"><svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path></svg></span><span class="star-end"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span></a></div></div><div class="photo"><img loading="lazy" width="800" height="600" src="https://www.thetoyshop.com/medias/515Wx515H-582642-Primary?context=bWFzdGVyfGltYWdlc3w1ODk0NXxpbWFnZS9qcGVnfGFEZGpMMmhqTWk4eE1qZ3dNRE0zTmpnMk5EYzVPQzgxTVRWWGVEVXhOVWhmTlRneU5qUXlYMUJ5YVcxaGNua3xmODhmMjE1NTI5MWViODNjZDgxODZmZTQ2ZDAyYzM1Yjk3ZTI2ZTE5NTZjN2Q1NTg5MzRjZDVmZmI3MDVmYzQ3"></div></div><div class="panels"><div class="character-panel reveal"><img alt="fox mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5"><div class="speech-bubble theme-fox"><h3><span aria-hidden="true">★</span> Why we love it</h3><p>With fun tv moment nods, bring favourite scenes like “Faceytalk” to life or invent new adventures.</p></div></div><div class="character-panel reverse reveal"><img alt="sheep mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Top-Ten-Toys-Editorial-Characters-245x390px-Sheep-look.png?context=bWFzdGVyfHJvb3R8Njg4MTV8aW1hZ2UvcG5nfGFHUTFMMmhtTXk4eE1qZzBPVE0yTXpNNE5qTTVPQzlVYjNBZ1ZHVnVJRlJ2ZVhNZ1JXUnBkRzl5YVdGc0lFTm9ZWEpoWTNSbGNuTWdNalExZURNNU1IQjRYMU5vWldWd0lHeHZiMnN1Y0c1bnw0YzVkNjNmZDBjNDdjNmZlY2Y2MzZmOWViZGRlMDMzZGU2ZWFmZDAxNGFjMTFlZjQxYzM5ZDU0MmNkNjdiZDI5"><div class="speech-bubble theme-sheep"><h3><span aria-hidden="true">✦</span> Top tip</h3><p>Muffin lives here! This exclusive playset is only at The Entertainer &amp; ready to play with right out the box.</p></div></div></div><div class="gallery reveal"><figure><img alt="Action view action view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-582642-582642-7.jpg?context=bWFzdGVyfGltYWdlc3w3NzIxNHxpbWFnZS9qcGVnfGFEUXhMMmhpTnk4eE1qZ3dNRE14TnpNeU5UTTBNaTgxTVRWWGVEVXhOVWhmTlRneU5qUXlYelU0TWpZME1pMDNMbXB3Wnd8MTVmMGMzMmU0NmFmYmVjMGRhZGNiZjQ3OTE4YzhhOWEzMzVjMmU3MGQwZTQ4MDU0ZGU3MTlhMmI3MWY3YmQzNQ"></figure><figure><img alt="Detail view detail view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-582642-582642-8.jpg?context=bWFzdGVyfGltYWdlc3w2MTY4MHxpbWFnZS9qcGVnfGFHUXhMMmhqTVM4eE1qZ3dNRE14TnpZMU16QXlNaTgxTVRWWGVEVXhOVWhmTlRneU5qUXlYelU0TWpZME1pMDRMbXB3Wnd8MDQzY2M2N2Y2MmRlNTVhYzdmNTc4OGYxZjk4NGFhZjhiOGNmZjg1MDk2NWI4ZmUzYTBkNjI5MWIzMWZhYWYyOA"></figure></div></section><section class="toy" id="toy-2" aria-labelledby="toy-2-title"><div class="toy-head reveal"><div class="rank" aria-hidden="true">2</div><div><h2 id="toy-2-title">Meccano Pro Aston Martin Aramco Formula One Race Car Construction Set</h2></div></div><div class="showcase reveal"><div class="blurb"><p>Build the iconic Meccano Pro Aston Martin Aramco Formula One Race Car, and discover a free collectible poster hidden inside the 200 exclusive sets in this special, limited early release. The set has 1203 real metal parts and 2 real tools to push construction skills to the limit. Builders can construct a realistic, authentic Formula One Car (at 1:8 scale) complete with Aston Martin’s aerodynamic design and eye-catching style in Aston Martin’s iconic Racing Green.</p><div style="margin-top: 16px;"><a href="https://www.thetoyshop.com/construction-toys/construction-sets/Meccano-Pro-Limited-Edition-Aston-Martin-Aramco-Formula-One-Race-Car-Construction-Set/p/582668" class="primary-cta-button cta-shop-now"><span class="swoosh-container"><span class="star-start"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span><span class="swoosh">&nbsp;</span></span>Shop Now<span class="cta-icon"><svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path></svg></span><span class="star-end"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span></a></div></div><div class="photo"><img loading="lazy" width="800" height="600" src="https://www.thetoyshop.com/medias/515Wx515H-582668-Primary?context=bWFzdGVyfGltYWdlc3wyMzUyMTJ8aW1hZ2UvanBlZ3xhRGxrTDJnME1DOHhNamd3TlRjd05qazBNRFEwTmk4MU1UVlhlRFV4TlVoZk5UZ3lOalk0WDFCeWFXMWhjbmt8OTIwNzUyMjM1M2E0Mjg3ZDliNzA4YWEyZDgzMmEyMjE4Zjk1OGMxOWNjOGM3NzViNzYzMjk4MjZiOWY2YTA2Mw"></div></div><div class="panels"><div class="character-panel reveal"><img alt="fox mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5"><div class="speech-bubble theme-fox"><h3><span aria-hidden="true">★</span> Why we love it</h3><p>Authentic detailing and iconic Aston Martin Racing Green bring the thrill of the track to life.</p></div></div><div class="character-panel reverse reveal"><img alt="sheep mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Top-Ten-Toys-Editorial-Characters-245x390px-Sheep-look.png?context=bWFzdGVyfHJvb3R8Njg4MTV8aW1hZ2UvcG5nfGFHUTFMMmhtTXk4eE1qZzBPVE0yTXpNNE5qTTVPQzlVYjNBZ1ZHVnVJRlJ2ZVhNZ1JXUnBkRzl5YVdGc0lFTm9ZWEpoWTNSbGNuTWdNalExZURNNU1IQjRYMU5vWldWd0lHeHZiMnN1Y0c1bnw0YzVkNjNmZDBjNDdjNmZlY2Y2MzZmOWViZGRlMDMzZGU2ZWFmZDAxNGFjMTFlZjQxYzM5ZDU0MmNkNjdiZDI5"><div class="speech-bubble theme-sheep"><h3><span aria-hidden="true">✦</span> Top tip</h3><p>Perfect for F1 fans and engineering enthusiasts that are up for a construction challenge.</p></div></div></div><div class="gallery reveal"><figure><img alt=" action view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-582668-582668-9.jpg?context=bWFzdGVyfGltYWdlc3wxNzMzMzN8aW1hZ2UvanBlZ3xhR0ZrTDJoa015OHhNamd3TlRjd05ESXlNRGN3TWk4MU1UVlhlRFV4TlVoZk5UZ3lOalk0WHpVNE1qWTJPQzA1TG1wd1p3fDQ5MjE5OTBhMjc1YWZlZTNhZWViMDA1ZGVmZjcxM2FlYjcxNDQwMGJhNWM2YmNjMDgwNzE5MDFhYzY1YjcyOTc"></figure><figure><img alt="Detail view detail view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-582668-582668-3.jpg?context=bWFzdGVyfGltYWdlc3w4ODU3OHxpbWFnZS9qcGVnfGFHTmxMMmcxTVM4eE1qZ3dOVGN3TVRreU5qazBNaTgxTVRWWGVEVXhOVWhmTlRneU5qWTRYelU0TWpZMk9DMHpMbXB3Wnd8YTg5Yzc3ZjBmOWJmYjAyYTVjMzVmYmI0MTFlNDg1MmI2YTVhYzYzZWU3MjQwYTQ1MDRjZjViNWI0MTc0YmY0YQ"></figure></div></section><section class="toy" id="toy-3" aria-labelledby="toy-3-title"><div class="toy-head reveal"><div class="rank" aria-hidden="true">3</div><div><h2 id="toy-3-title">Early Learning Centre Wooden Little Chefs Kitchen</h2></div></div><div class="showcase reveal"><div class="blurb"><p>A wooden kitchen playset with all the mod cons, this delightfully designed kit will have them cooking up some fun. With interactive features like opening microwave and oven doors, twistable taps and a clock with moveable hands, encourage their imagination through tactile and creative play. </p><div style="margin-top: 16px;"><a href="https://www.thetoyshop.com/dress-up/kitchen/Early-Learning-Centre-Wooden-Little-Chefs-Kitchen/p/582977" class="primary-cta-button cta-shop-now"><span class="swoosh-container"><span class="star-start"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span><span class="swoosh">&nbsp;</span></span>Shop Now<span class="cta-icon"><svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path></svg></span><span class="star-end"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span></a></div></div><div class="photo"><img loading="lazy" width="800" height="600" src="https://www.thetoyshop.com/medias/515Wx515H-582977-Primary?context=bWFzdGVyfGltYWdlc3w3MjUxNnxpbWFnZS9qcGVnfGFHSTVMMmcxTXk4eE1qZ3lNRGN6T0RBME9EQXpNQzgxTVRWWGVEVXhOVWhmTlRneU9UYzNYMUJ5YVcxaGNua3w3NDk2MmI0OWE2NmNhZWUxZmJkZGNkNTMxYjRjY2FmYmUxYWI1NTlmYWNmYTY2MTFkODA4ZGIyYjdiNzI4NmE3"></div></div><div class="panels"><div class="character-panel reveal"><img alt="fox mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5"><div class="speech-bubble theme-fox"><h3><span aria-hidden="true">★</span> Why we love it</h3><p>Filled with interactive features, instil a love of cooking &amp; creativity through hands on play.</p></div></div><div class="character-panel reverse reveal"><img alt="sheep mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Top-Ten-Toys-Editorial-Characters-245x390px-Sheep-look.png?context=bWFzdGVyfHJvb3R8Njg4MTV8aW1hZ2UvcG5nfGFHUTFMMmhtTXk4eE1qZzBPVE0yTXpNNE5qTTVPQzlVYjNBZ1ZHVnVJRlJ2ZVhNZ1JXUnBkRzl5YVdGc0lFTm9ZWEpoWTNSbGNuTWdNalExZURNNU1IQjRYMU5vWldWd0lHeHZiMnN1Y0c1bnw0YzVkNjNmZDBjNDdjNmZlY2Y2MzZmOWViZGRlMDMzZGU2ZWFmZDAxNGFjMTFlZjQxYzM5ZDU0MmNkNjdiZDI5"><div class="speech-bubble theme-sheep"><h3><span aria-hidden="true">✦</span> Top tip</h3><p>Serve up more fun with the Wooden Kitchen Kit, adding pans, vegetables and utensils.</p></div></div></div><div class="gallery reveal"><figure><img alt="Wooden kitchen microwave door action view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-582977-582977-6.jpg?context=bWFzdGVyfGltYWdlc3wyMDAwNHxpbWFnZS9qcGVnfGFEYzBMMmhpWlM4eE1qZ3hOelU0TVRJME5EUTBOaTgxTVRWWGVEVXhOVWhmTlRneU9UYzNYelU0TWprM055MDJMbXB3Wnd8ZmM2ZDMwNzI5ZGQwNTZiODQ5ODYyM2M1MTUwOGRkM2RkMjNmN2JkMzQzMzE0ZDAzNTA4YWVkNTQyNTViOTFmNw"></figure><figure><img alt="Wooden kitchen sink detail detail view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-582977-582977-5.jpg?context=bWFzdGVyfGltYWdlc3wyNjg5M3xpbWFnZS9qcGVnfGFETTVMMmcyWXk4eE1qZ3hOelU0TURreE5qYzJOaTgxTVRWWGVEVXhOVWhmTlRneU9UYzNYelU0TWprM055MDFMbXB3Wnd8NmYxNzViODM3YWQxM2IyNWYzZjU0YjU5MzQzODIzYjVhZTUyMDg0NDYxMzMxNjg5OTQyOGJhY2RkZTcxY2QzMw"></figure></div></section><section class="toy" id="toy-4" aria-labelledby="toy-4-title"><div class="toy-head reveal"><div class="rank" aria-hidden="true">4</div><div><h2 id="toy-4-title">Clickeez Bubble Pops Keyboard Mega Mystery Figure Pack</h2></div></div><div class="showcase reveal"><div class="blurb"><p>Each Clickee is a single keyboard key that clicks and clacks just like a real keyboard. Complete your collection with the Clickeez Keyboard Mega Pack and add all your Clickeez into the keyboard-shaped collector case and find out which ones you're missing. </p><div style="margin-top: 16px;"><a href="https://www.thetoyshop.com/pocket-money/blind-bags/Clickeez-Bubble-Pops-Keyboard-Mega-Mystery-Figure-Pack-%28Styles-Vary%29/p/575750" class="primary-cta-button cta-shop-now"><span class="swoosh-container"><span class="star-start"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span><span class="swoosh">&nbsp;</span></span>Shop Now<span class="cta-icon"><svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path></svg></span><span class="star-end"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span></a></div></div><div class="photo"><img loading="lazy" width="800" height="600" src="https://www.thetoyshop.com/medias/515Wx515H-575750-Primary?context=bWFzdGVyfGltYWdlc3wxMzAzMDl8aW1hZ2UvanBlZ3xhR000TDJnMU1TOHhNamd4TVRBMk1qUTNOamd6TUM4MU1UVlhlRFV4TlVoZk5UYzFOelV3WDFCeWFXMWhjbmt8Mjg0OWRjOGE2YzBlMzRkZDljNDFhMGM4YjE2MTliYWUzNDc4OGI1NGVhYWFiOTAwZjdmOTRmNTI2NjMxMWE0Ng"></div></div><div class="panels"><div class="character-panel reveal"><img alt="fox mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5"><div class="speech-bubble theme-fox"><h3><span aria-hidden="true">★</span> Why we love it</h3><p>Super satisfying sensory fun with pops &amp; clicks, this set includes light up keys not found in others.</p></div></div><div class="character-panel reverse reveal"><img alt="sheep mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Top-Ten-Toys-Editorial-Characters-245x390px-Sheep-look.png?context=bWFzdGVyfHJvb3R8Njg4MTV8aW1hZ2UvcG5nfGFHUTFMMmhtTXk4eE1qZzBPVE0yTXpNNE5qTTVPQzlVYjNBZ1ZHVnVJRlJ2ZVhNZ1JXUnBkRzl5YVdGc0lFTm9ZWEpoWTNSbGNuTWdNalExZURNNU1IQjRYMU5vWldWd0lHeHZiMnN1Y0c1bnw0YzVkNjNmZDBjNDdjNmZlY2Y2MzZmOWViZGRlMDMzZGU2ZWFmZDAxNGFjMTFlZjQxYzM5ZDU0MmNkNjdiZDI5"><div class="speech-bubble theme-sheep"><h3><span aria-hidden="true">✦</span> Top tip</h3><p>Collect and trade with friends to complete your keyboard.</p></div></div></div><div class="gallery reveal"><figure><img alt="Action view action view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-575750-575750-3.jpg?context=bWFzdGVyfGltYWdlc3wxNjI4NTN8aW1hZ2UvanBlZ3xhRFZtTDJnNE5TOHhNamd4TVRBMU1qSXlNRFEwTmk4MU1UVlhlRFV4TlVoZk5UYzFOelV3WHpVM05UYzFNQzB6TG1wd1p3fGE0YWIyNjk5ZTI3ZWVhODVkZmMwYjA2ZWNhNWJlNjMxYTRmYmJlZjkzODVhODEzMGMxOGY1Mjk5MzY2ZDVjNWE"></figure><figure><img alt="Detail view detail view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-575750-575750-9.jpg?context=bWFzdGVyfGltYWdlc3wxNjYxMzd8aW1hZ2UvanBlZ3xhR0l4TDJoa05pOHhNamd4TVRBMU5qUTRNREk0Tmk4MU1UVlhlRFV4TlVoZk5UYzFOelV3WHpVM05UYzFNQzA1TG1wd1p3fDgzYmE2NzYwNDM3ZmYyYjBkODk1NDhhOTRjMjRhYzkwZDAwYjU5NWUyOTViYjJjN2Q5YzNmZjFjZTBiN2EwN2M"></figure></div></section><section class="toy" id="toy-5" aria-labelledby="toy-5-title"><div class="toy-head reveal"><div class="rank" aria-hidden="true">5</div><div><h2 id="toy-5-title">FurReal Gabby The Grow and Roar Tiger Interactive Pet</h2></div></div><div class="showcase reveal"><div class="blurb"><p>This sweet tiger cub responds to love, care, and play with over 100 combinations of sounds and motions that make every moment feel special. Feed her, pet her, and play together to watch Gabby grow. Hear playful roars, soft purrs, and happy tiger sounds as she reacts to attention and affection. Give Gabby a roar, and she’ll roar right back!</p><div style="margin-top: 16px;"><a href="https://www.thetoyshop.com/educational-electronic-toys/pets/FurReal-Gabby-The-Grow-And-Roar-Tiger-Intearctive-Pet/p/584265" class="primary-cta-button cta-shop-now"><span class="swoosh-container"><span class="star-start"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span><span class="swoosh">&nbsp;</span></span>Shop Now<span class="cta-icon"><svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path></svg></span><span class="star-end"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span></a></div></div><div class="photo"><img loading="lazy" width="800" height="600" src="https://www.thetoyshop.com/medias/515Wx515H-584265-Primary?context=bWFzdGVyfGltYWdlc3w3MzM4MXxpbWFnZS9qcGVnfGFHSXlMMmc0T1M4eE1qZ3hNRFF6T1RFMk16a3pOQzgxTVRWWGVEVXhOVWhmTlRnME1qWTFYMUJ5YVcxaGNua3xmYzg2MWY4YTg4ZDM2M2NlZWJhMGJjMjNjYjIyYjY3ZDM2MWI3MGU5ZmQzOTM3MjYyNmUxYjc0ODU0OTdhYjVi"></div></div><div class="panels"><div class="character-panel reveal"><img alt="fox mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5"><div class="speech-bubble theme-fox"><h3><span aria-hidden="true">★</span> Why we love it</h3><p>Gabby really grows with love and affection. The more you play, the bigger they get!</p></div></div><div class="character-panel reverse reveal"><img alt="sheep mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Top-Ten-Toys-Editorial-Characters-245x390px-Sheep-look.png?context=bWFzdGVyfHJvb3R8Njg4MTV8aW1hZ2UvcG5nfGFHUTFMMmhtTXk4eE1qZzBPVE0yTXpNNE5qTTVPQzlVYjNBZ1ZHVnVJRlJ2ZVhNZ1JXUnBkRzl5YVdGc0lFTm9ZWEpoWTNSbGNuTWdNalExZURNNU1IQjRYMU5vWldWd0lHeHZiMnN1Y0c1bnw0YzVkNjNmZDBjNDdjNmZlY2Y2MzZmOWViZGRlMDMzZGU2ZWFmZDAxNGFjMTFlZjQxYzM5ZDU0MmNkNjdiZDI5"><div class="speech-bubble theme-sheep"><h3><span aria-hidden="true">✦</span> Top tip</h3><p>Reset Gabby to relive the fun. Return her to kitten size and enjoy the magic all over again.</p></div></div></div><div class="gallery reveal"><figure><img alt="Action view action view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-584265-584265-5.jpg?context=bWFzdGVyfGltYWdlc3wxMTM0MDV8aW1hZ2UvanBlZ3xhREExTDJoaU9TOHhNamd4TURNNU9Ua3dOemczTUM4MU1UVlhlRFV4TlVoZk5UZzBNalkxWHpVNE5ESTJOUzAxTG1wd1p3fDI4NGI0YTliOGQ0ODBlMTY5M2VjMzlhOWZkZGQzNmNiYTQxN2Q1ZGIyNWQyMTZiOGMwN2Q0NzJiZTVmZTZlZmU"></figure><figure><img alt="Detail view detail view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-584265-584265-4.jpg?context=bWFzdGVyfGltYWdlc3wxMTMzNzV8aW1hZ2UvanBlZ3xhRFl4TDJoa01DOHhNamd4TURNNU9USTFNalV4TUM4MU1UVlhlRFV4TlVoZk5UZzBNalkxWHpVNE5ESTJOUzAwTG1wd1p3fDU3OTFlNmEzMTNiMWQxMTBhOWUwNjhjYmE5ZmQyZGI2ZWIyNzY0NDA4MGYyOWY4ZjA4ZTk4OTM0MDM5YzZhMTc"></figure></div><div class="reviews reveal"><div class="rev"><div class="top"><div class="name">DajaB</div><div class="stars" aria-label="5 out of 5">★★★★★</div></div><p>“My girls find this tiger sooo adorable and fun! they love how they are able to feed and play with the tiger and her rope. It was really cool to see it grow after it was interacted with so much. 4 double A batteries and my girls had fun for hours on end.”</p></div></div></section><section class="toy" id="toy-6" aria-labelledby="toy-6-title"><div class="toy-head reveal"><div class="rank" aria-hidden="true">6</div><div><h2 id="toy-6-title">Pokémon Battle Action Pikachu 30cm Figure</h2></div></div><div class="showcase reveal"><div class="blurb"><p>This interactive Pokemon Pikachu will bring every fan’s biggest dream to life: battling, bonding, and training with the iconic Pikachu. Featuring a light up tail that launches a powerful attack, authentic sounds, and 100+ unique reactions, this immersive experience will make you feel like you jumped right into an episode of Pokemon the Animated Series. </p><div style="margin-top: 16px;"><a href="https://www.thetoyshop.com/action-toys/video-game-figures/Pokemon-Battle-Action-Pikachu-30cm-Figure/p/583709" class="primary-cta-button cta-shop-now"><span class="swoosh-container"><span class="star-start"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span><span class="swoosh">&nbsp;</span></span>Shop Now<span class="cta-icon"><svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path></svg></span><span class="star-end"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span></a></div></div><div class="photo"><img loading="lazy" width="800" height="600" src="https://www.thetoyshop.com/medias/515Wx515H-583709-Primary?context=bWFzdGVyfGltYWdlc3wzNzE0MHxpbWFnZS9qcGVnfGFEUTBMMmhqTUM4eE1qZ3lNRGd5TVRrNU9UWTBOaTgxTVRWWGVEVXhOVWhmTlRnek56QTVYMUJ5YVcxaGNua3xlYjI4N2E1ODg1OWI2MjEzMmI0N2MwYWJkOTlhNGJkZjliOTA0YTMzYWY0NzE4MDM5YWQzYTIzMmFmYWYxMjM4"></div></div><div class="panels"><div class="character-panel reveal"><img alt="fox mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5"><div class="speech-bubble theme-fox"><h3><span aria-hidden="true">★</span> Why we love it</h3><p>Battle with your own Pikachu?!  Enough said…</p></div></div><div class="character-panel reverse reveal"><img alt="sheep mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Top-Ten-Toys-Editorial-Characters-245x390px-Sheep-look.png?context=bWFzdGVyfHJvb3R8Njg4MTV8aW1hZ2UvcG5nfGFHUTFMMmhtTXk4eE1qZzBPVE0yTXpNNE5qTTVPQzlVYjNBZ1ZHVnVJRlJ2ZVhNZ1JXUnBkRzl5YVdGc0lFTm9ZWEpoWTNSbGNuTWdNalExZURNNU1IQjRYMU5vWldWd0lHeHZiMnN1Y0c1bnw0YzVkNjNmZDBjNDdjNmZlY2Y2MzZmOWViZGRlMDMzZGU2ZWFmZDAxNGFjMTFlZjQxYzM5ZDU0MmNkNjdiZDI5"><div class="speech-bubble theme-sheep"><h3><span aria-hidden="true">✦</span> Top tip</h3><p>Feel the thunder with an interactive light-up attack, unique reactions &amp; over 100 sounds</p></div></div></div><div class="gallery reveal"><figure><img alt="Action view action view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-583709-583709-6.jpg?context=bWFzdGVyfGltYWdlc3w0MTc3NHxpbWFnZS9qcGVnfGFHWXhMMmcyTVM4eE1qZ3lNRGd3TXpReU1ERTVNQzgxTVRWWGVEVXhOVWhmTlRnek56QTVYelU0TXpjd09TMDJMbXB3Wnd8NTk5YWEzMThiMTRhODBiNWMxZTcyYzg2NGI2ZmY3MjM5NjdhNGMwZDNlMzQ2Yjg1YmQ4NDViNjllNjA1NzI3MA"></figure><figure><img alt="Detail view detail view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-583709-583709-8.jpg?context=bWFzdGVyfGltYWdlc3w0NTQ1MnxpbWFnZS9qcGVnfGFHTTFMMmhrTmk4eE1qZ3lNRGd3TkRjNU5qUTBOaTgxTVRWWGVEVXhOVWhmTlRnek56QTVYelU0TXpjd09TMDRMbXB3Wnd8OWRmNWFiMDhmM2QzYjhhNGYzOWJiODgyYmE2YWE5NTRlYjhhMWY3YmM3NDIxYzhiMDEyMTk2MzIzYzRkOTczZQ"></figure></div></section><section class="toy" id="toy-7" aria-labelledby="toy-7-title"><div class="toy-head reveal"><div class="rank" aria-hidden="true">7</div><div><h2 id="toy-7-title">LEGO Botanicals Rocking Plants Construction Set 11506</h2></div></div><div class="showcase reveal"><div class="blurb"><p>Spread joy by creating 2 cheerful LEGO plant models in pastel coloured pots – a Delosperma (ice plant) named Lumi with purple buds, and an Echeveria named Ellie with a long stem and coral buds. The pots have adorable smiley faces and rounded bases, so they rock when nudged – the pale green plant pot rocks back and forth, and the pale pink plant pot rocks side to side</p><div style="margin-top: 16px;"><a href="https://www.thetoyshop.com/construction-toys/building-blocks/LEGO-Botanicals-Rocking-Plants-Construction-Set-11506/p/578212" class="primary-cta-button cta-shop-now"><span class="swoosh-container"><span class="star-start"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span><span class="swoosh">&nbsp;</span></span>Shop Now<span class="cta-icon"><svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path></svg></span><span class="star-end"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span></a></div></div><div class="photo"><img loading="lazy" width="800" height="600" src="https://www.thetoyshop.com/medias/515Wx515H-578212-578212-2.jpg?context=bWFzdGVyfGltYWdlc3w0ODIwNnxpbWFnZS9qcGVnfGFHRXlMMmhqWmk4eE1qY3pPVFl5TlRVNE1qWXlNaTgxTVRWWGVEVXhOVWhmTlRjNE1qRXlYelUzT0RJeE1pMHlMbXB3Wnd8MDZlYWI3MTEzOTYzZjljZjQ3NGFlOGU5YjQyZTU5OTE1NWFiNDZiODJjYmQ4ODFmYzRjNTg1YWE1ZjBjZDgwMw"></div></div><div class="panels"><div class="character-panel reveal"><img alt="fox mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5"><div class="speech-bubble theme-fox"><h3><span aria-hidden="true">★</span> Why we love it</h3><p>Cute, playful plant that don’t require watering…yes please!</p></div></div><div class="character-panel reverse reveal"><img alt="sheep mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Top-Ten-Toys-Editorial-Characters-245x390px-Sheep-look.png?context=bWFzdGVyfHJvb3R8Njg4MTV8aW1hZ2UvcG5nfGFHUTFMMmhtTXk4eE1qZzBPVE0yTXpNNE5qTTVPQzlVYjNBZ1ZHVnVJRlJ2ZVhNZ1JXUnBkRzl5YVdGc0lFTm9ZWEpoWTNSbGNuTWdNalExZURNNU1IQjRYMU5vWldWd0lHeHZiMnN1Y0c1bnw0YzVkNjNmZDBjNDdjNmZlY2Y2MzZmOWViZGRlMDMzZGU2ZWFmZDAxNGFjMTFlZjQxYzM5ZDU0MmNkNjdiZDI5"><div class="speech-bubble theme-sheep"><h3><span aria-hidden="true">✦</span> Top tip</h3><p>Customise your plants with any LEGO brick &amp; bring your own twist to the fun.</p></div></div></div><div class="gallery reveal"><figure><img alt="Action view action view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-578212-578212-6.jpg?context=bWFzdGVyfGltYWdlc3w3MTE0MXxpbWFnZS9qcGVnfGFHUTNMMmczTWk4eE1qY3pPVFl5TkRreU56STJNaTgxTVRWWGVEVXhOVWhmTlRjNE1qRXlYelUzT0RJeE1pMDJMbXB3Wnd8NGI0ZmViZmIwMDQ3OGExODQzNmE3NWVmZDE4N2U2MzA1ZWU3N2IzYjM1NTY1YzBmNjQ1ZGU3NWIxNWFiOGRlNA"></figure><figure><img alt="Detail view detail view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-578212-578212-7.jpg?context=bWFzdGVyfGltYWdlc3w2NDgzMXxpbWFnZS9qcGVnfGFEZ3hMMmhrWXk4eE1qY3pPVFl5TlRreE1ETXdNaTgxTVRWWGVEVXhOVWhmTlRjNE1qRXlYelUzT0RJeE1pMDNMbXB3Wnd8ZTYxMTU1NTdmYTNhODYwOGE4NGRhYWIzMzQxMjJkOGVhNDc0OGYyYzYwNzcyOTIyMTE2NmNkMjliOTAzZmZkNw"></figure></div><div class="reviews reveal"><div class="rev"><div class="top"><div class="name">BigE23</div><div class="stars" aria-label="5 out of 5">★★★★★</div></div><p>“Bought this for my daughter and she loved it. Easy to put together and she loves the way it looks in her room. Very cute!”</p></div></div></section><section class="toy" id="toy-8" aria-labelledby="toy-8-title"><div class="toy-head reveal"><div class="rank" aria-hidden="true">8</div><div><h2 id="toy-8-title">Mini Brands Really Works Vinyl Playset Series 1 by ZURU</h2></div></div><div class="showcase reveal"><div class="blurb"><p>Real music. Real spin. Mini size. The ZURU Mini Brands Really Works Vinyl Playset Series 1 is a miniature record player that actually plays. Set the included Mini Vinyl of "APT." by Rosé &amp; Bruno Mars — your collection's first record — on the deck, drop the needle, and hear real music from a turntable that fits in the palm of your hand.</p><div style="margin-top: 16px;"><a href="https://www.thetoyshop.com/pocket-money/blind-bags/Mini-Brands-Really-Works-Vinyl-Playset-Series-1-By-ZURU/p/583203" class="primary-cta-button cta-shop-now"><span class="swoosh-container"><span class="star-start"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span><span class="swoosh">&nbsp;</span></span>Shop Now<span class="cta-icon"><svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path></svg></span><span class="star-end"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span></a></div></div><div class="photo"><img loading="lazy" width="800" height="600" src="https://www.thetoyshop.com/medias/515Wx515H-583203-Primary?context=bWFzdGVyfGltYWdlc3wxMDEzNzR8aW1hZ2UvanBlZ3xhR0psTDJneE9DOHhNamMwT1RJek5URXlOak13TWk4MU1UVlhlRFV4TlVoZk5UZ3pNakF6WDFCeWFXMWhjbmt8ODYxN2Y0ZDA0MWRhYzQwYWIzMjJhOTdmMGZmOWMyZDhjNjkyODJlN2QwNDQzNzdiZWYxOWZhNDMxM2Q4NDNkYg"></div></div><div class="panels"><div class="character-panel reveal"><img alt="fox mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5"><div class="speech-bubble theme-fox"><h3><span aria-hidden="true">★</span> Why we love it</h3><p>Play real music &amp; collect cool mini vinyls, perfect for any music fan.</p></div></div><div class="character-panel reverse reveal"><img alt="sheep mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Top-Ten-Toys-Editorial-Characters-245x390px-Sheep-look.png?context=bWFzdGVyfHJvb3R8Njg4MTV8aW1hZ2UvcG5nfGFHUTFMMmhtTXk4eE1qZzBPVE0yTXpNNE5qTTVPQzlVYjNBZ1ZHVnVJRlJ2ZVhNZ1JXUnBkRzl5YVdGc0lFTm9ZWEpoWTNSbGNuTWdNalExZURNNU1IQjRYMU5vWldWd0lHeHZiMnN1Y0c1bnw0YzVkNjNmZDBjNDdjNmZlY2Y2MzZmOWViZGRlMDMzZGU2ZWFmZDAxNGFjMTFlZjQxYzM5ZDU0MmNkNjdiZDI5"><div class="speech-bubble theme-sheep"><h3><span aria-hidden="true">✦</span> Top tip</h3><p>Add to your record collection by finding additional tracks in Mini Brands Capsules.</p></div></div></div><div class="gallery reveal"><figure><img alt="Action view action view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-583203-583203-4.jpg?context=bWFzdGVyfGltYWdlc3wyNjcyNzJ8aW1hZ2UvanBlZ3xhR1F3TDJnelpDOHhNamM1TVRRME5qVTJPRGs1TUM4MU1UVlhlRFV4TlVoZk5UZ3pNakF6WHpVNE16SXdNeTAwTG1wd1p3fDliNzc3YWNmMTZhMDkyYTlmOTJjMWEzOGM4MzA1NjM0Mjg5NjYzYjk4YTQzMmRjNWQ4NjNkMzJmMjljYTczYmY"></figure><figure><img alt="Detail view detail view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-583203-583203-7.jpg?context=bWFzdGVyfGltYWdlc3wxNzc2MDF8aW1hZ2UvanBlZ3xhRGRoTDJoaE55OHhNamM1TVRRME56VTFNakF6TUM4MU1UVlhlRFV4TlVoZk5UZ3pNakF6WHpVNE16SXdNeTAzTG1wd1p3fGQ2YmI5ZjFhYTc2MGRmOGZjODZjZTljMzRhZjNjZWJmY2RmNDA4NjFhYWU1NmNkYWMxNWZmNzc2ZmNlOTg0NjQ"></figure></div></section><section class="toy" id="toy-9" aria-labelledby="toy-9-title"><div class="toy-head reveal"><div class="rank" aria-hidden="true">9</div><div><h2 id="toy-9-title">Slime Mart Disney Cake Basket Craft Set by ZURU</h2></div></div><div class="showcase reveal"><div class="blurb"><p>Unleash your inner chef with the ZURU Slime Mart Disney Shopping Basket, a creative DIY experience packed with magical slime fun! Unpack your basket to reveal colourful slime compounds and themed accessories, then mix, mold, and decorate to create realistic, squishy Disney inspired cakes. Inspired by Frozen, each creation feels delightfully soft and satisfying to shape.</p><div style="margin-top: 16px;"><a href="https://www.thetoyshop.com/arts-creative-play/slime-putty-making-kits/Slime-Mart-Disney-Cake-Basket-Craft-Set-by-ZURU/p/583213" class="primary-cta-button cta-shop-now"><span class="swoosh-container"><span class="star-start"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span><span class="swoosh">&nbsp;</span></span>Shop Now<span class="cta-icon"><svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path></svg></span><span class="star-end"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span></a></div></div><div class="photo"><img loading="lazy" width="800" height="600" src="https://www.thetoyshop.com/medias/515Wx515H-583213-Primary?context=bWFzdGVyfGltYWdlc3wyODE1NDN8aW1hZ2UvanBlZ3xhRGt6TDJnNU9DOHhNamd3TmpVNE5UZ3hNRGszTkM4MU1UVlhlRFV4TlVoZk5UZ3pNakV6WDFCeWFXMWhjbmt8NDg3M2Q5OTVjZjMwZjM0MzU5Y2E0ZDM0ODhmNmQ3YTEzMDUwOTE1NTUxMGE4NTQ1ZDE0NjBjNWNkYWRmOGEzMA"></div></div><div class="panels"><div class="character-panel reveal"><img alt="fox mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5"><div class="speech-bubble theme-fox"><h3><span aria-hidden="true">★</span> Why we love it</h3><p>Squishy, tactile fun with a Frozen theme, it combines Disney magic with hands on play.</p></div></div><div class="character-panel reverse reveal"><img alt="sheep mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Top-Ten-Toys-Editorial-Characters-245x390px-Sheep-look.png?context=bWFzdGVyfHJvb3R8Njg4MTV8aW1hZ2UvcG5nfGFHUTFMMmhtTXk4eE1qZzBPVE0yTXpNNE5qTTVPQzlVYjNBZ1ZHVnVJRlJ2ZVhNZ1JXUnBkRzl5YVdGc0lFTm9ZWEpoWTNSbGNuTWdNalExZURNNU1IQjRYMU5vWldWd0lHeHZiMnN1Y0c1bnw0YzVkNjNmZDBjNDdjNmZlY2Y2MzZmOWViZGRlMDMzZGU2ZWFmZDAxNGFjMTFlZjQxYzM5ZDU0MmNkNjdiZDI5"><div class="speech-bubble theme-sheep"><h3><span aria-hidden="true">✦</span> Top tip</h3><p>Create a ‘cake’ and unleash their craftiness with fun and funky design choices.</p></div></div></div><div class="gallery reveal"><figure><img alt="Action view action view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-583213-583213-6.jpg?context=bWFzdGVyfGltYWdlc3wyMzM0NDV8aW1hZ2UvanBlZ3xhRFkwTDJoalppOHhNamd3TmpVMU1ERXlOall5TWk4MU1UVlhlRFV4TlVoZk5UZ3pNakV6WHpVNE16SXhNeTAyTG1wd1p3fDJjY2I4Y2ZmY2M4ZGRmYzlkMDliOGJkNTA5ZWZjMjViNTQ0MmY0NzdmNjU2YTVkMjY0YTY1MjQxN2QzZTE0ZTc"></figure><figure><img alt="Detail view detail view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-583213-583213-5.jpg?context=bWFzdGVyfGltYWdlc3wxNjkzNDJ8aW1hZ2UvanBlZ3xhR1ZqTDJnek1pOHhNamd3TmpVME9UYzVPRGswTWk4MU1UVlhlRFV4TlVoZk5UZ3pNakV6WHpVNE16SXhNeTAxTG1wd1p3fGYzNzI0YjZkMDU0Y2M2MmM4MWIwNzliYjU3YzJiNTc2NDc2NjVlNTMyMTA2MjNlYzZlMjBiYmM1OGUwODI2MjA"></figure></div><div class="reviews reveal"><div class="rev"><div class="top"><div class="name">Blahdy Blah Blah</div><div class="stars" aria-label="5 out of 5">★★★★★</div></div><p>“Love it Love it Love it”</p></div></div></section><section class="toy" id="toy-10" aria-labelledby="toy-10-title"><div class="toy-head reveal"><div class="rank" aria-hidden="true">10</div><div><h2 id="toy-10-title">Primal Hatch Megalodon Electronic Pet</h2></div></div><div class="showcase reveal"><div class="blurb"><p>Unleash a prehistoric predator from the deep seas with the Primal Hatch Megalodon! This isn’t just another shark toy; it’s a complete laboratory experience that lets you hatch your own fearsome creature. The excitement begins the moment you place the giant egg in its tank and add water.</p><div style="margin-top: 16px;"><a href="https://www.thetoyshop.com/educational-electronic-toys/pets/Primal-Hatch-Megalodon-Electronic-Pet/p/583223?queryId=3245110cc3dc7a3627fb7b483f141767" class="primary-cta-button cta-shop-now"><span class="swoosh-container"><span class="star-start"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span><span class="swoosh">&nbsp;</span></span>Shop Now<span class="cta-icon"><svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path></svg></span><span class="star-end"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path></svg></span></a></div></div><div class="photo"><img loading="lazy" width="800" height="600" src="https://www.thetoyshop.com/medias/515Wx515H-583223-583223-5.jpg?context=bWFzdGVyfGltYWdlc3wyMjczMTl8aW1hZ2UvanBlZ3xhR0U1TDJnNE15OHhNamd5TXprek5UTXlNREE1TkM4MU1UVlhlRFV4TlVoZk5UZ3pNakl6WHpVNE16SXlNeTAxTG1wd1p3fGEyZjBkYWUyNWEzMGNkMWU4M2NmMGQ5NzZkM2FjMDNhOGU3MTRmM2JkZDk0ZDdmNWI3NzMwNjRhNThlNGM5YTM"></div></div><div class="panels"><div class="character-panel reveal"><img alt="fox mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Fox-Sitting.png?context=bWFzdGVyfHJvb3R8MTE4OTV8aW1hZ2UvcG5nfGFERTNMMmd3WVM4eE1qZ3hOelF4TmpjNE1UZzFOQzlHYjNnZ0xTQlRhWFIwYVc1bkxuQnVad3wwNzJmNjVlYTJkNjQzZmVjOGZkOWYyMWZhYjUyZDA3Zjk2MTMxYzYzMDU2M2FjZTUxOGM5YzRmM2NlNjgyMjE5"><div class="speech-bubble theme-fox"><h3><span aria-hidden="true">★</span> Why we love it</h3><p>A sharky surprise that’s perfect for people who love a science experiment.</p></div></div><div class="character-panel reverse reveal"><img alt="sheep mascot" class="character-mascot" loading="lazy" src="https://www.thetoyshop.com/medias/Top-Ten-Toys-Editorial-Characters-245x390px-Sheep-look.png?context=bWFzdGVyfHJvb3R8Njg4MTV8aW1hZ2UvcG5nfGFHUTFMMmhtTXk4eE1qZzBPVE0yTXpNNE5qTTVPQzlVYjNBZ1ZHVnVJRlJ2ZVhNZ1JXUnBkRzl5YVdGc0lFTm9ZWEpoWTNSbGNuTWdNalExZURNNU1IQjRYMU5vWldWd0lHeHZiMnN1Y0c1bnw0YzVkNjNmZDBjNDdjNmZlY2Y2MzZmOWViZGRlMDMzZGU2ZWFmZDAxNGFjMTFlZjQxYzM5ZDU0MmNkNjdiZDI5"><div class="speech-bubble theme-sheep"><h3><span aria-hidden="true">✦</span> Top tip</h3><p>Rinse, dry and reset to watch this chomping chum hatch again.</p></div></div></div><div class="gallery reveal"><figure><img alt="Action view action view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-583223-583223-4.jpg?context=bWFzdGVyfGltYWdlc3wyNjgzOTl8aW1hZ2UvanBlZ3xhREZsTDJneVppOHhNamd5TXprek5EazVNalF4TkM4MU1UVlhlRFV4TlVoZk5UZ3pNakl6WHpVNE16SXlNeTAwTG1wd1p3fDlkYzZjYjkzNmUxZWUxMWZhZTlkMDI2YjRkOGU1MTY3ZTVlNzY2NDk3ZDg4NjY5YWM1OWYwMTFhZDYwYWZmNTc"></figure><figure><img alt="Detail view detail view" loading="lazy" width="640" height="400" src="https://www.thetoyshop.com/medias/515Wx515H-583223-583223-7.jpg?context=bWFzdGVyfGltYWdlc3wyMDA5MDd8aW1hZ2UvanBlZ3xhR0kxTDJnNU9DOHhNamd5TXprek5UazNOVFExTkM4MU1UVlhlRFV4TlVoZk5UZ3pNakl6WHpVNE16SXlNeTAzTG1wd1p3fGE4YmE5MDRiZWJlYWZjNzMyODVjMzg2N2Q1ZjdhNTI3ZmZmMDRhMWMwZGRiMjEzY2I0NzRkM2I0Nzk1YTEzNDk"></figure></div><div class="reviews reveal"><div class="rev"><div class="top"><div class="name">Surfnbbum7807</div><div class="stars" aria-label="5 out of 5">★★★★★</div></div><p>“This interactive 16-inch shark toy is one your kids will be able to repeatedly enjoy. I love that you can reset it. Thats a game changer. Perfect for sharing with siblings. Its exciting to watch the egg "hatch" by pouring water inside, making the water foam red. The sounds it makes add to the suspense.”</p></div></div></section></main></div><div class="full-width-section" style="padding-bottom: 60px;"><div class="footer-lozenge-title">Top Tips for Chritmas Gifts</div><div><p>There’s a bundle more inspiration beyond our Top Ten Toys for Christmas, from selecting the ideal <strong><a href="https://www.thetoyshop.com/c/christmas-toys/stocking-fillers">stocking fillers</a></strong> to bagging those <strong><a href=" https://www.thetoyshop.com/c/christmas-toys/christmas-big-gifts">big gifts</a></strong>. If you’re still struggling to find just the right thing, our <strong><a href="https://www.thetoyshop.com/presentfinder">gift finder</a></strong> can help you pinpoint the perfect present with filters for age, interest, budget and beyond.</p></div></div><div class="full-width-section" style="padding-bottom: 60px;"><div class="footer-lozenge-title">Christmas Fun</div><div><p>We also have an array of <strong><a href=" https://www.thetoyshop.com/childhood-adventures/category/christmas">Christmas blogs</a></strong> to offer informative guidance on <strong><a href="https://www.thetoyshop.com/childhood-adventures/christmas-party-ideas-for-kids-and-families">fun things to do over the festive period</a></strong>, <strong><a href=" https://www.thetoyshop.com/childhood-adventures/christmas-wreath-by-loom-bands">cool crafts</a></strong> to keep the whole family entertained, and gift guides for all manner of interests and age ranges. Our <strong><a href="https://www.thetoyshop.com/christmas-shop">Christmas hub</a></strong> lets you browse by age range, price and category and also features seasonal games to give you a break from browsing. Once you’ve found the pressie that will light up their Christmas Day, you can choose from home delivery and have your choices sent to your door, or select Click &amp; Collect to pick up from a nearby shop at a time to suit you. If you still can’t find something that’s exactly right, <strong><a href=" https://www.thetoyshop.com/gift-cards/The-Entertainer-%26-Early-Learning-Centre-Gift-Card-%C2%A310/p/99880000001_10">gift cards</a></strong> keep the thrill of Christmas going, as they can come in-store and choose their own items. They’re also a great option for last minute shoppers and those who are hard to buy for.</p></div></div></div></div></div><script>
+            const TOYS = [
+              {
+                id: "toy-1", name: "Mega Build Space Rover", category: "Construction", age: "6–12 yrs",
+                url: "#",
+                hero: "/images/toy1-hero.png", heroalt: "Action view", life: "/images/toy1-life.png", lifealt: "Action view", life2: "/images/toy1-life2.png", life2alt: "Detail view",
+                blurb: "A 480-piece buildable Mars rover with working suspension, snap-on solar panels and a posable astronaut.",
+                love: "It nails that sweet spot between challenge and reward.",
+                loveCharacter: "sheep",
+                tip: "Sort the pieces into a muffin tin before you start.",
+                tipCharacter: "fox",
+              },
+              {
+                id: "toy-2", name: "Rainbow Unicorn Plush Friend", category: "Plush", age: "0–6 yrs",
+                url: "#",
+                hero: "/images/toy2-hero.png", heroalt: "Action view", life: "/images/toy2-life.png", lifealt: "Action view", life2: "/images/toy2-life2.png", life2alt: "Detail view",
+                blurb: "Impossibly soft, gently weighted and topped with a shimmery horn.",
+                love: "The weighted body is quietly brilliant.",
+                tip: "Give it a name together on day one.",
+              },
+              {
+                id: "toy-3", name: "Turbo RC Stunt Racer", category: "Remote Control", age: "6–12 yrs",
+                url: "#",
+                hero: "/images/toy3-hero.png", heroalt: "Action view", life: "/images/toy3-life.png", lifealt: "Action view", life2: "/images/toy3-life2.png", life2alt: "Detail view",
+                blurb: "360° flips, wall-climbing grip and a genuinely tough shell.",
+                love: "It's fast enough to thrill big kids yet forgiving enough for little hands.",
+                tip: "Charge the controller too, not just the car.",
+              },
+              {
+                id: "toy-4", name: "Little Chef Deluxe Kitchen", category: "Role Play", age: "3–7 yrs",
+                url: "#",
+                hero: "/images/toy4-hero.png", heroalt: "Action view", life: "/images/toy4-life.png", lifealt: "Action view", life2: "/images/toy4-life2.png", life2alt: "Detail view",
+                blurb: "Clicky knobs, a hob that lights up, a chattering microwave.",
+                love: "The role play it unlocks is endless.",
+                tip: "Add a few real, safe kitchen bits.",
+              },
+              {
+                id: "toy-5", name: "Galaxy Explorer Telescope", category: "STEM", age: "8–12 yrs",
+                url: "#",
+                hero: "/images/toy5-hero.png", heroalt: "Action view", life: "/images/toy5-life.png", lifealt: "Action view", life2: "/images/toy5-life2.png", life2alt: "Detail view",
+                blurb: "A properly capable starter scope that shows real craters on the Moon.",
+                love: "It turns a normal winter evening into an event.",
+                tip: "Start with the Moon, not the stars.",
+              },
+              {
+                id: "toy-6", name: "Dino World Interactive T-Rex", category: "Electronic", age: "4–9 yrs",
+                url: "#",
+                hero: "/images/toy6-hero.png", heroalt: "Action view", life: "/images/toy6-life.png", lifealt: "Action view", life2: "/images/toy6-life2.png", life2alt: "Detail view",
+                blurb: "He walks, roars, blinks his light-up eyes and reacts to claps.",
+                love: "The touch and sound sensors make him feel genuinely alive.",
+                tip: "Pop him on 'sleep mode' at bedtime.",
+              },
+              {
+                id: "toy-7", name: "Sparkle Art Studio Craft Kit", category: "Arts & Crafts", age: "5–10 yrs",
+                url: "#",
+                hero: "/images/toy7-hero.png", heroalt: "Action view", life: "/images/toy7-life.png", lifealt: "Action view", life2: "/images/toy7-life2.png", life2alt: "Detail view",
+                blurb: "Over 150 pieces of paints, gems, glitter glue and blank canvases.",
+                love: "Everything lives in one clip-shut case.",
+                tip: "Lay down an old shower curtain as a craft mat.",
+              },
+              {
+                id: "toy-8", name: "Bounce & Giggle Activity Gym", category: "Baby", age: "0–12 mo",
+                url: "#",
+                hero: "/images/toy8-hero.png", heroalt: "Action view", life: "/images/toy8-life.png", lifealt: "Action view", life2: "/images/toy8-life2.png", life2alt: "Detail view",
+                blurb: "A plush play mat with adjustable arches, crinkly leaves, and a baby-safe mirror.",
+                love: "Every element is there for a reason.",
+                tip: "Rotate just one or two toys on the arches each week.",
+              },
+              {
+                id: "toy-9", name: "Code & Play Robot Buddy", category: "STEM", age: "6–11 yrs",
+                url: "#",
+                hero: "/images/toy9-hero.png", heroalt: "Action view", life: "/images/toy9-life.png", lifealt: "Action view", life2: "/images/toy9-life2.png", life2alt: "Detail view",
+                blurb: "A friendly robot that teaches real coding logic through a colourful app.",
+                love: "It sneaks genuine problem-solving and sequencing skills into play.",
+                tip: "Set a 'mission of the day'.",
+              },
+              {
+                id: "toy-10", name: "Mega Splash Water Blaster Set", category: "Outdoor", age: "6–12 yrs",
+                url: "#",
+                hero: "/images/toy10-hero.png", heroalt: "Action view", life: "/images/toy10-life.png", lifealt: "Action view", life2: "/images/toy10-life2.png", life2alt: "Detail view",
+                blurb: "A two-pack of lightweight, long-range blasters with big tanks.",
+                love: "They fill fast, fire far and don't leak.",
+                tip: "Freeze the water for ten minutes first on a scorcher.",
+              }
+            ];
+
+            const REVIEW_POOL = [
+              { name: "Sarah M.", text: "Bought it on a whim and it's now the most-played-with toy in the house. Worth every penny." },
+              { name: "Dev P.", text: "My two fight over whose turn it is — the highest praise a toy can get in this family!" },
+              { name: "Grandad Joe", text: "Grandkids were glued to it all weekend and so, if I'm honest, was I." },
+              { name: "Amina K.", text: "Brilliant quality, feels really sturdy and survived week one with a toddler. Impressed." },
+              { name: "Tom R.", text: "Kept the kids entertained on a long snowy half term. That alone deserves five stars." },
+              { name: "Priya S.", text: "Great value and arrived beautifully packaged — made a lovely winter gift." }
+            ];
+
+            function pickReview(i) {
+              return REVIEW_POOL[i % REVIEW_POOL.length];
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+              // 1. Render TOC
+              const tocList = document.getElementById("tocList");
+              if (tocList) {
+                tocList.innerHTML = TOYS.map(t => `
+                  <li><a href="#${t.id}" data-target="${t.id}"><span class="t">${t.name}</span></a></li>
+                `).join("");
+              }
+
+              // 2. Render Toy Content Sections
+              const content = document.getElementById("content");
+              if (content && !content.children.length) {
+                content.innerHTML = TOYS.map((t, i) => {
+                  const rank = i + 1;
+                  const rev = pickReview(i);
+                  return `
+                    <section class="toy" id="${t.id}" aria-labelledby="${t.id}-title">
+                      <div class="toy-head reveal">
+                        <div class="rank" aria-hidden="true">${rank}</div>
+                        <div><h2 id="${t.id}-title">${t.name}</h2></div>
+                      </div>
+                      <div class="showcase reveal">
+                        <div class="blurb">
+                          <p>${t.blurb}</p>
+                          <a class="btn" href="${t.url}">View product <span class="arrow" aria-hidden="true">→</span></a>
+                        </div>
+                        <div class="photo">
+                          <img src="${t.hero}" alt="${t.heroalt}" loading="lazy" width="800" height="600" />
+                        </div>
+                      </div>
+                      <div class="panels">
+                        <div class="panel love reveal">
+                          <h3><span class="ico" aria-hidden="true">★</span> Why we love it</h3>
+                          <p>${t.love}</p>
+                        </div>
+                        <div class="panel tip reveal">
+                          <h3><span class="ico" aria-hidden="true">✦</span> Top tip</h3>
+                          <p>${t.tip}</p>
+                        </div>
+                      </div>
+                      <div class="reviews reveal">
+                        <div class="rev">
+                          <div class="top">
+                            <div class="name">${rev.name}</div>
+                            <div class="stars" aria-label="5 out of 5">★★★★★</div>
+                          </div>
+                          <p>&ldquo;${rev.text}&rdquo;</p>
+                        </div>
+                      </div>
+                    </section>
+                  `;
+                }).join("");
+              }
+
+              // 3. Bind Smooth Scrolling & Active State Highlighting for TOC
+              const sections = document.querySelectorAll(".toy");
+              const tocLinks = document.querySelectorAll(".toc a");
+
+              tocLinks.forEach(link => {
+                link.addEventListener("click", function (e) {
+                  e.preventDefault();
+                  const targetId = this.getAttribute("href");
+                  const targetSection = document.querySelector(targetId);
+                  
+                  if (targetSection) {
+                    const topPos = targetSection.getBoundingClientRect().top + window.pageYOffset - 84;
+                    window.scrollTo({
+                      top: topPos,
+                      behavior: "smooth"
+                    });
+                  }
+                });
+              });
+
+              const observerOptions = {
+                root: null,
+                rootMargin: "-20% 0px -60% 0px",
+                threshold: 0
+              };
+
+              const observerCallback = (entries) => {
+                entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute("id");
+                    tocLinks.forEach(link => {
+                      if (link.getAttribute("href") === `#${id}`) {
+                        link.classList.add("active");
+                        link.scrollIntoView({
+                          behavior: "smooth",
+                          inline: "nearest",
+                          block: "nearest"
+                        });
+                      } else {
+                        link.classList.remove("active");
+                      }
+                    });
+                  }
+                });
+              };
+
+              const observer = new IntersectionObserver(observerCallback, observerOptions);
+              sections.forEach(section => observer.observe(section));
+
+              // 4. Reveal Animations Observer
+              const revealObs = new IntersectionObserver((entries) => {
+                entries.forEach(e => { 
+                  if (e.isIntersecting) { 
+                    e.target.classList.add("in"); 
+                    revealObs.unobserve(e.target); 
+                  } 
+                });
+              }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+              
+              document.querySelectorAll(".reveal").forEach(el => revealObs.observe(el));
+            });
+          </script>

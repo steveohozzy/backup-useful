@@ -1,0 +1,269 @@
+  
+</div>
+
+<script>
+  /* HIDE EVENTS BASED ON DATE */
+
+  // select character from page
+  var eventContainers = document.querySelectorAll(".event-container");
+  // check dates on a given character
+  function checkDates(character) {
+    // get current calendar from date object
+    var calendar = new Date();
+    var currentYear = calendar.getFullYear();
+    // add one to month as date object begins counting at 0
+    var currentMonth = calendar.getMonth() + 1;
+    var currentDate = calendar.getDate();
+
+    // select all date row entries in a character
+    var storeEvents = character.querySelectorAll(".event-dates li");
+
+    // check each row of the character
+    [...storeEvents].forEach(function (row) {
+      // extract date and convert to array of numbers
+      var dateElement = row.querySelector("strong");
+      var numArr = dateElement.innerText.split("/").map(Number);
+
+      // declare parts of each date in number format
+      var elemYear = numArr[2];
+      var elemMonth = numArr[1];
+      var elemDate = numArr[0];
+
+      // set to date not expired by default
+      var dateExpired = false;
+
+      // check if date has expired, if so then hide row
+      switch (true) {
+        case elemYear < currentYear:
+        // year(s) passed
+        case elemMonth < currentMonth:
+        // month(s) passed
+        case elemMonth == currentMonth && elemDate < currentDate:
+          // day(s) passed
+          // set expired to true
+          row.setAttribute("data-expired", "true");
+          break;
+        default:
+          // not expired
+          break;
+      }
+    });
+
+    //  if the last row has expired then delete the whole character section and anchor button
+    if (
+      storeEvents[storeEvents.length - 1].getAttribute("data-expired") == "true"
+    ) {
+      // get #name of character to hide
+      var buttonID = character.id;
+
+      // add buttonID into string
+      var btnName = `option[id='${buttonID}']`;
+
+      // use string to select relevant button list element
+      var anchorSelected = document.querySelector(btnName);
+
+      // delete the anchor that corresponds to the character
+      // anchorSelected is occasionally null (most likely because not all events have an existing anchor)
+      if (anchorSelected != null) {
+        anchorSelected.remove();
+      }
+
+      // delete the character
+      var characterContainer = character.parentElement;
+      characterContainer.removeChild(character);
+    }
+  }
+
+  // check dates of each character
+  [...eventContainers].forEach(function (e) {
+    checkDates(e);
+  });
+
+  /* HIDE EVENTS BASED ON LOCATION FILTER */
+
+  // find and return all active locations
+  function findLocations() {
+    // location storage, set prevents duplicates
+    var locations = new Set();
+
+    // for each event container
+    [...eventContainers].forEach(function (character) {
+      // select all active date row entries in a character
+      var storeAllEventDates = Array.from(
+        character.querySelectorAll(".event-dates li")
+      );
+      var storeActiveEventDates = storeAllEventDates.filter(
+        (date) => date.getAttribute("data-expired") != "true"
+      );
+
+      // extract locations from active dates
+      [...storeActiveEventDates].forEach(function (date) {
+        var location = date.querySelector("a").innerHTML;
+
+        // all locations is included by default so we don't add again
+        if (!location.includes("All Entertainer Stores")) {
+          locations.add(location);
+        }
+      });
+    });
+
+    // sort array alphabetically
+    locations = Array.from(locations);
+    locations.sort();
+
+    return locations;
+  }
+
+  // find active locations
+  var locations = findLocations();
+
+  // get location filter
+  var locationFilter = document.getElementById("locationFilter");
+
+  var eventFilter = document.getElementById("eventSelector");
+
+  // populate filter with active locations
+  [...locations].forEach(function (location) {
+    // create option
+    var option = document.createElement("option");
+    option.innerHTML = location;
+    option.value = location;
+
+    // add option
+    locationFilter.appendChild(option);
+  });
+
+  // hide or reveal events upon location filter
+  function locationSelector() {
+    clearEventFilter();
+
+    // get location filter choice
+    var chosenLocation = locationFilter.value;
+
+    // for each event check if it occurs at chosen location
+    [...eventContainers].forEach(function (character) {
+      // select all active date row entries in a character
+      var storeActiveEventDates = Array.from(
+        character.querySelectorAll(".event-dates li")
+      ).filter((date) => date.getAttribute("data-expired") != "true");
+
+      // show the event if it occurs at chosen location
+      if (chosenLocation == "all") {
+        // show all if filter is default
+        character.setAttribute("data-hidden", "false");
+      } else {
+        // occurs at chosen location flag
+        var containsLocation = false;
+
+        // check each location to see if it is the chosen location
+        [...storeActiveEventDates].forEach(function (row) {
+          var location = row.querySelector("a").innerHTML;
+
+          if (
+            location == chosenLocation ||
+            location.includes("All Entertainer Stores")
+          ) {
+            containsLocation = true;
+          }
+        });
+
+        // hide or show event
+        if (containsLocation == true) {
+          character.setAttribute("data-hidden", "false");
+        } else {
+          character.setAttribute("data-hidden", "true");
+        }
+      }
+    });
+  }
+
+  // set location filter to "all" and update displayed events
+  function clearLocationFilter() {
+    locationFilter.value = "all";
+    var chosenLocation = locationFilter.value;
+
+    // for each event check if it occurs at chosen location
+    [...eventContainers].forEach(function (character) {
+      // select all active date row entries in a character
+      var storeActiveEventDates = Array.from(
+        character.querySelectorAll(".event-dates li")
+      ).filter((date) => date.getAttribute("data-expired") != "true");
+
+      // show the event if it occurs at chosen location
+      if (chosenLocation == "all") {
+        // show all if filter is default
+        character.setAttribute("data-hidden", "false");
+      } else {
+        // occurs at chosen location flag
+        var containsLocation = false;
+
+        // check each location to see if it is the chosen location
+        [...storeActiveEventDates].forEach(function (row) {
+          var location = row.querySelector("a").innerHTML;
+
+          if (
+            location == chosenLocation ||
+            location.includes("All Entertainer Stores")
+          ) {
+            containsLocation = true;
+          }
+        });
+
+        // hide or show event
+        if (containsLocation == true) {
+          character.setAttribute("data-hidden", "false");
+        } else {
+          character.setAttribute("data-hidden", "true");
+        }
+      }
+    });
+  }
+
+  // set location filter to "all" and update displayed events
+  function clearEventFilter() {
+    eventFilter.selectedIndex = 0;
+    var eventSelector = document.querySelector("#eventSelector");
+    var chosenEvent = eventSelector.options[eventSelector.selectedIndex].id;
+    [...eventContainers].forEach(function (event) {
+      event.setAttribute("data-hidden", "true");
+      if (chosenEvent === "allEvents") {
+        event.setAttribute("data-hidden", "false");
+      } else if (chosenEvent === event.id) {
+        event.setAttribute("data-hidden", "false");
+      }
+    });
+  }
+
+  // get all anchor links
+  var eventButtons = Array.from(
+    document.querySelectorAll(".event-names select option")
+  );
+
+  function eventSelector() {
+    var eventSelector = document.querySelector("#eventSelector");
+    var chosenEvent = eventSelector.options[eventSelector.selectedIndex].id;
+    clearLocationFilter();
+
+    [...eventContainers].forEach(function (event) {
+      event.setAttribute("data-hidden", "true");
+      if (chosenEvent === "allEvents") {
+        event.setAttribute("data-hidden", "false");
+      } else if (chosenEvent === event.id) {
+        event.setAttribute("data-hidden", "false");
+      }
+    });
+  }
+
+  var radios = document.querySelectorAll('input[type="radio"]');
+  var labels = document.querySelectorAll("label");
+
+  [...radios].forEach(function (radio) {
+    radio.addEventListener("change", function (e) {
+      labels.forEach(function (label) {
+        label.classList.remove("active");
+
+        e.target.closest("label").classList.add("active");
+      });
+    });
+  });
+</script>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Instagram Carousel</title>
+  <style>
+    .carousel-container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .instagram-carousel {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 20px 0;
+      scrollbar-width: thin;
+    }
+
+    .insta-card {
+      flex: 0 0 326px;
+      scroll-snap-align: start;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="carousel-container">
+    <div class="instagram-carousel">
+      <!-- Post 1 -->
+      <div class="insta-card">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DVJeIW7gvp4/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" data-instgrm-version="14"></blockquote>
+      </div>
+      <!-- Post 2 (Duplicate or second post ID) -->
+      <div class="insta-card">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DV_iMlsDIZd/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" data-instgrm-version="14"></blockquote>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instagram Embed Script (Crucial for rendering the widgets) -->
+  <script async src="https://www.instagram.com/embed.js"></script>
+</body>
+</html>

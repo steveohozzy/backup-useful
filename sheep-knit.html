@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Cozy Flowing Weaver - Deluxe Edition</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        body {
+            background-color: #f7f3e8;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Courier New', sans-serif;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+            transition: background-color 0.5s ease;
+        }
+
+        body.fever-mode {
+            background-color: #fef3d6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1b4965;
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Modal Overlay Base Style */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.hidden {
+            display: none !important;
+        }
+
+        .modal-overlay h2 {
+            font-size: 1.8rem;
+            color: #1b4965;
+            margin-bottom: 10px;
+        }
+
+        .modal-overlay p {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        /* Stats Summary Box on Game Over */
+        .results-box {
+            background: #fdfbf7;
+            border: 3px dashed #d0c8b8;
+            border-radius: 15px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            width: 80%;
+        }
+
+        .results-box div {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #1b4965;
+            margin: 5px 0;
+        }
+
+        .action-btn-large {
+            background: #f1c40f;
+            color: #2c3e50;
+            font-size: 1.2rem;
+            font-weight: 900;
+            padding: 14px 28px;
+            border-radius: 50px;
+            border: 4px solid #f39c12;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #d35400;
+            transition: transform 0.1s;
+        }
+
+        .action-btn-large:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #d35400;
+        }
+
+        /* Top Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 6px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .status-hat-preview {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Stage Area */
+        .stage {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 400 / 250;
+            max-height: 250px;
+            background: #fdfbf7;
+            border-radius: 15px;
+            border: 3px dashed #d0c8b8;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sheep-wrapper {
+            position: relative;
+            width: 50%;
+            max-width: 250px;
+            margin-top: 5px;
+        }
+
+        #sheep-sprite {
+            width: 100%;
+            height: auto;
+            display: block;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.15s ease-out;
+        }
+
+        /* Visual Hat Container */
+        #hat-container {
+            position: absolute;
+            top: 2px;
+            left: 52%;
+            transform: translateX(-50%) scale(0);
+            z-index: 5;
+            pointer-events: none;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #hat-container.pop-in {
+            transform: translateX(-50%) scale(1);
+        }
+
+        /* Visual Hats */
+        .visual-hat {
+            display: none;
+            position: relative;
+        }
+
+        .visual-hat.active {
+            display: block;
+        }
+
+        .hat-cap {
+            width: 50px;
+            height: 25px;
+            background: #e74c3c;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            border: 3px solid #c0392b;
+            position: relative;
+        }
+        .hat-cap::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            right: -18px;
+            width: 25px;
+            height: 7px;
+            background: #c0392b;
+            border-radius: 4px;
+        }
+
+        .hat-party {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 50px solid #9b59b6;
+            position: relative;
+        }
+
+        .hat-wizard {
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 55px solid #2c3e50;
+            position: relative;
+        }
+
+        .hat-crown {
+            width: 46px;
+            height: 30px;
+            background: #f1c40f;
+            clip-path: polygon(0% 100%, 0% 0%, 25% 40%, 50% 0%, 75% 40%, 100% 0%, 100% 100%);
+            border-bottom: 4px solid #d35400;
+        }
+
+        .hat-viking {
+            width: 50px;
+            height: 26px;
+            background: #7f8c8d;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            border: 3px solid #34495e;
+        }
+
+        .hat-chef {
+            width: 44px;
+            height: 25px;
+            background: #ffffff;
+            border: 2px solid #bdc3c7;
+            position: relative;
+            border-radius: 4px;
+        }
+
+        .hat-halo {
+            width: 45px;
+            height: 14px;
+            border: 4px solid #f1c40f;
+            border-radius: 50%;
+            background: transparent;
+            box-shadow: 0 0 8px #f39c12;
+            margin-top: 10px;
+        }
+
+        .hat-tiara {
+            width: 44px;
+            height: 24px;
+            background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+            clip-path: polygon(0% 100%, 15% 20%, 35% 80%, 50% 0%, 65% 80%, 85% 20%, 100% 100%);
+        }
+
+        .hat-cosmic {
+            width: 50px;
+            height: 28px;
+            background: linear-gradient(45deg, #ff007f, #7f00ff, #00f0ff);
+            border-radius: 15px;
+            box-shadow: 0 0 12px #ff007f;
+        }
+
+        .hat-godly {
+            width: 50px;
+            height: 32px;
+            background: #ffd700;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            filter: drop-shadow(0 0 10px #ffae00);
+        }
+
+        /* SVG Fabric Layer */
+        #scarf-svg {
+            position: absolute;
+            top: 10%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* HTML/DOM Particle Effect Elements */
+        .dom-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 20;
+            animation: domParticleFly 0.8s ease-out forwards;
+        }
+
+        @keyframes domParticleFly {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--dx), var(--dy)) scale(0.2);
+            }
+        }
+
+        .combo-popup {
+            position: absolute;
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: #f39c12;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            pointer-events: none;
+            animation: floatUp 0.8s ease-out forwards;
+            z-index: 25;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(0.8); }
+            50% { transform: translateY(-20px) scale(1.2); }
+            100% { opacity: 0; transform: translateY(-40px) scale(1); }
+        }
+
+        /* Unlockables Bar */
+        .unlocks-container {
+            width: 100%;
+            margin-top: 8px;
+            background: #f0eae1;
+            padding: 8px;
+            border-radius: 12px;
+        }
+
+        .unlocks-title {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .unlock-badges {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+        }
+
+        .unlock-card {
+            background: white;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 4px 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+            min-height: 48px;
+        }
+
+        .unlock-card.unlocked {
+            opacity: 1;
+            border-color: #f1c40f;
+            background: #fffdf0;
+            transform: scale(1.02);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .unlock-icon-wrapper {
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0.4);
+        }
+
+        .unlock-label {
+            font-size: 0.6rem;
+            font-weight: bold;
+            color: #333;
+            margin-top: 2px;
+        }
+
+        /* UI Controls */
+        .ui-panel {
+            width: 100%;
+            margin-top: 6px;
+        }
+
+        .score-badge {
+            background: #216dae;
+            color: white;
+            border: 2px solid #0f355c;
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        #fever-banner {
+            font-size: 0.85rem;
+            font-weight: 900;
+            color: #e67e22;
+            letter-spacing: 1px;
+            min-height: 1.2rem;
+            margin-bottom: 2px;
+        }
+
+        #stitch-meter {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 36px;
+            background-color: #e0e0e0;
+            border: 3px solid #0f355c;
+            border-radius: 18px;
+            margin: 4px auto;
+            overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        #stitch-meter.fever {
+            border-color: #e67e22;
+            box-shadow: 0 0 15px #f39c12;
+        }
+
+        #stitch-meter.flash-perfect {
+            box-shadow: 0 0 18px #f1c40f;
+            border-color: #f39c12;
+        }
+
+        #stitch-sweetspot {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            background-color: #52b788;
+            width: 20%;
+            left: 40%;
+            border-radius: 10px;
+            transition: width 0.3s ease, left 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #stitch-sweetspot::after {
+            content: '';
+            width: 28%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+
+        #stitch-cursor {
+            position: absolute;
+            top: -2px;
+            height: 40px;
+            width: 10px;
+            background-color: #ee6c4d;
+            border: 2px solid #0f355c;
+            border-radius: 5px;
+            left: 0;
+        }
+
+        .countdown-banner {
+            font-size: 0.8rem;
+            color: #d35400;
+            font-weight: bold;
+            margin-top: 4px;
+            min-height: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+
+        <!-- Welcome Overlay -->
+        <div class="modal-overlay" id="welcome-overlay">
+            <h2>🐑 The Cozy Weaver 🧶</h2>
+            <p>
+                Tap the meter when the marker lands in the <strong>GREEN ZONE</strong>!<br><br>
+                Hit the <strong>WHITE CENTER STRIPE</strong> for Perfects! Chain Perfects to trigger <strong>FEVER MODE</strong> & unlock 10+ legendary hats!
+            </p>
+            <button class="action-btn-large" id="start-btn">⭐ START KNITTING ⭐</button>
+        </div>
+
+        <!-- Game Over Overlay -->
+        <div class="modal-overlay hidden" id="gameover-overlay">
+            <h2>🧵 Scarf Dropped! 🐑</h2>
+            <div class="results-box">
+                <div>Final Scarf Length: <span id="final-length">0</span> cm</div>
+                <div>Personal Best: <span id="final-highscore">0</span> cm</div>
+            </div>
+            <button class="action-btn-large" id="restart-btn">🧶 PLAY AGAIN 🧶</button>
+        </div>
+
+        <div class="stats-bar">
+            <span>BEST RUN: <span id="high-score">0</span> cm</span>
+            <span class="status-hat-preview">HAT: <span id="current-hat-name">None 🐑</span></span>
+        </div>
+
+        <h1>The Cozy Flowing Weaver</h1>
+
+        <div class="stage" id="stage">
+            <div class="sheep-wrapper">
+                <div id="hat-container">
+                    <div class="visual-hat hat-cap" id="hat-0"></div>
+                    <div class="visual-hat hat-party" id="hat-1"></div>
+                    <div class="visual-hat hat-wizard" id="hat-2"></div>
+                    <div class="visual-hat hat-crown" id="hat-3"></div>
+                    <div class="visual-hat hat-viking" id="hat-4"></div>
+                    <div class="visual-hat hat-chef" id="hat-5"></div>
+                    <div class="visual-hat hat-halo" id="hat-6"></div>
+                    <div class="visual-hat hat-tiara" id="hat-7"></div>
+                    <div class="visual-hat hat-cosmic" id="hat-8"></div>
+                    <div class="visual-hat hat-godly" id="hat-9"></div>
+                </div>
+
+                <img src="https://www.thetoyshop.com/medias/Sheep-knitting.png?context=bWFzdGVyfHJvb3R8MzE2ODh8aW1hZ2UvcG5nfGFEUXlMMmd5WVM4eE1qZ3hPVFl5T0RreE5qYzJOaTlUYUdWbGNDQnJibWwwZEdsdVp5NXdibWN8NGJkOGUzOThlNmRlYTlmZGE2ZDFjOWYxOWYyYjQwYjRmNjY1ZmZjMGU1NWUzYTk5NWE2YWNmODFkYTNiZjczYQ" alt="Knitting Sheep Character" id="sheep-sprite">
+            </div>
+
+            <svg id="scarf-svg" viewBox="0 0 500 440">
+                <defs>
+                    <pattern id="knitPattern" width="10" height="10" patternUnits="userSpaceOnUse">
+                        <path d="M 2,2 L 5,6 L 8,2 M 2,7 L 5,10 L 8,7" fill="none" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1.8" stroke-linecap="round"/>
+                    </pattern>
+                </defs>
+
+                <path id="scarf-outline" fill="none" stroke="#0f355c" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+                <path id="scarf-body" fill="none" stroke="#216dae" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+                <path id="scarf-texture" fill="none" stroke="url(#knitPattern)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+                
+                <rect id="scarf-cuff" x="232" y="190" width="36" height="10" rx="3" fill="#0f355c" stroke="#08213b" stroke-width="2"/>
+                
+                <g id="scarf-tip" style="display:none;">
+                    <rect x="-15" y="-3" width="30" height="6" rx="2" fill="#0f355c" />
+                    <path d="M -12,3 L -15,15 M -6,3 L -7,17 M 0,3 L 0,18 M 6,3 L 7,17 M 12,3 L 15,15" stroke="#e63946" stroke-width="2.5" stroke-linecap="round"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="unlocks-container">
+            <div class="unlocks-title">🏆 Unlockable Rewards</div>
+            <div class="unlock-badges">
+                <div class="unlock-card" id="card-0"><div class="unlock-icon-wrapper"><div class="visual-hat hat-cap active"></div></div><span class="unlock-label">25 cm</span></div>
+                <div class="unlock-card" id="card-1"><div class="unlock-icon-wrapper"><div class="visual-hat hat-party active"></div></div><span class="unlock-label">50 cm</span></div>
+                <div class="unlock-card" id="card-2"><div class="unlock-icon-wrapper"><div class="visual-hat hat-wizard active"></div></div><span class="unlock-label">85 cm</span></div>
+                <div class="unlock-card" id="card-3"><div class="unlock-icon-wrapper"><div class="visual-hat hat-crown active"></div></div><span class="unlock-label">125 cm</span></div>
+                <div class="unlock-card" id="card-4"><div class="unlock-icon-wrapper"><div class="visual-hat hat-viking active"></div></div><span class="unlock-label">180 cm</span></div>
+                <div class="unlock-card" id="card-5"><div class="unlock-icon-wrapper"><div class="visual-hat hat-chef active"></div></div><span class="unlock-label">250 cm</span></div>
+                <div class="unlock-card" id="card-6"><div class="unlock-icon-wrapper"><div class="visual-hat hat-halo active"></div></div><span class="unlock-label">350 cm</span></div>
+                <div class="unlock-card" id="card-7"><div class="unlock-icon-wrapper"><div class="visual-hat hat-tiara active"></div></div><span class="unlock-label">500 cm</span></div>
+                <div class="unlock-card" id="card-8"><div class="unlock-icon-wrapper"><div class="visual-hat hat-cosmic active"></div></div><span class="unlock-label">750 cm</span></div>
+                <div class="unlock-card" id="card-9"><div class="unlock-icon-wrapper"><div class="visual-hat hat-godly active"></div></div><span class="unlock-label">1000 cm</span></div>
+            </div>
+        </div>
+
+        <div class="ui-panel">
+            <div id="fever-banner"></div>
+            <div class="score-badge" id="score-badge"><span id="scarf-length">0</span> cm fabric!</div>
+
+            <div id="stitch-meter">
+                <div id="stitch-sweetspot"></div>
+                <div id="stitch-cursor"></div>
+            </div>
+
+            <div class="countdown-banner" id="countdown-banner">🔥 25 cm until Cap!</div>
+        </div>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTone(freq, duration, type='sine') {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        let score = 0;
+        let comboCount = 0;
+        let sweetSpotWidth = 22;
+        let gameActive = false;
+        let currentMilestoneLevel = 0;
+        let recordBrokenThisRun = false;
+        let feverMode = false;
+        
+        let cursorX = 0;
+        let cursorDirection = 1;
+        let cursorSpeed = 1.8;
+        let animFrameId = null;
+
+        let highScore = parseInt(localStorage.getItem('weaver_highscore') || '0');
+
+        const welcomeOverlay = document.getElementById('welcome-overlay');
+        const gameoverOverlay = document.getElementById('gameover-overlay');
+        const startBtn = document.getElementById('start-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        
+        const sheepSprite = document.getElementById('sheep-sprite');
+        const hatContainer = document.getElementById('hat-container');
+        const scarfLengthDisplay = document.getElementById('scarf-length');
+        const highScoreDisplay = document.getElementById('high-score');
+        const finalLengthDisplay = document.getElementById('final-length');
+        const finalHighscoreDisplay = document.getElementById('final-highscore');
+        const currentHatName = document.getElementById('current-hat-name');
+        const countdownBanner = document.getElementById('countdown-banner');
+        const feverBanner = document.getElementById('fever-banner');
+        const scoreBadge = document.getElementById('score-badge');
+
+        const stitchMeter = document.getElementById('stitch-meter');
+        const sweetSpot = document.getElementById('stitch-sweetspot');
+        const cursor = document.getElementById('stitch-cursor');
+        const stage = document.getElementById('stage');
+
+        const scarfOutline = document.getElementById('scarf-outline');
+        const scarfBody = document.getElementById('scarf-body');
+        const scarfTexture = document.getElementById('scarf-texture');
+        const scarfTip = document.getElementById('scarf-tip');
+
+        const milestones = [
+            { length: 25,   name: 'Cap' },
+            { length: 50,   name: 'Party Hat' },
+            { length: 85,   name: 'Wizard Hat' },
+            { length: 125,  name: 'Royal Crown' },
+            { length: 180,  name: 'Viking Helmet' },
+            { length: 250,  name: 'Chef Hat' },
+            { length: 350,  name: 'Angel Halo' },
+            { length: 500,  name: 'Diamond Tiara' },
+            { length: 750,  name: 'Cosmic Crown' },
+            { length: 1000, name: 'Godly Star' }
+        ];
+
+        const pathPoints = [
+            {x: 250, y: 198}, {x: 250, y: 215}, {x: 248, y: 232}, {x: 242, y: 250},
+            {x: 232, y: 268}, {x: 218, y: 284}, {x: 200, y: 298}, {x: 180, y: 308},
+            {x: 158, y: 315}, {x: 136, y: 318}, {x: 115, y: 314}, {x: 96,  y: 304},
+            {x: 84,  y: 288}, {x: 80,  y: 268}, {x: 84,  y: 248}, {x: 95,  y: 230},
+            {x: 112, y: 215}, {x: 132, y: 205}, {x: 155, y: 198}, {x: 180, y: 196},
+            {x: 205, y: 198}, {x: 230, y: 205}, {x: 255, y: 216}, {x: 278, y: 232},
+            {x: 298, y: 252}, {x: 315, y: 275}, {x: 328, y: 300}, {x: 338, y: 328},
+            {x: 342, y: 356}, {x: 338, y: 382}, {x: 324, y: 402}, {x: 302, y: 412},
+            {x: 275, y: 415}, {x: 246, y: 412}, {x: 216, y: 404}, {x: 186, y: 392},
+            {x: 158, y: 380}, {x: 130, y: 370}, {x: 102, y: 362}
+        ];
+
+        /* DOM-Based Particle System (No Canvas) */
+        function spawnConfetti(x, y, count = 20) {
+            const colors = ['#f1c40f', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6'];
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'dom-particle';
+                
+                const size = Math.random() * 6 + 4;
+                const dx = (Math.random() - 0.5) * 160 + 'px';
+                const dy = (Math.random() - 0.7) * 160 + 'px';
+                
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+                p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                p.style.left = `${x}px`;
+                p.style.top = `${y}px`;
+                p.style.setProperty('--dx', dx);
+                p.style.setProperty('--dy', dy);
+                
+                stage.appendChild(p);
+                setTimeout(() => p.remove(), 800);
+            }
+        }
+
+        function updateGraphicalCards() {
+            milestones.forEach((m, idx) => {
+                const card = document.getElementById(`card-${idx}`);
+                if (card) {
+                    if (idx < currentMilestoneLevel) card.classList.add('unlocked');
+                    else card.classList.remove('unlocked');
+                }
+            });
+        }
+
+        function checkRunMilestones(currentCm) {
+            if (currentMilestoneLevel < milestones.length) {
+                const next = milestones[currentMilestoneLevel];
+                const needed = next.length - currentCm;
+
+                if (needed <= 0) {
+                    document.querySelectorAll('#hat-container .visual-hat').forEach(el => el.classList.remove('active'));
+                    const currentHatEl = document.getElementById(`hat-${currentMilestoneLevel}`);
+                    if (currentHatEl) currentHatEl.classList.add('active');
+
+                    hatContainer.classList.add('pop-in');
+                    currentHatName.textContent = `${next.name}`;
+                    
+                    showComboPopup(`UNLOCKED ${next.name.toUpperCase()}!`, stage.clientWidth / 2 - 60);
+                    spawnConfetti(stage.clientWidth / 2, stage.clientHeight / 3, 35);
+                    playTone(587.33, 0.3, 'triangle');
+
+                    sheepSprite.style.transform = 'scale(1.2) translateY(-12px)';
+                    setTimeout(() => sheepSprite.style.transform = 'scale(1) translateY(0)', 250);
+
+                    currentMilestoneLevel++;
+                    updateGraphicalCards();
+                    checkRunMilestones(currentCm);
+                } else {
+                    countdownBanner.textContent = `🔥 ${needed} cm until ${next.name}!`;
+                }
+            } else {
+                countdownBanner.textContent = `👑 ALL HATS UNLOCKED! INFINITE WEAVING ACTIVE!`;
+            }
+        }
+
+        function initGame() {
+            score = 0;
+            comboCount = 0;
+            sweetSpotWidth = 22;
+            cursorSpeed = 1.8;
+            cursorX = 0;
+            cursorDirection = 1;
+            gameActive = true;
+            feverMode = false;
+            currentMilestoneLevel = 0;
+            recordBrokenThisRun = false;
+            
+            scarfLengthDisplay.textContent = '0';
+            highScoreDisplay.textContent = highScore;
+            currentHatName.textContent = 'None 🐑';
+            feverBanner.textContent = '';
+            
+            document.body.classList.remove('fever-mode');
+            stitchMeter.classList.remove('fever');
+            hatContainer.classList.remove('pop-in');
+            document.querySelectorAll('#hat-container .visual-hat').forEach(el => el.classList.remove('active'));
+            
+            welcomeOverlay.classList.add('hidden');
+            gameoverOverlay.classList.add('hidden');
+            
+            updateGraphicalCards();
+            checkRunMilestones(0);
+            updateFabricSVG();
+            setNewSweetSpot();
+
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+            runNeedleAnimation();
+        }
+
+        function runNeedleAnimation() {
+            if (!gameActive) return;
+
+            const meterWidth = stitchMeter.clientWidth - cursor.clientWidth;
+            cursorX += cursorSpeed * cursorDirection;
+
+            if (cursorX >= meterWidth) {
+                cursorX = meterWidth;
+                cursorDirection = -1;
+            } else if (cursorX <= 0) {
+                cursorX = 0;
+                cursorDirection = 1;
+            }
+
+            cursor.style.transform = `translateX(${cursorX}px)`;
+            animFrameId = requestAnimationFrame(runNeedleAnimation);
+        }
+
+        function setNewSweetSpot() {
+            sweetSpotWidth = Math.max(6, 22 - (score * 0.1));
+            if (feverMode) sweetSpotWidth += 8;
+
+            sweetSpot.style.width = sweetSpotWidth + '%';
+
+            const maxLeft = 100 - sweetSpotWidth;
+            const randomLeft = Math.floor(Math.random() * maxLeft);
+            sweetSpot.style.left = randomLeft + '%';
+
+            cursorSpeed = Math.min(8.0, 1.8 + (score * 0.03));
+        }
+
+        function getCurrentYarnColor(scoreVal) {
+            if (feverMode) return '#e74c3c';
+            const hue = (200 + scoreVal * 4) % 360;
+            return `hsl(${hue}, 65%, 50%)`;
+        }
+
+        function updateFabricSVG() {
+            if (score === 0) {
+                scarfOutline.setAttribute('d', '');
+                scarfBody.setAttribute('d', '');
+                scarfTexture.setAttribute('d', '');
+                scarfTip.style.display = 'none';
+                scoreBadge.style.backgroundColor = '#216dae';
+                return;
+            }
+
+            const activeColor = getCurrentYarnColor(score);
+            scarfBody.setAttribute('stroke', activeColor);
+            scoreBadge.style.backgroundColor = activeColor;
+
+            const totalSteps = Math.min(1 + score * 0.3, pathPoints.length);
+            const activePoints = [];
+            
+            for (let i = 0; i < Math.floor(totalSteps); i++) {
+                activePoints.push(pathPoints[i]);
+            }
+
+            const remainder = totalSteps % 1;
+            if (remainder > 0 && Math.floor(totalSteps) < pathPoints.length) {
+                const p1 = pathPoints[Math.floor(totalSteps) - 1];
+                const p2 = pathPoints[Math.floor(totalSteps)];
+                activePoints.push({
+                    x: p1.x + (p2.x - p1.x) * remainder,
+                    y: p1.y + (p2.y - p1.y) * remainder
+                });
+            }
+
+            if (activePoints.length < 2) return;
+
+            let pathD = `M ${activePoints[0].x} ${activePoints[0].y}`;
+            for (let i = 1; i < activePoints.length; i++) {
+                const prev = activePoints[i - 1];
+                const curr = activePoints[i];
+                const midX = (prev.x + curr.x) / 2;
+                const midY = (prev.y + curr.y) / 2;
+                pathD += ` Q ${prev.x} ${prev.y}, ${midX} ${midY}`;
+            }
+
+            scarfOutline.setAttribute('d', pathD);
+            scarfBody.setAttribute('d', pathD);
+            scarfTexture.setAttribute('d', pathD);
+
+            const last = activePoints[activePoints.length - 1];
+            const prev = activePoints[activePoints.length - 2];
+            
+            const dx = last.x - prev.x;
+            const dy = last.y - prev.y;
+            const angle = Math.atan2(dy, dx) * (180 / Math.PI) - 90;
+
+            scarfTip.style.display = 'block';
+            scarfTip.setAttribute('transform', `translate(${last.x}, ${last.y}) rotate(${angle})`);
+        }
+
+        function showComboPopup(text, posX) {
+            const popup = document.createElement('div');
+            popup.className = 'combo-popup';
+            popup.textContent = text;
+            popup.style.left = `${posX}px`;
+            popup.style.top = `55%`;
+            stage.appendChild(popup);
+            setTimeout(() => popup.remove(), 800);
+        }
+
+        function handleStitchAttempt(e) {
+            if (e) e.preventDefault();
+            if (!gameActive) return;
+
+            const cursorRect = cursor.getBoundingClientRect();
+            const sweetSpotRect = sweetSpot.getBoundingClientRect();
+            const meterRect = stitchMeter.getBoundingClientRect();
+
+            const cursorCenter = cursorRect.left + (cursorRect.width / 2);
+            const sweetCenter = sweetSpotRect.left + (sweetSpotRect.width / 2);
+            const offset = Math.abs(cursorCenter - sweetCenter);
+
+            if (cursorCenter >= sweetSpotRect.left && cursorCenter <= sweetSpotRect.right) {
+                const perfectThreshold = sweetSpotRect.width * 0.28;
+
+                if (offset <= perfectThreshold) {
+                    comboCount++;
+                    score += feverMode ? 4 : 2;
+                    showComboPopup(`PERFECT! x${comboCount}`, cursorCenter - meterRect.left);
+                    playTone(440 + (comboCount * 40), 0.15, 'sine');
+
+                    if (comboCount >= 3 && !feverMode) {
+                        feverMode = true;
+                        document.body.classList.add('fever-mode');
+                        stitchMeter.classList.add('fever');
+                        feverBanner.textContent = '🔥 FEVER MODE (DOUBLE POINTS)! 🔥';
+                        spawnConfetti(stage.clientWidth / 2, stage.clientHeight / 2, 25);
+                    }
+                    
+                    stitchMeter.classList.add('flash-perfect');
+                    setTimeout(() => stitchMeter.classList.remove('flash-perfect'), 200);
+
+                    spawnConfetti(cursorCenter - meterRect.left, stage.clientHeight / 2, 8);
+                } else {
+                    comboCount = 0;
+                    feverMode = false;
+                    document.body.classList.remove('fever-mode');
+                    stitchMeter.classList.remove('fever');
+                    feverBanner.textContent = '';
+                    score++;
+                    playTone(330, 0.1, 'sine');
+                }
+
+                const lengthCm = Math.round(score * 3);
+                scarfLengthDisplay.textContent = lengthCm;
+                
+                checkRunMilestones(lengthCm);
+
+                if (lengthCm > highScore && !recordBrokenThisRun && highScore > 0) {
+                    recordBrokenThisRun = true;
+                    showComboPopup('NEW RECORD!', stage.clientWidth / 2 - 40);
+                    spawnConfetti(stage.clientWidth / 2, stage.clientHeight / 3, 25);
+                }
+
+                updateFabricSVG();
+                sheepSprite.style.transform = 'scale(1.06) translateY(-5px)';
+                setTimeout(() => sheepSprite.style.transform = 'scale(1) translateY(0)', 100);
+
+                setNewSweetSpot();
+            } else {
+                gameOver();
+            }
+        }
+
+        function gameOver() {
+            gameActive = false;
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+            playTone(150, 0.4, 'sawtooth');
+            
+            const currentCm = Math.round(score * 3);
+
+            if (currentCm > highScore) {
+                highScore = currentCm;
+                localStorage.setItem('weaver_highscore', highScore);
+                highScoreDisplay.textContent = highScore;
+            }
+
+            finalLengthDisplay.textContent = currentCm;
+            finalHighscoreDisplay.textContent = highScore;
+            gameoverOverlay.classList.remove('hidden');
+        }
+
+        startBtn.addEventListener('click', initGame);
+        restartBtn.addEventListener('click', initGame);
+
+        stitchMeter.addEventListener('pointerdown', handleStitchAttempt);
+
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                if (!gameActive) {
+                    if (!welcomeOverlay.classList.contains('hidden') || !gameoverOverlay.classList.contains('hidden')) {
+                        initGame();
+                    }
+                } else {
+                    handleStitchAttempt(event);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

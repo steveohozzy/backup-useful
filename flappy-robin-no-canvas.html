@@ -1,0 +1,1419 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Robin Escape</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      img,
+      div {
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      #game {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        background: linear-gradient(to bottom, #0b1d3a, #235db7, #79bfff);
+      }
+
+      #world {
+        position: absolute;
+        inset: 0;
+      }
+
+      #bird {
+        position: absolute;
+
+        width: 55px;
+
+        z-index: 20;
+
+        transform-origin: center;
+
+        will-change: transform;
+
+        pointer-events: none;
+
+        animation: birdFloat 0.8s ease-in-out infinite;
+      }
+
+      @keyframes birdFloat {
+        0%,
+        100% {
+          margin-top: 0;
+        }
+
+        50% {
+          margin-top: -5px;
+        }
+      }
+
+      .tree {
+        animation: sway 2s ease-in-out infinite alternate;
+
+        transform-origin: bottom;
+      }
+
+      @keyframes sway {
+        from {
+          rotate: -2deg;
+        }
+
+        to {
+          rotate: 2deg;
+        }
+      }
+
+      #ground {
+        position: absolute;
+
+        bottom: 0;
+        left: 0;
+
+        width: 100%;
+        height: 60px;
+
+        background: white;
+
+        border-top: 6px solid #ddd;
+
+        z-index: 30;
+      }
+
+      #score {
+        position: absolute;
+
+        top: 25px;
+
+        width: 100%;
+
+        text-align: center;
+
+        font-size: 60px;
+        font-weight: bold;
+
+        color: white;
+
+        text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+
+        z-index: 100;
+      }
+
+      .screen {
+        position: absolute;
+
+        inset: 0;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+        align-items: center;
+
+        gap: 20px;
+
+        background: rgba(0, 0, 0, 0.45);
+
+        color: #fff;
+
+        backdrop-filter: blur(5px);
+
+        z-index: 200;
+      }
+
+      #countdown {
+        position: absolute;
+
+        inset: 0;
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        font-size: 120px;
+
+        font-weight: bold;
+
+        color: white;
+
+        text-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+
+        z-index: 250;
+      }
+
+      .countPop {
+        animation: countPop 0.8s ease;
+      }
+
+      @keyframes countPop {
+        0% {
+          transform: scale(0.3);
+
+          opacity: 0;
+        }
+
+        50% {
+          transform: scale(1.2);
+
+          opacity: 1;
+        }
+
+        100% {
+          transform: scale(1);
+
+          opacity: 1;
+        }
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      button {
+        padding: 18px 40px;
+
+        font-size: 22px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        background: #f59e0b;
+
+        cursor: pointer;
+
+        color: white;
+
+        font-weight: bold;
+      }
+
+      #pipes {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+
+        pointer-events: none;
+      }
+
+      .pipe {
+        position: absolute;
+
+        top: 0;
+
+        width: 90px;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .pipe img {
+        pointer-events: none;
+      }
+
+      .tree {
+        position: absolute;
+
+        left: 0;
+
+        width: 90px;
+
+        object-fit: fill;
+
+        pointer-events: none;
+      }
+
+      .tree.top {
+        transform: scaleY(-1);
+        transform-origin: center;
+      }
+
+      .star {
+        position: absolute;
+
+        left: 50%;
+
+        width: 34px;
+        height: 34px;
+
+        margin-left: -17px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 30px;
+
+        filter: drop-shadow(0 0 6px gold) drop-shadow(0 0 12px orange);
+
+        animation:
+          floatStar 1.5s ease-in-out infinite,
+          pulseStar 1s ease-in-out infinite;
+      }
+
+      @keyframes pulseStar {
+        0%,
+        100% {
+          transform: translate(-50%, 0) scale(1);
+        }
+
+        50% {
+          transform: translate(-50%, 0) scale(1.25);
+        }
+      }
+
+      @keyframes floatStar {
+        0% {
+          transform: translate(-50%, 0px);
+        }
+
+        50% {
+          transform: translate(-50%, -8px);
+        }
+
+        100% {
+          transform: translate(-50%, 0px);
+        }
+      }
+
+      #backSnow,
+      #sparkles,
+      #bursts {
+        position: absolute;
+        inset: 0;
+
+        pointer-events: none;
+      }
+
+      .snow {
+        position: absolute;
+
+        background: white;
+
+        border-radius: 50%;
+
+        opacity: 0.8;
+
+        animation-name: snowFall;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes snowFall {
+        from {
+          transform: translateY(-50px);
+        }
+
+        to {
+          transform: translateY(110vh);
+        }
+      }
+
+      .spark {
+        position: absolute;
+
+        width: 6px;
+        height: 6px;
+
+        border-radius: 50%;
+
+        background: #ffd84c;
+
+        box-shadow:
+          0 0 10px #ffd84c,
+          0 0 20px #ffd84c;
+      }
+
+      .burst {
+        position: absolute;
+
+        width: 8px;
+        height: 8px;
+
+        background: #ffcc33;
+
+        border-radius: 50%;
+      }
+      #mountains {
+        position: absolute;
+
+        bottom: 60px;
+
+        left: 0;
+
+        width: 300%;
+
+        height: 220px;
+        opacity: 0.45;
+
+        animation: mountainMove 120s linear infinite;
+
+        z-index: 1;
+      }
+
+      @keyframes mountainMove {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(-33%);
+        }
+      }
+
+      @keyframes mountains {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(-33.333%);
+        }
+      }
+      .cloud {
+        position: absolute;
+
+        width: 220px;
+        height: 70px;
+
+        background: white;
+
+        opacity: 0.15;
+
+        border-radius: 100px;
+
+        filter: blur(10px);
+      }
+
+      .shake {
+        animation: shake 0.35s;
+      }
+
+      @keyframes shake {
+        0% {
+          transform: translateX(0);
+        }
+        20% {
+          transform: translateX(-8px);
+        }
+        40% {
+          transform: translateX(8px);
+        }
+        60% {
+          transform: translateX(-6px);
+        }
+        80% {
+          transform: translateX(6px);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      .pop {
+        animation: pop 0.2s;
+      }
+
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(1.3);
+        }
+
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* BACKGROUND FOREST */
+
+      #forestBack {
+        position: absolute;
+
+        bottom: 140px;
+        left: 0;
+
+        width: 200%;
+
+        height: 260px;
+
+        overflow: hidden;
+
+        z-index: 2;
+
+        opacity: 0.8;
+      }
+
+      .forestTrack {
+        display: flex;
+
+        align-items: flex-end;
+
+        gap: 70px;
+
+        width: max-content;
+
+        animation: forestLoop 45s linear infinite;
+      }
+
+      @keyframes forestLoop {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      .pine {
+        position: relative;
+
+        width: 120px;
+
+        height: 190px;
+
+        scale: 0.8;
+
+        background: linear-gradient(90deg, #0c283f, #143c53, #071431);
+
+        clip-path: polygon(50% 0%, 15% 100%, 85% 100%);
+
+        filter: drop-shadow(0 8px 5px rgba(0, 0, 0, 0.3));
+
+        pointer-events: none;
+      }
+
+      /* snowy layers */
+
+      .pine:before {
+        content: "";
+
+        position: absolute;
+
+        top: 15px;
+
+        left: 20px;
+
+        width: 80px;
+
+        height: 80px;
+
+        background: white;
+
+        opacity: 0.85;
+
+        clip-path: polygon(50% 0, 0 100%, 100% 100%);
+      }
+
+      .pine.tall {
+        height: 240px;
+
+        transform: scale(1.15);
+      }
+
+      .pine.small {
+        height: 140px;
+
+        transform: scale(0.8);
+      }
+
+      .pine {
+        width: 120px;
+        height: 220px;
+
+        background: linear-gradient(to bottom, #162e4e, #0f1c38);
+
+        clip-path: polygon(50% 0, 0 100%, 100% 100%);
+      }
+
+      @keyframes forestMove {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* FRONT FOREST */
+
+      #forestFront {
+        position: absolute;
+
+        bottom: 60px;
+
+        left: 0;
+
+        width: 400%;
+
+        height: 130px;
+
+        background: repeating-linear-gradient(
+          90deg,
+          #123524 0,
+          #123524 70px,
+          #0d2a1d 70px,
+          #0d2a1d 140px
+        );
+
+        opacity: 0.55;
+
+        animation: frontMove 35s linear infinite;
+
+        z-index: 5;
+      }
+
+      @keyframes frontMove {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(-33%);
+        }
+      }
+
+      #world {
+        position: absolute;
+
+        inset: 0;
+
+        z-index: 10;
+      }
+
+      .flapHit {
+        animation: flapHit 0.18s ease;
+      }
+
+      @keyframes flapHit {
+        0% {
+          scale: 1;
+        }
+
+        40% {
+          scale: 1.15 0.85;
+        }
+
+        100% {
+          scale: 1;
+        }
+      }
+
+      .power {
+        position: absolute;
+
+        left: 50%;
+
+        width: 40px;
+        height: 40px;
+
+        margin-left: -20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 32px;
+
+        animation: floatStar 1s infinite alternate;
+
+        filter: drop-shadow(0 0 10px white);
+      }
+
+      .power.snow {
+        filter: drop-shadow(0 0 10px cyan);
+      }
+
+      .power.speed {
+        filter: drop-shadow(0 0 10px yellow);
+      }
+
+      .powered {
+        animation: flash 0.25s infinite alternate;
+
+        filter: drop-shadow(0 0 15px yellow) drop-shadow(0 0 30px orange);
+      }
+
+      @keyframes flash {
+        from {
+          opacity: 0.4;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      .instructions {
+        max-width: 420px;
+
+        background: rgba(255, 255, 255, 0.15);
+
+        padding: 25px;
+
+        border-radius: 20px;
+
+        text-align: center;
+
+        font-size: 20px;
+
+        line-height: 1.6;
+
+        backdrop-filter: blur(10px);
+      }
+
+      .instructions span {
+        font-size: 32px;
+
+        display: inline-block;
+
+        margin-right: 8px;
+      }
+
+      .lightningMode {
+        filter: drop-shadow(0 0 15px yellow) drop-shadow(0 0 30px orange);
+
+        animation: flash 0.15s infinite alternate;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="game">
+      <div id="sky"></div>
+
+      <div id="backSnow"></div>
+
+      <div id="sparkles"></div>
+
+      <div id="bursts"></div>
+
+      <div id="score">0</div>
+
+      <div id="mountains"></div>
+
+      <div id="forestBack">
+        <div class="forestTrack">
+          <div class="pine"></div>
+          <div class="pine tall"></div>
+          <div class="pine"></div>
+          <div class="pine small"></div>
+          <div class="pine tall"></div>
+
+          <div class="pine"></div>
+          <div class="pine tall"></div>
+          <div class="pine small"></div>
+          <div class="pine"></div>
+          <div class="pine tall"></div>
+        </div>
+      </div>
+
+      <div id="clouds"></div>
+
+      <div id="forestFront"></div>
+
+      <div id="world">
+        <div id="pipes"></div>
+
+        <img
+          id="bird"
+          src="https://www.thetoyshop.com/medias/Robbin.png?context=bWFzdGVyfHJvb3R8NDk1OHxpbWFnZS9wbmd8YUdFMEwyaGpPQzh4TWpneE56UXlNVGMyTWpVNU1DOVNiMkppYVc0dWNHNW58MDZjNjFhNzU0N2NmNTQ5OGJhZWNhYTIwYWU3YTAxMDVjYjIzZWY3ZTk4ZDZjNDk4YzE1NmVmYzA4ZmJjZGExYQ"
+        />
+      </div>
+
+      <div id="ground"></div>
+
+      <div id="startScreen" class="screen">
+        <h1>🐦 Robin's Winter Escape</h1>
+
+        <div class="instructions">
+          <p>Fly Robin through the winter forest!</p>
+
+          <br />
+
+          <p>
+            <span>⭐</span>
+            Collect stars for bonus points
+          </p>
+
+          <p>
+            <span>❄️</span>
+            Snowflake slows time for 5 seconds
+          </p>
+
+          <p>
+            <span>⚡</span>
+            Lightning lets Robin fly through trees for 5 seconds
+          </p>
+
+          <br />
+
+          <p>Tap / Click / Space to flap</p>
+        </div>
+
+        <button id="startBtn">Play</button>
+      </div>
+
+      <div id="countdown" class="hidden">3</div>
+
+      <div id="gameOver" class="screen hidden">
+        <h1>Game Over</h1>
+
+        <p id="finalScore"></p>
+
+        <button id="restartBtn">Play Again</button>
+      </div>
+    </div>
+
+    <script>
+      const startScreen = document.getElementById("startScreen");
+      const gameOver = document.getElementById("gameOver");
+
+      const startBtn = document.getElementById("startBtn");
+      const restartBtn = document.getElementById("restartBtn");
+
+      const countdown = document.getElementById("countdown");
+
+      const bird = document.getElementById("bird");
+
+      const treeDark =
+        "https://www.thetoyshop.com/medias/Tree-Dark.png?context=bWFzdGVyfHJvb3R8MTI1NTZ8aW1hZ2UvcG5nfGFHVm1MMmhsTWk4eE1qZ3hOelF6T1RZeU1URTFNQzlVY21WbElFUmhjbXN1Y0c1bnwwNzNhZjE0ODczN2NhOTVhZWE3NWFhMWFlZjE4ZDMwNGU3YTJmMzk2N2YzNTRlMTIwMGZlNmM0MTA5MjVjNTU2";
+
+      const treeLight =
+        "https://www.thetoyshop.com/medias/Tree-Light.png?context=bWFzdGVyfHJvb3R8MTI1NTJ8aW1hZ2UvcG5nfGFEbGpMMmhsTXk4eE1qZ3hOelF6T1RZNE5qWTROaTlVY21WbElFeHBaMmgwTG5CdVp3fDNkMzllYzMwZjZmNWY5OGY2NzE0ZmUxOTUwOGU5NmMzODAxOWE1ZTY1YzlmYTNlY2ZlZDM1OGY4OTlmZjgzMTA";
+
+      let state = "start";
+
+      let frame = 0;
+
+      let score = 0;
+
+      let multiplier = 1;
+      let slowTime = false;
+      let shield = false;
+      let ghostMode = false;
+
+      const scoreDisplay = document.getElementById("score");
+
+      const snowContainer = document.getElementById("backSnow");
+
+      const clouds = document.getElementById("clouds");
+
+      for (let i = 0; i < 6; i++) {
+        const cloud = document.createElement("div");
+
+        cloud.className = "cloud";
+
+        cloud.style.left = Math.random() * window.innerWidth + "px";
+        cloud.style.top = Math.random() * 250 + "px";
+
+        clouds.appendChild(cloud);
+      }
+
+      for (let i = 0; i < 60; i++) {
+        const snow = document.createElement("div");
+
+        snow.className = "snow";
+
+        const size = Math.random() * 5 + 2;
+
+        snow.style.width = size + "px";
+        snow.style.height = size + "px";
+
+        snow.style.left = Math.random() * 100 + "vw";
+
+        snow.style.animationDuration = 6 + Math.random() * 8 + "s";
+
+        snow.style.animationDelay = -Math.random() * 15 + "s";
+
+        snowContainer.appendChild(snow);
+      }
+
+      const sparkleContainer = document.getElementById("sparkles");
+
+      function createSparkle() {
+        const s = document.createElement("div");
+
+        s.className = "spark";
+
+        s.style.left = robin.x + "px";
+
+        s.style.top = robin.y + 25 + "px";
+
+        sparkleContainer.appendChild(s);
+
+        let x = robin.x;
+        let y = robin.y + 25;
+
+        let vx = -2 - Math.random() * 2;
+        let vy = Math.random() * 2 - 1;
+
+        let life = 30;
+
+        function animate() {
+          x += vx;
+          y += vy;
+
+          s.style.left = x + "px";
+          s.style.top = y + "px";
+
+          s.style.opacity = life / 30;
+
+          s.style.transform = `scale(${life / 30})`;
+
+          life--;
+
+          if (life > 0) {
+            requestAnimationFrame(animate);
+          } else {
+            s.remove();
+          }
+        }
+
+        animate();
+      }
+
+      const burstContainer = document.getElementById("bursts");
+
+      function burst(x, y) {
+        for (let i = 0; i < 18; i++) {
+          const p = document.createElement("div");
+
+          p.className = "burst";
+
+          burstContainer.appendChild(p);
+
+          let px = x;
+          let py = y;
+
+          const angle = Math.random() * Math.PI * 2;
+
+          const speed = 2 + Math.random() * 5;
+
+          let vx = Math.cos(angle) * speed;
+          let vy = Math.sin(angle) * speed;
+
+          let life = 40;
+
+          function animate() {
+            px += vx;
+            py += vy;
+
+            vy += 0.08;
+
+            p.style.left = px + "px";
+            p.style.top = py + "px";
+
+            p.style.opacity = life / 40;
+
+            life--;
+
+            if (life > 0) {
+              requestAnimationFrame(animate);
+            } else {
+              p.remove();
+            }
+          }
+
+          animate();
+        }
+      }
+
+      // Bird physics
+      const robin = {
+        x: 120,
+        y: window.innerHeight / 2,
+
+        velocity: 0,
+        gravity: 0.35,
+        flapPower: -7,
+
+        rotation: 0,
+
+        update() {
+          if (state !== "playing") return;
+
+          this.velocity += this.gravity;
+          this.y += this.velocity;
+
+          if (state === "playing") {
+            createSparkle();
+          }
+
+          // Rotate based on speed
+          const targetRotation = Math.max(-25, Math.min(70, this.velocity * 6));
+
+          this.rotation += (targetRotation - this.rotation) * 0.2;
+
+          bird.style.transform = `translate(${this.x}px, ${this.y}px) rotate(${this.rotation}deg)`;
+
+          // Ceiling
+          if (this.y < 0) {
+            this.y = 0;
+            this.velocity = 0;
+          }
+
+          // Ground
+          if (this.y + bird.offsetHeight > window.innerHeight - 60) {
+            this.y = window.innerHeight - 60 - bird.offsetHeight;
+            endGame();
+          }
+        },
+
+        flap() {
+          if (state !== "playing") return;
+
+          this.velocity = this.flapPower;
+
+          bird.classList.remove("flapHit");
+
+          void bird.offsetWidth;
+
+          bird.classList.add("flapHit");
+        },
+
+        reset() {
+          this.y = window.innerHeight / 2;
+          this.velocity = 0;
+
+          bird.style.transform = `translate(${this.x}px, ${this.y}px)`;
+
+          score = 0;
+          scoreDisplay.innerHTML = score;
+
+          pipes.forEach((pipe) => pipe.remove());
+          pipes.length = 0;
+          frame = 0;
+          speed = 3;
+        },
+      };
+
+      const pipesContainer = document.getElementById("pipes");
+
+      const pipes = [];
+
+      const pipeWidth = 90;
+      let speed = 3;
+
+      function spawnPipe() {
+        const screenHeight = window.innerHeight - 60;
+
+        const minTop = 80;
+
+        // Dynamic difficulty
+        const difficulty = Math.min(frame / 3000, 1);
+
+        // Start easy, slowly tighten gaps
+        const minGap = 220 - difficulty * 60;
+        const maxGap = 280 - difficulty * 60;
+
+        const pipeGap = Math.random() * (maxGap - minGap) + minGap;
+
+        const maxTop = screenHeight - pipeGap - 120;
+
+        const topHeight = Math.random() * (maxTop - minTop) + minTop;
+        const gapBottom = topHeight + pipeGap;
+
+        // where the item sits horizontally
+        const itemSide = Math.random();
+
+        let itemOffsetX;
+        let itemY;
+
+        // middle gap
+        if (itemSide < 0.45) {
+          itemOffsetX = 45;
+
+          itemY = topHeight + pipeGap / 2;
+        }
+
+        // left of trees
+        else if (itemSide < 0.7) {
+          itemOffsetX = -70;
+
+          itemY = 100 + Math.random() * (screenHeight - 200);
+        }
+
+        // right of trees
+        else {
+          itemOffsetX = 130;
+
+          itemY = 100 + Math.random() * (screenHeight - 200);
+        }
+
+        const pipe = document.createElement("div");
+
+        const collectible = Math.random();
+
+        let item = "";
+        let itemType = "";
+
+        if (collectible < 0.25) {
+          item = "⭐";
+          itemType = "star";
+        } else if (collectible < 0.35) {
+          item = "❄️";
+          itemType = "snow";
+        } else if (collectible < 0.4) {
+          item = "⚡";
+          itemType = "speed";
+        }
+        pipe.itemType = itemType;
+
+        pipe.className = "pipe";
+
+        pipe.x = window.innerWidth;
+
+        pipe.gap = pipeGap;
+
+        pipe.innerHTML = `
+
+<img class="tree top"
+src="${treeDark}"
+style="
+height:${topHeight}px;
+top:0;
+">
+
+<img class="tree"
+src="${treeLight}"
+style="
+height:${screenHeight - topHeight - pipeGap}px;
+top:${topHeight + pipeGap}px;
+">
+
+${
+  item
+    ? `
+
+<div class="power ${itemType}"
+style="
+top:${itemY}px;
+left:${itemOffsetX}px;
+">
+${item}
+</div>
+
+`
+    : ``
+}
+
+`;
+
+        pipesContainer.appendChild(pipe);
+
+        pipe.element = pipe;
+
+        pipe.scored = false;
+        pipe.starCollected = false;
+        pipe.topHeight = topHeight;
+        pipe.itemY = itemY;
+        pipe.itemOffsetX = itemOffsetX;
+
+        pipes.push(pipe);
+      }
+
+      function updatePipes() {
+        if (state !== "playing") return;
+
+        const spawnRate = Math.max(70, 120 - Math.floor(frame / 1500));
+
+        if (frame % spawnRate === 0) {
+          spawnPipe();
+        }
+
+        const birdRect = {
+          left: robin.x + 8,
+          right: robin.x + 45,
+
+          top: robin.y + 6,
+          bottom: robin.y + 44,
+        };
+
+        for (let i = 0; i < pipes.length; i++) {
+          const pipe = pipes[i];
+
+          pipe.x -= slowTime ? speed * 0.65 : speed;
+
+          pipe.style.transform = `translateX(${pipe.x}px)`;
+
+          //---------------------------------
+          // SCORE
+          //---------------------------------
+
+          if (!pipe.scored && pipe.x + pipeWidth < robin.x) {
+            pipe.scored = true;
+
+            score += multiplier;
+
+            scoreDisplay.innerHTML = score;
+
+            scoreDisplay.classList.add("pop");
+
+            setTimeout(() => {
+              scoreDisplay.classList.remove("pop");
+            }, 200);
+          }
+
+          //---------------------------------
+          // TREE COLLISION
+          //---------------------------------
+
+          const left = pipe.x;
+          const right = pipe.x + pipeWidth;
+
+          const gapTop = pipe.topHeight;
+
+          const gapBottom = pipe.topHeight + pipe.gap;
+
+          if (birdRect.right > left && birdRect.left < right) {
+            if (birdRect.top < gapTop || birdRect.bottom > gapBottom) {
+              if (!ghostMode) {
+                endGame();
+              }
+            }
+          }
+
+          //---------------------------------
+          // STAR
+          //---------------------------------
+
+          if (!pipe.starCollected && pipe.querySelector(".power")) {
+            const power = pipe.querySelector(".power");
+
+            const starX = pipe.x + pipe.itemOffsetX;
+
+            const starY = pipe.itemY + 20;
+
+            const birdX = robin.x + 27;
+            const birdY = robin.y + 27;
+
+            const dx = birdX - starX;
+            const dy = birdY - starY;
+
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 55) {
+              pipe.starCollected = true;
+
+              const star = pipe.querySelector(".power");
+
+              if (star) {
+                const rect = star.getBoundingClientRect();
+
+                burst(rect.left + 16, rect.top + 16);
+
+                star.remove();
+
+                switch (pipe.itemType) {
+                  case "star":
+                    score += 5;
+
+                    break;
+
+                  case "snow":
+                    slowTime = true;
+
+                    setTimeout(() => {
+                      slowTime = false;
+                    }, 5000);
+
+                    break;
+
+                  case "speed":
+                    ghostMode = true;
+
+                    bird.classList.add("lightningMode");
+
+                    setTimeout(() => {
+                      ghostMode = false;
+
+                      bird.classList.remove("powered");
+                    }, 5000);
+
+                    break;
+                }
+              }
+
+              score += 3 * multiplier;
+
+              scoreDisplay.innerHTML = score;
+
+              scoreDisplay.classList.add("pop");
+
+              setTimeout(() => {
+                scoreDisplay.classList.remove("pop");
+              }, 200);
+            }
+          }
+
+          //---------------------------------
+
+          if (pipe.x < -pipeWidth) {
+            pipe.remove();
+
+            pipes.splice(i, 1);
+
+            i--;
+          }
+        }
+      }
+
+      startBtn.onclick = () => {
+        robin.reset();
+
+        startScreen.classList.add("hidden");
+
+        startCountdown();
+      };
+
+      function startCountdown() {
+        let count = 3;
+
+        countdown.classList.remove("hidden");
+
+        countdown.innerHTML = count;
+
+        const timer = setInterval(() => {
+          count--;
+
+          if (count > 0) {
+            countdown.innerHTML = count;
+
+            countdown.classList.remove("countPop");
+
+            void countdown.offsetWidth;
+
+            countdown.classList.add("countPop");
+          } else {
+            countdown.innerHTML = "GO!";
+
+            setTimeout(() => {
+              countdown.classList.add("hidden");
+
+              state = "playing";
+            }, 500);
+
+            clearInterval(timer);
+          }
+        }, 1000);
+      }
+
+      restartBtn.onclick = () => {
+        robin.reset();
+
+        gameOver.classList.add("hidden");
+
+        state = "playing";
+      };
+
+      // Keyboard
+
+      window.addEventListener("keydown", (e) => {
+        if (e.code === "Space" || e.code === "ArrowUp") {
+          e.preventDefault();
+
+          robin.flap();
+        }
+      });
+
+      // Mouse
+
+      window.addEventListener("mousedown", () => {
+        robin.flap();
+      });
+
+      // Touch
+
+      window.addEventListener(
+        "touchstart",
+        (e) => {
+          e.preventDefault();
+
+          robin.flap();
+        },
+        {
+          passive: false,
+        },
+      );
+
+      window.addEventListener(
+        "touchmove",
+        (e) => {
+          e.preventDefault();
+        },
+        {
+          passive: false,
+        },
+      );
+
+      function endGame() {
+        if (state !== "playing") return;
+
+        state = "gameover";
+
+        let best = localStorage.getItem("robinBest") || 0;
+
+        if (score > best) {
+          best = score;
+
+          localStorage.setItem("robinBest", best);
+        }
+
+        document.getElementById("finalScore").innerHTML =
+          `Score : ${score}<br>Best : ${best}`;
+
+        gameOver.classList.remove("hidden");
+
+        document.getElementById("game").classList.add("shake");
+
+        setTimeout(() => {
+          document.getElementById("game").classList.remove("shake");
+        }, 350);
+      }
+
+      function gameLoop() {
+        if (state === "playing") {
+          frame++;
+
+          speed = Math.min(12, 3 + frame / 1500);
+        }
+
+        robin.update();
+
+        updatePipes();
+
+        requestAnimationFrame(gameLoop);
+      }
+
+      robin.reset();
+
+      gameLoop();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1004 @@
+<style>
+#penalty-game-container {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+   touch-action: none;
+}
+
+/* ===== PIXEL TOP SCOREBOARD ===== */
+#scoreboard {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  color: #00ff00;
+  background: #000;
+  padding: 8px 20px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px #080;
+  border: 3px solid #0f0;
+  margin-top: 10px;
+  z-index: 10;
+  position: absolute;
+}
+
+#flash-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  font-weight: bold;
+  color: yellow;
+  text-shadow: 4px 4px red;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+}
+
+#flash-text.show {
+  animation: flashText 0.6s forwards;
+}
+
+@keyframes flashText {
+  0% {opacity: 0; transform: translate(-50%, -50%) scale(0.5);}
+  50% {opacity: 1; transform: translate(-50%, -50%) scale(1.5);}
+  100% {opacity: 0; transform: translate(-50%, -50%) scale(1);}
+}
+
+#game { width: 100%; position: relative; }
+#pitch {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to bottom, #4caf50 0%, #3a9d3a 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Thick stripes for turf */
+#pitch::before {
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.05) 0 60px,
+    transparent 60px 120px
+  );
+  pointer-events:none;
+  z-index:1;
+}
+
+svg { width:100%; height:100%; position:relative; z-index:2; }
+.zone { fill: rgba(0,0,255,0); cursor:pointer; }
+.zone:hover { fill: rgba(0,0,255,0.1); }
+
+/* ===== HOARDINGS ===== */
+.hoardings {
+  position: absolute;
+  bottom: 60%;
+  height: 50px;
+  pointer-events: none;
+  z-index:1;
+}
+
+.hoard-left,
+.hoard-center,
+.hoard-right {
+  background: #1c66ae;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  line-height: 50px;
+  font-size: 10px;
+  text-shadow: 1px 1px #000;
+  border: 2px solid #000;
+}
+
+.hoard-left  { width: 25%; left: 0; }
+.hoard-center{ width: 50%; left: 25%; }
+.hoard-right { width: 25%; left: 75%; }
+
+/* ===== FINAL SCOREBOARD MATCHING START SCREEN ===== */
+#final-scoreboard {
+  position: fixed; top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.8); /* semi-transparent overlay */
+  display:flex; justify-content:center; align-items:center;
+  z-index:200;
+}
+
+#final-scoreboard.hidden { display:none; }
+
+#scorebox {
+  background:#000;
+  padding:30px; 
+  border-radius:20px; 
+  text-align:center;
+  border: 4px solid #0f0;
+}
+
+#scorebox h1 {
+  margin:0 0 20px;
+  color:#fff !important;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 28px;
+  text-shadow: 2px 2px #080;
+  letter-spacing: 2px;
+}
+
+#scorebox p {
+  font-size:24px; 
+  margin:0 0 20px; 
+  font-weight:bold;
+  color:#00ff00;
+  font-family: 'Courier New', Courier, monospace;
+  text-shadow: 1px 1px #080;
+}
+
+#scorebox button {
+  font-size:18px; 
+  padding:10px 20px; 
+  border:none; 
+  border-radius:10px;
+  background:#4caf50; 
+  color:#fff; 
+  cursor:pointer;
+}
+#scorebox button:hover { background:#3a9d3a; }
+
+#scorebox {
+  background:#; padding:30px; border-radius:20px; text-align:center;
+}
+#scorebox h1 { margin:0 0 20px; color:#333; }
+#scorebox p { font-size:24px; margin:0 0 20px; font-weight:bold; }
+#scorebox button {
+  font-size:18px; padding:10px 20px; border:none; border-radius:10px;
+  background:#4caf50; color:#fff; cursor:pointer;
+}
+#scorebox button:hover { background:#3a9d3a; }
+
+/* ===== START SCREEN ===== */
+#start-screen {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:300;
+}
+
+#start-box {
+  background:#111;
+  padding:40px;
+  border-radius:20px;
+  text-align:center;
+  color:#0f0;
+  font-family: 'Courier New', Courier, monospace;
+  border:3px solid #0f0;
+  letter-spacing:2px;
+}
+
+#start-box p { font-size:18px; margin:0 0 20px; }
+#start-box button {
+  font-size:20px;
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  background:#4caf50;
+  color:#fff;
+  cursor:pointer;
+}
+#start-box button:hover { background:#3a9d3a; }
+#crowd-svg {
+  position: absolute;
+  top:  -10px;      /* behind hoardings */
+  left: 0;
+  width: 100%;
+  height: 40%;      /* approx. 40% of pitch */
+  z-index: 0;       /* behind hoardings */
+  pointer-events: none;
+}
+
+#crowd circle {
+  transform-origin: center center;
+  animation: crowdBounce 1s infinite alternate ease-in-out;
+}
+
+#crowd circle:nth-child(odd) { animation-delay: 0.1s; }
+#crowd circle:nth-child(even) { animation-delay: 0.3s; }
+
+@keyframes crowdBounce {
+  0% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(-4px) scaleY(1.1); }
+  100% { transform: translateY(0) scaleY(1); }
+}
+#sound-toggle {
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  background: #000;
+  color: #0f0;
+  border: 3px solid #0f0;
+  padding: 6px 12px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  z-index: 20;
+}
+
+@media (min-width: 768px) {
+  #sound-toggle {
+    top: 10px;
+    right: 10px;
+    left: unset;
+  }
+}
+
+#sound-toggle:hover {
+  background: #0f0;
+  color: #000;
+}
+
+.hoardings img {
+  height: 100%;
+  width: auto;
+}
+
+#nation-picker {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  font-family: 'Courier New', monospace;
+  padding: 6px 12px;
+  border: 3px solid #0f0;
+  border-radius: 6px;
+  background: #000;
+  color: #0f0;
+  cursor: pointer;
+  z-index: 200;
+  display: block !important;
+  visibility: visible !important;
+}
+
+#nation-picker:hover {
+  background: #0f0;
+  color: #000;
+}
+
+#penalty-game-container .nice-select {
+  display: none;
+}
+
+.back-to-hub {
+  color: #407ec9;
+  margin: 5px 30px;
+  padding: 10px;
+  font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+}
+
+</style>
+
+
+<a href="/c/football" class="back-to-hub">&larr; Back to World Cup Hub</a>
+
+<div id="penalty-game-container">
+
+  <!-- START SCREEN -->
+  <div id="start-screen">
+    <div id="start-box">
+      <h1>TE World Cup Penalty Shootout</h1>
+      <p>
+  Click or tap on the goal zones to shoot the ball.<br>
+ Or, swipe / drag from the ball in the direction you want to shoot, hint faster equals higher.<br>
+  Try to beat the keeper!<br>
+  <strong>Score as many goals as you can in 5 penalties.</strong><br>
+  Use the 🔊 Sound button to mute or unmute the sounds.
+</p>
+      <button id="start-btn">Start Game</button>
+    </div>
+  </div>
+
+  <!-- PIXEL SCOREBOARD -->
+  <div id="scoreboard">Score: 0 / 5 | Penalty: 0 / 5</div>
+  <div id="flash-text"></div>
+
+  <div id="game">
+    <div id="pitch">
+<svg id="crowd-svg" viewBox="0 0 1500 100" preserveAspectRatio="xMinYMax meet" 
+     style="position:absolute; top:0; left:0; width:100%; height:40vh; z-index:0;"></svg>
+
+
+
+
+      <!-- Advertising hoardings -->
+      <div class="hoardings hoard-left"><img title="" alt="" src="https://www.thetoyshop.com/medias/entertainer-logo-secondary-BTS-1-.png?context=bWFzdGVyfGltYWdlc3wxNjcxNDN8aW1hZ2UvcG5nfGFHSmxMMmhoWXk4eE1qWTNPRGt6TkRJd01ETTFNQzlsYm5SbGNuUmhhVzVsY2kxc2IyZHZMWE5sWTI5dVpHRnllUzFDVkZNdE1TMHVjRzVufDIyOWZjZDk5YmZlZWNmYWI2ZTU0NGJhMjhlMTcyMmNjYzdhNDdlMGJkODBiOWIyODlmMWQ5MzFjNjgxZTc2YTU"></div>
+      <div class="hoardings hoard-center">THETOYSHOP.COM</div>
+      <div class="hoardings hoard-right"><img title="Early Learning Centre" alt="Early Learning Centre" src="https://www.elc.co.uk/medias/site-logo.svg?context=bWFzdGVyfGltYWdlc3wzNDcwN3xpbWFnZS9zdmcreG1sfGFXMWhaMlZ6TDJnNFppOW9ZV0l2T1RFNE56WTNNVGsyTlRjeU5pNXpkbWN8MDMyOGQ4OTBmM2VlYzg2Yzc1Nzc4YzQyNTAxNmI1OWUyNGY3YzE1OTQzZjkxYTFlYjA3NGQ0ZmJiZDM2MjcyZQ"></div>
+
+      <svg id="goal-svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet">
+        <rect x="0" y="0" width="300" height="300" fill="transparent"/>
+
+        <!-- Goal posts -->
+        <line x1="60" y1="40" x2="60" y2="120" stroke="#fff" stroke-width="4"/>
+        <line x1="240" y1="40" x2="240" y2="120" stroke="#fff" stroke-width="4"/>
+        <line x1="60" y1="40" x2="240" y2="40" stroke="#fff" stroke-width="4"/>
+
+        <!-- Net -->
+        <g id="net" stroke="#aaa" stroke-width="0.5">
+          <!-- vertical lines -->
+          <line x1="75" y1="40" x2="75" y2="120"/>
+          <line x1="90" y1="40" x2="90" y2="120"/>
+          <line x1="105" y1="40" x2="105" y2="120"/>
+          <line x1="120" y1="40" x2="120" y2="120"/>
+          <line x1="135" y1="40" x2="135" y2="120"/>
+          <line x1="150" y1="40" x2="150" y2="120"/>
+          <line x1="165" y1="40" x2="165" y2="120"/>
+          <line x1="180" y1="40" x2="180" y2="120"/>
+          <line x1="195" y1="40" x2="195" y2="120"/>
+          <line x1="210" y1="40" x2="210" y2="120"/>
+          <!-- horizontal lines -->
+          <line x1="60" y1="55" x2="240" y2="55"/>
+          <line x1="60" y1="70" x2="240" y2="70"/>
+          <line x1="60" y1="85" x2="240" y2="85"/>
+          <line x1="60" y1="100" x2="240" y2="100"/>
+          <line x1="60" y1="115" x2="240" y2="115"/>
+        </g>
+
+        <!-- Clickable zones -->
+        <rect class="zone" data-zone="TopLeft" x="60" y="40" width="60" height="26"/>
+        <rect class="zone" data-zone="TopCenter" x="120" y="40" width="60" height="26"/>
+        <rect class="zone" data-zone="TopRight" x="180" y="40" width="60" height="26"/>
+        <rect class="zone" data-zone="MidLeft" x="60" y="66" width="60" height="28"/>
+        <rect class="zone" data-zone="MidCenter" x="120" y="66" width="60" height="28"/>
+        <rect class="zone" data-zone="MidRight" x="180" y="66" width="60" height="28"/>
+        <rect class="zone" data-zone="BotLeft" x="60" y="94" width="60" height="26"/>
+        <rect class="zone" data-zone="BotCenter" x="120" y="94" width="60" height="26"/>
+        <rect class="zone" data-zone="BotRight" x="180" y="94" width="60" height="26"/>
+        
+        <!-- FULL PENALTY AREA (big + proper scale) -->
+<rect x="-270" y="120" width="840" height="260"
+      fill="none" stroke="#ffffff" stroke-width="3"/>
+
+<!-- 6-YARD BOX -->
+<rect x="-30" y="120" width="360" height="90"
+      fill="none" stroke="#ffffff" stroke-width="3"/>
+        
+        <!-- PENALTY SPOT -->
+<circle cx="150" cy="280" r="4" fill="#ffffff"/>
+
+
+
+      <g id="keeper" transform="translate(150,70) scale(1.3)">
+  <!-- Shadow under keeper -->
+  <ellipse cx="10" cy="45" rx="12" ry="4" fill="rgba(0,0,0,0.3)" />
+
+  <!-- Gradients -->
+  <defs>
+    <radialGradient id="head-grad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f1c27d"/>
+      <stop offset="100%" stop-color="#e0a869"/>
+    </radialGradient>
+
+    <linearGradient id="jersey-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff0000"/>
+      <stop offset="100%" stop-color="#c10000"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Head -->
+  <circle id="keeper-head" cx="10" cy="10" r="10" fill="url(#head-grad)" />
+
+  <!-- Hair layers -->
+  <path id="keeper-hair" d="M4,2 Q10,-6 16,2" fill="#000"/>
+  <path d="M5,3 Q10,-4 15,3" fill="#222" opacity="0.8"/>
+  <path d="M6,4 Q10,-3 14,4" fill="#333" opacity="0.6"/>
+
+  <!-- Eyes (sclera + pupils) -->
+  <circle id="keeper-eye-left" cx="6.5" cy="8" r="2" fill="#fff"/>
+  <circle id="keeper-eye-left-pupil" cx="6.5" cy="8" r="1" fill="#000"/>
+  <circle id="keeper-eye-right" cx="13.5" cy="8" r="2" fill="#fff"/>
+  <circle id="keeper-eye-right-pupil" cx="13.5" cy="8" r="1" fill="#000"/>
+
+  <!-- Eyebrows -->
+  <path id="keeper-eyebrows" d="M5,6 Q10,4 15,6" stroke="#000" stroke-width="1"/>
+
+  <!-- Mouth (neutral, flinch, and smile) -->
+  <path id="keeper-mouth" d="M6,13 Q10,16 14,13" stroke="#000" stroke-width="1.5" fill="transparent"/>
+
+  <!-- Body -->
+  <rect id="keeper-body" x="5" y="20" width="10" height="20" fill="url(#jersey-grad)" rx="2"/>
+  <!-- Arms -->
+  <rect id="keeper-arm-left" x="0" y="20" width="5" height="15" fill="#ff0000" rx="2"/>
+  <rect id="keeper-arm-right" x="15" y="20" width="5" height="15" fill="#ff0000" rx="2"/>
+  <!-- Legs -->
+  <rect id="keeper-leg-left" x="5" y="40" width="4" height="10" fill="#000" rx="1"/>
+  <rect id="keeper-leg-right" x="11" y="40" width="4" height="10" fill="#000" rx="1"/>
+</g>
+
+
+
+
+
+        <!-- Ball -->
+        <g id="ball" transform="translate(150,280) scale(1)">
+  <circle cx="0" cy="0" r="16" fill="#fff" stroke="#000" stroke-width="1"></circle>
+  <image href="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"
+         x="-16" y="-16" width="32" height="32"/>
+</g>
+      </svg>
+    </div>
+  </div>
+
+  <div id="final-scoreboard" class="hidden">
+    <div id="scorebox">
+      <h1>Final Score</h1>
+      <p id="final-score-text"></p>
+      <button onclick="restart()">Restart</button>
+    </div>
+  </div>
+
+<button id="sound-toggle">🔊 Sound: ON</button>
+
+<select id="nation-picker">
+<option value="" disabled selected>Select Nation</option>
+
+<option value="argentina">Argentina</option>
+<option value="australia">Australia</option>
+<option value="belgium">Belgium</option>
+<option value="brazil">Brazil</option>
+<option value="cameroon">Cameroon</option>
+<option value="canada">Canada</option>
+<option value="costa-rica">Costa Rica</option>
+<option value="croatia">Croatia</option>
+<option value="denmark">Denmark</option>
+<option value="ecuador">Ecuador</option>
+<option value="england">England</option>
+<option value="france">France</option>
+<option value="germany">Germany</option>
+<option value="ghana">Ghana</option>
+<option value="iran">Iran</option>
+<option value="japan">Japan</option>
+<option value="mexico">Mexico</option>
+<option value="morocco">Morocco</option>
+<option value="netherlands">Netherlands</option>
+<option value="poland">Poland</option>
+<option value="portugal">Portugal</option>
+<option value="qatar">Qatar</option>
+<option value="saudi-arabia">Saudi Arabia</option>
+<option value="senegal">Senegal</option>
+<option value="serbia">Serbia</option>
+<option value="south-korea">South Korea</option>
+<option value="spain">Spain</option>
+<option value="switzerland">Switzerland</option>
+<option value="tunisia">Tunisia</option>
+<option value="uruguay">Uruguay</option>
+<option value="usa">USA</option>
+<option value="wales">Wales</option>
+
+</select>
+
+<!-- Goal & Crowd Reaction Sounds -->
+<audio id="goal-sound" src="https://thetoyshop.com/medias/cheer.mp3?context=bWFzdGVyfHJvb3R8MjEzMTR8dmlkZW8vbXBlZ3xhR1F4TDJnek5DOHhNamN3TXpZd05ESTNOekkzT0M5amFHVmxjaTV0Y0RNfDE3NTBkNWVmODQyMTA1NmI3NDk5ODEyZmFlMjU1Y2E0M2Q2N2UyOTM2Njc3ZGM3Nzc0OTc2MmQxNjQ3YmJhNTQ"></audio>
+<audio id="miss-sound" src="https://thetoyshop.com/medias/ooohhh.mp3?context=bWFzdGVyfHJvb3R8MjYzMzB8dmlkZW8vbXBlZ3xhR013TDJnek1TOHhNamN3TXpZd05ETTBNamd4TkM5dmIyOW9hR2d1YlhBenw5ODk3ZGI0MWY1OTI1YzQ2MGZiM2RhYTkzMWEzNWZhYmFhZTAyNGY5MWNmMTFlM2YzOWVhNWYzMmZhMzE3ZDNj"></audio>
+<audio id="bg-crowd" src="https://cdn.pixabay.com/download/audio/2022/03/14/audio_58bdbe5d28.mp3?filename=freesound_community-football-crowd-3-69245.mp3" loop autoplay></audio>
+</div>
+
+
+
+
+
+<script>
+// --- Elements ---
+const zones = document.querySelectorAll('.zone');
+const keeper = document.getElementById('keeper');
+const head = document.getElementById('keeper-head');
+const hair = document.getElementById('keeper-hair');
+const eyeLeft = document.getElementById('keeper-eye-left');
+const eyeRight = document.getElementById('keeper-eye-right');
+const mouth = document.getElementById('keeper-mouth');
+const ball = document.getElementById('ball');
+const scoreboard = document.getElementById('scoreboard');
+const flashText = document.getElementById('flash-text');
+const finalScoreboard = document.getElementById('final-scoreboard');
+const finalScoreText = document.getElementById('final-score-text');
+const svg = document.getElementById('goal-svg');
+const soundToggle = document.getElementById('sound-toggle');
+let soundEnabled = true;
+
+const goalSound = document.getElementById('goal-sound');
+const missSound = document.getElementById('miss-sound');
+const bgCrowd = document.getElementById('bg-crowd');
+
+// --- Keeper mouth paths ---
+const mouthNeutral = 'M6,13 Q10,16 14,13'; // default
+const mouthSmile = 'M6,13 Q10,18 14,13';   // smile
+const mouthFrown = 'M6,13 Q10,19 14,13';   // optional for fail
+
+
+const nationKits = {
+  argentina: "#74ACDF",
+  australia: "#FFCD00",
+  belgium: "#FAE042",
+  brazil: "#FFEE00",
+  cameroon: "#007A5E",
+  canada: "#FF0000",
+  "costa-rica": "#D52B1E",
+  croatia: "#FF0000",
+  denmark: "#C60C30",
+  ecuador: "#F7E017",
+  england: "#FFFFFF",
+  france: "#0055A4",
+  germany: "#000000",
+  ghana: "#FCD116",
+  iran: "#239F40",
+  japan: "#0033A0",
+  mexico: "#006847",
+  morocco: "#C1272D",
+  netherlands: "#FF7900",
+  poland: "#FFFFFF",
+  portugal: "#006600",
+  qatar: "#8A1538",
+  "saudi-arabia": "#006C35",
+  senegal: "#00853F",
+  serbia: "#C6363C",
+  "south-korea": "#CD2E3A",
+  spain: "#AA151B",
+  switzerland: "#FF0000",
+  tunisia: "#E70013",
+  uruguay: "#75AADB",
+  usa: "#3C3B6E",
+  wales: "#C8102E"
+};
+
+// --- Game state ---
+let penalties = 0;
+let maxPenalties = 5;
+let score = 0;
+let animating = false;
+
+// --- Positions ---
+const ballStartX = 150;
+const ballStartY = 280;
+const keeperStartX = 150;
+const keeperStartY = 70;
+
+// --- Helpers ---
+function getZoneCenter(zone){
+  const x = parseFloat(zone.getAttribute('x'));
+  const y = parseFloat(zone.getAttribute('y'));
+  const width = parseFloat(zone.getAttribute('width'));
+  const height = parseFloat(zone.getAttribute('height'));
+  return [x + width/2, y + height/2];
+}
+
+// --- Keeper movement with optional delay ---
+function moveKeeper(toX,toY,duration=20, delay=50){
+  setTimeout(()=>{
+    let step=0;
+    const transform=keeper.getAttribute('transform');
+    const scale = 1.3;
+    const startX=parseFloat(transform.split('(')[1].split(',')[0]);
+    const startY=parseFloat(transform.split(',')[1]);
+
+    const dx=(toX-startX)/duration;
+    const dy=(toY-startY)/duration;
+
+    const leftArm = document.getElementById('keeper-arm-left');
+    const rightArm = document.getElementById('keeper-arm-right');
+
+    function stepAnim(){
+      if(step<=duration){
+        const curveY=startY + dy*step - 0.25*Math.sin((step/duration)*Math.PI)*25;
+        const curlX = startX + dx*step + (dx!==0 ? Math.sin(step/duration*Math.PI)*15*(dx>0?1:-1) : 0);
+        keeper.setAttribute('transform',`translate(${curlX},${curveY}) scale(${scale}) rotate(${dx*step*0.5} 10 10)`);
+
+        const armLift = Math.sin((step/duration)*Math.PI)*15;
+        leftArm.setAttribute('y',20 - armLift);
+        rightArm.setAttribute('y',20 - armLift);
+        
+        // Only animate squint/flinch if diving
+        if(toX!==keeperStartX || toY!==keeperStartY){
+          const eyeSquint = Math.sin((step/duration)*Math.PI) * 0.5;
+          eyeLeft.setAttribute('r',1.5 - eyeSquint);
+          eyeRight.setAttribute('r',1.5 - eyeSquint);
+          mouth.setAttribute('d',`M6,14 Q10,${13+Math.sin(step/duration*Math.PI)*3} 14,14`);
+        }
+
+        step++;
+        requestAnimationFrame(stepAnim);
+      } else {
+        // After animation completes, reset face if keeper back at center
+        if(toX===keeperStartX && toY===keeperStartY){
+          eyeLeft.setAttribute('r', 1.5);
+          eyeRight.setAttribute('r', 1.5);
+          mouth.setAttribute('d','M6,13 Q10,16 14,13'); // smile
+        }
+      }
+    }
+    stepAnim();
+  }, delay);
+}
+
+
+// --- Reset ball ---
+function resetBall(){
+  ball.setAttribute('transform', `translate(${ballStartX},${ballStartY}) scale(1) rotate(0)`);
+}
+
+// --- Animate ball with curl, spin, topspin, shrink ---
+function animateBall(toX, toY, isGoal=true, callback, zoneEl){
+  animating=true;
+  let step=0;
+  const steps=30;
+
+  const transform = ball.getAttribute('transform');
+  const matches = transform.match(/translate\(([-\d.]+),([-\d.]+)\) scale\(([\d.]+)\)(?: rotate\(([-\d.]+)\))?/);
+  const startX = matches ? parseFloat(matches[1]) : ballStartX;
+  const startY = matches ? parseFloat(matches[2]) : ballStartY;
+
+  const dx = (toX - startX)/steps;
+  const dy = (toY - startY)/steps;
+
+  // Direction info
+  let horizontal="Center", vertical="Mid";
+  if(zoneEl){
+    const zoneName=zoneEl.dataset.zone;
+    if(zoneName.includes("Left")) horizontal="Left";
+    else if(zoneName.includes("Right")) horizontal="Right";
+    else horizontal="Center";
+
+    if(zoneName.includes("Top")) vertical="Top";
+    else if(zoneName.includes("Mid")) vertical="Mid";
+    else vertical="Bot";
+  }
+
+  // Spin & topspin
+  let totalRotation=0;
+  let extraArc=0;
+  if(horizontal==="Left") totalRotation=720;
+  else if(horizontal==="Right") totalRotation=-720;
+  else totalRotation=360;
+
+  function stepAnim(){
+    if(step<=steps){
+      const scale=1 - 0.5*(step/steps);
+
+      // Curl
+      let curlX=startX + dx*step;
+      if(horizontal==="Right") curlX += Math.sin((step/steps)*Math.PI)*25;
+      else if(horizontal==="Left") curlX -= Math.sin((step/steps)*Math.PI)*25;
+
+      // Topspin for center shots
+      let topspin=0;
+      if(horizontal==="Center" && vertical==="Top") topspin = Math.sin((step/steps)*Math.PI)*15;
+
+      // Arc trajectory
+      const arcY=startY + dy*step - Math.sin((step/steps)*Math.PI)*30 - topspin;
+
+      const rotation=totalRotation*(step/steps);
+
+      ball.setAttribute('transform', `translate(${curlX},${arcY}) scale(${scale}) rotate(${rotation})`);
+
+      step++;
+      requestAnimationFrame(stepAnim);
+    } else {
+      ball.setAttribute('transform', `translate(${toX},${toY}) scale(0.5) rotate(${totalRotation})`);
+      animating=false;
+      callback();
+    }
+  }
+
+  stepAnim();
+}
+
+// --- Flash text ---
+function showFlash(text){
+  flashText.textContent=text;
+  flashText.classList.remove('show');
+  void flashText.offsetWidth;
+  flashText.classList.add('show');
+}
+
+// --- Shoot ---
+function shoot(zone){
+  penalties++;
+  updateScoreboard();
+  const [targetX,targetY] = getZoneCenter(zone);
+  const zoneNames = Array.from(zones);
+
+  let saveZone;
+  if(Math.random()<0.3) saveZone=zone;
+  else saveZone=zoneNames[Math.floor(Math.random()*zones.length)];
+
+  const [saveX,saveY]=getZoneCenter(saveZone);
+
+  if(zone===saveZone){
+  moveKeeper(saveX,saveY);
+  animateBall(saveX,saveY,false,()=>{
+    // Smile briefly on save
+    mouth.setAttribute('d', mouthSmile);
+    setTimeout(()=> mouth.setAttribute('d', mouthNeutral), 1000);
+
+    // Small bounce after ball stop
+    animateBall(saveX+(Math.random()*15-7), saveY+10,false, afterShot, zone);
+  });
+  setTimeout(()=>{ 
+    showFlash("SAVED!"); 
+    shakePitch(); 
+    if(soundEnabled) missSound.play(); 
+  },100);
+} else {
+    moveKeeper(saveX,saveY,20,50); // small delay for realism
+    animateBall(targetX,targetY,true,()=>{
+      setTimeout(()=>{
+        showFlash("GOAL!");
+        shakePitch();
+        goalSound.play(); // Celebration sound
+        afterShot();
+      },50);
+    }, zone);
+    score++;
+  }
+}
+
+function resetKeeperFace() {
+  // Reset eyes radius to normal
+  eyeLeft.setAttribute('r', 1.5);
+          eyeRight.setAttribute('r', 1.5);
+          mouth.setAttribute('d','M6,13 Q10,16 14,13');
+}
+
+
+// --- After shot ---
+function afterShot(){
+  setTimeout(()=>{
+    resetBall();
+    keeper.setAttribute('transform',`translate(${keeperStartX},${keeperStartY}) scale(1.3) rotate(0 10 10)`);
+    document.getElementById('keeper-arm-left').setAttribute('y',20);
+    document.getElementById('keeper-arm-right').setAttribute('y',20);
+
+    resetKeeperFace(); // <-- reset face here
+
+    if(penalties>=maxPenalties){
+      finalScoreText.textContent=`${score} / ${maxPenalties}`;
+      finalScoreboard.classList.remove('hidden');
+    } else updateScoreboard();
+  },300);
+}
+
+// --- Shake pitch ---
+function shakePitch(){
+  const pitch=document.getElementById('pitch');
+  pitch.animate([
+    {transform:'translateX(0)'},
+    {transform:'translateX(-5px)'},
+    {transform:'translateX(5px)'},
+    {transform:'translateX(0)'}
+  ],{duration:300,iterations:1});
+}
+
+// --- Restart ---
+function restart(){
+  penalties=0; score=0;
+  resetBall();
+  keeper.setAttribute('transform',`translate(${keeperStartX},${keeperStartY}) scale(1.3) rotate(0 10 10)`);
+  document.getElementById('keeper-arm-left').setAttribute('y',20);
+  document.getElementById('keeper-arm-right').setAttribute('y',20);
+
+  resetKeeperFace(); // <-- reset face here
+
+  finalScoreboard.classList.add('hidden');
+  updateScoreboard();
+}
+
+// --- Scoreboard ---
+function updateScoreboard(){
+  scoreboard.innerHTML = `Score: ${score} / ${maxPenalties} | Penalty: ${penalties} / ${maxPenalties}`;
+}
+
+// --- Start button ---
+const startScreen = document.getElementById('start-screen');
+const startBtn = document.getElementById('start-btn');
+startBtn.addEventListener('click', ()=>{
+  startScreen.style.display='none';
+  updateScoreboard();
+
+  if(soundEnabled){
+    bgCrowd.play().catch(err => {
+      console.log("Background crowd audio blocked:", err);
+    });
+  }
+});
+
+// --- Drag/shoot ---
+let touchStartX=0, touchStartY=0, touchStartTime=0, dragging=false;
+function startShoot(pt){
+  const ballX = ballStartX;
+  const ballY = ballStartY;
+  const maxDistance = 16*3;
+  if(Math.hypot(pt.x-ballX, pt.y-ballY)>maxDistance) return false;
+  touchStartX=pt.x;
+  touchStartY=pt.y;
+  touchStartTime=Date.now();
+  dragging=true;
+  return true;
+}
+function endShoot(pt){
+  if(!dragging) return;
+  dragging=false;
+
+  const dx=pt.x-touchStartX;
+  const dy=pt.y-touchStartY;
+  if(Math.abs(dx)<5 && Math.abs(dy)<5) return;
+
+  const dt = Date.now()-touchStartTime;
+  const speed=Math.hypot(dx,dy)/dt;
+
+  let vertical;
+  if(speed>0.8) vertical='Top';
+  else if(speed>0.3) vertical='Mid';
+  else vertical='Bot';
+
+  let horizontal;
+  if(dx<-20) horizontal='Left';
+  else if(dx>20) horizontal='Right';
+  else horizontal='Center';
+
+  const targetZoneName = vertical + horizontal;
+  const zoneEl = Array.from(zones).find(z => z.dataset.zone===targetZoneName);
+  if(zoneEl) shoot(zoneEl);
+}
+
+// --- Mouse ---
+svg.addEventListener('mousedown', e=>{
+  const pt = svg.createSVGPoint();
+  pt.x=e.clientX; pt.y=e.clientY;
+  const svgP=pt.matrixTransform(svg.getScreenCTM().inverse());
+  startShoot(svgP);
+});
+svg.addEventListener('mouseup', e=>{
+  const pt = svg.createSVGPoint();
+  pt.x=e.clientX; pt.y=e.clientY;
+  const svgP=pt.matrixTransform(svg.getScreenCTM().inverse());
+  endShoot(svgP);
+});
+
+// --- Touch ---
+svg.addEventListener('touchstart', e=>{
+  if(animating || penalties>=maxPenalties) return;
+  const touch = e.touches[0];
+  const pt = svg.createSVGPoint();
+  pt.x=touch.clientX; pt.y=touch.clientY;
+  const svgP=pt.matrixTransform(svg.getScreenCTM().inverse());
+  startShoot(svgP);
+});
+svg.addEventListener('touchend', e=>{
+  if(animating || penalties>=maxPenalties) return;
+  const touch = e.changedTouches[0];
+  const pt = svg.createSVGPoint();
+  pt.x=touch.clientX; pt.y=touch.clientY;
+  const svgP=pt.matrixTransform(svg.getScreenCTM().inverse());
+  endShoot(svgP);
+});
+
+// Extra zone click fallback for simple click (no drag)
+svg.addEventListener('click', e => {
+  if(animating || penalties >= maxPenalties) return;
+  const pt = svg.createSVGPoint();
+  pt.x = e.clientX; pt.y = e.clientY;
+  const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+
+  // Find which zone contains the click
+  const clicked = Array.from(zones).find(z => {
+    const x = parseFloat(z.getAttribute('x'));
+    const y = parseFloat(z.getAttribute('y'));
+    const w = parseFloat(z.getAttribute('width'));
+    const h = parseFloat(z.getAttribute('height'));
+    return svgP.x >= x && svgP.x <= x + w && svgP.y >= y && svgP.y <= y + h;
+  });
+  if(clicked) shoot(clicked);
+});
+
+
+const crowdSvg = document.getElementById('crowd-svg');
+// Head colors: natural skin tones
+const headColors = ["#FAD6B5", "#E0AC69", "#C68642", "#8B5A2B", "#3B2F2F"];
+// Body colors: keep bright fun colors
+const bodyColors = ["#e74c3c","#3498db","#f1c40f","#2ecc71","#9b59b6","#e67e22"];
+
+function drawCrowd() {
+  crowdSvg.innerHTML = "";  
+
+  const width = window.innerWidth;
+  const height = window.innerHeight * 0.4; // 40% of screen
+  crowdSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+  const rowCount = 8; // more rows
+  const rowHeight = height / rowCount;
+
+  let peoplePerRow;
+  if(width < 400) peoplePerRow = 12;
+  else if(width < 800) peoplePerRow = 40;
+  else peoplePerRow = 80;
+
+  for(let row = 0; row < rowCount; row++) {
+    for(let i = 0; i < peoplePerRow; i++) {
+      const spacing = width / peoplePerRow;
+      const baseX = i * spacing + (Math.random()-0.5)*spacing*0.2; // small jitter
+      const baseY = row * rowHeight + rowHeight/2 + (Math.random()-0.5)*rowHeight*0.2;
+
+      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      group.setAttribute("transform", `translate(${baseX},${baseY})`);
+
+      // Head with natural skin tone
+      const head = document.createElementNS("http://www.w3.org/2000/svg","circle");
+      head.setAttribute("cx", 0);
+      head.setAttribute("cy", 0);
+      head.setAttribute("r", 6 + Math.random()*2);
+      head.setAttribute("fill", headColors[Math.floor(Math.random()*headColors.length)]);
+      group.appendChild(head);
+
+      // Body with bright fun colors
+      const body = document.createElementNS("http://www.w3.org/2000/svg","rect");
+      body.setAttribute("x",-3);
+      body.setAttribute("y",6);
+      body.setAttribute("width",6);
+      body.setAttribute("height",12 + Math.random()*4);
+      body.setAttribute("fill", bodyColors[Math.floor(Math.random()*bodyColors.length)]);
+      group.appendChild(body);
+
+      group.setAttribute("data-row", row);
+      crowdSvg.appendChild(group);
+    }
+  }
+}
+
+
+function animateCrowd(){
+  const groups = crowdSvg.querySelectorAll('g');
+  groups.forEach(g => {
+    const row = parseInt(g.getAttribute('data-row'));
+    const offset = Math.sin(Date.now()/150 + row) * 2; // slightly more bounce
+    const transform = g.getAttribute('transform').split(')');
+    g.setAttribute('transform', transform[0] + `) translate(0,${offset})`);
+  });
+
+  requestAnimationFrame(animateCrowd);
+}
+
+soundToggle.addEventListener('click', () => {
+  soundEnabled = !soundEnabled;
+
+  goalSound.muted = !soundEnabled;
+  missSound.muted = !soundEnabled;
+  bgCrowd.muted = !soundEnabled;
+
+  soundToggle.textContent = soundEnabled 
+    ? "🔊 Sound: ON" 
+    : "🔇 Sound: OFF";
+});
+
+const nationPicker = document.getElementById('nation-picker');
+nationPicker.addEventListener('change', () => {
+  const selected = nationPicker.value;
+  const jerseyColor = nationKits[selected] || "#ff0000"; // fallback red
+
+  // Update keeper body & arms
+  document.getElementById('keeper-body').setAttribute('fill', jerseyColor);
+  document.getElementById('keeper-arm-left').setAttribute('fill', jerseyColor);
+  document.getElementById('keeper-arm-right').setAttribute('fill', jerseyColor);
+});
+
+// Draw & animate
+drawCrowd();
+animateCrowd();
+window.addEventListener('resize', drawCrowd);
+
+</script>

@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Seal Splash Dash</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow:hidden;
+    background:#9edcff;
+    font-family:Arial Rounded MT Bold,Arial;
+    user-select:none;
+}
+
+#game{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    background: linear-gradient(#8bd8ff, #dff7ff);
+    touch-action: none; /* Prevents mobile browser default scroll/zoom gestures interfering */
+}
+
+/* ocean */
+#water{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:180px;
+    background: linear-gradient(#a8efff, #65c8e8);
+    z-index: 4;
+    pointer-events: none;
+}
+
+/* ice platform */
+#ice{
+    position:absolute;
+    bottom:160px;
+    left:120px;
+    width:260px;
+    height:80px;
+    background:white;
+    border-radius: 80px 80px 20px 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+
+#ice::after{
+    content:"";
+    position:absolute;
+    right:-60px;
+    bottom:0;
+    width:120px;
+    height:80px;
+    background:white;
+    border-radius:0 80px 0 0;
+    transform:skewX(-25deg);
+}
+
+/* --- CATAPULT / SLINGSHOT GRAPHICS --- */
+#slingshot-back {
+    position: absolute;
+    bottom: 235px;
+    left: 335px;
+    width: 15px;
+    height: 75px;
+    background: #5c3217;
+    border-radius: 7px;
+    z-index: 6;
+}
+
+#slingshot-front {
+    position: absolute;
+    bottom: 235px;
+    left: 312px;
+    width: 15px;
+    height: 75px;
+    background: #8B4513;
+    border-radius: 7px;
+    z-index: 1;
+}
+
+#slingshot-back::after, #slingshot-front::after {
+    content: "";
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    width: 29px;
+    height: 16px;
+    background: inherit;
+    border-radius: 7px;
+}
+
+#rubber-band-left, #rubber-band-right {
+    position: absolute;
+    height: 9px;
+    background: #b5651d;
+    border-radius: 4px;
+    z-index: 2;
+    transform-origin: left center;
+    display: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* seal */
+#seal{
+    position:absolute;
+    width:95px;
+    bottom:220px;
+    left:210px;
+    transform-origin:center;
+    transition:transform .05s;
+    user-select:none;
+    -webkit-user-drag:none;
+    z-index: 5;
+    cursor: grab;
+    touch-action: none;
+}
+
+#hud{
+    position:absolute;
+    top:20px;
+    left:20px;
+    font-size:24px;
+    color:#234;
+    z-index:10;
+    pointer-events: none;
+}
+
+#message{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:45px;
+    color:white;
+    text-shadow: 2px 2px 5px #333;
+    z-index: 20;
+    text-align: center;
+    pointer-events: none;
+}
+
+#power{
+    position:absolute;
+    bottom:40px;
+    left:50%;
+    transform:translateX(-50%);
+    width:300px;
+    height:20px;
+    background:white;
+    border-radius:20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 30;
+    pointer-events: none;
+}
+
+#bar{
+    height:100%;
+    width:0%;
+    background:#48bfff;
+    border-radius:20px;
+    transition: width 0.05s linear;
+}
+
+#world{
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:1000000px;
+    height:100%;
+    pointer-events: none;
+}
+
+.iceberg{
+    position:absolute;
+    bottom:160px;
+    width:180px;
+    height:120px;
+    background:white;
+    border-radius:90px 90px 20px 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.2);
+}
+
+.boost{
+    background: linear-gradient(white, #7fe8ff);
+    box-shadow: 0 0 30px #7fe8ff;
+}
+
+.fish{
+    position:absolute;
+    bottom:280px;
+    font-size:34px;
+}
+
+.boostPad{
+    position:absolute;
+    bottom:220px;
+    font-size:45px;
+}
+
+.boostItem{
+    position:absolute;
+    bottom:280px;
+    font-size:40px;
+    animation: float 1s infinite alternate;
+}
+
+@keyframes float{
+    from{ transform:translateY(0); }
+    to{ transform:translateY(-15px); }
+}
+
+.coin{
+    position:absolute;
+    bottom:280px;
+    font-size:40px;
+    animation:float 1s infinite alternate;
+}
+
+/* --- START / UPGRADE OVERLAY SCREEN --- */
+#overlay-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 76, 129, 0.85);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+#overlay-screen h1 {
+    font-size: 50px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 8px #000;
+}
+
+#overlay-screen p {
+    font-size: 20px;
+    margin-bottom: 25px;
+    max-width: 600px;
+    line-height: 1.4;
+}
+
+.upgrade-box {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    padding: 15px 25px;
+    margin-bottom: 30px;
+    width: 450px;
+    max-width: 90%;
+    text-align: left;
+}
+
+.upgrade-box h3 {
+    margin-bottom: 8px;
+    font-size: 22px;
+    color: #a8efff;
+}
+
+.upgrade-box ul {
+    list-style-type: none;
+    font-size: 16px;
+}
+
+.upgrade-box li {
+    margin-bottom: 5px;
+}
+
+#start-btn {
+    background: #ffb703;
+    color: #333;
+    border: none;
+    padding: 15px 40px;
+    font-size: 24px;
+    font-family: Arial Rounded MT Bold, Arial;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transition: transform 0.1s, background 0.1s;
+    touch-action: manipulation;
+}
+
+#start-btn:hover {
+    background: #ffc933;
+    transform: scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <!-- Start / Upgrade Screen Overlay -->
+    <div id="overlay-screen">
+        <h1>🌊 Seal Splash Dash! 🌊</h1>
+        <p>Launch your seal across 3 epic tries! Accumulate total distance to unlock permanent upgrades for your next runs.</p>
+        
+        <div class="upgrade-box">
+            <h3>🎁 Upgrade Milestones:</h3>
+            <ul>
+                <li>⚡ <strong>500m Total:</strong> +1 Extra Tap Boost (4 total)</li>
+                <li>💪 <strong>1200m Total:</strong> Bigger Power Bar (Longer pull range!)</li>
+                <li>🚀 <strong>2200m Total:</strong> Super Bounce (Extra skim speed!)</li>
+            </ul>
+        </div>
+
+        <button id="start-btn">START GAME</button>
+    </div>
+
+    <div id="hud">
+        Distance: <span id="distance">0</span>m<br>
+        ⚡ Boosts: <span id="boostCount">3</span><br>
+        🎯 Try: <span id="tryCount">1</span>/3 | Total: <span id="totalDistance">0</span>m
+    </div>
+
+    <div id="message">
+        Drag and launch! ⬅
+    </div>
+
+    <!-- Stationary Launch Station Container -->
+    <div id="launch-station" style="position:absolute; left:0px; bottom:0px; width:100%; height:100%; pointer-events:none; z-index:6;">
+        <div id="slingshot-back" style="pointer-events:auto;"></div>
+        <div id="rubber-band-left"></div>
+        <div id="rubber-band-right"></div>
+        <img id="seal" src="https://www.thetoyshop.com/medias/Seal-of-approval-1.png?context=bWFzdGVyfHJvb3R8MzA1ODV8aW1hZ2UvcG5nfGFEY3dMMmcyWWk4eE1qZ3hOelF6TVRZeU5UYzFPQzlUWldGc0lHOW1JR0Z3Y0hKdmRtRnNJREV1Y0c1bnwyYjJkOGUzODJkZmMzZDViMjBmNzkwMTIzNDEyMzRlMmJhZGVmZDRmMTQwM2EwZTZjMjVjMWE5MTZkZGRhNTNm" style="pointer-events:auto;">
+        <div id="slingshot-front" style="pointer-events:auto;"></div>
+    </div>
+
+    <div id="world">
+        <div id="ice"></div>
+    </div>
+
+    <div id="water"></div>
+
+    <div id="power">
+        <div id="bar"></div>
+    </div>
+
+</div>
+
+<script>
+const gameContainer = document.getElementById("game");
+const seal = document.getElementById("seal");
+const distanceText = document.getElementById("distance");
+const message = document.getElementById("message");
+const bar = document.getElementById("bar");
+const world = document.getElementById("world");
+const boostText = document.getElementById("boostCount");
+const bandLeft = document.getElementById("rubber-band-left");
+const bandRight = document.getElementById("rubber-band-right");
+const launchStation = document.getElementById("launch-station");
+const overlayScreen = document.getElementById("overlay-screen");
+const tryText = document.getElementById("tryCount");
+const totalDistanceText = document.getElementById("totalDistance");
+const startBtn = document.getElementById("start-btn");
+
+let dragging = false;
+let startX = 0;
+let startY = 0;
+let sealRestX = 210;
+let sealRestY = 220;
+let velocityX = 0;
+let velocityY = 0;
+let flying = false;
+let distance = 0;
+let skimming = false;
+let sinking = false;
+let sinkTimer = 0;
+let hitIce = [];
+let worldGenerated = 500;
+let chunkSize = 3000;
+let maxWorldObjects = [];
+let tapBoosts = 3;
+let combo = 0;
+
+// Session & Upgrade State
+let currentTry = 1;
+let totalDistance = 0;
+let maxPullPower = 250;
+let boostBonusMultiplier = 1;
+let unlockedBoostUpgrade = false;
+let unlockedPowerUpgrade = false;
+let unlockedBounceUpgrade = false;
+
+function startGameSession() {
+    overlayScreen.style.display = "none";
+    resetGame(true);
+}
+
+startBtn.addEventListener("click", startGameSession);
+startBtn.addEventListener("touchend", e => {
+    e.preventDefault();
+    startGameSession();
+});
+
+function handleGameTap() {
+    if (!flying || sinking) return;
+    if (tapBoosts <= 0) return;
+
+    velocityX += (12 * boostBonusMultiplier);
+    velocityY += 5;
+    skimming = false;
+    tapBoosts--;
+    boostText.innerHTML = tapBoosts;
+    showMessage("⚡ SEAL BOOST!");
+}
+
+// Mobile-safe event listeners targeting the game canvas container directly
+gameContainer.addEventListener("click", handleGameTap);
+gameContainer.addEventListener("touchend", e => {
+    if (e.target === startBtn || overlayScreen.style.display !== "none") return;
+    e.preventDefault();
+    handleGameTap();
+}, { passive: false });
+
+function startDrag(clientX, clientY) {
+    if (flying || overlayScreen.style.display !== "none") return;
+    const rect = seal.getBoundingClientRect();
+    
+    if (
+        clientX < rect.left - 40 ||
+        clientX > rect.right + 40 ||
+        clientY < rect.top - 40 ||
+        clientY > rect.bottom + 40
+    ) {
+        return;
+    }
+
+    dragging = true;
+    startX = clientX;
+    startY = clientY;
+    bandLeft.style.display = "block";
+    bandRight.style.display = "block";
+    seal.style.cursor = "grabbing";
+}
+
+function moveDrag(clientX, clientY) {
+    if (!dragging) return;
+
+    let dx = startX - clientX;
+    let dy = startY - clientY;
+
+    let pullDist = Math.hypot(dx, dy);
+    let power = Math.min(maxPullPower, pullDist);
+    bar.style.width = (power / maxPullPower * 100) + "%";
+
+    let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+    seal.style.transform = `rotate(${angle}deg) scale(${1 + power/600})`;
+
+    let currentSealX = sealRestX - dx;
+    let currentSealY = sealRestY + dy;
+
+    seal.style.left = currentSealX + "px";
+    seal.style.bottom = currentSealY + "px";
+
+    updateRubberBands();
+}
+
+function endDrag(clientX, clientY) {
+    if (!dragging) return;
+    dragging = false;
+    bandLeft.style.display = "none";
+    bandRight.style.display = "none";
+    seal.style.cursor = "grab";
+    bar.style.width = "0%";
+
+    let pullX = startX - clientX;
+    let pullY = startY - clientY;
+
+    let pullDist = Math.hypot(pullX, pullY);
+    let powerMultiplier = 0.22 + (pullDist / maxPullPower) * 0.15;
+
+    velocityX = pullX * powerMultiplier;
+    velocityY = -pullY * powerMultiplier;
+
+    seal.style.transform = "rotate(0deg)";
+    flying = true;
+    sinking = false;
+    message.style.display = "none";
+
+    launchStation.style.display = "none";
+    document.body.appendChild(seal);
+    seal.style.position = "absolute";
+    seal.style.left = sealRestX + "px";
+    seal.style.bottom = sealRestY + "px";
+    seal.style.display = "block";
+    seal.style.opacity = "1";
+
+    gameLoop();
+}
+
+// Mouse Events
+document.addEventListener("mousedown", e => startDrag(e.clientX, e.clientY));
+document.addEventListener("mousemove", e => moveDrag(e.clientX, e.clientY));
+document.addEventListener("mouseup", e => endDrag(e.clientX, e.clientY));
+
+// Touch Events for Slingshot Dragging
+document.addEventListener("touchstart", e => {
+    if (overlayScreen.style.display !== "none") return;
+    if (e.touches.length > 0) {
+        let touch = e.touches[0];
+        startDrag(touch.clientX, touch.clientY);
+    }
+}, { passive: true });
+
+document.addEventListener("touchmove", e => {
+    if (!dragging) return;
+    if (e.touches.length > 0) {
+        let touch = e.touches[0];
+        moveDrag(touch.clientX, touch.clientY);
+    }
+}, { passive: true });
+
+document.addEventListener("touchend", e => {
+    if (!dragging) return;
+    let touch = e.changedTouches[0];
+    endDrag(touch.clientX, touch.clientY);
+});
+
+function updateRubberBands() {
+    const forkLeftX = 320;
+    const forkRightX = 338;
+    const forkY = window.innerHeight - 310;
+    
+    const sealRect = seal.getBoundingClientRect();
+    const sealCenterX = sealRect.left + sealRect.width / 2;
+    const sealCenterY = sealRect.top + sealRect.height / 2;
+
+    let lenL = Math.hypot(sealCenterX - forkLeftX, sealCenterY - forkY);
+    let angL = Math.atan2(sealCenterY - forkY, sealCenterX - forkLeftX) * 180 / Math.PI;
+    bandLeft.style.width = lenL + "px";
+    bandLeft.style.left = forkLeftX + "px";
+    bandLeft.style.top = forkY + "px";
+    bandLeft.style.transform = `rotate(${angL}deg)`;
+
+    let lenR = Math.hypot(sealCenterX - forkRightX, sealCenterY - forkY);
+    let angR = Math.atan2(sealCenterY - forkY, sealCenterX - forkRightX) * 180 / Math.PI;
+    bandRight.style.width = lenR + "px";
+    bandRight.style.left = forkRightX + "px";
+    bandRight.style.top = forkY + "px";
+    bandRight.style.transform = `rotate(${angR}deg)`;
+}
+
+function checkCollisions() {
+    const sealRect = seal.getBoundingClientRect();
+
+    document.querySelectorAll(".iceberg").forEach(ice => {
+        if (hitIce.includes(ice)) return;
+        const iceRect = ice.getBoundingClientRect();
+
+        if (
+            sealRect.right > iceRect.left &&
+            sealRect.left < iceRect.right &&
+            sealRect.bottom >= iceRect.top &&
+            sealRect.bottom < iceRect.bottom + 40
+        ) {
+            hitIce.push(ice);
+            velocityY = unlockedBounceUpgrade ? 15 : 12;
+            velocityX += unlockedBounceUpgrade ? 8 : 6;
+            skimming = false;
+            combo++;
+            distance += combo * 10;
+            showMessage("🧊 ICE BOUNCE x" + combo);
+
+            ice.classList.add("boost");
+            setTimeout(() => { ice.classList.remove("boost"); }, 400);
+            setTimeout(() => { hitIce = hitIce.filter(x => x !== ice); }, 1000);
+        } else if (
+            sealRect.right > iceRect.left - 40 &&
+            sealRect.right < iceRect.left
+        ) {
+            distance += 5;
+            showMessage("✨ CLOSE CALL +5");
+        }
+    });
+}
+
+function checkFish() {
+    const sealRect = seal.getBoundingClientRect();
+
+    document.querySelectorAll(".fish").forEach(fish => {
+        const fishRect = fish.getBoundingClientRect();
+
+        if (
+            sealRect.right > fishRect.left &&
+            sealRect.left < fishRect.right &&
+            sealRect.bottom > fishRect.top &&
+            sealRect.top < fishRect.bottom
+        ) {
+            velocityX *= 0.75;
+            distance += 25;
+            showMessage("🐟 +25m");
+            fish.remove();
+        }
+    });
+}
+
+function checkBoosts() {
+    const sealRect = seal.getBoundingClientRect();
+
+    document.querySelectorAll(".boostItem, .boostPad, .coin").forEach(item => {
+        const rect = item.getBoundingClientRect();
+
+        if (
+            sealRect.right > rect.left &&
+            sealRect.left < rect.right &&
+            sealRect.bottom > rect.top &&
+            sealRect.top < rect.bottom
+        ) {
+            if (item.classList.contains("star")) {
+                velocityX += 8;
+                velocityY += 8;
+                showMessage("⭐ SUPER BOOST!");
+            }
+            if (item.classList.contains("rainbow")) {
+                velocityX += 15;
+                velocityY += 15;
+                showMessage("🌈 RAINBOW POWER!");
+            }
+            if (item.classList.contains("crab")) {
+                velocityX *= 0.5;
+                velocityY = 3;
+                showMessage("🦀 CRAB SPLASH!");
+            }
+            if (item.classList.contains("coin")) {
+                combo++;
+                distance += combo * 5;
+                showMessage("⭐ COIN x" + combo + " +" + (combo * 5) + "m");
+            }
+            if (item.innerHTML.includes("🚀")) {
+                velocityX += 25;
+                velocityY = 15;
+                skimming = false;
+                showMessage("🚀 ROCKET BOOST!");
+            }
+            item.remove();
+        }
+    });
+}
+
+let sealX = sealRestX;
+let sealY = sealRestY;
+
+function gameLoop() {
+    if (!flying) return;
+
+    if (!sinking) {
+        sealX += velocityX;
+        sealY += velocityY;
+        manageWorld();
+
+        if (!skimming) {
+            velocityY -= 0.55;
+            let angle = Math.atan2(velocityY, velocityX) * 180 / Math.PI;
+            seal.style.transform = `rotate(${Math.max(-35, Math.min(45, angle))}deg)`;
+        } else {
+            let bounceProgress = (sealX * 0.015);
+            sealY = 150 + Math.abs(Math.sin(bounceProgress)) * 30;
+            velocityX *= 0.991;
+
+            let skimAngle = Math.cos(bounceProgress) * 10;
+            seal.style.transform = `rotate(${skimAngle}deg)`;
+
+            if (velocityX < 2.5) {
+                startSinking();
+            }
+        }
+
+        velocityX *= 0.995;
+
+        // Check water contact from above
+        if (sealY <= 150 && !sinking && !skimming) {
+            let impactSpeed = Math.abs(velocityY);
+            
+            if (impactSpeed > 4 && velocityX > 2.5) {
+                skimming = true;
+                velocityY = 0;
+                velocityX *= 0.90;
+                showMessage("🌊 Bounce Skim!");
+            } else if (velocityX > 2) {
+                skimming = true;
+                velocityY = 0;
+                velocityX *= 0.93;
+                showMessage("🌊 Shallow Skim!");
+            } else {
+                startSinking();
+            }
+        }
+    } else {
+        // Sinking animation at the end
+        sinkTimer++;
+        sealY -= 1.2;
+        velocityX *= 0.92;
+        seal.style.transform = `rotate(-25deg) scale(${Math.max(0.4, 1 - sinkTimer/65)})`;
+        seal.style.opacity = Math.max(0, 1 - sinkTimer/50);
+
+        if (sinkTimer > 60) {
+            flying = false;
+            sinking = false;
+            seal.style.display = "none";
+            
+            let runDist = Math.floor(distance);
+            totalDistance += runDist;
+            totalDistanceText.innerHTML = totalDistance;
+
+            checkUpgrades();
+
+            if (currentTry < 3) {
+                message.innerHTML = `Try ${currentTry} Finished: ${runDist}m!<br><span style="font-size:25px;">Get ready for Try ${currentTry + 1}...</span>`;
+                message.style.display = "block";
+                currentTry++;
+                tryText.innerHTML = currentTry;
+                setTimeout(prepareNextTry, 3500);
+            } else {
+                message.innerHTML = `🏆 Session Complete!<br><span style="font-size:30px;">Total Distance: ${totalDistance}m</span><br><span style="font-size:22px; color:#ffc933;">Restarting fresh session...</span>`;
+                message.style.display = "block";
+                setTimeout(fullRestartSession, 4500);
+            }
+            return;
+        }
+    }
+
+    if (seal.style.display !== "none") {
+        seal.style.bottom = sealY + "px";
+        seal.style.left = sealRestX + "px";
+    }
+
+    if (!sinking) {
+        world.style.transform = `translateX(${-Math.max(0, sealX - sealRestX)}px)`;
+        distance += Math.max(0, velocityX) / 5;
+        distanceText.innerHTML = Math.floor(distance);
+
+        checkCollisions();
+        checkFish();
+        checkBoosts();
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+function checkUpgrades() {
+    if (!unlockedBoostUpgrade && totalDistance >= 500) {
+        unlockedBoostUpgrade = true;
+        showMessage("🎁 UPGRADE UNLOCKED: +1 Extra Tap Boost!");
+    } else if (!unlockedPowerUpgrade && totalDistance >= 1200) {
+        unlockedPowerUpgrade = true;
+        maxPullPower = 330;
+        showMessage("💪 UPGRADE UNLOCKED: Bigger Power Bar!");
+    } else if (!unlockedBounceUpgrade && totalDistance >= 2200) {
+        unlockedBounceUpgrade = true;
+        boostBonusMultiplier = 1.3;
+        showMessage("🚀 UPGRADE UNLOCKED: Super Bounce & Power!");
+    }
+}
+
+function startSinking() {
+    sinking = true;
+    skimming = false;
+    sinkTimer = 0;
+    velocityX *= 0.4;
+    velocityY = 0;
+    showMessage("💦 Sinking...");
+}
+
+function showMessage(text) {
+    message.innerHTML = text;
+    message.style.display = "block";
+    clearTimeout(message.timer);
+    message.timer = setTimeout(() => {
+        if (flying) {
+            message.style.display = "none";
+        }
+    }, 1500);
+}
+
+function prepareNextTry() {
+    sealX = sealRestX;
+    sealY = sealRestY;
+    velocityX = 0;
+    velocityY = 0;
+    distance = 0;
+    flying = false;
+    skimming = false;
+    sinking = false;
+    sinkTimer = 0;
+    hitIce = [];
+    combo = 0;
+
+    world.style.transform = "translateX(0px)";
+    
+    launchStation.style.display = "block";
+    launchStation.appendChild(seal);
+    seal.style.position = "absolute";
+    seal.style.left = sealRestX + "px";
+    seal.style.bottom = sealRestY + "px";
+    seal.style.transform = "rotate(0deg)";
+    seal.style.opacity = "1";
+    seal.style.display = "block";
+    
+    distanceText.innerHTML = "0";
+    bar.style.width = "0%";
+
+    maxWorldObjects.forEach(obj => obj.remove());
+    maxWorldObjects = [];
+    worldGenerated = 500;
+    createWorldChunk(true);
+    createWorldChunk();
+    createWorldChunk();
+
+    tapBoosts = unlockedBoostUpgrade ? 4 : 3;
+    boostText.innerHTML = tapBoosts;
+    message.innerHTML = "Drag and launch! ⬅";
+}
+
+function resetGame(isInitial = false) {
+    if (isInitial) {
+        currentTry = 1;
+        totalDistance = 0;
+        unlockedBoostUpgrade = false;
+        unlockedPowerUpgrade = false;
+        unlockedBounceUpgrade = false;
+        maxPullPower = 250;
+        boostBonusMultiplier = 1;
+        tryText.innerHTML = currentTry;
+        totalDistanceText.innerHTML = totalDistance;
+    }
+    prepareNextTry();
+}
+
+function fullRestartSession() {
+    overlayScreen.style.display = "flex";
+}
+
+function createWorldChunk(isStart = false) {
+    let start = worldGenerated;
+    let end = start + chunkSize;
+
+    while (start < end) {
+        let gap = 400 + Math.random() * 600;
+        let x = start;
+        let roll = Math.random();
+
+        if (isStart && x < 1200) {
+            roll = 0.2;
+        }
+
+        if (roll < 0.50) {
+            let ice = document.createElement("div");
+            ice.className = "iceberg";
+            ice.style.left = x + "px";
+            ice.style.height = (80 + Math.random() * 100) + "px";
+            ice.style.width = (130 + Math.random() * 120) + "px";
+            world.appendChild(ice);
+            maxWorldObjects.push(ice);
+        }
+
+        if (roll >= 0.50 && roll < 0.68) {
+            let fish = document.createElement("div");
+            fish.className = "fish";
+            fish.innerHTML = "🐟";
+            fish.style.left = x + "px";
+            world.appendChild(fish);
+            maxWorldObjects.push(fish);
+        }
+
+        if (roll >= 0.68 && roll < 0.78) {
+            let crab = document.createElement("div");
+            crab.className = "boostItem crab";
+            crab.innerHTML = "🦀";
+            crab.style.left = x + "px";
+            world.appendChild(crab);
+            maxWorldObjects.push(crab);
+        }
+
+        if (roll >= 0.78 && roll < 0.85) {
+            let rocket = document.createElement("div");
+            rocket.className = "boostItem rocket";
+            rocket.innerHTML = "🚀";
+            rocket.style.left = x + "px";
+            world.appendChild(rocket);
+            maxWorldObjects.push(rocket);
+        }
+
+        if (Math.random() < 0.12) {
+            let star = document.createElement("div");
+            star.className = "boostItem star";
+            star.innerHTML = "⭐";
+            star.style.left = (x + 150) + "px";
+            world.appendChild(star);
+            maxWorldObjects.push(star);
+        }
+
+        start += gap;
+    }
+    worldGenerated = end;
+}
+
+createWorldChunk(true);
+createWorldChunk();
+createWorldChunk();
+
+function manageWorld() {
+    if (sealX + 3000 > worldGenerated) {
+        createWorldChunk();
+    }
+
+    maxWorldObjects = maxWorldObjects.filter(obj => {
+        let left = parseInt(obj.style.left);
+        if (left < sealX - 2000) {
+            obj.remove();
+            return false;
+        }
+        return true;
+    });
+}
+</script>
+
+</body>
+</html>

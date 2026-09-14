@@ -1,0 +1,2852 @@
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    overflow: hidden;
+    background: #07111f;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    overscroll-behavior: none;
+  }
+
+  #game-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 560px;
+    overflow: hidden;
+    background: linear-gradient(
+      180deg,
+      #38bdf8 0%,
+      #7dd3fc 22%,
+      #dff6ff 48%,
+      #f8fafc 100%
+    );
+    touch-action: none;
+    isolation: isolate;
+  }
+
+  .sledge-game-section #game-container {
+    height: 100%;
+    min-height: 500px;
+  }
+
+  #sky {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse at 50% 8%,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.35) 20%,
+        transparent 42%
+      ),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 45%);
+  }
+
+  .mountain {
+    position: absolute;
+    bottom: 43%;
+    width: 0;
+    height: 0;
+    border-left: 180px solid transparent;
+    border-right: 180px solid transparent;
+    border-bottom: 230px solid rgba(125, 211, 252, 0.38);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .mountain.m1 {
+    left: -170px;
+  }
+
+  .mountain.m2 {
+    left: 24%;
+    transform: scale(1.25);
+    opacity: 0.7;
+  }
+
+  .mountain.m3 {
+    right: -190px;
+    transform: scale(0.9);
+  }
+
+  .mountain.m4 {
+    left: 8%;
+    transform: scale(0.65);
+    opacity: 0.5;
+  }
+
+  .bg-snowflake {
+    position: absolute;
+    top: -40px;
+    color: white;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0.8;
+    animation: snowFall linear infinite;
+  }
+
+  @keyframes snowFall {
+    0% {
+      transform: translate3d(0, -40px, 0) rotate(0deg);
+    }
+
+    100% {
+      transform: translate3d(35px, 110vh, 0) rotate(180deg);
+    }
+  }
+
+  .stage-snow {
+    position: absolute;
+    top: -100px;
+    pointer-events: none;
+    z-index: 12;
+    width: 18px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+    opacity: 0.9;
+    will-change: transform, top;
+    animation: stageSnowFall linear infinite;
+  }
+
+  .stage-snow.large {
+    width: 34px;
+    height: 21px;
+    opacity: 0.72;
+  }
+
+  .stage-snow.small {
+    width: 10px;
+    height: 7px;
+    opacity: 0.8;
+  }
+
+  .stage-snow.wobble {
+    animation-name: stageSnowWobble;
+  }
+
+  @keyframes stageSnowFall {
+    0% {
+      transform: translate3d(0, -80px, 0) rotate(0deg);
+    }
+
+    50% {
+      transform: translate3d(35px, 50vh, 0) rotate(180deg);
+    }
+
+    100% {
+      transform: translate3d(-20px, 115vh, 0) rotate(360deg);
+    }
+  }
+
+  @keyframes stageSnowWobble {
+    0% {
+      transform: translate3d(0, -80px, 0) rotate(-10deg);
+    }
+
+    25% {
+      transform: translate3d(45px, 25vh, 0) rotate(15deg);
+    }
+
+    50% {
+      transform: translate3d(-30px, 50vh, 0) rotate(-20deg);
+    }
+
+    75% {
+      transform: translate3d(40px, 75vh, 0) rotate(20deg);
+    }
+
+    100% {
+      transform: translate3d(-15px, 115vh, 0) rotate(40deg);
+    }
+  }
+
+  #ski-slope {
+    position: absolute;
+    top: -5%;
+    left: 50%;
+    width: min(850px, 88vw);
+    height: 110%;
+    transform: translateX(-50%) perspective(900px) rotateX(7deg);
+    transform-origin: center top;
+    z-index: 2;
+    overflow: hidden;
+    background: linear-gradient(
+      90deg,
+      #64748b 0%,
+      #cbd5e1 4%,
+      #ffffff 10%,
+      #f8fafc 22%,
+      #ffffff 50%,
+      #f8fafc 78%,
+      #ffffff 90%,
+      #cbd5e1 96%,
+      #64748b 100%
+    );
+    box-shadow:
+      inset 35px 0 50px rgba(15, 23, 42, 0.15),
+      inset -35px 0 50px rgba(15, 23, 42, 0.15);
+  }
+
+  #slope-left-bank,
+  #slope-right-bank {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 16%;
+    z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(100, 116, 139, 0.9),
+      rgba(255, 255, 255, 0.9) 45%,
+      rgba(255, 255, 255, 0.1)
+    );
+  }
+
+  #slope-left-bank {
+    left: 0;
+    transform: skewY(1.5deg) translateX(-5%);
+  }
+
+  #slope-right-bank {
+    right: 0;
+    transform: scaleX(-1) skewY(1.5deg) translateX(-5%);
+  }
+
+  #track-perspective {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(56, 189, 248, 0.04),
+      transparent 20%,
+      rgba(255, 255, 255, 0.25) 50%,
+      transparent 80%,
+      rgba(56, 189, 248, 0.04)
+    );
+  }
+
+  #track-grooves {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    opacity: 0.55;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 110px,
+      rgba(125, 211, 252, 0.16) 111px,
+      rgba(125, 211, 252, 0.16) 114px,
+      transparent 115px
+    );
+    animation: trackMove 0.7s linear infinite;
+  }
+
+  @keyframes trackMove {
+    from {
+      background-position-y: 0;
+    }
+
+    to {
+      background-position-y: 160px;
+    }
+  }
+
+  #speed-lines {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .speed-line {
+    position: absolute;
+    width: 2px;
+    height: 45px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+    animation: speedLine linear infinite;
+  }
+
+  @keyframes speedLine {
+    from {
+      transform: translateY(-100px) scaleY(0.5);
+      opacity: 0;
+    }
+
+    15% {
+      opacity: 0.8;
+    }
+
+    to {
+      transform: translateY(110vh) scaleY(2);
+      opacity: 0;
+    }
+  }
+
+  #hedgehog {
+    position: absolute;
+    left: 50%;
+    bottom: 9%;
+    width: clamp(68px, 8vw, 105px);
+    height: clamp(68px, 8vw, 105px);
+    margin-left: calc(clamp(68px, 8vw, 105px) / -2);
+    z-index: 20;
+    will-change: left, transform;
+    filter: drop-shadow(0 15px 10px rgba(15, 23, 42, 0.28));
+    transition: filter 0.2s ease;
+  }
+
+  #hedgehog img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 3;
+  }
+
+  #hedgehog::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    bottom: -5px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.22);
+    filter: blur(8px);
+    z-index: -1;
+  }
+
+  #shield {
+    position: absolute;
+    inset: -18%;
+    border-radius: 50%;
+    border: 3px solid rgba(250, 204, 21, 0.9);
+    background: radial-gradient(
+      circle,
+      rgba(250, 204, 21, 0.2),
+      rgba(56, 189, 248, 0.08) 55%,
+      transparent 70%
+    );
+    opacity: 0;
+    transform: scale(0.65);
+    pointer-events: none;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+    z-index: 1;
+  }
+
+  #hedgehog.shielded #shield {
+    opacity: 1;
+    transform: scale(1);
+    animation: shieldPulse 1s ease-in-out infinite;
+  }
+
+  @keyframes shieldPulse {
+    0%,
+    100% {
+      box-shadow:
+        0 0 15px rgba(250, 204, 21, 0.65),
+        0 0 35px rgba(250, 204, 21, 0.3);
+    }
+
+    50% {
+      box-shadow:
+        0 0 30px rgba(250, 204, 21, 1),
+        0 0 65px rgba(250, 204, 21, 0.5);
+    }
+  }
+
+  .item {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 14;
+    will-change: top, transform;
+  }
+
+  .collectible {
+    width: 55px;
+    height: 55px;
+    font-size: clamp(32px, 4vw, 46px);
+    filter: drop-shadow(0 8px 8px rgba(15, 23, 42, 0.22));
+    }
+
+    .collectible img {
+    width: 55px;
+    height: 55px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    }
+
+  .collectible::after {
+    content: "";
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    filter: blur(10px);
+    z-index: -1;
+  }
+
+  .tree-obstacle {
+    width: clamp(120px, 16vw, 210px);
+    height: clamp(140px, 20vw, 250px);
+    background-image: url("https://www.thetoyshop.com/medias/Tree-Light.png?context=bWFzdGVyfHJvb3R8MTI1NTJ8aW1hZ2UvcG5nfGFEbGpMMmhsTXk4eE1qZ3hOelF6T1RZNE5qWTROaTlVY21WbElFeHBaMmgwTG5CdVp3fDNkMzllYzMwZjZmNWY5OGY2NzE0ZmUxOTUwOGU5NmMzODAxOWE1ZTY1YzlmYTNlY2ZlZDM1OGY4OTlmZjgzMTA");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(0 20px 18px rgba(15, 23, 42, 0.45));
+  }
+
+  .collect-pop {
+    animation: collectPop 0.35s ease forwards !important;
+  }
+
+  @keyframes collectPop {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    45% {
+      opacity: 1;
+      transform: scale(1.7);
+    }
+
+    100% {
+      opacity: 0;
+      transform: scale(2.3);
+    }
+  }
+
+  .floating-score {
+    position: absolute;
+    z-index: 40;
+    pointer-events: none;
+    color: white;
+    font-size: 22px;
+    font-weight: 1000;
+    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    animation: floatScore 0.7s ease forwards;
+  }
+
+  @keyframes floatScore {
+    0% {
+      opacity: 0;
+      transform: translateY(10px) scale(0.7);
+    }
+
+    20% {
+      opacity: 1;
+      transform: translateY(0) scale(1.1);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(-55px) scale(1);
+    }
+  }
+
+  #ui {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 35;
+    pointer-events: none;
+  }
+
+  .hud-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 15px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.68);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.13);
+    color: #075985;
+    font-weight: 900;
+    font-size: 13px;
+  }
+
+  .hud-icon {
+    font-size: 18px;
+  }
+
+  .hud-value {
+    font-size: 16px;
+  }
+
+  #streak-display {
+    position: absolute;
+    left: 50%;
+    top: 75px;
+    transform: translateX(-50%) scale(0.8);
+    z-index: 36;
+    padding: 7px 15px;
+    border-radius: 50px;
+    background: rgba(15, 23, 42, 0.58);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: white;
+    font-size: 13px;
+    font-weight: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  #streak-display.active {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+
+  #streak-display.hot {
+    background: linear-gradient(
+      180deg,
+      rgba(249, 115, 22, 0.9),
+      rgba(220, 38, 38, 0.9)
+    );
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+    animation: streakPulse 0.6s ease-in-out infinite alternate;
+  }
+
+  @keyframes streakPulse {
+    from {
+      transform: translateX(-50%) scale(1);
+    }
+
+    to {
+      transform: translateX(-50%) scale(1.08);
+    }
+  }
+
+  .close-call {
+    position: absolute;
+    z-index: 45;
+    pointer-events: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 1000;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+    animation: closeCall 0.8s ease forwards;
+  }
+
+  @keyframes closeCall {
+    0% {
+      opacity: 0;
+      transform: translateY(10px) scale(0.7);
+    }
+
+    20% {
+      opacity: 1;
+      transform: translateY(0) scale(1.15);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(-45px) scale(1);
+    }
+  }
+
+  #stage-announcement {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.7);
+    z-index: 90;
+    pointer-events: none;
+    opacity: 0;
+    text-align: center;
+    padding: 18px 30px;
+    border-radius: 28px;
+    background: rgba(15, 23, 42, 0.68);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    color: white;
+  }
+
+  #stage-announcement.show {
+    animation: stageAnnouncement 1.4s ease forwards;
+  }
+
+  #stage-announcement .stage-number {
+    display: block;
+    font-size: 12px;
+    font-weight: 1000;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #bae6fd;
+    margin-bottom: 4px;
+  }
+
+  #stage-announcement .stage-title {
+    display: block;
+    font-size: clamp(25px, 5vw, 42px);
+    font-weight: 1000;
+    text-shadow: 0 4px 20px rgba(56, 189, 248, 0.7);
+  }
+
+  #stage-announcement .stage-subtitle {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    color: #e0f2fe;
+  }
+
+  @keyframes stageAnnouncement {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.7);
+    }
+
+    15% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+
+    25% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    75% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+  }
+
+  #game-container.stage-1 {
+    background: linear-gradient(
+      180deg,
+      #60c8f5 0%,
+      #bde9fa 30%,
+      #e7f6fc 62%,
+      #f8fafc 100%
+    );
+  }
+
+  #game-container.stage-1 #sky {
+    background: radial-gradient(
+      ellipse at 50% 8%,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.35) 25%,
+      transparent 50%
+    );
+  }
+
+  #game-container.stage-1 .mountain {
+    opacity: 0.72;
+  }
+
+  #game-container.stage-2 {
+    background: linear-gradient(
+      180deg,
+      #76bfc7 0%,
+      #9ed0d0 24%,
+      #c8dfdc 46%,
+      #e3eeeb 68%,
+      #f8fafc 100%
+    );
+  }
+
+  /* Forest atmosphere */
+
+  #game-container.stage-2 #sky {
+    background: radial-gradient(
+      ellipse at 50% 15%,
+      rgba(240, 255, 250, 0.8) 0%,
+      rgba(180, 220, 215, 0.35) 28%,
+      transparent 58%
+    );
+  }
+
+  /* Distant forest */
+
+  #game-container.stage-2 .mountain {
+    border-bottom-color: rgba(30, 91, 76, 0.58);
+
+    opacity: 0.95;
+
+    filter: drop-shadow(0 10px 12px rgba(20, 65, 55, 0.2));
+  }
+
+  /* Different layers of forest */
+
+  #game-container.stage-2 .mountain.m1 {
+    transform: scale(1.25);
+    opacity: 0.72;
+  }
+
+  #game-container.stage-2 .mountain.m2 {
+    transform: scale(1.45);
+    opacity: 0.85;
+  }
+
+  #game-container.stage-2 .mountain.m3 {
+    transform: scale(1.15);
+    opacity: 0.78;
+  }
+
+  #game-container.stage-2 .mountain.m4 {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+
+  /*
+   Snowy green forest feeling around the track.
+   The banks remain normal shapes — no diagonal gradients.
+*/
+
+  #game-container.stage-2 #slope-left-bank,
+  #game-container.stage-2 #slope-right-bank {
+    opacity: 1;
+
+    background: linear-gradient(
+      90deg,
+      rgba(30, 74, 63, 0.82) 0%,
+      rgba(57, 105, 91, 0.58) 35%,
+      rgba(220, 239, 236, 0.15) 100%
+    );
+  }
+
+  #game-container.stage-2 #slope-right-bank {
+    background: linear-gradient(
+      270deg,
+      rgba(30, 74, 63, 0.82) 0%,
+      rgba(57, 105, 91, 0.58) 35%,
+      rgba(220, 239, 236, 0.15) 100%
+    );
+  }
+
+  /* Snowy track through the forest */
+
+  #game-container.stage-2 #ski-slope {
+    background: linear-gradient(
+      90deg,
+      #b8d2d0 0%,
+      #e4efed 13%,
+      #ffffff 27%,
+      #ffffff 73%,
+      #e4efed 87%,
+      #b8d2d0 100%
+    );
+
+    box-shadow:
+      inset 0 0 65px rgba(20, 80, 70, 0.18),
+      inset 0 20px 35px rgba(255, 255, 255, 0.8);
+  }
+
+  #game-container.stage-2 #track-grooves {
+    opacity: 0.8;
+  }
+
+  #game-container.stage-2 #track-perspective {
+    opacity: 0.7;
+  }
+
+  #game-container.stage-3 {
+    background: linear-gradient(
+      180deg,
+      #1979a5 0%,
+      #4aa9ca 20%,
+      #a8d8e9 43%,
+      #dceef5 68%,
+      #f8fafc 100%
+    );
+  }
+
+  #game-container.stage-3 #sky {
+    background: radial-gradient(
+      ellipse at 50% 7%,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.42) 20%,
+      rgba(219, 242, 250, 0.22) 42%,
+      transparent 65%
+    );
+  }
+
+  #game-container.stage-3 .mountain {
+    opacity: 0.42;
+
+    filter: blur(1.2px) saturate(0.4)
+      drop-shadow(0 10px 15px rgba(30, 80, 105, 0.18));
+  }
+
+  #game-container.stage-3 #ski-slope {
+    background: linear-gradient(
+      90deg,
+      #b9dce9 0%,
+      #e0f1f7 14%,
+      #ffffff 35%,
+      #ffffff 65%,
+      #e0f1f7 86%,
+      #b9dce9 100%
+    );
+
+    box-shadow:
+      inset 0 0 100px rgba(30, 100, 140, 0.2),
+      inset 0 25px 40px rgba(255, 255, 255, 0.9);
+  }
+
+  #game-container.stage-3 #slope-left-bank,
+  #game-container.stage-3 #slope-right-bank {
+    opacity: 0.65;
+  }
+
+  #game-container.stage-3 #track-grooves {
+    opacity: 0.95;
+  }
+
+  #game-container.stage-3 #track-perspective {
+    opacity: 0.9;
+  }
+  #game-container.stage-4 {
+    background: linear-gradient(
+      180deg,
+      #101b43 0%,
+      #1e3a78 24%,
+      #315f91 44%,
+      #8bb9dc 68%,
+      #eaf4fb 100%
+    );
+  }
+
+  #game-container.stage-4 #sky {
+    background: radial-gradient(
+      circle at 50% 9%,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(220, 235, 250, 0.88) 8%,
+      rgba(145, 190, 225, 0.3) 24%,
+      transparent 48%
+    );
+  }
+
+  #game-container.stage-4 .mountain {
+    opacity: 0.38;
+
+    filter: drop-shadow(0 14px 18px rgba(2, 6, 23, 0.4));
+  }
+
+  #game-container.stage-4 #ski-slope {
+    background: linear-gradient(
+      90deg,
+      #82b5df 0%,
+      #c9e0f2 15%,
+      #f4f9fd 35%,
+      #ffffff 50%,
+      #f4f9fd 65%,
+      #c9e0f2 85%,
+      #82b5df 100%
+    );
+
+    box-shadow:
+      inset 0 0 100px rgba(30, 64, 140, 0.3),
+      inset 0 25px 40px rgba(255, 255, 255, 0.85);
+  }
+
+  #game-container.stage-4 #slope-left-bank,
+  #game-container.stage-4 #slope-right-bank {
+    opacity: 0.6;
+  }
+
+  #game-container.stage-4 #track-grooves {
+    opacity: 1;
+  }
+
+  #game-container.stage-4 #track-perspective {
+    opacity: 0.95;
+  }
+
+  #game-container.stage-5 {
+    background: linear-gradient(
+      180deg,
+      #020617 0%,
+      #0b1630 18%,
+      #073d5c 38%,
+      #087eae 58%,
+      #9bd6f1 78%,
+      #f8fafc 100%
+    );
+  }
+
+  #game-container.stage-5 #sky {
+    background: radial-gradient(
+      circle at 50% 9%,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(220, 240, 255, 0.92) 7%,
+      rgba(100, 190, 235, 0.35) 20%,
+      transparent 45%
+    );
+  }
+
+  #game-container.stage-5 .mountain {
+    opacity: 0.22;
+
+    filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.55));
+  }
+
+  #game-container.stage-5 #ski-slope {
+    background: linear-gradient(
+      90deg,
+      #4d9dd3 0%,
+      #a9d5ed 12%,
+      #e9f6fd 30%,
+      #ffffff 50%,
+      #e9f6fd 70%,
+      #a9d5ed 88%,
+      #4d9dd3 100%
+    );
+
+    box-shadow:
+      inset 0 0 125px rgba(20, 90, 180, 0.4),
+      inset 0 30px 50px rgba(255, 255, 255, 0.95);
+  }
+
+  #game-container.stage-5 #slope-left-bank,
+  #game-container.stage-5 #slope-right-bank {
+    opacity: 0.5;
+  }
+
+  #game-container.stage-5 #track-grooves {
+    opacity: 1;
+  }
+
+  #game-container.stage-5 #track-perspective {
+    opacity: 1;
+  }
+
+  #steer-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 17%;
+    transform: translateX(-50%);
+    z-index: 30;
+    padding: 10px 19px;
+    border-radius: 50px;
+    color: white;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+    font-size: 13px;
+    font-weight: 900;
+    white-space: nowrap;
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+
+  #steer-hint.hidden-hint {
+    opacity: 0;
+    transform: translateX(-50%) translateY(15px);
+  }
+
+  .screen {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    text-align: center;
+    color: white;
+    background:
+      radial-gradient(
+        circle at 50% 35%,
+        rgba(56, 189, 248, 0.25),
+        transparent 32%
+      ),
+      rgba(7, 17, 31, 0.78);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    animation: screenIn 0.35s ease;
+  }
+
+  @keyframes screenIn {
+    from {
+      opacity: 0;
+      transform: scale(1.025);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .hero-emoji {
+    font-size: clamp(60px, 9vw, 95px);
+    margin-bottom: 10px;
+    filter: drop-shadow(0 15px 12px rgba(0, 0, 0, 0.3));
+    animation: heroFloat 1.3s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroFloat {
+    to {
+      transform: translateY(-9px) rotate(3deg);
+    }
+  }
+
+  .screen h1 {
+    font-size: clamp(30px, 5vw, 48px);
+    margin-bottom: 10px;
+    color: white;
+    text-shadow: 0 5px 25px rgba(56, 189, 248, 0.65);
+  }
+
+  .screen p {
+    font-size: clamp(14px, 2vw, 17px);
+    line-height: 1.5;
+    color: #dbeafe;
+    margin-bottom: 18px;
+  }
+
+  .instructions-box {
+    width: min(400px, 90vw);
+    padding: 16px 19px;
+    margin-bottom: 24px;
+    border-radius: 22px;
+    background: rgba(30, 41, 59, 0.72);
+    border: 1px solid rgba(125, 211, 252, 0.25);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+  }
+
+  .rule-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    color: #f1f5f9;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .btn {
+    border: none;
+    padding: 16px 35px;
+    border-radius: 50px;
+    background: linear-gradient(180deg, #7dd3fc 0%, #0284c7 100%);
+    color: white;
+    font-size: 19px;
+    font-weight: 1000;
+    cursor: pointer;
+    box-shadow:
+      0 7px 0 #0369a1,
+      0 16px 35px rgba(2, 132, 199, 0.35);
+    transition:
+      transform 0.1s ease,
+      box-shadow 0.1s ease;
+  }
+
+  .btn:hover {
+    filter: brightness(1.06);
+  }
+
+  .btn:active {
+    transform: translateY(5px);
+    box-shadow:
+      0 2px 0 #0369a1,
+      0 8px 20px rgba(2, 132, 199, 0.25);
+  }
+
+  #game-container.impact {
+    animation: impact 0.4s ease;
+  }
+
+  @keyframes impact {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    20% {
+      transform: translateX(-10px) rotate(-0.5deg);
+    }
+
+    40% {
+      transform: translateX(10px) rotate(0.5deg);
+    }
+
+    60% {
+      transform: translateX(-7px);
+    }
+
+    80% {
+      transform: translateX(5px);
+    }
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  @media (max-width: 600px) {
+    #game-container {
+      min-height: 100dvh;
+      height: 100dvh;
+    }
+
+    #ski-slope {
+      width: 92vw;
+    }
+
+    #ui {
+      top: 12px;
+      left: 10px;
+      right: 10px;
+    }
+
+    .hud-item {
+      padding: 8px 11px;
+      gap: 4px;
+    }
+
+    .hud-item span:not(.hud-icon) {
+      font-size: 12px;
+    }
+
+    #steer-hint {
+      bottom: 19%;
+    }
+
+    #streak-display {
+      top: 65px;
+    }
+  }
+
+  @media (max-height: 650px) {
+    #hedgehog {
+      bottom: 7%;
+    }
+
+    #steer-hint {
+      bottom: 16%;
+    }
+
+    .instructions-box {
+      margin-bottom: 16px;
+    }
+
+    .rule-item {
+      padding: 5px 0;
+      font-size: 12px;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    #ski-slope {
+      width: min(850px, 70vw);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+
+  #sound-controls {
+    position: absolute;
+    top: 78px;
+    right: 20px;
+    z-index: 9999999;
+    pointer-events: auto;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  #sound-toggle {
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.15);
+    cursor: pointer;
+    font-size: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      transform 0.15s ease,
+      background 0.15s ease;
+  }
+
+  #sound-toggle:hover {
+    transform: scale(1.06);
+  }
+
+  #sound-toggle:active {
+    transform: scale(0.94);
+  }
+
+  #sound-panel {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    width: 245px;
+    padding: 17px;
+    border-radius: 20px;
+    background: rgba(15, 23, 42, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+    color: white;
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+    pointer-events: none;
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
+  }
+
+  #sound-panel.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .sound-panel-title {
+    font-size: 15px;
+    font-weight: 1000;
+    margin-bottom: 13px;
+  }
+
+  .sound-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .sound-option:last-child {
+    border-bottom: none;
+  }
+
+  .sound-option-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .sound-switch {
+    width: 44px;
+    height: 24px;
+    border: none;
+    border-radius: 20px;
+    background: #475569;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .sound-switch::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 3px;
+    left: 3px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease;
+  }
+
+  .sound-switch.active {
+    background: #0ea5e9;
+  }
+
+  .sound-switch.active::after {
+    transform: translateX(20px);
+  }
+
+  .sound-volume {
+    width: 100%;
+    margin-top: 5px;
+    accent-color: #38bdf8;
+    cursor: pointer;
+  }
+
+  .sound-volume-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+  }
+
+  .sound-volume-value {
+    min-width: 35px;
+    text-align: right;
+    font-size: 11px;
+    font-weight: 900;
+    color: #bae6fd;
+  }
+
+  .sound-hint {
+    margin-top: 10px;
+    color: #cbd5e1;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 600px) {
+    #sound-controls {
+      top: 64px;
+      right: 10px;
+    }
+
+    #sound-panel {
+      width: 225px;
+    }
+  }
+
+  .present-hud-icon svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+    }
+    .rule-item svg,
+    .rule-item img {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  display: block;
+}
+</style>
+
+<div id="game-container">
+  <!-- SKY -->
+
+  <div id="sky"></div>
+
+  <!-- MOUNTAINS -->
+
+  <div class="mountain m1"></div>
+  <div class="mountain m2"></div>
+  <div class="mountain m3"></div>
+  <div class="mountain m4"></div>
+
+  <!-- SLOPE -->
+
+  <div id="ski-slope">
+    <div id="slope-left-bank"></div>
+    <div id="slope-right-bank"></div>
+    <div id="track-grooves"></div>
+    <div id="track-perspective"></div>
+  </div>
+
+  <!-- SPEED -->
+
+  <div id="speed-lines"></div>
+
+  <!-- HUD -->
+
+  <div id="ui">
+    <div class="hud-item">
+      <span class="hud-icon"> 🏆 </span>
+
+      <span> Score </span>
+
+      <span class="hud-value" id="score"> 0 </span>
+    </div>
+
+    <div class="hud-item">
+      <span class="hud-icon present-hud-icon">
+  <svg
+    viewBox="0 0 64 64"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <g id="flat">
+      <rect height="34" style="fill:#7ea82d" width="52" x="6" y="27"/>
+      <rect height="4" style="fill:#729c22" width="52" x="6" y="27"/>
+      <rect height="12" style="fill:#7ea82d" width="58" x="3" y="15"/>
+      <rect height="46" style="fill:#dd4a43" width="12" x="26" y="15"/>
+      <path d="M27.658,6.317A6,6,0,0,0,22.292,3H14a6,6,0,0,0,0,12H32Z" style="fill:#dd4a43"/>
+      <path d="M32,15H22a6,6,0,0,1-6-6h0a6,6,0,0,1,6-6h.292a6,6,0,0,1,5.366,3.317Z" style="fill:#b0342e"/>
+      <path d="M36.342,6.317A6,6,0,0,1,41.708,3H50a6,6,0,0,1,0,12H32Z" style="fill:#dd4a43"/>
+      <path d="M32,15H42a6,6,0,0,0,6-6h0a6,6,0,0,0-6-6h-.292a6,6,0,0,0-5.366,3.317Z" style="fill:#b0342e"/>
+      <polygon points="38 36 38 15 26 15 26 37 32 22 38 36" style="fill:#d13e37"/>
+      <polygon points="21 42 17 37 10 39 20 15 32 15 21 42" style="fill:#dd4a43"/>
+      <polygon points="43 42 47 37 54 39 44 15 32 15 43 42" style="fill:#dd4a43"/>
+      <rect height="2" style="fill:#e66b65" transform="translate(-14.645 35.51) rotate(-68.547)" width="9.642" x="13.91" y="27.5"/>
+      <rect height="2" style="fill:#e66b65" transform="translate(-5.742 33.641) rotate(-68.973)" width="2.143" x="20.544" y="20"/>
+      <rect height="9" style="fill:#95c43b" width="2" x="9" y="49"/>
+      <rect height="2" style="fill:#95c43b" width="2" x="9" y="45"/>
+    </g>
+  </svg>
+</span>
+<span class="hud-value" id="presents"> 0 </span>
+    </div>
+
+    <div class="hud-item">
+      <span class="hud-icon"> ⚡ </span>
+
+      <span class="hud-value" id="speed-indicator"> 1 </span>
+    </div>
+  </div>
+
+  <!-- SOUND CONTROLS -->
+
+  <!-- STREAK -->
+
+  <div id="streak-display">
+    🔥
+
+    <span id="streak-value"> 0 </span>
+
+    x STREAK
+  </div>
+
+  <!-- STAGE ANNOUNCEMENT -->
+
+  <div id="stage-announcement">
+    <span class="stage-number" id="stage-number"> STAGE 1 </span>
+
+    <span class="stage-title" id="stage-title"> Snowy Start </span>
+
+    <span class="stage-subtitle" id="stage-subtitle"> Let's go! </span>
+  </div>
+
+  <!-- PLAYER -->
+
+  <div id="hedgehog">
+    <div id="shield"></div>
+
+    <img
+      id="hedgehog-img"
+      src="hedgehog.png"
+      alt="Fluffy Hedgehog"
+      onerror="
+        this.onerror = null;
+        this.src =
+          'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%2250%%22 y=%2250%%22 font-size=%2280%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 transform=%22rotate(-10 50 50)%22>🦔</text></svg>';
+      "
+    />
+  </div>
+
+  <!-- STEERING HINT -->
+
+  <div id="steer-hint">👆 Drag to steer your sledge</div>
+
+  <!-- START SCREEN -->
+
+  <div id="start-screen" class="screen">
+    <div class="hero-emoji">🦔🛷</div>
+
+    <h1>Hedgehog Sledge!</h1>
+
+    <p>
+      Race down the mountain,<br />
+      grab presents and dodge the trees!
+    </p>
+
+    <div class="instructions-box">
+      <div class="rule-item">
+        👆
+
+        <span>
+          <b>Drag your finger</b>
+          to steer
+        </span>
+      </div>
+
+      <div class="rule-item">
+        🖱️
+
+        <span> Move your mouse to steer </span>
+      </div>
+
+      <div class="rule-item">
+        <svg width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+
+<g id="flat">
+
+<rect height="34" style="fill:#7ea82d" width="52" x="6" y="27"/>
+
+<rect height="4" style="fill:#729c22" width="52" x="6" y="27"/>
+
+<rect height="12" style="fill:#7ea82d" width="58" x="3" y="15"/>
+
+<rect height="46" style="fill:#dd4a43" width="12" x="26" y="15"/>
+
+<path d="M27.658,6.317A6,6,0,0,0,22.292,3H14a6,6,0,0,0,0,12H32Z" style="fill:#dd4a43"/>
+
+<path d="M32,15H22a6,6,0,0,1-6-6h0a6,6,0,0,1,6-6h.292a6,6,0,0,1,5.366,3.317Z" style="fill:#b0342e"/>
+
+<path d="M36.342,6.317A6,6,0,0,1,41.708,3H50a6,6,0,0,1,0,12H32Z" style="fill:#dd4a43"/>
+
+<path d="M32,15H42a6,6,0,0,0,6-6h0a6,6,0,0,0-6-6h-.292a6,6,0,0,0-5.366,3.317Z" style="fill:#b0342e"/>
+
+<polygon points="38 36 38 15 26 15 26 37 32 22 38 36" style="fill:#d13e37"/>
+
+<polygon points="21 42 17 37 10 39 20 15 32 15 21 42" style="fill:#dd4a43"/>
+
+<polygon points="43 42 47 37 54 39 44 15 32 15 43 42" style="fill:#dd4a43"/>
+
+<rect height="2" style="fill:#e66b65" transform="translate(-14.645 35.51) rotate(-68.547)" width="9.642" x="13.91" y="27.5"/>
+
+<rect height="2" style="fill:#e66b65" transform="translate(-5.742 33.641) rotate(-68.973)" width="2.143" x="20.544" y="20"/>
+
+<rect height="9" style="fill:#95c43b" width="2" x="9" y="49"/>
+
+<rect height="2" style="fill:#95c43b" width="2" x="9" y="45"/>
+
+</g>
+
+</svg>
+
+        <span> Collect presents for points </span>
+      </div>
+
+      <div class="rule-item">
+        <img src="https://www.thetoyshop.com/medias/edited-photo-60-.png?context=bWFzdGVyfHJvb3R8MzUyMTh8aW1hZ2UvcG5nfGFEYzFMMmcwTVM4eE1qZzBNelV3TmpnNU1qZ3pNQzlsWkdsMFpXUXRjR2h2ZEc4Z0tEWXdLUzV3Ym1jfGE2ZTQ2NmYzNTUwZjVkMTY5YmRkMTZjZDU3MGUxNWJjN2YxNWY5N2E1ZDZhOGVhY2ViZGRkMGJkOTQyNzk4MWI" alt="Stars give you a shield" />
+
+        <span> Stars give you a shield </span>
+      </div>
+
+      <div class="rule-item">
+        <img src="https://www.thetoyshop.com/medias/Tree-Light.png?context=bWFzdGVyfHJvb3R8MTI1NTJ8aW1hZ2UvcG5nfGFEbGpMMmhsTXk4eE1qZ3hOelF6T1RZNE5qWTROaTlVY21WbElFeHBaMmgwTG5CdVp3fDNkMzllYzMwZjZmNWY5OGY2NzE0ZmUxOTUwOGU5NmMzODAxOWE1ZTY1YzlmYTNlY2ZlZDM1OGY4OTlmZjgzMTA" alt="Dodge the trees!" />
+
+        <span> Dodge the trees! </span>
+      </div>
+    </div>
+
+    <button class="btn" onclick="startGame()">🛷 Start Sledging</button>
+  </div>
+
+  <!-- GAME OVER -->
+
+  <div id="game-over-screen" class="screen hidden">
+    <div class="hero-emoji">💥🦔</div>
+
+    <h1>Whoa!</h1>
+
+    <p>That tree came out of nowhere!</p>
+
+    <p>
+      Final Score:
+
+      <b id="final-score"> 0 </b>
+    </p>
+
+    <button class="btn" onclick="startGame()">🔄 Sledge Again</button>
+  </div>
+</div>
+
+<div id="sound-controls">
+
+    <button
+        id="sound-toggle"
+        type="button"
+        aria-label="Sound settings"
+        title="Sound settings"
+    >
+        🔊
+    </button>
+
+    <div id="sound-panel">
+
+        <div class="sound-panel-title">
+            🔊 Sound Settings
+        </div>
+
+        <div class="sound-option">
+
+            <div class="sound-option-label">
+                🔊 Sound effects
+            </div>
+
+            <button
+                id="effects-switch"
+                class="sound-switch active"
+                type="button"
+                aria-label="Toggle sound effects"
+            ></button>
+
+        </div>
+
+        <div class="sound-option">
+
+            <div class="sound-option-label">
+                🎵 Music
+            </div>
+
+            <button
+                id="music-switch"
+                class="sound-switch active"
+                type="button"
+                aria-label="Toggle music"
+            ></button>
+
+        </div>
+
+        <div class="sound-option">
+
+            <div style="width:100%;">
+
+                <div class="sound-option-label">
+                    🔉 Effects volume
+                </div>
+
+                <div class="sound-volume-row">
+
+                    <input
+                        id="effects-volume"
+                        class="sound-volume"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.05"
+                        value="0.7"
+                    >
+
+                    <span
+                        id="effects-volume-value"
+                        class="sound-volume-value"
+                    >
+                        70%
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="sound-option">
+
+            <div style="width:100%;">
+
+                <div class="sound-option-label">
+                    🎵 Music volume
+                </div>
+
+                <div class="sound-volume-row">
+
+                    <input
+                        id="music-volume"
+                        class="sound-volume"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.05"
+                        value="0.3"
+                    >
+
+                    <span
+                        id="music-volume-value"
+                        class="sound-volume-value"
+                    >
+                        30%
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="sound-hint">
+            Your sound settings are saved automatically.
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+  const gameContainer = document.getElementById("game-container");
+
+  const hedgehog = document.getElementById("hedgehog");
+
+  const trackGrooves = document.getElementById("track-grooves");
+
+  const scoreDisplay = document.getElementById("score");
+
+  const presentsDisplay = document.getElementById("presents");
+
+  const speedIndicator = document.getElementById("speed-indicator");
+
+  const startScreen = document.getElementById("start-screen");
+
+  const gameOverScreen = document.getElementById("game-over-screen");
+
+  const finalScoreDisplay = document.getElementById("final-score");
+
+  const steerHint = document.getElementById("steer-hint");
+
+  const speedLines = document.getElementById("speed-lines");
+
+  let isPlaying = false;
+  let score = 0;
+  let presentsCount = 0;
+  let entities = [];
+  let gameLoop = null;
+  let spawnLoop = null;
+
+  const soundFiles = {
+    start:
+      "https://www.thetoyshop.com/medias/freesound-community-start-computeraif-14572.mp3?context=bWFzdGVyfHJvb3R8MTA4NDgwfHZpZGVvL21wZWd8YURsaEwyZzJNaTh4TWpnMU1qSXpORFkwT1RZek1DOW1jbVZsYzI5MWJtUmZZMjl0YlhWdWFYUjVMWE4wWVhKMExXTnZiWEIxZEdWeVlXbG1MVEUwTlRjeUxtMXdNd3wxYmRkZGYxNzI5ZmQwYjllMTUxYzA4NzhlNTdhMmNiOTQ2MDEyNjEzMjYzZjUzNjIwODRhNjYxYTBlNzI2ZTk1",
+
+    collect:
+      "https://www.thetoyshop.com/medias/universfield-game-bonus-03-487857.mp3?context=bWFzdGVyfHJvb3R8Mzg0NTJ8dmlkZW8vbXBlZ3xhREkxTDJnM015OHhNamcxTWpJek5ERTVNRGczT0M5MWJtbDJaWEp6Wm1sbGJHUXRaMkZ0WlMxaWIyNTFjeTB3TXkwME9EYzROVGN1YlhBenxmOWFlNjRlZmM4ZDgxZmZiZjNmYmJiMTI1MTkxZGRlYWM5ODVlYjAyM2M3NzEwMzcyMTdkYTM0YTBkNDNjZTJl",
+
+    shield:
+      "https://www.thetoyshop.com/medias/vadim-makes-sound-futuristic-ai-assistant-activation-566031.mp3?context=bWFzdGVyfHJvb3R8OTY3Njh8dmlkZW8vbXBlZ3xhR1UxTDJnd09TOHhNamcxTWpJek5URTBNVEUxTUM5MllXUnBiVjl0WVd0bGMxOXpiM1Z1WkMxbWRYUjFjbWx6ZEdsakxXRnBMV0Z6YzJsemRHRnVkQzFoWTNScGRtRjBhVzl1TFRVMk5qQXpNUzV0Y0RNfDEzODEzZGYwOWJkMzhlMTU3ZDNlOGNjYjYwNjMyYzQ0NTNlNzdiMDJjZmZmNDE3NWQ0NGZhYjc2ZjczNWRiNTM",
+
+    treeHit:
+      "https://www.thetoyshop.com/medias/universfield-punch-impact-hit-567196.mp3?context=bWFzdGVyfHJvb3R8NTA5OTF8dmlkZW8vbXBlZ3xhRFU1TDJnMk5pOHhNamcxTWpJek5EVXhPRFUxT0M5MWJtbDJaWEp6Wm1sbGJHUXRjSFZ1WTJndGFXMXdZV04wTFdocGRDMDFOamN4T1RZdWJYQXp8YWM0NDA0Y2ViMWY2NDY1YTlmODJmY2JiNjQxY2Y1YjI1NmU1MjA0YWI5ZWFmMWY2MDAwOWRhNDE5YzhjOTkxMw",
+
+    stageUp:
+      "https://www.thetoyshop.com/medias/floraphonic-cute-level-up-3-189853.mp3?context=bWFzdGVyfHJvb3R8NjUyODB8dmlkZW8vbXBlZ3xhRGc0TDJnMVppOHhNamcxTWpJek5EY3hOVEUyTmk5bWJHOXlZWEJvYjI1cFl5MWpkWFJsTFd4bGRtVnNMWFZ3TFRNdE1UZzVPRFV6TG0xd013fGQ5MzQwYmU4MjIxODMxNDcwNmRkZTdhYzM3OTA1MzBmNDViZWJlYzNmYWQ3ZTA1Mjc1MjQ3MDdkYWQ5OTFkNWI",
+
+    gameOver:
+      "https://www.thetoyshop.com/medias/freesound-community-negative-beeps-6008.mp3?context=bWFzdGVyfHJvb3R8MjU5MjB8dmlkZW8vbXBlZ3xhR00zTDJnMVpTOHhNamcxTWpJek5EYzRNRGN3TWk5bWNtVmxjMjkxYm1SZlkyOXRiWFZ1YVhSNUxXNWxaMkYwYVhabFgySmxaWEJ6TFRZd01EZ3ViWEF6fDQ1NWQwYTI0NDY1ZDQwMDE1Y2U0ODBhMzYzYzRjODMwNmU2N2E5ZGFmN2VmYmQyNmNiYjBmYjNmY2M3ZjA4MWE",
+
+    music:
+      "https://www.thetoyshop.com/medias/freegroove-christmas-snowball-fight-loop-125954.mp3?context=bWFzdGVyfHJvb3R8MTc4NDY4NXx2aWRlby9tcGVnfGFHRTBMMmd3WkM4eE1qZzFNakl6TlRBeE1EQTNPQzltY21WbFozSnZiM1psTFdOb2NtbHpkRzFoY3kxemJtOTNZbUZzYkMxbWFXZG9kQzFzYjI5d0xURXlOVGsxTkM1dGNETXwzZDk3MjIxODZjYmI4NmUzODkyMTU1Y2NhZmFiMjZjYjI5N2UxM2VjNjE2MTFhODA0ZGU1NjRjOWE1NDFkZWE3",
+  };
+
+  const soundSettings = {
+    effectsEnabled: localStorage.getItem("hedgehog-sledge-effects") !== "false",
+
+    musicEnabled: localStorage.getItem("hedgehog-sledge-music") !== "false",
+
+    effectsVolume:
+      parseFloat(localStorage.getItem("hedgehog-sledge-effects-volume")) || 0.7,
+
+    musicVolume:
+      parseFloat(localStorage.getItem("hedgehog-sledge-music-volume")) || 0.3,
+  };
+
+  const backgroundMusic = new Audio(soundFiles.music);
+
+  backgroundMusic.loop = true;
+
+  backgroundMusic.volume = soundSettings.musicVolume;
+
+  function playSound(name) {
+    if (!soundSettings.effectsEnabled) {
+      return;
+    }
+
+    if (!soundFiles[name]) {
+      return;
+    }
+
+    const sound = new Audio(soundFiles[name]);
+
+    sound.volume = soundSettings.effectsVolume;
+
+    sound.play().catch(function () {});
+
+    sound.addEventListener("ended", function () {
+      sound.remove();
+    });
+  }
+
+  function startBackgroundAudio() {
+    if (soundSettings.musicEnabled) {
+      backgroundMusic.volume = soundSettings.musicVolume;
+
+      backgroundMusic.play().catch(function () {});
+    }
+  }
+
+  function stopBackgroundAudio() {
+    backgroundMusic.pause();
+
+    backgroundMusic.currentTime = 0;
+  }
+
+  function updateBackgroundAudio() {
+    if (!soundSettings.musicEnabled) {
+      backgroundMusic.pause();
+
+      return;
+    }
+
+    backgroundMusic.volume = soundSettings.musicVolume;
+
+    if (isPlaying) {
+      backgroundMusic.play().catch(function () {});
+    }
+  }
+
+  const soundToggle = document.getElementById("sound-toggle");
+
+  const soundPanel = document.getElementById("sound-panel");
+
+  const effectsSwitch = document.getElementById("effects-switch");
+
+  const musicSwitch = document.getElementById("music-switch");
+
+  const effectsVolume = document.getElementById("effects-volume");
+
+  const musicVolume = document.getElementById("music-volume");
+
+  const effectsVolumeValue = document.getElementById("effects-volume-value");
+
+  const musicVolumeValue = document.getElementById("music-volume-value");
+
+  function updateSoundUI() {
+    soundToggle.textContent =
+      soundSettings.effectsEnabled || soundSettings.musicEnabled ? "🔊" : "🔇";
+
+    effectsSwitch.classList.toggle("active", soundSettings.effectsEnabled);
+
+    musicSwitch.classList.toggle("active", soundSettings.musicEnabled);
+
+    effectsVolume.value = soundSettings.effectsVolume;
+
+    musicVolume.value = soundSettings.musicVolume;
+
+    effectsVolumeValue.textContent =
+      Math.round(soundSettings.effectsVolume * 100) + "%";
+
+    musicVolumeValue.textContent =
+      Math.round(soundSettings.musicVolume * 100) + "%";
+  }
+
+  soundToggle.addEventListener("click", function (e) {
+    e.stopPropagation();
+
+    soundPanel.classList.toggle("open");
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!soundPanel.contains(e.target) && e.target !== soundToggle) {
+      soundPanel.classList.remove("open");
+    }
+  });
+
+  effectsSwitch.addEventListener("click", function (e) {
+    e.stopPropagation();
+
+    soundSettings.effectsEnabled = !soundSettings.effectsEnabled;
+
+    localStorage.setItem(
+      "hedgehog-sledge-effects",
+      soundSettings.effectsEnabled,
+    );
+
+    updateSoundUI();
+  });
+
+  musicSwitch.addEventListener("click", function (e) {
+    e.stopPropagation();
+
+    soundSettings.musicEnabled = !soundSettings.musicEnabled;
+
+    localStorage.setItem("hedgehog-sledge-music", soundSettings.musicEnabled);
+
+    updateSoundUI();
+
+    if (soundSettings.musicEnabled) {
+      updateBackgroundAudio();
+    } else {
+      backgroundMusic.pause();
+    }
+  });
+
+  effectsVolume.addEventListener("input", function () {
+    soundSettings.effectsVolume = parseFloat(effectsVolume.value);
+
+    localStorage.setItem(
+      "hedgehog-sledge-effects-volume",
+      soundSettings.effectsVolume,
+    );
+
+    updateSoundUI();
+  });
+  musicVolume.addEventListener("input", function () {
+    soundSettings.musicVolume = parseFloat(musicVolume.value);
+
+    localStorage.setItem(
+      "hedgehog-sledge-music-volume",
+      soundSettings.musicVolume,
+    );
+
+    updateBackgroundAudio();
+
+    updateSoundUI();
+  });
+
+  updateSoundUI();
+
+  let streak = 0;
+  let bestStreak = 0;
+  let currentStage = 1;
+  let lastStage = 1;
+
+  let playerX = 0;
+  let targetX = 0;
+  let pointerActive = false;
+  let hasMoved = false;
+
+  const baseGameSpeed = 3.5;
+
+  let gameSpeed = baseGameSpeed;
+
+  let hasShield = false;
+  let shieldTimer = 0;
+
+  function getWidth() {
+    return gameContainer.clientWidth;
+  }
+
+  function getHeight() {
+    return gameContainer.clientHeight;
+  }
+
+  function getTrackBounds() {
+    const width = getWidth();
+
+    const trackWidth = Math.min(850, width * 0.88);
+
+    const trackLeft = (width - trackWidth) / 2;
+
+    return {
+      left: trackLeft + trackWidth * 0.13,
+
+      right: trackLeft + trackWidth * 0.87,
+    };
+  }
+
+  function steerToPointer(e) {
+    if (!isPlaying) {
+      return;
+    }
+
+    const rect = gameContainer.getBoundingClientRect();
+
+    const pointerX = e.clientX - rect.left;
+
+    const bounds = getTrackBounds();
+
+    targetX = pointerX - 40;
+
+    targetX = Math.max(bounds.left, Math.min(bounds.right, targetX));
+
+    if (!hasMoved) {
+      hasMoved = true;
+
+      steerHint.classList.add("hidden-hint");
+    }
+  }
+
+  gameContainer.addEventListener("pointerdown", function (e) {
+    if (!isPlaying) {
+      return;
+    }
+
+    pointerActive = true;
+
+    try {
+      gameContainer.setPointerCapture(e.pointerId);
+    } catch (err) {}
+
+    steerToPointer(e);
+  });
+
+  gameContainer.addEventListener("pointermove", function (e) {
+    if (!isPlaying) {
+      return;
+    }
+
+    if (e.pointerType === "mouse") {
+      steerToPointer(e);
+
+      return;
+    }
+
+    if (pointerActive) {
+      steerToPointer(e);
+    }
+  });
+
+  gameContainer.addEventListener("pointerup", function (e) {
+    pointerActive = false;
+
+    try {
+      gameContainer.releasePointerCapture(e.pointerId);
+    } catch (err) {}
+  });
+
+  window.addEventListener("keydown", function (e) {
+    if (!isPlaying) {
+      return;
+    }
+
+    const bounds = getTrackBounds();
+
+    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
+      e.preventDefault();
+
+      targetX -= 40;
+    }
+
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
+      e.preventDefault();
+
+      targetX += 40;
+    }
+
+    targetX = Math.max(bounds.left, Math.min(bounds.right, targetX));
+  });
+
+  function updatePlayer() {
+    const bounds = getTrackBounds();
+
+    targetX = Math.max(bounds.left, Math.min(bounds.right, targetX));
+
+    const difference = targetX - playerX;
+
+    playerX += difference * 0.17;
+
+    hedgehog.style.left = playerX + "px";
+
+    const lean = Math.max(-17, Math.min(17, difference * 0.45));
+
+    hedgehog.style.transform = "rotate(" + lean + "deg)";
+  }
+
+  const stages = [
+    {
+      title: "Snowy Start",
+      subtitle: "Find your feet!",
+      className: "stage-1",
+      snow: 24,
+      speed: 1,
+    },
+
+    {
+      title: "Pine Forest",
+      subtitle: "The trees are getting thicker!",
+      className: "stage-2",
+      snow: 32,
+      speed: 1.08,
+    },
+
+    {
+      title: "Blizzard Run",
+      subtitle: "Hold on tight!",
+      className: "stage-3",
+      snow: 50,
+      speed: 1.16,
+    },
+
+    {
+      title: "Moonlit Mountain",
+      subtitle: "Can you make it through?",
+      className: "stage-4",
+      snow: 65,
+      speed: 1.24,
+    },
+
+    {
+      title: "Frost Rush",
+      subtitle: "MAXIMUM SLEDGE!",
+      className: "stage-5",
+      snow: 90,
+      speed: 1.34,
+    },
+  ];
+
+  function getCurrentStage() {
+    const currentScore = Math.floor(score / 10);
+
+    if (currentScore >= 3000) {
+      return 5;
+    }
+
+    if (currentScore >= 2000) {
+      return 4;
+    }
+
+    if (currentScore >= 1000) {
+      return 3;
+    }
+
+    if (currentScore >= 400) {
+      return 2;
+    }
+
+    return 1;
+  }
+
+  function updateStage() {
+    const stage = getCurrentStage();
+
+    if (stage === currentStage) {
+      return;
+    }
+
+    currentStage = stage;
+
+    const stageData = stages[currentStage - 1];
+
+    gameContainer.classList.remove(
+      "stage-1",
+      "stage-2",
+      "stage-3",
+      "stage-4",
+      "stage-5",
+    );
+
+    gameContainer.classList.add(stageData.className);
+
+    playSound("stageUp");
+
+    showStageAnnouncement(currentStage, stageData.title, stageData.subtitle);
+
+    createStageSnow(stageData.snow);
+  }
+
+  function showStageAnnouncement(number, title, subtitle) {
+    const announcement = document.getElementById("stage-announcement");
+
+    document.getElementById("stage-number").textContent = "STAGE " + number;
+
+    document.getElementById("stage-title").textContent = title;
+
+    document.getElementById("stage-subtitle").textContent = subtitle;
+
+    announcement.classList.remove("show");
+
+    void announcement.offsetWidth;
+
+    announcement.classList.add("show");
+  }
+
+  function createStageSnow(amount) {
+    document.querySelectorAll(".stage-snow").forEach(function (el) {
+      el.remove();
+    });
+
+    for (let i = 0; i < amount; i++) {
+      const snow = document.createElement("div");
+
+      snow.className = "stage-snow";
+
+      const random = Math.random();
+
+      if (random < 0.18) {
+        snow.classList.add("large");
+      } else if (random > 0.82) {
+        snow.classList.add("small");
+      }
+
+      if (Math.random() < 0.45) {
+        snow.classList.add("wobble");
+      }
+
+      snow.style.left = Math.random() * 100 + "%";
+
+      snow.style.animationDuration = Math.random() * 2.5 + 2 + "s";
+
+      snow.style.animationDelay = -(Math.random() * 5) + "s";
+
+      gameContainer.appendChild(snow);
+    }
+  }
+
+  function startGame() {
+    isPlaying = true;
+
+    playSound("start");
+
+    startBackgroundAudio();
+
+    startScreen.classList.add("hidden");
+
+    gameOverScreen.classList.add("hidden");
+
+    document
+      .querySelectorAll(
+        ".item, .bg-snowflake, .stage-snow, .floating-score, .close-call",
+      )
+      .forEach(function (el) {
+        el.remove();
+      });
+
+    entities = [];
+
+    score = 0;
+
+    presentsCount = 0;
+
+    streak = 0;
+
+    bestStreak = 0;
+
+    currentStage = 1;
+
+    lastStage = 1;
+
+    gameSpeed = baseGameSpeed;
+
+    const bounds = getTrackBounds();
+
+    playerX = (bounds.left + bounds.right) / 2;
+
+    targetX = playerX;
+
+    hasShield = false;
+
+    shieldTimer = 0;
+
+    hasMoved = false;
+
+    hedgehog.classList.remove("shielded");
+
+    hedgehog.style.filter = "none";
+
+    scoreDisplay.textContent = "0";
+
+    presentsDisplay.textContent = "0";
+
+    speedIndicator.textContent = "1";
+
+    document.getElementById("streak-display").classList.remove("active", "hot");
+
+    document.getElementById("streak-value").textContent = "0";
+
+    gameContainer.classList.remove("stage-2", "stage-3", "stage-4", "stage-5");
+
+    gameContainer.classList.add("stage-1");
+
+    steerHint.classList.remove("hidden-hint");
+
+    isPlaying = true;
+
+    trackGrooves.style.animationPlayState = "running";
+
+    createBackgroundSnow();
+
+    createStageSnow(stages[0].snow);
+
+    createSpeedLines();
+
+    clearInterval(gameLoop);
+
+    clearInterval(spawnLoop);
+
+    gameLoop = setInterval(updateGame, 20);
+
+    spawnLoop = setInterval(spawnEntity, 800);
+  }
+
+  function createBackgroundSnow() {
+    const amount = window.innerWidth < 600 ? 24 : 38;
+
+    for (let i = 0; i < amount; i++) {
+      const flake = document.createElement("div");
+
+      flake.className = "bg-snowflake";
+
+      flake.textContent = Math.random() > 0.5 ? "❄" : "•";
+
+      flake.style.left = Math.random() * getWidth() + "px";
+
+      flake.style.top = Math.random() * getHeight() + "px";
+
+      flake.style.fontSize = Math.random() * 12 + 6 + "px";
+
+      flake.style.animationDuration = Math.random() * 2 + 1.3 + "s";
+
+      flake.style.animationDelay = -(Math.random() * 3) + "s";
+
+      gameContainer.appendChild(flake);
+    }
+  }
+
+  function createSpeedLines() {
+    speedLines.innerHTML = "";
+
+    for (let i = 0; i < 25; i++) {
+      const line = document.createElement("div");
+
+      line.className = "speed-line";
+
+      line.style.left = Math.random() * 100 + "%";
+
+      line.style.animationDuration = Math.random() * 0.65 + 0.35 + "s";
+
+      line.style.animationDelay = -(Math.random() * 2) + "s";
+
+      speedLines.appendChild(line);
+    }
+  }
+
+  function spawnEntity() {
+    if (!isPlaying) {
+      return;
+    }
+
+    const currentScore = Math.floor(score / 10);
+
+    const level = Math.floor(currentScore / 80) + 1;
+
+    const obstacleChance = Math.min(0.75, 0.45 + level * 0.025);
+
+    const type = Math.random() > obstacleChance ? "collectible" : "tree";
+
+    const entity = document.createElement("div");
+
+    const bounds = getTrackBounds();
+
+    const trackWidth = bounds.right - bounds.left;
+
+    let posX;
+
+    if (type === "tree") {
+      const playerCenter = playerX + hedgehog.offsetWidth / 2;
+
+      if (Math.random() < 0.45) {
+        const targetOffset = Math.random() * 240 - 120;
+
+        posX = playerCenter + targetOffset;
+      } else {
+
+        posX = bounds.left + Math.random() * trackWidth;
+      }
+
+      posX = Math.max(bounds.left - 25, Math.min(bounds.right - 75, posX));
+
+      const tooClose = entities.some(function (existing) {
+        if (existing.type !== "tree") {
+          return false;
+        }
+
+        if (existing.y > 150) {
+          return false;
+        }
+
+        return Math.abs(existing.x - posX) < 105;
+      });
+
+      if (tooClose) {
+        return;
+      }
+    } else {
+      posX = bounds.left + Math.random() * trackWidth;
+
+      posX = Math.max(bounds.left + 10, Math.min(bounds.right - 10, posX));
+    }
+
+    entity.style.left = posX + "px";
+
+    const startY = -300;
+
+    entity.style.top = startY + "px";
+
+    if (type === "collectible") {
+      const shieldItem = Math.random() < 0.14;
+
+      const icons = ["apple", "present", "acorn"];
+
+const icon = shieldItem
+  ? "<img src='https://www.thetoyshop.com/medias/edited-photo-60-.png?context=bWFzdGVyfHJvb3R8MzUyMTh8aW1hZ2UvcG5nfGFEYzFMMmcwTVM4eE1qZzBNelV3TmpnNU1qZ3pNQzlsWkdsMFpXUXRjR2h2ZEc4Z0tEWXdLUzV3Ym1jfGE2ZTQ2NmYzNTUwZjVkMTY5YmRkMTZjZDU3MGUxNWJjN2YxNWY5N2E1ZDZhOGVhY2ViZGRkMGJkOTQyNzk4MWI' alt='Stars give you a shield' />"
+  : icons[Math.floor(Math.random() * icons.length)];
+
+entity.classList.add("item", "collectible");
+
+if (icon === "present") {
+  entity.innerHTML = `
+    <svg
+      class="collectible-present"
+      viewBox="0 0 64 64"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <g id="flat">
+        <rect height="34" style="fill:#7ea82d" width="52" x="6" y="27"/>
+        <rect height="4" style="fill:#729c22" width="52" x="6" y="27"/>
+        <rect height="12" style="fill:#7ea82d" width="58" x="3" y="15"/>
+        <rect height="46" style="fill:#dd4a43" width="12" x="26" y="15"/>
+
+        <path
+          d="M27.658,6.317A6,6,0,0,0,22.292,3H14a6,6,0,0,0,0,12H32Z"
+          style="fill:#dd4a43"
+        />
+
+        <path
+          d="M32,15H22a6,6,0,0,1-6-6h0a6,6,0,0,1,6-6h.292a6,6,0,0,1,5.366,3.317Z"
+          style="fill:#b0342e"
+        />
+
+        <path
+          d="M36.342,6.317A6,6,0,0,1,41.708,3H50a6,6,0,0,1,0,12H32Z"
+          style="fill:#dd4a43"
+        />
+
+        <path
+          d="M32,15H42a6,6,0,0,0,6-6h0a6,6,0,0,0-6-6h-.292a6,6,0,0,0-5.366,3.317Z"
+          style="fill:#b0342e"
+        />
+
+        <polygon
+          points="38 36 38 15 26 15 26 37 32 22 38 36"
+          style="fill:#d13e37"
+        />
+
+        <polygon
+          points="21 42 17 37 10 39 20 15 32 15 21 42"
+          style="fill:#dd4a43"
+        />
+
+        <polygon
+          points="43 42 47 37 54 39 44 15 32 15 43 42"
+          style="fill:#dd4a43"
+        />
+
+        <rect
+          height="2"
+          style="fill:#e66b65"
+          transform="translate(-14.645 35.51) rotate(-68.547)"
+          width="9.642"
+          x="13.91"
+          y="27.5"
+        />
+
+        <rect
+          height="2"
+          style="fill:#e66b65"
+          transform="translate(-5.742 33.641) rotate(-68.973)"
+          width="2.143"
+          x="20.544"
+          y="20"
+        />
+
+        <rect
+          height="9"
+          style="fill:#95c43b"
+          width="2"
+          x="9"
+          y="49"
+        />
+
+        <rect
+          height="2"
+          style="fill:#95c43b"
+          width="2"
+          x="9"
+          y="45"
+        />
+      </g>
+    </svg>
+  `;
+} else if (icon === "apple") {
+  entity.innerHTML = `
+    <svg width="800px" height="800px" viewBox="0 0 150 150" id="ART" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke-linecap:round;stroke-linejoin:round;}.cls-1,.cls-2{stroke:#000000;stroke-width:4px;}.cls-2{fill:#49af20;stroke-miterlimit:10;}.cls-3{fill:#d83419;}.cls-4{fill:#ffffff;}</style></defs><title/><path class="cls-1" d="M75,52.72c2.63-10.87,3.5-36.5-6.62-45.13"/><path class="cls-2" d="M78.52,31.14C73.4,15,105.94-1.81,124.3,10.6,111.43,21.14,105.63,45.2,78.52,31.14Z"/><path class="cls-3" d="M75,51.94c7.59,0,10.76-10.59,25.31-10.59S131,52.29,131,76.65s-21.2,67.06-31.8,67.06-17.29-5.65-24.2-5.65-13.6,5.65-24.2,5.65S19,101,19,76.65,35.14,41.35,49.69,41.35,67.41,51.94,75,51.94Z" data-name="&lt;Clipping Path&gt;" id="_Clipping_Path_"/><path class="cls-1" d="M75,51.94c7.59,0,10.76-10.59,25.31-10.59S131,52.29,131,76.65s-21.2,67.06-31.8,67.06-17.29-5.65-24.2-5.65-13.6,5.65-24.2,5.65S19,101,19,76.65,35.14,41.35,49.69,41.35,67.41,51.94,75,51.94Z" data-name="&lt;Clipping Path&gt;" id="_Clipping_Path_2"/><path class="cls-4" d="M36.67,57c9.11-9.62,18.27-6.82,20.75-2.13s-4.37,11.84-9.21,16.4-10.59,12.32-15.63,12S25.81,68.48,36.67,57Z"/><path class="cls-4" d="M36.67,57c9.11-9.62,18.27-6.82,20.75-2.13s-4.37,11.84-9.21,16.4-10.59,12.32-15.63,12S25.81,68.48,36.67,57Z"/></svg>
+  `;
+  } else if (icon === "acorn") {
+    entity.innerHTML = `
+    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fxemoji" preserveAspectRatio="xMidYMid meet"><path fill="#8E6049" d="M414.157 325.874a6.824 6.824 0 0 0-7.423 1.494c-.096.095-9.808 9.655-33.849 19.111c-40.413 15.896-89.364 19.233-123.312 19.233c-61.506 0-101.007-10.459-123.313-19.233c-24.041-9.456-33.753-19.017-33.819-19.082a6.797 6.797 0 0 0-11.667 4.742c0 55.071 75.295 121.585 168.799 121.585c93.503 0 168.798-66.514 168.798-121.585c0-2.749-1.672-5.213-4.214-6.265z"></path><path fill="#CE7E61" d="M87.572 332.14c0-191.062 162.002-259.028 162.002-259.028s162.002 62.681 162.002 259.028c0 0-36.2 58.149-162.002 58.149S87.572 332.14 87.572 332.14z"></path><path fill="#B96642" d="M306.819 140.777c-19.549-31.826-39.078-50.952-49.694-60.012c0-.022-.004-.044-.004-.065a7.558 7.558 0 0 0-.311-2.179c-.007-.023-.008-.047-.016-.07c-.008-.026-.021-.048-.029-.074a7.529 7.529 0 0 0-.858-1.835c-.041-.063-.091-.119-.134-.18c-.05-.072-.104-.14-.157-.21a7.847 7.847 0 0 0-.542-.646c-3.519-1.626-5.5-2.393-5.5-2.393s-4.564 1.916-12.152 6.002a7.563 7.563 0 0 0-.184 1.652c-10.616 9.061-30.145 28.186-49.694 60.012c-16.502 26.865-29.642 57.334-39.053 90.56c-11.629 41.055-17.561 86.47-17.651 134.997a182.08 182.08 0 0 0 13.295 6a7.517 7.517 0 0 0 1.801-4.888c0-47.287 5.686-91.47 16.898-131.321c8.95-31.811 21.425-60.954 37.077-86.621c11.743-19.257 23.556-33.662 33.118-43.768c-3.432 11.687-7.444 27.118-11.463 46.526c-9.477 45.769-20.774 123.399-20.774 233.31c0 .509.052 1.005.148 1.485c4.583.645 9.337 1.203 14.261 1.667c.442-.96.696-2.026.696-3.152c0-108.183 11.041-184.505 20.303-229.481c4.433-21.525 8.89-38.113 12.493-49.946c3.604 11.833 8.062 28.424 12.494 49.946c9.262 44.976 20.303 121.298 20.303 229.481c0 1.19.283 2.311.773 3.312c4.875-.435 9.577-.966 14.123-1.578a7.572 7.572 0 0 0 .208-1.734c0-109.91-11.297-187.541-20.774-233.31c-3.499-16.897-6.992-30.777-10.103-41.8c8.506 9.527 18.36 22.146 28.235 38.222c24.853 40.46 54.479 111.255 54.479 218.763a7.54 7.54 0 0 0 3.25 6.203a189.547 189.547 0 0 0 11.742-4.961c.067-.405.111-.818.111-1.242c0-48.946-5.941-94.739-17.659-136.108c-9.414-33.23-22.554-63.699-39.056-90.564z"></path></svg>
+`; } else {
+  entity.innerHTML = icon;
+}
+
+      if (shieldItem) {
+        entity.dataset.shield = "true";
+      }
+    } else {
+      entity.classList.add("item", "tree-obstacle");
+    }
+
+    gameContainer.appendChild(entity);
+
+    entities.push({
+      element: entity,
+
+      x: posX,
+
+      y: startY,
+
+      type: type,
+
+      isShield: entity.dataset.shield === "true",
+
+      closeCall: false,
+    });
+  }
+
+  function showFloatingScore(text, x, y) {
+    const score = document.createElement("div");
+
+    score.className = "floating-score";
+
+    score.textContent = text;
+
+    score.style.left = x + "px";
+
+    score.style.top = y + "px";
+
+    gameContainer.appendChild(score);
+
+    setTimeout(function () {
+      score.remove();
+    }, 750);
+  }
+
+  function updateStreakDisplay() {
+    const display = document.getElementById("streak-display");
+
+    const value = document.getElementById("streak-value");
+
+    value.textContent = streak;
+
+    if (streak >= 2) {
+      display.classList.add("active");
+    } else {
+      display.classList.remove("active");
+    }
+
+    if (streak >= 3) {
+      display.classList.add("hot");
+    } else {
+      display.classList.remove("hot");
+    }
+  }
+
+  function showCloseCall(x, y) {
+    const el = document.createElement("div");
+
+    el.className = "close-call";
+
+    el.textContent = "⚡ CLOSE CALL! +50";
+
+    el.style.left = x + "px";
+
+    el.style.top = y + "px";
+
+    gameContainer.appendChild(el);
+
+    setTimeout(function () {
+      el.remove();
+    }, 850);
+  }
+
+  function updateGame() {
+    if (!isPlaying) {
+      return;
+    }
+
+    score += Math.max(1, Math.floor(gameSpeed / 2));
+
+    const currentScore = Math.floor(score / 10);
+
+    const level = Math.floor(currentScore / 80) + 1;
+
+    const stageData = stages[currentStage - 1];
+
+    gameSpeed =
+      (baseGameSpeed + Math.min(3.5, currentScore * 0.0025)) * stageData.speed;
+
+    scoreDisplay.textContent = currentScore;
+
+    presentsDisplay.textContent = presentsCount;
+
+    speedIndicator.textContent = level;
+
+    updateStage();
+
+    updatePlayer();
+
+    const speedAmount = Math.min(1, (gameSpeed - 3.5) / 6);
+
+    speedLines.style.opacity = speedAmount;
+
+    trackGrooves.style.animationDuration =
+      Math.max(0.15, 3.5 / gameSpeed) + "s";
+
+    if (hasShield) {
+      shieldTimer--;
+
+      if (shieldTimer <= 0) {
+        hasShield = false;
+
+        hedgehog.classList.remove("shielded");
+      }
+    }
+
+    for (let i = entities.length - 1; i >= 0; i--) {
+      const ent = entities[i];
+
+      ent.y += gameSpeed;
+
+      ent.element.style.top = ent.y + "px";
+
+      const progress = Math.min(
+        1,
+        Math.max(0, (ent.y + 100) / (getHeight() + 100)),
+      );
+
+      const wobble = Math.sin(ent.y * 0.035) * 4;
+
+      if (ent.type === "tree") {
+        const treeScale = 0.62 + progress * 0.38;
+
+        ent.element.style.transform =
+          "translateX(" + wobble + "px) scale(" + treeScale + ")";
+      } else {
+        const itemScale = 0.38 + progress * 0.72;
+
+        ent.element.style.transform =
+          "translateX(" +
+          wobble +
+          "px) scale(" +
+          itemScale * 1.05 +
+          ") rotate(" +
+          ent.y * 0.7 +
+          "deg)";
+      }
+
+      const playerRect = hedgehog.getBoundingClientRect();
+
+      const entityRect = ent.element.getBoundingClientRect();
+
+      const gameRect = gameContainer.getBoundingClientRect();
+
+      const playerLeft = playerRect.left - gameRect.left;
+
+      const playerRight = playerRect.right - gameRect.left;
+
+      const playerTop = playerRect.top - gameRect.top;
+
+      const playerBottom = playerRect.bottom - gameRect.top;
+
+      const entityLeft = entityRect.left - gameRect.left;
+
+      const entityRight = entityRect.right - gameRect.left;
+
+      const entityTop = entityRect.top - gameRect.top;
+
+      const entityBottom = entityRect.bottom - gameRect.top;
+
+      const playerPaddingX = 16;
+
+      const playerPaddingY = 12;
+
+      const entityPaddingX = ent.type === "tree" ? 45 : 8;
+      const entityPaddingY = ent.type === "tree" ? 35 : 8;
+
+      const collision =
+        playerRight - playerPaddingX > entityLeft + entityPaddingX &&
+        playerLeft + playerPaddingX < entityRight - entityPaddingX &&
+        playerBottom - playerPaddingY > entityTop + entityPaddingY &&
+        playerTop + playerPaddingY < entityBottom - entityPaddingY;
+
+      if (collision) {
+
+        if (ent.type === "collectible") {
+          playSound(ent.isShield ? "shield" : "collect");
+
+          if (ent.isShield) {
+            hasShield = true;
+
+            shieldTimer = 320;
+
+            hedgehog.classList.add("shielded");
+
+            showFloatingScore("SHIELD!", ent.x, ent.y);
+          } else {
+            streak++;
+
+            if (streak > bestStreak) {
+              bestStreak = streak;
+            }
+
+            const multiplier = Math.min(5, Math.floor(streak / 3) + 1);
+
+            const bonus = 100 * multiplier;
+
+            score += bonus - 100;
+
+            showFloatingScore("+" + bonus, ent.x, ent.y);
+
+            updateStreakDisplay();
+          }
+
+          presentsCount++;
+
+          score += 100;
+
+          ent.element.classList.add("collect-pop");
+
+          setTimeout(function () {
+            if (ent.element && ent.element.parentNode) {
+              ent.element.remove();
+            }
+          }, 350);
+
+          entities.splice(i, 1);
+
+          continue;
+        }
+
+        if (hasShield) {
+          playSound("treeHit");
+
+          hasShield = false;
+
+          hedgehog.classList.remove("shielded");
+
+          score += 250;
+
+          showFloatingScore("+250!", ent.x, ent.y);
+
+          ent.element.classList.add("collect-pop");
+
+          entities.splice(i, 1);
+
+          setTimeout(function () {
+            if (ent.element && ent.element.parentNode) {
+              ent.element.remove();
+            }
+          }, 300);
+
+          continue;
+        }
+
+        playSound("treeHit");
+
+        streak = 0;
+
+        updateStreakDisplay();
+
+        gameOver();
+
+        return;
+      }
+
+      if (
+        ent.type === "tree" &&
+        ent.y > getHeight() * 0.68 &&
+        ent.y < getHeight() * 0.68 + gameSpeed
+      ) {
+        const playerCenter = playerX + hedgehog.offsetWidth / 2;
+
+        const treeCenter = ent.x;
+
+        const distance = Math.abs(playerCenter - treeCenter);
+
+        if (distance < 75 && distance > 35 && !ent.closeCall) {
+          ent.closeCall = true;
+
+          score += 50;
+
+          showCloseCall(ent.x, ent.y);
+        }
+      }
+
+      if (ent.y > getHeight() + 150) {
+        ent.element.remove();
+
+        entities.splice(i, 1);
+      }
+    }
+  }
+
+  function gameOver() {
+    isPlaying = false;
+
+    playSound("gameOver");
+
+    clearInterval(gameLoop);
+
+    clearInterval(spawnLoop);
+
+    trackGrooves.style.animationPlayState = "paused";
+
+    speedLines.style.opacity = "0";
+
+    finalScoreDisplay.textContent = Math.floor(score / 10);
+
+    gameContainer.classList.add("impact");
+
+    setTimeout(function () {
+      gameContainer.classList.remove("impact");
+
+      stopBackgroundAudio();
+
+      gameOverScreen.classList.remove("hidden");
+    }, 400);
+  }
+
+  window.addEventListener("resize", function () {
+    if (!isPlaying) {
+      return;
+    }
+
+    const bounds = getTrackBounds();
+
+    targetX = Math.max(bounds.left, Math.min(bounds.right, targetX));
+
+    playerX = Math.max(bounds.left, Math.min(bounds.right, playerX));
+  });
+</script>

@@ -1,0 +1,526 @@
+<style>
+  .breadcrumb-section {
+    display: none;
+  }
+  .payment-rotate {
+    margin-bottom: 0;
+  }
+  #container {
+    background-color: #0d2b2b;
+    padding-bottom: 40px;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    margin-top: -1px;
+  }
+
+  .container-intro {
+    max-width: 980px;
+    padding: 20px 20px 0;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+  }
+
+  .container-intro h1 {
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    color: #3b519a;
+    -webkit-text-stroke: 5px #fcc80b;
+    paint-order: stroke fill;
+    font-size: 36px;
+    line-height: 1.4;
+  }
+
+  .container-intro p {
+    font-size: 12px;
+  }
+
+  .pokeball-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .pokeball-header-text {
+    color: #fff;
+  }
+
+  .pokeball-header-text h2 {
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 20px;
+    margin: 0;
+    letter-spacing: 0;
+  }
+
+  #moving-container {
+    position: relative;
+  }
+
+  #moving-container.flipped {
+    transform: scaleX(-1);
+  }
+
+  .poke-panels {
+    
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .poke-panel {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    border: 3px solid #34b597;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    color: #3b519a;
+    margin: 0 auto;
+    max-width: 980px;
+  }
+
+  .poke-panel h3 {
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 18px;
+    margin: 0 0 10px;
+    letter-spacing: 0;
+  }
+
+  .poke-panel p {
+    margin: 0;
+  }
+
+  .poke-panel-content {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    gap: 5px;
+    flex-wrap: nowrap;
+  }
+
+  .poke-panel-container {
+    background-color: #0d2b2b;
+    padding: 10px 0;
+  }
+
+  @media (min-width: 1024px) {
+    .poke-panel-content {
+      width: 60%;
+      gap: 20px;
+    }
+  }
+
+  .poke-panel-image {
+    width: 37%;
+    flex-shrink: 0;
+  }
+
+  .poke-panel-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .poke-contains {
+    display: flex;
+    flex-direction: column;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .store-selector {
+    width: 100%;
+    position: relative;
+    margin-top: 20px;
+  }
+
+  @media (min-width: 1024px) {
+    .store-selector {
+      width: 40%;
+      margin-top: 40px;
+    }
+  }
+
+  .store-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+  }
+
+  .store-input {
+    width: 100%;
+    padding: 10px 70px 10px 12px;
+    border: 2px solid #ec7aac;
+    border-radius: 6px;
+    font-family: "Nunito Bold", sans-serif;
+    padding-left: 36px;
+    color: #41254b;
+    text-align: left;
+  }
+  .store-input::placeholder {
+    color: #41254b;
+    font-family: "Nunito Bold", sans-serif;
+  }
+
+  .store-search-icon {
+    position: absolute;
+    left: 12px;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .store-selected-icon {
+    position: absolute;
+    left: 12px;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .store-input:focus {
+    outline: none;
+    border-color: #34b597;
+  }
+
+  .store-details-selected {
+    position: absolute;
+    right: 10px;
+    font-size: 0.85rem;
+    color: #41254b;
+    text-decoration: none;
+    user-select: none;
+  }
+
+  .store-details-selected:hover {
+    text-decoration: underline;
+    color: #ec7aac;
+  }
+
+  /* dropdown */
+  .store-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% - 6px);
+    width: 100%;
+    background: #fff;
+    border: 2px solid #34b597;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 110px;
+    z-index: 10;
+  }
+
+  .store-scroll-area {
+    flex: 1;
+    max-height: 100px;
+    overflow-y: scroll;
+    width: 99%;
+  }
+
+  .store-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .store-list li {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: "Nunito Bold", sans-serif;
+    font-size: 13px;
+  }
+  .store-list li:hover {
+    background: #dbe3ff;
+  }
+
+  .poke-promo-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .poke-promo-section .poke-promo-tile {
+    width: 100%;
+  }
+
+  .poke-promo-section a {
+    display: block;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .poke-promo-section img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 3px solid;
+  }
+
+  .poke-promo-section .hero-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background-color: #ec7aac;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 30px 10px 10px;
+    height: 40px;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.3);
+    border: 3px solid #dbe3ff;
+    transition: all 0.3s;
+    margin: 20px auto;
+    width: 100%;
+  }
+
+  .poke-promo-section .hero-button.no-icons {
+    padding: 10px;
+  }
+
+  .poke-promo-section .hero-button:hover {
+    background-color: #41254b;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+    color: #fff;
+    border-color: #fff;
+  }
+
+  .poke-promo-section .hero-button .basket-icon {
+    transition: all 0.3s;
+    transform: rotate(15deg);
+    margin-left: 5px;
+  }
+
+  .poke-promo-section .hero-button:hover .basket-icon {
+    transform: rotate(-10deg);
+  }
+
+  .poke-promo-section .hero-button .star-start {
+    position: relative;
+    top: -3px;
+  }
+
+  .poke-promo-section .hero-button .swoosh-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-right: 5px;
+    width: 25px;
+  }
+
+  .poke-promo-section .hero-button .swoosh {
+    display: block;
+    width: 0;
+    height: 3px;
+    margin-top: -3px;
+    margin-left: -2px;
+    transform: rotate(15deg);
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s;
+  }
+
+  .poke-promo-section .hero-button:hover .swoosh {
+    width: 7px;
+  }
+
+  .poke-promo-section .hero-button .star-end {
+    position: relative;
+    bottom: -5px;
+    transition: all 0.3s;
+  }
+
+  .poke-promo-section .hero-button:hover .star-end {
+    scale: 1.1;
+    transform: rotate(30deg);
+  }
+
+  @media (min-width: 1024px) {
+    .poke-promo-section .poke-promo-tile {
+      width: calc(100% / 3 - 10px);
+    }
+  }
+
+  /* pokeball container */
+  #pokeball-container {
+    width: 20px;
+    height: 20px;
+    margin: 20px auto;
+    animation: spinning 1.5s infinite;
+  }
+
+  /* pokeball */
+  #pokeball {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* top red half */
+  #pokeball::before {
+    content: "";
+    width: 20px;
+    height: 10px;
+    background: red;
+    border-radius: 10px 10px 0 0;
+    position: absolute;
+  }
+
+  /* middle stripe */
+  .pokeball-details {
+    width: 20px;
+    height: 2px;
+    background: #333;
+    position: absolute;
+    top: 9px;
+  }
+
+  /* button */
+  .pokeball-details::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    top: -3.5px;
+    left: 6.5px;
+    z-index: 200;
+  }
+  .pokeball-details::after {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    top: -2.3px;
+    left: 7.6px;
+    z-index: 250;
+    animation: color-change 1.5s infinite;
+  }
+
+  /* spinning animation */
+  @keyframes spinning {
+    0% {
+      transform: rotate(0deg);
+    }
+    40% {
+      transform: rotate(-45deg);
+    }
+    60% {
+      transform: rotate(45deg);
+    }
+    80% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  /* color change */
+  @keyframes color-change {
+    0%,
+    100% {
+      background: #fff;
+    }
+    50% {
+      background: #30a7d7;
+    }
+  }
+
+  /* lightning bolts (outside the ball, diagonal) */
+  .lightning {
+    position: absolute;
+    width: 1.2em;
+    height: auto;
+    opacity: 0;
+    top: calc(50% - 5px); /* aligned vertically to middle of ball */
+    left: calc(50% + 10px); /* start from right edge of 20px ball */
+    transform-origin: bottom left;
+    animation: shoot-diagonal 1.5s linear infinite;
+  }
+
+  .lightning2 {
+    position: absolute;
+    width: 1.2em;
+    height: auto;
+    opacity: 0;
+    top: calc(50% - 5px); /* aligned vertically to middle of ball */
+    left: calc(50% + 10px); /* start from right edge of 20px ball */
+    transform-origin: bottom left;
+    animation: shoot-diagonal2 1.5s linear infinite;
+  }
+
+  /* synced to ball rotation */
+  @keyframes shoot-diagonal {
+    0% {
+      transform: translate(0, 0) rotate(35deg) scale(0);
+      opacity: 0;
+    }
+    30% {
+      transform: translate(0, 0) rotate(35deg) scale(0);
+      opacity: 0;
+    }
+    60% {
+      transform: translate(5px, -10px) rotate(35deg) scale(1);
+      opacity: 1;
+    }
+    80% {
+      transform: translate(10px, -15px) rotate(35deg) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(10px, -15px) rotate(35deg) scale(1);
+      opacity: 0;
+    }
+  }
+  @keyframes shoot-diagonal2 {
+    0% {
+      transform: translate(0, 0) rotate(50deg) scale(0);
+      opacity: 0;
+    }
+    30% {
+      transform: translate(0, 0) rotate(50deg) scale(0);
+      opacity: 0;
+    }
+    60% {
+      transform: translate(5px, -5px) rotate(50deg) scale(1);
+      opacity: 1;
+    }
+    80% {
+      transform: translate(10px, -10px) rotate(50deg) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(15px, -20px) rotate(50deg) scale(0);
+      opacity: 0;
+    }
+  }
+</style>
+<div id="container">
+  <div class="container-intro">
+    <h1>POKÉMON AT THE ENTERTAINER</h1>
+    <div>
+      <p>
+        A brand-new adventure is about to begin. Discover where to pick up packs
+        of the Pokémon trading card game and complete your quest to collect ‘em
+        all. Range will vary from shop to shop so use the handy store search
+        below if you’ve got your eye on a particular booster, box, or bundle.
+        Stock is limited so to ensure fairness for all customers, purchase
+        quantities will be limited and on a first‑come, first‑served basis.
+        Don’t forget to keep an eye out on site for updates and giveaways.
+      </p>
+    </div>
+  </div>
+</div>

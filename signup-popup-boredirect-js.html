@@ -1,0 +1,310 @@
+setTimeout(function () {
+            
+            // <input type=text>
+
+            function setText(obj, value) {
+                obj.value = value;
+            }
+
+            // <input type=checkbox>
+
+            function setCheckBox(obj, value) {
+                if(obj.value == value)
+                    obj.checked = true;
+            }
+
+            // <select>
+
+            function setSelect(obj, value, byValue) {
+                for(var i=0; i<obj.options.length; i++) {
+                    if((byValue && obj.options[i].value == value) || (!byValue && obj.options[i].text == value))
+                        obj.selectedIndex = i;
+                }
+            }
+            
+            // <input type=radio>
+
+            function setRadio(obj, value) {
+                if(obj.value == value)
+                    obj.checked = true;
+            }
+            
+            // <textarea>
+
+            function setTextArea(obj, value) {
+                obj.value = value;
+            }
+            
+            // split date param and set all the input fields
+
+            function setDate(name, value) {
+                var parts = value.split("-");
+                if(parseInt(parts[2]))
+                    setValue(name, parseInt(parts[2]));
+                if(parseInt(parts[1]))
+                    setValue(name, parseInt(parts[1]), 1);
+                setValue(name, parts[0]);
+            }
+            
+            // find element with the given name and set its value
+            
+            function setValue(name, value, byValue) {
+                var col = document.getElementsByName(name);
+                if(col.length) {
+                    for(var i=0; i<col.length; i++) {
+                        if(col[i].tagName == 'INPUT') {
+                            if(col[i].type == 'text' || col[i].type == 'hidden' || col[i].type == 'password')
+                                setText(col[i], value);
+                            else if(col[i].type == 'checkbox')
+                                setCheckBox(col[i], value);
+                            else if(col[i].type == 'radio')
+                                setRadio(col[i], value);
+                        } else if(col[i].tagName == 'SELECT') {
+                            setSelect(col[i], value, byValue);
+                        } else if(col[i].tagName == 'TEXTAREA') {
+                            setTextArea(col[i], value);
+                        }
+                    }
+                }
+            }
+            
+            // remove leading and trailing spaces
+
+            function ltrim(s) {
+                if(!s) return '';
+                return s.replace(/^\s*/, "");
+            }
+            
+            function rtrim(s) {
+                if(!s) return '';
+                return s.replace(/\s*$/, "");
+            }
+            
+            function trim(s) {
+                return rtrim(ltrim(s));
+            }
+        
+            // php's urlencode replaces spaces with "+"... the javascript's unescape doesn't decode it back
+
+            function urldecode(str) {
+                if(!str) return '';
+                return unescape(str.replace(/\+/g, ' '));
+            }
+            
+            // add this function to the body onLoad event handler to prefill all the elements with the given params
+
+            function preFill(utf8) {
+                var url = document.URL;	
+                var url_parts = url.split("?");
+                if(url_parts.length == 2) {
+                    var search = url_parts[1];
+                    var params = search.split("&");
+                    for(var i=0; i<params.length;i++) {
+                        var param = params[i].split("=");
+                        var name = trim(urldecode(param[0]));
+                        var value = utf8 ? trim(decodeURIComponent(param[1].replace(/\+/g, '%20'))) : trim(urldecode(param[1]));
+                        var elm;
+                        var tmp;
+                        if(dateFields[name]) {
+                            setDate(name, value);
+                        } else if(multiFields[name]) {
+                            eval("elm=arr_"+multiFields[name]+";");
+                            for(tmp in elm) {
+                                if(value.indexOf(tmp) > -1) {
+                                    setValue(name, elm[tmp]);
+                                    value = value.substr(0,value.indexOf(tmp))+value.substr(value.indexOf(tmp)+tmp.length,value.length);
+                                }
+                            }
+                        }
+                        else
+                            
+                            // finaly, set the standard params
+                            
+                            setValue(name, value, 0);
+                    
+                    }
+                }
+            }
+            
+            <!--
+            
+            window.onbeforesubmit = function () {
+                return true;
+            }
+            
+            //-->
+                
+            <!--
+            
+            var error;
+            var form_lanuage = 'en';
+            
+            function is_0_valid(){
+                count = 0;
+                if(document.EmailOverlayProfileForm.optin){
+                    if(document.EmailOverlayProfileForm.optin.checked){
+                        if(document.getElementsByName('interest[]')){
+                            if(document.getElementsByName('interest[]').length > 0 ){
+                                Interest = document.getElementsByName('interest[]');
+                                for(i = 0 ; i < Interest.length;i++){
+                                    if(Interest[i].checked)
+                                        ++count;
+                                }
+                                if(count == 0){
+                                    error  += "Interests:";
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                return  true;
+            }
+            
+            function is_3_valid(input) {
+                if(input == "") {
+                    error += "Email: missing data!\n";
+                    return false;
+                }
+                return true;
+            }
+            
+            window.CheckEmailFormOverlayInputs = function () {
+                var check_ok = true;
+                error = "Please enter mandatory fields...\n";
+            
+                check_ok = (is_0_valid('null') && check_ok);
+                check_ok = (is_3_valid(document.EmailOverlayProfileForm.inp_3.value) && check_ok);
+            
+                if(check_ok == false)
+                    alert(error);
+            
+                return check_ok;
+            }
+            
+            //-->
+            
+            window.SubmitEmailFormOverlay = function () {
+    if (!CheckEmailFormOverlayInputs()) {
+        return;
+    }
+
+    var form = document.EmailOverlayProfileForm;
+    var button = form.querySelector('.email-sign-up-cta');
+
+    // Prevent double submission
+    if (button.disabled) {
+        return;
+    }
+
+    if (window.onbeforesubmit) {
+        onbeforesubmit();
+    }
+
+    button.disabled = true;
+    button.value = 'Submitting...';
+
+    // Create a unique hidden iframe for the Emarsys submission
+    var iframeName = 'emarsysSubmitFrame_' + Date.now();
+
+    var iframe = document.createElement('iframe');
+    iframe.name = iframeName;
+    iframe.style.display = 'none';
+    iframe.setAttribute('aria-hidden', 'true');
+
+    document.body.appendChild(iframe);
+
+    // Remember the original target
+    var originalTarget = form.getAttribute('target');
+
+    // Send the form into the hidden iframe
+    form.target = iframeName;
+
+    // Submit the form normally so Emarsys receives exactly the same data
+    form.submit();
+
+    // Give Emarsys time to process the registration and redirect
+    setTimeout(function () {
+
+        // Hide the form
+        form.style.display = 'none';
+
+        // Create the success message
+        var successMessage = document.createElement('div');
+        successMessage.className = 'email-sign-up-success';
+
+        successMessage.innerHTML =
+            '<h3>Thanks for signing up!</h3>' +
+            '<p>You\'re now signed up to receive emails about special offers, new toys and inspiration from The Entertainer.</p>';
+
+        // Add success message
+        form.parentNode.appendChild(successMessage);
+
+        // Restore form target
+        if (originalTarget) {
+            form.setAttribute('target', originalTarget);
+        } else {
+            form.removeAttribute('target');
+        }
+
+        // Remove iframe
+        setTimeout(function () {
+            if (iframe.parentNode) {
+                iframe.parentNode.removeChild(iframe);
+            }
+        }, 1000);
+
+    }, 1500);
+};
+        
+            
+            function MailIt() {
+                if(CheckEmailFormOverlayInputs()){
+                    if((document.EmailOverlayProfileForm.subject.value=='') || (document.EmailOverlayProfileForm.msg.value==''))
+                        alert('Bitte f\u00fcr Sie die Nachrichtenfelder aus!');
+                    else
+                        document.EmailOverlayProfileForm.submit();
+                }
+            }
+            
+            function FieldWithName(frm, fieldname, numofield) {
+                if(!numofield)
+                    numofield = 0;
+                field_count = 0;
+                for(i = 0; i < frm.elements.length; ++i) {
+                    if(frm.elements[i].name == fieldname) {
+                        if(field_count == numofield)
+                            return frm.elements[i];
+                        else
+                            field_count++;
+                    }
+                }
+            }
+            
+            function NumChecked(frm, fieldname) {
+                var count = 0;
+                for(i = 0; i < frm.elements.length; ++i) {
+                    if(frm.elements[i].name == fieldname && frm.elements[i].checked == true)
+                        ++count;
+                }
+                return count;
+            }
+            
+            function NumSel(field) {
+                var count = 0;
+                for(i = 0; i < field.length; ++i)
+                    if(field[i].selected == true) ++count;
+                return count;
+            }
+            
+            var multiFields = new Array();
+            var dateFields = new Array();
+            multiFields["interest[]"] = "interest"
+            multiFields["optin"] = "optin"
+            var arr_optin = new Array();
+            arr_optin["True"] = "y";
+            var arr_interest = new Array();
+            
+            $('.email-signup-opt-in input').prop('checked', true);
+        
+	}, 1000);

@@ -1,0 +1,230 @@
+<style type="text/css">
+
+  .carousel-component {
+		margin: 0!important;
+		padding: 20px 20px 0;
+		background: #fff !important;
+	}
+	
+  .ribbonWrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: #0D5D9C;
+    padding: 5px 15px;
+    border-radius: 8px;
+  }
+
+  .carousel-component h2 {
+    letter-spacing: 2px;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 24px;
+    text-transform: uppercase;
+    background-color: #231F20;
+  }
+
+  @media (min-width: 1024px) {
+    .carousel-component h2 {
+      font-size: 34px;
+      line-height: 34px;;
+    }
+  }
+	
+  .carousel-component h2.subhead-ribbon {
+    background-color: transparent;
+    height: auto;
+    margin-bottom: 0;
+  }
+
+    .subhead-ribbon::before, .subhead-ribbon::after {
+      display: none;
+    }
+
+  .carousel-component .carousel {
+    margin: 0 auto;
+    background: transparent;
+    max-width: 700px !important;
+  }
+
+  .owl-carousel .owl-controls .owl-buttons {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .carousel-component .carousel {
+      margin: 0 auto 20px;
+    }
+  }
+
+    .carousel-component .js-owl-carousel-reference .owl-wrapper-outer {
+      padding-bottom: 0;
+    }
+
+    .carousel-component .js-owl-carousel-reference .owl-wrapper-outer .owl-wrapper {
+      display: flex !important;
+      flex-direction: row;
+      align-items: stretch;
+      padding-top: 20px;
+      padding-bottom: 40px;
+    }
+
+    .carousel-component .js-owl-carousel-reference .owl-wrapper-outer .owl-wrapper::after,
+    .carousel-component .js-owl-carousel-reference .owl-wrapper-outer .owl-item .item::after {
+      content: '';
+      clear: both;
+      display: block;
+    }
+
+    .carousel-component .js-owl-carousel-reference .owl-wrapper-outer .owl-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .carousel-component .js-owl-carousel-reference .owl-wrapper-outer .owl-item div.item {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 4;
+      height: 100%;
+      padding: 0;
+      background: #fff;
+      transition: all 0.3s;
+    }
+
+    .carousel .item .thumb {
+      padding: 0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .carousel-component .listAddToCart,
+    .carousel-component #addToCartButton,
+    .carousel-component .listAddToCart:hover,
+    .carousel-component #addToCartButton:hover,
+    .carousel-component .listAddToCart:active,
+    .carousel-component #addToCartButton:active {
+      background-color: transparent;
+    }
+
+    .carousel-component .productCarouselImageBadge {
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+    }
+
+    .carousel-component .item-name {
+      margin: 0 10px;
+      color: #000;
+    }
+
+    .carousel-component .priceContainer, .grid-pricing .price, .product-details .price, .item__price .priceAmount {
+      color: #000;
+    }
+
+    .carousel-component .js-owl-carousel-reference .owl-wrapper-outer .owl-item .item .carousel__itm--addToCart {
+      margin: 0 auto 10px;
+    }
+
+    .carousel-component .js-owl-carousel-reference .owl-wrapper-outer .owl-item .item img.item {
+      max-width: unset;
+      padding: 0 8px;
+    }
+
+    .productCarouselImageBadge .badgeContainer {
+      display: none !important;
+    }
+
+    .carousel .item a:hover, .carousel__component--carousel .item a:hover, .carousel .carousel__item a:hover, .carousel__component--carousel .carousel__item a:hover, .carousel .item a:focus, .carousel__component--carousel .item a:focus, .carousel .carousel__item a:focus, .carousel__component--carousel .carousel__item a:focus {
+      color: #000;
+    }
+
+    .carousel .listAddToCart {
+      display: block;
+    }
+
+    .owl-carousel .owl-controls .owl-buttons {
+      display: block;
+    }
+
+    .carousel-component .js-owl-carousel-reference .owl-wrapper-outer .owl-item .item {
+      box-shadow: none;
+    }
+
+    .carousel .item .thumb, .carousel__component--carousel .item .thumb, .carousel .carousel__item .thumb, .carousel__component--carousel .carousel__item .thumb, .carousel .item .carousel__item--thumb, .carousel__component--carousel .item .carousel__item--thumb, .carousel .carousel__item .carousel__item--thumb, .carousel__component--carousel .carousel__item .carousel__item--thumb {
+      background: none;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .carousel-component .js-owl-carousel-reference .owl-wrapper-outer .owl-item .item img.item {
+      padding: 0;
+    }
+
+    .carousel-component .js-owl-carousel-reference .owl-buttons .owl-prev, .carousel-component .js-owl-carousel-reference .owl-buttons .owl-next {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+    }
+
+    .owl-carousel .owl-controls .owl-buttons .owl-prev span.fa, .owl-carousel .owl-controls .owl-buttons .owl-next span.fa{
+      font-size: 20px;
+    }
+
+    @media (min-width: 1024px) {
+    .owl-carousel .owl-controls .owl-buttons .owl-prev {
+        margin-left: -10px;
+    }
+    .owl-carousel .owl-controls .owl-buttons .owl-next {
+        margin-right: -10px;
+    }
+}
+	
+</style>
+
+<script>
+function rebuildCarousel() {
+    var $carousel = $('.js-owl-carousel-reference');
+
+    if (!$carousel.length) return;
+
+    var owl = $carousel.data('owlCarousel');
+
+    // 1. destroy if exists
+    if (owl) {
+        owl.destroy();
+    }
+
+    // 2. HARD reset ONLY Owl artifacts (safe in SmartEdit)
+    $carousel
+        .removeClass('owl-carousel owl-theme')
+        .removeData('owlCarousel')
+        .removeAttr('style');
+
+    $carousel.find('.owl-controls').remove();
+
+    // 3. CRITICAL: force DOM reset of Owl wrappers
+    // (don’t unwrap blindly — SmartEdit can break structure)
+    $carousel.find('.owl-wrapper-outer').each(function () {
+        var $outer = $(this);
+        $outer.find('.owl-wrapper').children().unwrap();
+        $outer.remove();
+    });
+
+    // 4. re-init AFTER DOM is stable
+    setTimeout(function () {
+        $carousel.owlCarousel({
+            items: 2.5,
+            navigation: true,
+            pagination: false
+        });
+    }, 0);
+}
+
+ACC.global && ACC.global.bindAll && setTimeout(rebuildCarousel, 300);
+</script>

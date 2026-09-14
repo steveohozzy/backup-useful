@@ -1,0 +1,4464 @@
+<!-- tabs homepage -->
+<style type="text/css">
+  :root {
+    --nav-height: 270px;
+  }
+  .homepage-container {
+    background-color: #dbe3ff;
+    /*min-height: calc(100vh - var(--nav-height));*/
+    overflow: hidden;
+  }
+
+  .homepage-content {
+    padding: 0 20px 20px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .homepage-content .top-tabs,
+  .homepage-content .bottom-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    margin: 20px 0;
+  }
+
+  .homepage-content .tab-button {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: none;
+    outline: 0;
+    border-radius: 50px;
+    color: #00548b;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.1);
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+    min-height: 40px;
+    padding: 10px;
+  }
+
+  .homepage-content .tab-button:hover {
+    scale: 1.1;
+  }
+
+  .homepage-content .tab-button:hover,
+  .homepage-content .tab-button.active {
+    background-color: #407ec9;
+    box-shadow: 0 0 14px rgba(3, 33, 33, 0.3);
+    color: #fff;
+  }
+
+  .homepage-content .tab-button {
+    width: 100%;
+  }
+
+  .homepage-content .bottom-tabs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero-panels {
+    padding: 0 0 30px 0;
+    background-color: #dbe3ff;
+  }
+
+  .carousel {
+    max-width: 940px;
+    margin: 0 auto;
+  }
+
+  .hero-panels .flickity-button,
+  .toy-types-carousel .flickity-button,
+  .brands-carousel .flickity-button {
+    display: none;
+  }
+
+  .brands-carousel {
+      display: block;
+    }
+
+    .brands-tiles {
+      display: none;
+    }
+
+  @media (min-width: 768px) {
+    .brands-carousel {
+      display: none !important;
+    }
+
+    .brands-tiles {
+      display: block;
+    }
+  }
+
+  .hero-panels .carousel-cell {
+    width: 100%;
+    height: 100%;
+    counter-increment: carousel-cell;
+    opacity: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 18px rgba(33, 33, 33, 0.15);
+  }
+
+  .hero-panels .carousel-cell.is-selected {
+    opacity: 100%;
+  }
+
+  .hero-panels .carousel-cell .media {
+    aspect-ratio: 335/213;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .hero-panels .carousel-cell .media img,
+  .hero-panels .carousel-cell .media iframe,
+  .hero-panels .carousel-cell .media video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #de1a83;
+    border-radius: 8px;
+    position: relative;
+    margin-top: -20px;
+    padding: 40px 20px 20px 20px;
+    flex-grow: 1;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info .brand-logo {
+    position: absolute;
+    top: -32px;
+    height: 40px;
+    z-index: 2;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info .brand-logo img,
+  .hero-panels .carousel-cell .hero-tile-info .brand-logo svg {
+    height: 100%;
+    width: auto;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info h2,
+  .hero-panels .carousel-cell .hero-tile-info h2 a {
+    font-size: 18px;
+    line-height: 1.2;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-weight: bold;
+    color: #fff;
+    margin: 0 0 20px;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info .hero-blurb {
+    display: none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 200;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info .hero-blurb a {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 200;
+  }
+
+  .hero-panels .carousel-cell .hero-tile-info.blue h2,
+  .hero-panels .carousel-cell .hero-tile-info.blue .hero-blurb,
+  .hero-panels .carousel-cell .hero-tile-info.blue a {
+    color: #fff;
+  }
+
+  .hero-panels .flickity-viewport {
+    aspect-ratio: 350/373;
+  }
+
+  .hero-panels .flickity-viewport {
+    aspect-ratio: 350/373;
+  }
+
+  .hero-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background-color: #009e44;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 30px 10px 10px;
+    height: 40px;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.3);
+    border: 3px solid #DBE3FF;
+    transition: all 0.3s;
+  }
+
+  .hero-button:hover {
+    background-color: #afcb17;
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+    color: #fff;
+  }
+
+  .hero-button .basket-icon {
+    transition: all 0.3s;
+    transform: rotate(15deg);
+    margin-left: 5px;
+  }
+
+  .hero-button:hover .basket-icon {
+    transform: rotate(-10deg);
+  }
+
+  .hero-button .star-start {
+    position: relative;
+    top: -3px;
+  }
+
+  .hero-button .swoosh-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-right: 5px;
+    width: 25px;
+  }
+
+  .hero-button .swoosh {
+    display: block;
+    width: 0;
+    height: 3px;
+    margin-top: -3px;
+    margin-left: -2px;
+    transform: rotate(15deg);
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s;
+  }
+
+  .hero-button:hover .swoosh {
+    width: 7px;
+  }
+
+  .hero-button .star-end {
+    position: relative;
+    bottom: -5px;
+    transition: all 0.3s;
+  }
+
+  .hero-button:hover .star-end {
+    scale: 1.1;
+    transform: rotate(30deg);
+  }
+
+  .homepage-tab-content {
+    display: none;
+  }
+
+  .homepage-tab-content.active {
+    display: block;
+  }
+
+  .media-full img {
+    width: 100%;
+    height: auto;
+  }
+
+  .media-full--desktop {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .homepage-content .tab-button {
+      font-size: 18px;
+    }
+
+    .media-full--desktop {
+      display: block;
+    }
+
+    .media-full--mobile {
+      display: none;
+    }
+
+    .hero-panels .flickity-viewport {
+      aspect-ratio: 900/280;
+    }
+
+    .hero-panels .carousel-cell {
+      flex-direction: row;
+      flex-flow: row-reverse;
+    }
+
+    .hero-panels .carousel-cell .media {
+      width: 50%;
+      aspect-ratio: 450/280;
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info {
+      padding: 20px 20px 20px 40px;
+      margin-top: 0;
+      margin-right: -20px;
+      width: calc(50% + 20px);
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info .brand-logo {
+      position: relative;
+      top: 0;
+      margin-bottom: 20px;
+      height: 90px;
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info h2 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .hero-panels .carousel-cell .hero-tile-info .hero-blurb {
+      display: block;
+      margin: 12px 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .homepage-content .bottom-tabs {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  /* gifts content*/
+  .gifts-content {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+  }
+
+  .gifts-content .gifts-title {
+    color: #407ec9;
+    font-size: 18px;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-weight: 800;
+    line-height: 1.4;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .gifts-content .button-container .hero-button .basket-icon {
+    transform: rotate(0deg);
+    margin-top: 5px;
+  }
+
+  .gifts-content .button-container .hero-button:hover .basket-icon {
+    transform: rotate(-10deg);
+  }
+
+  .shop-by-age {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    margin: 20px 0;
+  }
+
+  .shop-by-age a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    border-radius: 100%;
+    background-color: #e5bb07;
+    color: #fff;
+    aspect-ratio: 1/1;
+    text-decoration: none;
+    font: 28px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+    transition: all 0.3s;
+    line-height: 1.1;
+    box-shadow: 0 0 3px rgba(3, 33, 33, 0.4);
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .shop-by-age a.red {
+    background-color: #f23043;
+  }
+
+  .shop-by-age a.orange {
+    background-color: #e8540a;
+  }
+
+  .shop-by-age a.purple {
+    background-color: #9116c4;
+  }
+
+  .shop-by-age a.blue {
+    background-color: #2ab2d1;
+  }
+
+  .shop-by-age a.light-green {
+    background-color: #23c166;
+  }
+
+  .shop-by-age a.green {
+    background-color: #067f3d;
+  }
+
+  .shop-by-age a:hover {
+    box-shadow: 0 0 15px rgba(3, 33, 33, 0.4);
+    transform: translateY(-5px) rotate(5deg);
+    scale: 1.05;
+  }
+
+  .shop-by-age span {
+    display: block;
+    font-size: 20px;
+  }
+
+  .gifts-content .hero-button {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 768px) {
+    .gifts-content .gifts-title {
+      font-size: 24px;
+    }
+
+    .shop-by-age {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .shop-by-age a {
+      font-size: 28px;
+    }
+
+    .shop-by-age span {
+      font-size: 20px;
+    }
+
+    .gifts-content .button-container {
+      width: 295px;
+      margin: 0 auto;
+    }
+  }
+
+  @media (min-width: 1024x) {
+    .shop-by-age a {
+      font-size: 34px;
+    }
+
+    .shop-by-age span {
+      font-size: 30px;
+    }
+  }
+  /* baby styles */
+  .latest-blog-posts {
+    padding: 0 20px 20px;
+  }
+
+  .latest-blog-posts .flickity-button {
+    display: none;
+  }
+
+  .latest-blog-posts .carousel-cell {
+    width: 100%;
+    margin-right: 10px;
+  }
+
+  .latest-blog-posts-content-tile {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .latest-blog-posts-content-tile .content-tile-image {
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  .latest-blog-posts-content-tile .content-tile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .latest-blog-posts-content-tile .content-tile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    width: 100%;
+    padding: 20px 50px;
+    background-color: #fff;
+    font-size: 14px;
+  }
+  .latest-blog-posts-content-tile .content-tile-title {
+    font-weight: bold;
+    font-size: 18px;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    margin: 0 0 10px;
+    padding: 0;
+    flex-grow: 1;
+  }
+
+  .latest-blog-posts-content-tile .details-button {
+    background-color: #009e44;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 5px;
+    color: #fff;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.3);
+    transition: all 0.3s;
+  }
+
+  .latest-blog-posts-content-tile .details-button:hover {
+    background-color: #afcb17;
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+  }
+
+  .content-tile .cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background-color: #009e44;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 30px 10px 10px;
+    height: 40px;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.3);
+    border: 3px solid #dbe3ff;
+    transition: all 0.3s;
+  }
+
+  .content-tile .cta-button:hover {
+    background-color: #afcb17;
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+    color: #fff;
+  }
+
+  .content-tile .cta-button .basket-icon {
+    transition: all 0.3s;
+    transform: rotate(15deg);
+    margin-left: 5px;
+  }
+
+  .content-tile .cta-button:hover .basket-icon {
+    transform: rotate(-10deg);
+  }
+
+  .content-tile .cta-button .star-start {
+    position: relative;
+    top: -3px;
+  }
+
+  .content-tile .cta-button .swoosh-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-right: 5px;
+    width: 25px;
+  }
+
+  .content-tile .cta-button .swoosh {
+    display: block;
+    width: 0;
+    height: 3px;
+    margin-top: -3px;
+    margin-left: -2px;
+    transform: rotate(15deg);
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s;
+  }
+
+  .content-tile .cta-button:hover .swoosh {
+    width: 7px;
+  }
+
+  .content-tile .cta-button .star-end {
+    position: relative;
+    bottom: -5px;
+    transition: all 0.3s;
+  }
+
+  .content-tile .cta-button:hover .star-end {
+    scale: 1.1;
+    transform: rotate(30deg);
+  }
+
+  .baby-content .shop-by-age-container {
+    padding: 30px 0 0;
+  }
+
+  .baby-content .shop-by-age {
+    padding: 0 20px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    .baby-content .shop-by-age {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .latest-blog-posts .carousel-cell {
+      width: 45%;
+      margin-right: 10px;
+    }
+  }
+
+  /* Brands tiles */
+  #brands {
+    padding: 30px 0;
+  }
+  #brands .carousel-cell {
+    width: 33%;
+    padding: 0 5px;
+  }
+  @media (min-width: 768px) {
+    #brands .carousel-cell {
+      width: 16%;
+    }
+  }
+  #brands .carousel-cell img {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    transition: all 0.3s;
+  }
+  .brands-tiles-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+  }
+
+  .brand-tile {
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.1);
+    transition: all 0.3s;
+  }
+
+  .brand-tile:hover {
+    box-shadow: 0 0 15px rgba(33, 33, 33, 0.3);
+    transform: scale(0.97);
+    border-radius: 8px;
+  }
+
+  .brand-tile img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    transition: all 0.3s;
+    border-radius: 8px;
+  }
+
+  @media (min-width: 768px) {
+    .brands-tiles-container {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .brands-tiles-container {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  /* Toy Types */
+  .category-roundels .carousel .item {
+    padding: 0;
+  }
+
+  .category-roundels .carousel-cell {
+    width: 100%;
+    padding-top: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+
+  .category-roundels img {
+    aspect-ratio: 1/1;
+  }
+
+  .category-roundels img {
+    width: 70%;
+    margin: 0 10px !important;
+  }
+
+  .category-roundels a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px 0;
+    background-color: #fff;
+    color: #00548b;
+    text-decoration: none;
+    font-size: 10px;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-weight: bold;
+    color: #00548b;
+    margin: 5px;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.05);
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+  }
+
+  .category-roundels a:hover {
+    box-shadow: 0 0 18px rgba(33, 33, 33, 0.15);
+    transform: translateY(-5px);
+  }
+
+  .category-roundels .flickity-button,
+  .category-roundels .flickity-page-dots {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .category-roundels a {
+      font-size: 14px;
+    }
+
+    .category-roundels .carousel-cell {
+      width: 100%;
+      padding-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .category-roundels a {
+      font-size: 16px;
+    }
+  }
+
+  /* offers content */
+  .offers-product-tile {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .offers-product-tile .product-tile-image {
+    border: 3px solid #407ec9;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  .offers-product-tile .product-tile-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .offers-product-tile .product-tile-image .badge-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    z-index: 2;
+  }
+
+  .offers-product-tile .product-tile-image .badge {
+    background-color: #ee3224;
+    padding: 5px 10px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 10px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #a7170c, -1px 1px 0 #a7170c,
+      1px 1px 0 #a7170c;
+  }
+
+  .offers-product-tile .product-tile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 20px;
+  }
+
+  .offers-product-tile .product-title {
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .offers-product-tile .price {
+    display: flex;
+    align-items: flex-end;
+    color: #ee3224;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .offers-product-tile .price .was-price {
+    font-size: 12px;
+    color: #9b9b9b;
+    font-weight: normal;
+    margin-left: 3px;
+    text-decoration: line-through;
+  }
+
+  .offers-product-tile .details-button {
+    background-color: #009e44;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 5px;
+    color: #fff;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.3);
+    transition: all 0.3s;
+  }
+
+  .offers-product-tile .details-button:hover {
+    background-color: #afcb17;
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+  }
+
+  .offers-content .flickity-button,
+  .offers-content .flickity-page-dots {
+    display: none;
+  }
+
+  .offers-content .carousel-cell {
+    width: 95%;
+    padding-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  @media (min-width: 768px) {
+    .offers-content .carousel-cell {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Top Picks */
+  .top-picks .flickity-button,
+  .top-picks .flickity-page-dots {
+    display: none;
+  }
+
+  .top-picks .carousel-cell {
+    width: 81%;
+    margin-right: 10px;
+  }
+
+  .top-picks-product-tile {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-flow: column;
+    align-items: stretch;
+  }
+
+  .top-picks-product-tile .product-tile-image {
+    border: 3px solid #407ec9;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  .top-picks-product-tile .product-tile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .top-picks-product-tile .product-tile-image .badge-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    z-index: 2;
+  }
+
+  .top-picks-product-tile .product-tile-image .badge {
+    background-color: #ee3224;
+    padding: 5px 10px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 10px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #a7170c, -1px 1px 0 #a7170c,
+      1px 1px 0 #a7170c;
+  }
+
+  .top-picks-product-tile .product-tile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 20px;
+  }
+
+  .top-picks-product-tile .product-title {
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .top-picks-product-tile .product-title a {
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+  }
+
+  .top-picks-product-tile .price a {
+    display: flex;
+    align-items: flex-end;
+    color: #ee3224;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .top-picks-product-tile .price .was-price {
+    font-size: 12px;
+    color: #9b9b9b;
+    font-weight: normal;
+    margin-left: 3px;
+    text-decoration: line-through;
+  }
+
+  .top-picks-product-tile .details-button {
+    background-color: #009e44;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 5px;
+    color: #fff;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.3);
+    transition: all 0.3s;
+  }
+
+  .top-picks-product-tile .details-button:hover {
+    background-color: #afcb17;
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+  }
+
+  @media (min-width: 768px) {
+    .top-picks-product-tile {
+      flex-flow: row;
+    }
+
+    .top-picks-product-tile .product-tile-details {
+      width: 60%;
+    }
+
+    .top-picks-product-tile .product-tile-image {
+      width: 40%;
+    }
+
+    .top-picks .carousel-cell {
+      width: 42%;
+    }
+  }
+
+  /* Content Tab */
+  .content-container .heading-ribbon-container {
+    text-align: center;
+  }
+
+  .content-container .heading-ribbon {
+    position: relative;
+    padding: 0 23px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .content-container .heading-ribbon h3 {
+    color: #fff;
+    font: 24px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+    background-color: #ee3224;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 40px;
+    margin: 0;
+    text-transform: none;
+  }
+
+  .content-container .heading-ribbon .ribbon-start {
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .content-container .heading-ribbon .ribbon-end {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .content-container .heading-ribbon .ribbon-start,
+  .content-container .heading-ribbon .ribbon-start svg,
+  .content-container .heading-ribbon .ribbon-end,
+  .content-container .heading-ribbon .ribbon-end svg {
+    height: 100%;
+    width: 24px;
+  }
+
+  .content-container .heading-ribbon .ribbon-end {
+    transform: scale(-1, -1);
+  }
+
+  .content-container .content-panel {
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 20px;
+  }
+
+  .content-pods {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    margin: 0 0 20px;
+  }
+
+  .content-pod img {
+    width: 100%;
+  }
+
+  .content-pod .pod-title {
+    position: relative;
+    display: block;
+    margin-top: -20px;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    background-color: #7f44cb;
+    z-index: 2;
+    border-radius: 50px;
+    color: #fff;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.1);
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s;
+  }
+
+  .content-pod .pod-title.pink {
+    background-color: #e83a9a;
+  }
+
+  .content-pod .pod-title.green {
+    background-color: #31bc69;
+  }
+
+  .content-pod .pod-title.orange {
+    background-color: #f5911e;
+  }
+
+  .content-pod .pod-title:hover {
+    margin-top: -30px;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+  }
+
+  .content-info {
+    text-align: center;
+    color: #717473;
+    font-size: 14px;
+  }
+
+  .content-info .content-info-title {
+    color: #407ec9;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  @media (min-width: 768px) {
+    .content-pods {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .content-pod .pod-title {
+      font-size: 18px;
+    }
+  }
+
+  /* Stores tab */
+  .store-delivery-panels {
+    display: flex;
+    flex-flow: column;
+    padding: 0 0 20px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .store-delivery-panels .store-finder,
+  .store-delivery-panels .delivery-panel {
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .store-delivery-panels .store-finder .delivery-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border: 3px solid #f2f2f2;
+    border-radius: 8px;
+  }
+
+  .store-delivery-panels .store-finder .delivery-message span {
+    margin-left: 5px;
+    font-size: 12px;
+  }
+
+  .store-delivery-panels .store-finder .delivery-message img {
+    width: 100%;
+    height: auto;
+  }
+
+  .store-delivery-panels
+    .store-finder
+    .store-locator-content
+    .store-locator-message {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .store-delivery-panels
+    .store-finder
+    .store-locator-content
+    .store-locator-message
+    form {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .store-delivery-panels
+    .store-finder
+    .store-locator-content
+    .store-locator-message
+    form
+    input {
+    border: 3px solid #407ec9;
+    border-radius: 8px;
+    height: 40px;
+    color: #407ec9;
+    padding: 0 10px;
+    margin: 20px 0;
+    width: 100%;
+  }
+
+  .store-delivery-panels
+    .store-finder
+    .store-locator-content
+    .store-locator-message
+    form
+    input::placeholder {
+    color: #407ec9;
+  }
+
+  .store-delivery-panels .store-finder .store-locator-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background-color: #ee3224;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 30px 10px 10px;
+    height: 40px;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.1);
+    border: 3px solid #dbe3ff;
+    width: 100%;
+    transition: all 0.3s;
+    margin-top: 20px;
+  }
+
+  .store-delivery-panels .store-finder .store-locator-button:hover {
+    background-color: rgba(238, 50, 36, 0.7);
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.2);
+    color: #fff;
+  }
+
+  .store-delivery-panels .store-finder .store-locator-button .send-icon {
+    transition: all 0.3s;
+    transform: rotate(15deg);
+    margin-left: 5px;
+  }
+
+  .store-delivery-panels .store-finder .store-locator-button:hover .send-icon {
+    transform: rotate(-10deg);
+  }
+
+  .store-delivery-panels .store-finder .store-locator-button .star-start {
+    position: relative;
+    top: -3px;
+  }
+
+  .store-delivery-panels .store-finder .store-locator-button .swoosh-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-right: 5px;
+    width: 25px;
+  }
+
+  .store-delivery-panels .store-finder .store-locator-button .swoosh {
+    display: block;
+    width: 0;
+    height: 3px;
+    margin-top: -3px;
+    margin-left: -2px;
+    transform: rotate(15deg);
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s;
+  }
+
+  .store-delivery-panels .store-finder .store-locator-button:hover .swoosh {
+    width: 7px;
+  }
+
+  .store-delivery-panels .store-finder .store-locator-button .star-end {
+    position: relative;
+    bottom: -5px;
+    transition: all 0.3s;
+  }
+
+  .store-delivery-panels .store-finder .store-locator-button:hover .star-end {
+    scale: 1.1;
+    transform: rotate(30deg);
+  }
+
+  .store-delivery-panels .delivery-panel {
+    position: relative;
+    margin-top: 20px;
+  }
+
+  .delivery-panel .heading-ribbon-container {
+    text-align: center;
+    position: relative;
+    top: -20px;
+  }
+
+  .delivery-panel .heading-ribbon {
+    position: relative;
+    padding: 0 23px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .delivery-panel .heading-ribbon .delivery-panel-title {
+    color: #fff;
+    font: 24px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+    background-color: #ee3224;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 40px;
+    margin: 0;
+    text-transform: none;
+  }
+
+  .delivery-panel .heading-ribbon .ribbon-start {
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .delivery-panel .heading-ribbon .ribbon-end {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .delivery-panel .heading-ribbon .ribbon-start,
+  .delivery-panel .heading-ribbon .ribbon-start svg,
+  .delivery-panel .heading-ribbon .ribbon-end,
+  .delivery-panel .heading-ribbon .ribbon-end svg {
+    height: 100%;
+    width: 24px;
+  }
+
+  .delivery-panel .heading-ribbon .ribbon-end {
+    transform: scale(-1, -1);
+  }
+
+  .delivery-panel .delivery-icons {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    height: 100%;
+    margin-bottom: 20px;
+  }
+
+  .delivery-panel .delivery-icons .delivery-icon-title {
+    font-weight: bold;
+    margin: 10px 0 5px;
+  }
+
+  .delivery-panel .delivery-icons .delivery-icon-section {
+    width: 50%;
+    padding: 10px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .store-delivery-panels {
+      flex-direction: row;
+      gap: 20px;
+    }
+
+    .store-delivery-panels .store-finder,
+    .store-delivery-panels .delivery-panel {
+      width: 50%;
+    }
+
+    .delivery-panel .delivery-icons {
+      margin-top: -60px;
+    }
+  }
+
+  /*OUTDOORS BANNER */
+  .homepage-secondary-hero-carousel .carousel {
+    margin: 0 auto;
+    padding: 0 0 20px;
+    max-width: 100%;
+    background: #dbe3ff;
+    overflow: hidden;
+  }
+
+  .homepage-secondary-hero-carousel .flickity-viewport {
+    overflow: visible;
+    height: 152vw !important;
+  }
+
+  .homepage-secondary-hero-carousel .carousel-cell {
+    width: 100%;
+    height: 100%;
+    counter-increment: carousel-cell;
+    opacity: 100%;
+  }
+
+  .homepage-secondary-hero-carousel .carousel-cell.is-selected {
+    opacity: 100%;
+  }
+
+  .homepage-secondary-hero-carousel .carousel-cell:before {
+    display: block;
+  }
+
+  .mixed-hero-area a {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    margin: 0 auto;
+    max-width: 1400px;
+    height: 100%;
+  }
+
+  .mixed-hero-area .mixed-hero-image {
+    margin: 0;
+    padding: 0;
+  }
+
+  .mixed-hero-area .mixed-hero-image img {
+    width: 100%;
+  }
+
+  .mixed-hero-area .mixed-hero-image img.mixed-hero-desktop {
+    display: none;
+  }
+
+  .mixed-hero-area .mixed-hero-copy {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    padding: 20px 20px 50px;
+  }
+
+  .mixed-hero-area .mixed-hero-copy h1 {
+    margin: 0 0 20px;
+    padding: 0;
+    font: 32px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+    letter-spacing: 0;
+  }
+
+  .mixed-hero-area .mixed-hero-copy p {
+    margin: 0 0 20px;
+    padding: 0;
+    font: 16px/140% "Nunito Regular", "Tahoma Bold", sans-serif;
+  }
+
+  .mixed-hero-area .mixed-hero-copy span {
+    display: inline-block;
+    margin: 0;
+    padding: 12px 20px;
+    font: 16px/140% "Nunito Bold", "Tahoma Bold", sans-serif;
+    background: #ffffff;
+    border-radius: 8px;
+  }
+
+  .hero-banner-mobile,
+  .hero-banner-desktop {
+    width: 100%;
+  }
+
+  .hero-banner-desktop {
+    display: none;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .flickity-prev-next-button {
+    top: 46%;
+  }
+
+  .homepage-secondary-hero-carousel .flickity-page-dots {
+    bottom: 30px;
+  }
+
+  .homepage-secondary-hero-carousel .flickity-page-dots li {
+    width: 15px;
+    height: 15px;
+    background: #ffffff;
+  }
+
+  .homepage-secondary-hero-carousel .flickity-prev-next-button,
+  .homepage-secondary-hero-carousel .flickity-page-dots {
+    display: none;
+  }
+
+  .outdoor-toys {
+    margin: 0 auto;
+    background: url(https://www.thetoyshop.com/medias/Outdoor-2025-phase-2-Multi-click-Hero-2800x1000px-v2.jpg?context=bWFzdGVyfHJvb3R8Mjg2ODg4fGltYWdlL2pwZWd8YURKbUwyaGtPQzh4TWpVeU9UVTFOVGc1T0RNNU9DOVBkWFJrYjI5eUlESXdNalVnY0doaGMyVWdNaUJOZFd4MGFTQmpiR2xqYXlCSVpYSnZJREk0TURCNE1UQXdNSEI0WDNZeUxtcHdad3wwY2ZmNDI4MjQyZDgxOTY0ODNkZTY3OTZhODlkODNkOTVlYzRkYzhlYWNlYTQ2NDMxMTU0ODE0ZWRiMTQ1NWEx)
+      center;
+    background-size: cover;
+    max-width: 1400px;
+    border: solid 8px #ffffff;
+  }
+
+  .outdoor-toys h2 {
+    margin: 20px 0;
+  }
+
+  .outdoor-toys-logo-mobile {
+    display: block;
+    margin: 0 auto;
+    width: 300px;
+  }
+
+  .outdoor-toys-logo-desktop {
+    display: none;
+    margin: 30px auto;
+    width: 400px;
+  }
+
+  .outdoor-sub-cats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 0 20px;
+    list-style: none;
+    max-width: 944px;
+  }
+
+  .outdoor-sub-cats li {
+    position: relative;
+    margin: 0 0 20px;
+    width: calc(100% / 3 - 10px);
+    z-index: 0;
+  }
+
+  .outdoor-sub-cats li a {
+    display: block;
+  }
+
+  .outdoor-sub-cats li a:hover {
+    animation: shake 1s;
+    animation-iteration-count: infinite;
+  }
+
+  .outdoor-sub-cats li img {
+    padding: 0;
+    width: 100%;
+  }
+
+  .outdoor-sub-cats li span {
+    display: block;
+    padding: 10px 0;
+    width: 100%;
+    font: 16px / 140% "Nunito Bold", "Tahoma Bold", sans-serif;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  @keyframes shake {
+    0% {
+      transform: translate(1px, 1px) rotate(0deg);
+    }
+    10% {
+      transform: translate(-1px, -2px) rotate(-1deg);
+    }
+    20% {
+      transform: translate(-3px, 0px) rotate(1deg);
+    }
+    30% {
+      transform: translate(3px, 2px) rotate(0deg);
+    }
+    40% {
+      transform: translate(1px, -1px) rotate(1deg);
+    }
+    50% {
+      transform: translate(-1px, 2px) rotate(-1deg);
+    }
+    60% {
+      transform: translate(-3px, 1px) rotate(0deg);
+    }
+    70% {
+      transform: translate(3px, 1px) rotate(-1deg);
+    }
+    80% {
+      transform: translate(-1px, -1px) rotate(1deg);
+    }
+    90% {
+      transform: translate(1px, 2px) rotate(0deg);
+    }
+    100% {
+      transform: translate(1px, -2px) rotate(-1deg);
+    }
+  }
+
+  @media (min-width: 430px) {
+    .homepage-secondary-hero-carousel .flickity-viewport {
+      overflow: visible;
+      height: 138vw !important;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .homepage-secondary-hero-carousel .carousel {
+      padding: 0 0 30px;
+    }
+
+    .homepage-secondary-hero-carousel .flickity-viewport {
+      height: 58vw !important;
+    }
+
+    .mixed-hero-area div {
+      width: 50%;
+    }
+
+    .mixed-hero-area .mixed-hero-copy {
+      padding: 30px;
+      height: 100%;
+    }
+
+    .mixed-hero-area .mixed-hero-image img.mixed-hero-mobile {
+      display: none;
+    }
+
+    .mixed-hero-area .mixed-hero-image img.mixed-hero-desktop {
+      display: block;
+    }
+
+    .hero-banner-mobile {
+      display: none;
+    }
+
+    .hero-banner-desktop {
+      display: block;
+    }
+
+    .homepage-secondary-hero-carousel .flickity-prev-next-button.previous {
+      left: 20px;
+    }
+
+    .homepage-secondary-hero-carousel .flickity-prev-next-button.next {
+      right: 20px;
+    }
+
+    .homepage-secondary-hero-carousel .flickity-page-dots {
+      bottom: 50px;
+    }
+
+    .outdoor-toys {
+      background: url(https://www.thetoyshop.com/medias/Outdoor-2025-phase-2-Multi-click-Hero-2800x1000px-v2.jpg?context=bWFzdGVyfHJvb3R8Mjg2ODg4fGltYWdlL2pwZWd8YURKbUwyaGtPQzh4TWpVeU9UVTFOVGc1T0RNNU9DOVBkWFJrYjI5eUlESXdNalVnY0doaGMyVWdNaUJOZFd4MGFTQmpiR2xqYXlCSVpYSnZJREk0TURCNE1UQXdNSEI0WDNZeUxtcHdad3wwY2ZmNDI4MjQyZDgxOTY0ODNkZTY3OTZhODlkODNkOTVlYzRkYzhlYWNlYTQ2NDMxMTU0ODE0ZWRiMTQ1NWEx)
+        top no-repeat #01ccd2;
+      background-size: contain;
+    }
+
+    .outdoor-toys h2 {
+      margin: 30px 0;
+    }
+
+    .outdoor-sub-cats li {
+      width: calc(100% / 6 - 20px);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .homepage-secondary-hero-carousel .flickity-viewport {
+      height: 44vw !important;
+      max-height: 500px;
+    }
+
+    .outdoor-toys {
+      background: url(https://www.thetoyshop.com/medias/Outdoor-2025-phase-2-Multi-click-Hero-2800x1000px-v2.jpg?context=bWFzdGVyfHJvb3R8Mjg2ODg4fGltYWdlL2pwZWd8YURKbUwyaGtPQzh4TWpVeU9UVTFOVGc1T0RNNU9DOVBkWFJrYjI5eUlESXdNalVnY0doaGMyVWdNaUJOZFd4MGFTQmpiR2xqYXlCSVpYSnZJREk0TURCNE1UQXdNSEI0WDNZeUxtcHdad3wwY2ZmNDI4MjQyZDgxOTY0ODNkZTY3OTZhODlkODNkOTVlYzRkYzhlYWNlYTQ2NDMxMTU0ODE0ZWRiMTQ1NWEx)
+        top no-repeat #01ccd2;
+      background-size: cover;
+    }
+
+    .outdoor-sub-cats li {
+      width: calc(100% / 6 - 20px);
+    }
+  }
+
+  @media (min-width: 1400px) {
+    .homepage-secondary-hero-carousel .carousel {
+      padding: 40px 0;
+      max-width: 100%;
+      background: #dce3ff;
+    }
+
+    .mixed-hero-area .mixed-hero-copy {
+      padding: 40px;
+    }
+
+    .flickity-prev-next-button {
+      top: 50%;
+    }
+
+    .outdoor-toys h2 {
+      margin: 30px 0 20px;
+    }
+
+    .outdoor-toys-logo-mobile {
+      display: none;
+    }
+
+    .outdoor-toys-logo-desktop {
+      display: block;
+    }
+  }
+
+  @media (min-width: 1600px) {
+    .homepage-secondary-hero-carousel .flickity-prev-next-button.previous {
+      left: 9vw;
+    }
+
+    .homepage-secondary-hero-carousel .flickity-prev-next-button.next {
+      right: 9vw;
+    }
+  }
+
+  /* Offers from copy of old site */
+  .hp-promo-carousel-v3 {
+    margin: 0 auto;
+    padding: 20px;
+    font: 15px/100% "Nunito Regular", "Tahoma", sans-serif;
+    background: #ffffff;
+    text-align: center;
+    width: 100%;
+    color: #666666;
+    background: #dbe3ff;
+  }
+
+  .hp-promo-carousel-v3 h2 {
+    position: relative;
+    top: 0;
+    z-index: 999;
+    margin: 0 auto;
+    padding: 8px 0 0;
+    font: 24px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+    letter-spacing: 0.5px;
+    text-align: center;
+    color: #ffffff;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+    text-transform: none;
+    background: url(https://www.thetoyshop.com/medias/big-toy-sale-ribbon-red.png?context=bWFzdGVyfHJvb3R8MzE5M3xpbWFnZS9wbmd8YURoaUwyaGlOeTh4TWpFeU56RTFPREF3T1RnNE5pOWlhV2N0ZEc5NUxYTmhiR1V0Y21saVltOXVMWEpsWkM1d2JtY3xiNDQ4YmM0OTc1YWRkOGVlNzJhMmU3MDE4NWRhNTMyZWFhZTNjNDZhOTRhZWYzYThlNDJkZWY3YmM4MzgxYTI0)
+      no-repeat;
+    background-size: contain;
+    width: 295px;
+    height: 46px;
+  }
+
+  .hp-promo-carousel-v3 .gallery {
+    margin: -25px auto 0;
+    padding: 40px 0;
+    max-width: 1024px;
+    background: #ffffff;
+    border-radius: 20px;
+    max-width: 944px;
+  }
+
+  .hp-promo-carousel-v3 .flickity-viewport {
+    margin: 0 auto;
+  }
+
+  .hp-promo-carousel-v3 .gallery-cell {
+    margin: 0 20px 0 0;
+    width: 30%;
+    counter-increment: gallery-cell;
+    transition: opacity 0.5s;
+    opacity: 1;
+  }
+
+  .hp-promo-carousel-v3 .gallery-cell:before {
+    display: block;
+  }
+
+  .hp-promo-carousel-v3 .gallery-cell:hover {
+    opacity: 0.5;
+  }
+
+  .hp-promo-carousel-v3 .gallery-cell h3 {
+    margin: 0;
+    padding: 0;
+  }
+
+  .hp-promo-carousel-v3 .gallery-cell img {
+    width: 100%;
+  }
+
+  .hp-promo-carousel-v3 .gallery-cell h3 span {
+    display: block;
+    margin: 20px 0 0 0;
+    font: 14px/140% "Nunito Regular", "Tahoma", sans-serif;
+    text-transform: none;
+  }
+
+  .hp-promo-carousel-v3 .flickity-page-dots {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .hp-promo-carousel-v3 {
+      padding: 30px;
+    }
+
+    .hp-promo-carousel-v3 .gallery {
+      padding: 40px 0;
+      border-radius: 30px;
+    }
+
+    .hp-promo-carousel-v3 .gallery-cell {
+      width: 20%;
+    }
+
+    .hp-promo-carousel-v3 .flickity-prev-next-button.previous {
+      left: 20px;
+    }
+
+    .hp-promo-carousel-v3 .flickity-prev-next-button.next {
+      right: 20px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hp-promo-carousel-v3 .gallery-cell {
+      width: 14%;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .hp-promo-carousel-v3 .flickity-prev-next-button.previous {
+      left: 20px;
+    }
+
+    .hp-promo-carousel-v3 .flickity-prev-next-button.next {
+      right: 20px;
+    }
+  }
+
+  .latest-blog-posts {
+    padding: 0 0 20px;
+    background-color: #dbe3ff;
+  }
+
+  .latest-blog-posts-container {
+    padding: 20px 0;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .latest-blog-posts .flickity-button {
+    display: none;
+  }
+
+  .latest-blog-posts .carousel-cell {
+    width: 100%;
+  }
+
+  .latest-blog-posts .heading-ribbon-container {
+    text-align: center;
+  }
+
+  .latest-blog-posts .heading-ribbon {
+    position: relative;
+    padding: 0 23px;
+    margin-bottom: 10px;
+  }
+
+  .latest-blog-posts .heading-ribbon h3 {
+    color: #fff;
+    font: 24px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+    background-color: #ee3224;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 40px;
+    margin: 0;
+    text-transform: none;
+  }
+
+  .latest-blog-posts .heading-ribbon .ribbon-start {
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .latest-blog-posts .heading-ribbon .ribbon-end {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .latest-blog-posts .heading-ribbon .ribbon-start,
+  .latest-blog-posts .heading-ribbon .ribbon-start svg,
+  .latest-blog-posts .heading-ribbon .ribbon-end,
+  .latest-blog-posts .heading-ribbon .ribbon-end svg {
+    height: 100%;
+    width: 24px;
+  }
+
+  .latest-blog-posts .heading-ribbon .ribbon-end {
+    transform: scale(-1, -1);
+  }
+
+  .latest-blog-posts-content-tile {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .latest-blog-posts-content-tile .content-tile-image {
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    aspect-ratio: 376/213;
+  }
+
+  .latest-blog-posts-content-tile .content-tile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .latest-blog-posts-content-tile .content-tile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px 50px;
+    background-color: #fff;
+    font-size: 14px;
+  }
+
+  .latest-blog-posts-content-tile .content-tile-title {
+    font-weight: bold;
+    font-size: 18px;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    margin: 0 0 10px;
+    padding: 0;
+    min-height: 40px;
+  }
+
+  .latest-blog-posts-content-tile .details-button {
+    background-color: #009e44;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 5px;
+    color: #fff;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.3);
+    transition: all 0.3s;
+  }
+
+  .latest-blog-posts-content-tile .details-button:hover {
+    background-color: #afcb17;
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+  }
+
+  .content-tile .cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background-color: #009e44;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 30px 10px 10px;
+    height: 40px;
+    box-shadow: 0 0 5px rgba(3, 33, 33, 0.3);
+    border: 3px solid #dbe3ff;
+    transition: all 0.3s;
+  }
+
+  .content-tile .cta-button:hover {
+    background-color: #afcb17;
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3, 33, 33, 0.3);
+    color: #fff;
+  }
+
+  .content-tile .cta-button .basket-icon {
+    transition: all 0.3s;
+    transform: rotate(15deg);
+    margin-left: 5px;
+  }
+
+  .content-tile .cta-button:hover .basket-icon {
+    transform: rotate(-10deg);
+  }
+
+  .content-tile .cta-button .star-start {
+    position: relative;
+    top: -3px;
+  }
+
+  .content-tile .cta-button .swoosh-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-right: 5px;
+    width: 25px;
+  }
+
+  .content-tile .cta-button .swoosh {
+    display: block;
+    width: 0;
+    height: 3px;
+    margin-top: -3px;
+    margin-left: -2px;
+    transform: rotate(15deg);
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s;
+  }
+
+  .content-tile .cta-button:hover .swoosh {
+    width: 7px;
+  }
+
+  .content-tile .cta-button .star-end {
+    position: relative;
+    bottom: -5px;
+    transition: all 0.3s;
+  }
+
+  .content-tile .cta-button:hover .star-end {
+    scale: 1.1;
+    transform: rotate(30deg);
+  }
+
+  @media (min-width: 768px) {
+    .latest-blog-posts .carousel-cell {
+      width: 45%;
+      margin-right: 10px;
+    }
+  }
+
+  .new-content a {
+    display: block;
+  }
+
+  .new-content img {
+    width: 100%;
+    height: auto;
+  }
+
+  .new-content img.desktop-image {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .new-content img.mobile-image {
+      display: none;
+    }
+
+    .new-content img.desktop-image {
+      display: block;
+    }
+  }
+
+  /* Footer color override and main page margin fix DO NOT DELETE */
+  footer {
+    background-color: #dbe3ff;
+  }
+
+  .section1 {
+    margin-bottom: 0;
+  }
+
+  .section1 + .row.no-margin {
+    display: none;
+  }
+
+  /* hide breadcrumbs */
+  .breadcrumb-section {
+    display: none;
+  }
+
+  .hero-panels .carousel-cell.multi {
+    display: block;
+  }
+</style>
+<div class="homepage-container">
+  <div class="homepage-content">
+    <div class="top-tabs">
+      <button class="tab-button" data-id="outdoors">Christmas</button>
+      <button class="tab-button" data-id="offers">Offers</button>
+      <button class="tab-button" data-id="gifts">Discover</button>
+      <button class="tab-button" data-id="collect">Outdoors</button>
+    </div>
+    <div class="homepage-tab-content active">
+      <div class="hero-panels">
+  <div
+    class="carousel js-flickity flickity-enabled is-draggable"
+    data-flickity='{ "autoPlay": true, "wrapAround": true, "imagesLoaded": true }'
+  >
+
+		<div class="carousel-cell">
+
+			<a href="https://www.thetoyshop.com/brands/lego" title="LEGO Spend & Save" >
+
+				<img src="https://www.thetoyshop.com/medias/p10-lego-spend-and-save-hero-mobile-450x480.jpg?context=bWFzdGVyfHJvb3R8MTYzNzUwfGltYWdlL2pwZWd8YUdaaUwyaGhOeTh4TWpVNU5UUTVOVEV3T0RZek9DOXdNVEF0YkdWbmJ5MXpjR1Z1WkMxaGJtUXRjMkYyWlMxb1pYSnZMVzF2WW1sc1pTMDBOVEI0TkRnd0xtcHdad3w5M2FjYWEyNGUxYTFjMGUwMzA4OGYzMGVkZTk3NDgwOTIzZTlhNDk0ODhlMjUxY2I0YTMwMDBmOTI5MDIzYWQ4" alt="LEGO Spend & Save" title="LEGO Spend & Save" class="hero-banner-mobile"  />
+
+				<img src="https://www.thetoyshop.com/medias/p10-lego-spend-and-save-hero-desktop-1800x560.jpg?context=bWFzdGVyfHJvb3R8NDk2OTEyfGltYWdlL2pwZWd8YURjMUwyaG1PUzh4TWpVNU5UUTVORGcwTmpRNU5DOXdNVEF0YkdWbmJ5MXpjR1Z1WkMxaGJtUXRjMkYyWlMxb1pYSnZMV1JsYzJ0MGIzQXRNVGd3TUhnMU5qQXVhbkJufGU0NzQxNmE5NmI4NzI2YWIzOGM2NGNmMDY5ZTQxY2U5NTYyZjQyZTUzMTE4MGE2NzY5Y2RjM2RlZWUwMzIwNjM" alt="LEGO Spend & Save" title="LEGO Spend & Save" class="hero-banner-desktop" />
+
+			</a>
+
+		</div>
+
+		<!-- BANNER 1 ENDS -->
+
+		<!-- BANNER 2 STARTS -->
+
+         	<div class="carousel-cell">
+
+<style>
+	
+	.disney-gift-guide .carousel {
+		padding: 0 0 20px;
+		background: url(https://www.thetoyshop.com/medias/Entertainer-Homepage-Multi-click-Hero-2-004-.jpg?context=bWFzdGVyfHJvb3R8NjY4NDZ8aW1hZ2UvanBlZ3xhREUzTDJnd01TOHhNalU1TkRBM01qVTROREl5TWk5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOU5kV3gwYVMxamJHbGphMTlJWlhKdlh6SWdLREF3TkNrdWFuQm58MTNmZDE1OWQ0NzExYWFhNzhiNzM5NWUyYWY1ZWZhMzM3YzIwYTcxNmJhZjVhZDAwNDE0MWI0YWJhN2U1YmVkOA) center;
+		background-size: cover;
+		max-width: 1400px;
+		margin: 0 auto;
+		height: 100%;
+	}
+	
+		.disney-gift-guide .flickity-viewport {
+			overflow: visible;
+			height: 152vw !important;
+		}
+
+			.disney-gift-guide .carousel-cell {
+				width: 100%;
+				height: 100%;
+				counter-increment: carousel-cell;
+				opacity: 100%;
+			}		
+
+				.disney-gift-guide .carousel-cell.is-selected {
+					opacity: 100%;
+				}
+
+				.disney-gift-guide .carousel-cell:before {
+					display: block;
+				}
+	
+		.mixed-hero-area a {
+			display: flex;
+			flex-wrap: wrap;
+			position: relative;
+			height: 100%;
+		}
+	
+			.mixed-hero-area .mixed-hero-image {
+				margin: 0;
+				padding: 0;
+			}
+	
+				.mixed-hero-area .mixed-hero-image img {
+					width: 100%;
+				}
+	
+					.mixed-hero-area .mixed-hero-image img.mixed-hero-desktop {
+						display: none;
+					}
+
+			.mixed-hero-area .mixed-hero-copy {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				align-content: center;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				margin: 0;
+				padding: 20px 20px 50px;
+			}
+
+				.mixed-hero-area .mixed-hero-copy h1 {
+					margin: 0 0 20px;
+					padding: 0;
+					font: 32px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+					letter-spacing: 0;
+				}
+
+				.mixed-hero-area .mixed-hero-copy p {
+					margin: 0 0 20px;
+					padding: 0;
+					font : 16px/140% "Nunito Regular", "Tahoma Bold", sans-serif;
+				}
+
+				.mixed-hero-area .mixed-hero-copy span {
+					display: inline-block;
+					margin: 0;
+					padding: 12px 20px;
+					font : 16px/140% "Nunito Bold", "Tahoma Bold", sans-serif;
+					background: #ffffff;
+					border-radius: 8px;
+				}
+
+				.hero-banner-mobile, .hero-banner-desktop {
+					width: 100%;
+				}
+
+				.hero-banner-desktop {
+					display: none;
+					width: 100%;
+					max-width: 1400px;
+					margin: 0 auto;
+				}
+	
+		.flickity-prev-next-button {
+			top: 46%;
+		}
+	
+			.disney-gift-guide .flickity-page-dots {
+				bottom: 30px;
+			}
+
+				.disney-gift-guide .flickity-page-dots li {
+					width: 15px;
+					height: 15px;
+					background: #ffffff;
+				}
+
+					.disney-gift-guide .flickity-prev-next-button, .disney-gift-guide .flickity-page-dots {
+						display: none;
+					}
+	
+		.disney-gift-guide {
+			height: 100%;
+			background: #dbe3ff;
+		}
+	
+			.disney-gift-guide h2 {
+				margin: 5px 0;
+			}
+	
+			.disney-gift-guide-logo-mobile {
+				display: block;
+				margin: 0 auto;
+				width: 230px;
+			}
+
+			.disney-gift-guide-logo-desktop {
+				display: none;
+				margin: 0 auto;
+				width: 300px;
+			}
+
+			.disney-sub-cats {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				margin: 0 auto 0 auto;
+				padding: 0 50px;
+				list-style: none;
+				max-width: 944px;
+				gap: 10px;
+			}
+
+				.disney-sub-cats li {
+					position: relative; 
+					margin: 0;
+					width: calc(100% / 3 - 10px);
+					z-index: 0;
+				}
+
+				.disney-sub-cats li img {
+					border: 3px solid white;
+				}
+
+					.disney-sub-cats li a {
+						display: block;
+					}
+
+						.disney-sub-cats li a:hover {
+							animation: shake 1s;
+							animation-iteration-count: infinite;
+						}
+
+						.disney-sub-cats li img {
+							padding: 0;
+							width: 100%;
+						}
+
+						.disney-sub-cats li span {
+							display: block;
+							padding: 10px 0;
+							width: 100%;
+							font: 12px / 140% "Nunito Bold", "Tahoma Bold", sans-serif;
+							color: #ffffff;
+							text-align: center;
+						}
+
+						@keyframes shake {
+							0% { transform: translate(1px, 1px) rotate(0deg); }
+							10% { transform: translate(-1px, -2px) rotate(-1deg); }
+							20% { transform: translate(-3px, 0px) rotate(1deg); }
+							30% { transform: translate(3px, 2px) rotate(0deg); }
+							40% { transform: translate(1px, -1px) rotate(1deg); }
+							50% { transform: translate(-1px, 2px) rotate(-1deg); }
+							60% { transform: translate(-3px, 1px) rotate(0deg); }
+							70% { transform: translate(3px, 1px) rotate(-1deg); }
+							80% { transform: translate(-1px, -1px) rotate(1deg); }
+							90% { transform: translate(1px, 2px) rotate(0deg); }
+							100% { transform: translate(1px, -2px) rotate(-1deg); }
+						}
+
+
+    @media (min-width: 430px) {
+	
+		.disney-gift-guide .flickity-viewport {
+			overflow: visible;
+			height: 138vw !important;
+		}
+		
+	}
+	
+	
+	@media (min-width: 768px) {
+		
+		.disney-gift-guide .carousel {
+			padding: 0 0 30px;
+		}
+		
+		.disney-gift-guide .flickity-viewport {
+			height: 58vw !important
+		}
+		
+			.mixed-hero-area div {
+				width: 50%;
+			}
+
+				.mixed-hero-area .mixed-hero-copy {
+					padding: 30px;
+					height: 100%;
+				}
+		
+				.mixed-hero-area .mixed-hero-image img.mixed-hero-mobile {
+					display: none;
+				}
+		
+				.mixed-hero-area .mixed-hero-image img.mixed-hero-desktop {
+					display: block;
+				}
+
+			.hero-banner-mobile {
+				display: none;
+			}
+
+			.hero-banner-desktop {
+				display: block;
+			}
+
+			.disney-gift-guide .flickity-prev-next-button.previous {
+				left: 20px;
+			}
+
+			.disney-gift-guide .flickity-prev-next-button.next {
+				right: 20px;
+			}
+		
+		.disney-gift-guide .flickity-page-dots {
+			bottom: 50px;
+		}
+		
+		
+			.disney-gift-guide h2 {
+				margin: 30px 0;
+			}
+
+			.disney-sub-cats li {
+				width: calc(100% / 6 - 20px);
+			}
+
+    }
+	
+	
+	@media (min-width: 1024px) {
+
+		.disney-gift-guide {
+			height: 103%;
+		}
+
+		.disney-sub-cats {
+			justify-content: space-between;
+				padding: 0 100px;
+				gap: 0;
+			}
+		
+		.disney-gift-guide .flickity-viewport {
+			height: 44vw !important;
+			max-height: 500px;
+		}
+		
+			.disney-sub-cats li {
+				width: calc(100% / 6 - 20px);
+			}
+
+			.disney-sub-cats li span {
+							display: block;
+							padding: 10px 0;
+							width: 100%;
+							font: 14px / 140% "Nunito Bold", "Tahoma Bold", sans-serif;
+							color: #ffffff;
+							text-align: center;
+						}
+	
+	}
+
+
+    @media (min-width: 1400px) {
+		
+		.disney-gift-guide .carousel {
+			padding: 10px 0;
+		}
+		
+			.mixed-hero-area .mixed-hero-copy {
+				padding: 40px;
+			}
+		
+			.flickity-prev-next-button {
+				top: 50%;
+			}
+		
+				.disney-gift-guide h2 {
+					margin: 0 0 10px;
+				}
+
+					.disney-gift-guide-logo-mobile {
+						display: none;
+					}
+
+					.disney-gift-guide-logo-desktop {
+						display: block;
+					}
+
+    }
+	
+	
+	@media (min-width: 1600px) {
+		
+			.disney-gift-guide .flickity-prev-next-button.previous {
+				left: 9vw;
+			}
+
+			.disney-gift-guide .flickity-prev-next-button.next {
+				right: 9vw;
+			}
+
+    }
+
+    .carousel-cell .carousel-cell {
+      display: block;
+    }
+
+</style>
+
+
+<div class="disney-gift-guide">
+
+    <div class="carousel">
+		
+		<!-- BANNER 2 STARTS -->
+		
+		<div class="carousel-cell multi">
+			
+			<h2>
+				
+				<img src="https://www.thetoyshop.com/medias/Homepage-Multi-click-Hero-Banner-Mobile-395x160px.png?context=bWFzdGVyfHJvb3R8MzMwOTl8aW1hZ2UvcG5nfGFEbGxMMmd6WVM4eE1qVTVNVEV4TURnME9EVTBNaTlJYjIxbGNHRm5aVjlOZFd4MGFTMWpiR2xqYTE5SVpYSnZYMEpoYm01bGNsOU5iMkpwYkdWZk16azFlREUyTUhCNExuQnVad3xjZWM4MjYwMDkyZGUyYmExMGYyMGUyNWJmMTljZTMzMjExOGMxNjkzN2VmN2ZiYTE0MzQ0NzI0ZjIxNjRlZjYy" alt="Disney" title="Disney" class="disney-gift-guide-logo-mobile" />
+				
+				<img src="https://www.thetoyshop.com/medias/Homepage-Multiclick-Hero-Banner-Logo-800x288px.png?context=bWFzdGVyfHJvb3R8NjI4NTl8aW1hZ2UvcG5nfGFHSXdMMmd6WWk4eE1qVTRPVFUzTmpFNU1qQXpNQzlJYjIxbGNHRm5aVjlOZFd4MGFXTnNhV05yWDBobGNtOWZRbUZ1Ym1WeVgweHZaMjlmT0RBd2VESTRPSEI0TG5CdVp3fGNmMmY3YzljODE0MDQ0ODhkOWE4NzNiOGJhMzM2M2JhZTRlMTdiOGFkMjU4MWYyMjAyNGRmMGQxZjNmYmQzMTM" alt="Disney" title="Disney" class="disney-gift-guide-logo-desktop" />
+			
+			</h2>
+			
+			<ul class="disney-sub-cats">
+				
+				<!-- 1 -->
+				<li>
+					
+					<a href="https://www.thetoyshop.com/brands/disney/disney-princess/moana" title="Moana">
+						
+						<img alt="Moana" src="https://www.thetoyshop.com/medias/Entertainer-Homepage-PodMOANA-Homepage-Pod-350x350px-copy.jpg?context=bWFzdGVyfHJvb3R8NjU4MjZ8aW1hZ2UvanBlZ3xhR1V5TDJnek1TOHhNalU0T1RVM05qUTFOREUzTkM5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOVFiMlJOVDBGT1FTQkliMjFsY0dGblpTQlFiMlFnTXpVd2VETTFNSEI0SUdOdmNIa3VhbkJufGE0NWJmY2FiNjhmOGNjOGM4N2NjN2QzM2U5YThlZTExMGRhNDNlNTdkMWVlNjk3MDM4MzJmMGIzZTQzMTZjNjc" alt="Moana" title="Moana" />
+						
+						<span>MOANA</span>
+						
+					</a>
+					
+				</li>
+
+		
+		<!-- 2 -->
+				
+			<li>
+					
+					<a href="https://www.thetoyshop.com/brands/disney/toy-story" title="Toy Story">
+						
+						<img src="https://www.thetoyshop.com/medias/Entertainer-Homepage-PodPIXAR-Homepage-Pod-350x350px-copy-2.jpg?context=bWFzdGVyfHJvb3R8NjYwMzB8aW1hZ2UvanBlZ3xhR1UwTDJneVpTOHhNalU0T1RVM05qVXhPVGN4TUM5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOVFiMlJRU1ZoQlVpQkliMjFsY0dGblpTQlFiMlFnTXpVd2VETTFNSEI0SUdOdmNIa2dNaTVxY0djfGZiODk0YzEyODc1NTc4NWE5NjhhMTFjMDQ2NjQ3MDgyMzUwMjkxMGEzMGM0NmExZTQ2ZDZiYjMyYjE1YmMwZjA" alt="Toy Story" title="Toy Story" />
+						
+						<span>TOY STORY</span>
+						
+					</a>
+					
+				</li>
+				
+				<!-- 3 -->
+				
+				<li>
+					
+					<a href="https://www.thetoyshop.com/brands/star-wars" title="Star Wars">
+						
+						<img src="https://www.thetoyshop.com/medias/Entertainer-Homepage-PodSTAR-WARS-Homepage-Pod-350x350px-copy-3.jpg?context=bWFzdGVyfHJvb3R8NjI0NDR8aW1hZ2UvanBlZ3xhRFEwTDJneU1TOHhNalU0T1RVM05qa3hNamt5Tmk5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOVFiMlJUVkVGU0lGZEJVbE1nSUVodmJXVndZV2RsSUZCdlpDQXpOVEI0TXpVd2NIZ2dZMjl3ZVNBekxtcHdad3wyN2ZkOWE3YzI5MDUxZjM2M2U5OGJmZDE4NzM5NzZhZGYwM2VlY2JhODA4MzcyYjA4NmEwOTFkYWE3ZjNjMjE5" alt="Star Wars" title="Star Wars" />
+						
+						<span>STAR WARS</span>
+												
+					</a>
+					
+				</li>
+		
+						
+				<!-- 4 -->
+			
+				<li>
+					
+					<a href="https://www.thetoyshop.com/brands/disney/disney-lilo-and-stitch" title="Lilo & Stitch">
+						
+						<img src="https://www.thetoyshop.com/medias/Entertainer-Homepage-PodSTITCH-Homepage-Pod-350x350px.jpg?context=bWFzdGVyfHJvb3R8NjQ3OTF8aW1hZ2UvanBlZ3xhREkwTDJneVpDOHhNalU0T1RVM056RXdPVFV6TkM5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOVFiMlJUVkVsVVEwZ2dTRzl0WlhCaFoyVWdVRzlrSURNMU1IZ3pOVEJ3ZUM1cWNHY3xkMjI1MjM3YjUyNjI2Y2Y5ODhhMzk1YWUwMDQ3MTdhNDcyYzEyYjFjNGNjNmFjNmZmNzM5ZjEyM2E2YzZjMjli" alt="Lilo & Stitch" title="Lilo & Stitch" />
+						
+						<span>LILO & STITCH</span>
+						
+					</a>
+					
+				</li>
+				
+				<!-- 5 -->
+				<li>
+					
+					<a href="https://www.thetoyshop.com/brands/marvel" title="Marvel">
+						
+						<img src="https://www.thetoyshop.com/medias/Entertainer-Homepage-PodMARVEL-Homepage-Pod-350x350px-copy-4.jpg?context=bWFzdGVyfHJvb3R8NzM4NDl8aW1hZ2UvanBlZ3xhR016TDJnME5DOHhNalU1TVRFeE1EVTFNell6TUM5RmJuUmxjblJoYVc1bGNsOUliMjFsY0dGblpWOVFiMlJOUVZKV1JVd2dJRWh2YldWd1lXZGxJRkJ2WkNBek5UQjRNelV3Y0hnZ1kyOXdlU0EwTG1wd1p3fDY3OTUwZWIwOGE0MDkzZjEyNDgyMTk5ZGMwNmFlZmVhMjczMTQ1NTYwNzMxZjlhNzI3MmE5MWY1YWQwNGY5ZDM" alt="Marvel" title="Marvel" />
+						
+						<span>MARVEL</span>
+						
+					</a>
+					
+				</li>					
+
+				
+			</ul>
+		</div>
+		</div>
+		</div>
+		</div>
+		
+		<!-- BANNER 2 ENDS -->
+		
+		<!-- BANNER 3 STARTS -->
+
+         	<div class="carousel-cell">
+
+
+			<a href="https://www.thetoyshop.com/c/half-price-toys" title="Half Price Toy Sale" >
+
+				<img src="https://www.thetoyshop.com/medias/Half-Price-2025-HP-Hero-MOB-450x480px.jpg?context=bWFzdGVyfHJvb3R8NzE4MTExfGltYWdlL2pwZWd8YURCaUwyZ3hNaTh4TWpVNU1UYzNOamcxT0RFME1pOUlZV3htSUZCeWFXTmxJREl3TWpVZ1NGQWdTR1Z5YnlCTlQwSWdORFV3ZURRNE1IQjRMbXB3Wnd8MDRlYTM5YWU5MjQ1ZDZmMjM1MDQwYmM0NzRlZjQyZjZkMTk1OWI5MDMxNTRiMWUzNmVmNjFlYjlmZmY3YTk1Nw" alt="Half Price Toy Sale" title="Half Price Toy Sale" class="hero-banner-mobile"  />
+
+				<img src="https://www.thetoyshop.com/medias/Half-Price-2025-HP-Hero-DT-1800x560px.jpg?context=bWFzdGVyfHJvb3R8OTQwODE4fGltYWdlL2pwZWd8YURSakwyZ3daUzh4TWpVNU1UYzNOamN5TnpBM01DOUlZV3htSUZCeWFXTmxJREl3TWpVZ1NGQWdTR1Z5YnlCRVZDQXhPREF3ZURVMk1IQjRMbXB3Wnd8ODBjOGVmZWU2MjFjNmY0ZmZiNzg0MDA4MzlmMmRjNmZmNDFmZTYzODg5MDA4YTE4NTBhNDNjNTA2ODE1ZDczMg" alt="Half Price Toy Sale" title="Half Price Toy Sale" class="hero-banner-desktop" />
+
+			</a>
+
+		<!-- BANNER 3 ENDS -->		
+
+			
+	
+	</div>
+    
+  </div>
+</div>
+    </div>
+    <div class="homepage-tab-content" id="gifts">
+      <div class="discover-content">
+        <style type="text/css">
+    .hp-small-banners-redesign {
+      margin: 0;
+      width: 100%;
+      background: #dbe3ff;
+    }
+ 
+    .hp-small-banners-redesign ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 0 auto;
+      padding: 0;
+      list-style: none;
+      max-width: 944px;
+    }
+ 
+    .hp-small-banners-redesign ul li {
+      margin: 0 0 20px;
+      padding: 0;
+      text-align: center;
+      transition: opacity 0.5s;
+      -webkit-transition: opacity 0.5s;
+      opacity: 1;
+    }
+ 
+    .hp-small-banners-redesign ul li:last-child {
+      margin: 0;
+    }
+ 
+    .hp-small-banners-redesign ul li:hover {
+      opacity: 0.5;
+    }
+ 
+    .hp-small-banners-redesign ul li a {
+      display: block;
+    }
+ 
+    .hp-small-banners-redesign ul li a img {
+      width: 100%;
+      border: solid 2px #ffffff;
+      border-radius: 8px;
+    }
+ 
+    @media (min-width: 768px) {
+      .hp-small-banners-redesign {
+        padding: 30px 0 10px;
+      }
+ 
+      .hp-small-banners-redesign ul {
+        margin: 0 auto;
+        padding: 0;
+        justify-content: center;
+      }
+ 
+      .hp-small-banners-redesign ul li {
+        margin: 0 10px 20px;
+        width: calc(100% / 2 - 20px);
+      }
+    }
+</style>
+ 
+<div class="hp-small-banners-redesign">
+<ul>
+ 
+ 
+<!-- COMP TILE 1 -->
+<li>
+<a
+   href="
+   https://www.thetoyshop.com/presentfinder
+   " title="
+   Find the perfect gift with our present finder
+   ">
+ <img alt="
+   Find the perfect gift with our present finder
+   " src="
+   https://www.thetoyshop.com/medias/2025-present-finder-comp-tile-944x200px.jpg?context=bWFzdGVyfHJvb3R8MTMyMzYzfGltYWdlL2pwZWd8YURkbUwyZ3pOQzh4TWpVMk5qSXhNamN6T1RFd01pOHlNREkxTFhCeVpYTmxiblF0Wm1sdVpHVnlMV052YlhBdGRHbHNaUzA1TkRSNE1qQXdjSGd1YW5CbnxmZTliZDExOTY0ZjBlZjliZmJmZTgzMGM1NmFlYmQ1N2ZiMDRjNzBlNjgyYmVlMzc0MmMwMTg1MzQ1ODY0Nzk3
+   " title="
+   Find the perfect gift with our present finder
+   " />
+ </a>
+</li>
+ 
+ 
+<!-- COMP TILE 2 -->
+<li>
+<a href="
+  https://www.thetoyshop.com/gift-cards/The-Entertainer-%26-Early-Learning-Centre-Gift-Card-%C2%A310/p/99880000001_10
+  " title="
+  Shop gift cards
+  ">
+ <img alt="
+  Shop gift cards
+  " src="
+  https://www.thetoyshop.com/medias/2025-gift-card-comp-tile-944x200px.jpg?context=bWFzdGVyfHJvb3R8MTE5MDY1fGltYWdlL2pwZWd8YUdRMUwyaGhNUzh4TWpVMk5qSXhNVFl5TkRrNU1DOHlNREkxTFdkcFpuUXRZMkZ5WkMxamIyMXdMWFJwYkdVdE9UUTBlREl3TUhCNExtcHdad3xjZDllMmRiODY3NGNhNzU5NDNhOTdiNmZlMGFmYjgxNzM4MzBiMTQ1NDE4MDYzYTdjMWI2NzRmOGI2MWIxZGVk
+  " title="
+  Shop gift cards
+  " />
+ </a>
+</li>
+ 
+<!-- COMP TILE 3 -->
+<li>
+<a href="
+  https://www.thetoyshop.com/c/collectibles
+  " title="
+  Collectibles
+  ">
+ <img alt="
+  Collectibles
+  " src="
+  https://www.thetoyshop.com/medias/TS-Collectibles-Refresh-944x200px.jpg?context=bWFzdGVyfHJvb3R8MTc5NjgxfGltYWdlL2pwZWd8YUdGaEwyZ3dOeTh4TWpRM016TTVNRFV6TURVNU1DOVVVMTlEYjJ4c1pXTjBhV0pzWlhOZlVtVm1jbVZ6YUY4NU5EUjRNakF3Y0hndWFuQm58MDI2MWMwYWQ0NWMzZjcxYjM4NGU3ZGVkZTc5ZGZmMmFkMzVhYWJkNzM1ZmQ4ZjljNzE1Yjg4YWFiNmE0ZDM1OQ
+  " title="
+ Collectibles
+  " />
+ </a>
+</li>
+ 
+<!-- COMP TILE 4 -->
+<li>
+<a href="
+  https://www.thetoyshop.com/movies
+  " title="
+  Lights, Camera, Play! Explore our Movie Page and watch the latest trailers
+  ">
+ <img alt="
+  Lights, Camera, Play! Explore our Movie Page and watch the latest trailers
+  " src="
+  https://www.thetoyshop.com/medias/2025-movie-page-comp-tile-944x200px.jpg?context=bWFzdGVyfHJvb3R8MTEyMjg2fGltYWdlL2pwZWd8YURVMkwyZzVZUzh4TWpVMk5qSXhNVGc0TnpFek5DOHlNREkxTFcxdmRtbGxMWEJoWjJVdFkyOXRjQzEwYVd4bExUazBOSGd5TURCd2VDNXFjR2N8N2Q1NzhmZWE3YjVjOWQ5M2U5MTY4YThmOGU5ZDMyNDYzNjllMDg4YmJiNGE5MjIzYjMyYzRiYjZhYThiMmM4NQ
+  " title="
+  Lights, Camera, Play! Explore our Movie Page and watch the latest trailers
+  " />
+ </a>
+</li>
+
+<li>
+  <a href="https://www.thetoyshop.com/bundle-prize-draw">
+        <img src="https://www.thetoyshop.com/medias/bundle-comp-940x200-w-button-002-.png?context=bWFzdGVyfHJvb3R8NTg0MjN8aW1hZ2UvcG5nfGFHWmpMMmhsWmk4eE1qVTVNelU0TXpJMU9UWTNPQzlpZFc1a2JHVWdZMjl0Y0NBNU5EQjRNakF3SUhjZ1luVjBkRzl1SUNnd01ESXBMbkJ1Wnd8OWU1YzNjODdiYzZlYTMwYTIzNjI4YWIwMDYxNDJhMGFkMmQ1ODEyMDgyNGQ1Y2M2Y2Y1N2EwZTYzMzViZTM3YQ" alt="Win A £250 Toy Bundle Comp" />
+        </a>
+</li>
+ 
+</ul>
+</div>
+      </div>
+    </div>
+    <div class="homepage-tab-content" id="outdoors">
+
+       <!-- Hero Card -->
+ <style type="text/css">
+    .banner-container {
+        padding: 0 20px 30px 20px;
+        background-color: #dbe3ff;
+    }
+
+    .banner-content {
+        max-width: 940px;
+        margin: 0 auto;
+        display: flex;
+        flex-flow: column;
+        flex-direction: column;
+    }
+
+    .banner-content a {
+      display: block;
+    }
+
+    .banner-content img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+ </style>
+ <div class="banner-container">
+    <div class="banner-content">
+      <a href="https://www.thetoyshop.com/c/gift-guide">
+        <img src="https://www.thetoyshop.com/medias/2025-guide-guide-comp-tile-944x200px.jpg?context=bWFzdGVyfHJvb3R8MzAxNDY0fGltYWdlL2pwZWd8YURNM0wyZzNOeTh4TWpVNU1EazNOamMyTVRnNE5pOHlNREkxTFdkMWFXUmxMV2QxYVdSbExXTnZiWEF0ZEdsc1pTMDVORFI0TWpBd2NIZ3VhbkJufGMwZDViZjZlNmRkYjkzM2Y3ZGE4NmNjNDcyNDZhYjM3OGZhZTA0MWQ2MDZiOWM0NmVkZWRmNzNhZmRhODc5MDI" alt="Christmas Catalogue Gift Guide" />
+        </a>
+    </div>
+</div>
+
+
+      
+    </div>
+    <div class="homepage-tab-content" id="collect">
+      <!-- OUTDOORS BANNER -->
+      <div class="media-full media-full--desktop">
+        <a href="https://www.thetoyshop.com/c/outdoor-toys">
+          <img src="https://www.thetoyshop.com/medias/TE-Outdoor-Toys-2025-Digital-Slides-HP-hero-DT-1800x560.jpg?context=bWFzdGVyfHJvb3R8MTE0OTIwNXxpbWFnZS9qcGVnfGFHSXdMMmc0TlM4eE1qUTFPVGMwTnpJeE16TTBNaTlVUlY5UGRYUmtiMjl5WDFSdmVYTmZNakF5TlY5RWFXZHBkR0ZzWDFOc2FXUmxjMTlJVUNCb1pYSnZJRVJVSURFNE1EQjROVFl3TG1wd1p3fGI0OTA1MWI2MGI0MzAwMzA1MDUwMjg1YmE1ODk5YTNiYTdhNGZiMDA3NmY1NTdmOWI1NmFjODBmMzdkYWNiNDY" alt="Outdoor toys" />
+        </a>
+    </div>
+
+    <div class="media-full media-full--mobile">
+      <a href="https://www.thetoyshop.com/c/outdoor-toys">
+        <img src="https://www.thetoyshop.com/medias/TE-Outdoor-Toys-2025-Digital-Slides-HP-450x480px.jpg?context=bWFzdGVyfHJvb3R8MzIxODA1fGltYWdlL2pwZWd8YURWbEwyZzROaTh4TWpRMU9UYzBOekkzT0RnM09DOVVSVjlQZFhSa2IyOXlYMVJ2ZVhOZk1qQXlOVjlFYVdkcGRHRnNYMU5zYVdSbGMxOUlVQ0EwTlRCNE5EZ3djSGd1YW5Cbnw5YTc0YzBiOGM3OWRjZjYzM2IzMzY2NjkzMzc5OTNmYWMxMTRlZWMyYjI3OWI1NWY5MzZlZDk5NmI2ODczZjg2" alt="Outdoor Toys" />
+      </a>
+    </div>
+    </div>
+    <div class="homepage-tab-content" id="offers">
+      <style>
+	
+	.promotions-carousel {
+		margin: 0;
+		padding: 0;
+		font: 15px/100% "Nunito Std", "Tahoma", sans-serif;
+		background: #ffffff;
+		text-align: center;
+		width: 100%;
+		color: #666666;
+	}
+
+        .promotions-carousel h2 {
+            position: relative;
+            top: 26px;
+            z-index: 999;
+            margin: 0 auto;
+            padding: 8px 0 0;
+            font: 24px/100% "Billy Bold", "Tahoma Bold", sans-serif;
+            letter-spacing: 0.5px;
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+            text-transform: none;
+            background: url(https://www.thetoyshop.com/medias/big-toy-sale-ribbon-red.png?context=bWFzdGVyfHJvb3R8MzE5M3xpbWFnZS9wbmd8YURoaUwyaGlOeTh4TWpFeU56RTFPREF3T1RnNE5pOWlhV2N0ZEc5NUxYTmhiR1V0Y21saVltOXVMWEpsWkM1d2JtY3xiNDQ4YmM0OTc1YWRkOGVlNzJhMmU3MDE4NWRhNTMyZWFhZTNjNDZhOTRhZWYzYThlNDJkZWY3YmM4MzgxYTI0) no-repeat;
+            background-size: contain;
+            width: 295px;
+            height: 46px;
+        }
+
+        .promotions-carousel .gallery {
+            margin: 0 auto;
+			padding: 20px 20px 40px;
+			background: #ffffff;
+			border-radius: 20px;
+
+        }
+
+        .promotions-carousel .flickity-viewport {margin: 0 auto;}
+
+          .promotions-carousel .gallery-cell {
+			  margin: 0 20px 0 0;
+			  width: 30%;
+			  counter-increment: gallery-cell;
+			  transition: opacity 0.5s;
+			  opacity: 1;
+          }
+
+            .promotions-carousel .gallery-cell:before {display: block;}
+	
+				.promotions-carousel .gallery-cell:hover  {opacity: 0.5;}
+
+                .promotions-carousel .gallery-cell h3 {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                    .promotions-carousel .gallery-cell img {width: 100%;}
+	
+					.promotions-carousel .gallery-cell h3 span {
+						display: block;
+						margin: 20px 0 0 0;
+						font-size: 14px;
+						line-height: 140%;
+						text-decoration: underline;
+					}
+
+            .promotions-carousel .flickity-page-dots {display: none;}
+
+
+    @media (min-width: 768px) {
+
+		.promotions-carousel .gallery-cell {
+			width: 18%;
+		}
+		
+		.promotions-carousel {
+			padding: 10px 10px 30px;
+		}
+		
+			.promotions-carousel .gallery {
+				padding: 0 20px;
+				border-radius: 30px;
+			}
+
+				.promotions-carousel .flickity-prev-next-button.previous {left: 20px;}
+
+				.promotions-carousel .flickity-prev-next-button.next {right: 20px;}
+
+				.promotions-carousel .flickity-prev-next-button.previous,
+				.promotions-carousel .flickity-prev-next-button.next {
+					display: none;
+				}
+
+    }
+	
+	
+	@media (min-width: 1200px) {
+		
+		.promotions-carousel .gallery-cell {
+			width: 18%;
+		}		
+
+        .promotions-carousel .flickity-prev-next-button.previous {left: 0px;}
+
+        .promotions-carousel .flickity-prev-next-button.next {right: 0px;}
+
+    }
+	
+</style>
+
+
+<style type="text/css">
+
+	/*! Flickity v2.3.0
+	https://flickity.metafizzy.co
+	---------------------------------------------- */
+	.flickity-enabled{position:relative}.flickity-enabled:focus{outline:0}.flickity-viewport{overflow:hidden;position:relative;height:100%}.flickity-slider{position:absolute;width:100%;height:100%}.flickity-enabled.is-draggable{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.flickity-enabled.is-draggable .flickity-viewport{cursor:move;cursor:-webkit-grab;cursor:grab}.flickity-enabled.is-draggable .flickity-viewport.is-pointer-down{cursor:-webkit-grabbing;cursor:grabbing}.flickity-button{position:absolute;background:#407ec9;border:none;color:#ffffff;box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.75);}.flickity-button:hover{background:#e82416;cursor:pointer}.flickity-button:focus{outline:0;box-shadow:0 0 0 5px #19f}.flickity-button:active{opacity:.6}.flickity-button:disabled{opacity:.3;cursor:auto;pointer-events:none}.flickity-button-icon{fill:currentColor}.flickity-prev-next-button{top:50%;width:34px;height:34px;border-radius:50%;transform:translateY(-50%)}.flickity-prev-next-button.previous{left:10px}.flickity-prev-next-button.next{right:10px}.flickity-rtl .flickity-prev-next-button.previous{left:auto;right:10px}.flickity-rtl .flickity-prev-next-button.next{right:auto;left:10px}.flickity-prev-next-button .flickity-button-icon{position:absolute;left:20%;top:20%;width:60%;height:60%}.flickity-page-dots{position:absolute;width:100%;bottom:-25px;padding:0;margin:0;list-style:none;text-align:center;line-height:1}.flickity-rtl .flickity-page-dots{direction:rtl}.flickity-page-dots .dot{display:inline-block;width:10px;height:10px;margin:0 8px;background:#333;border-radius:50%;opacity:.25;cursor:pointer}.flickity-page-dots .dot.is-selected{opacity:1}
+
+</style>
+
+
+<!-- CATEGORY TILE CAROUSEL -->
+
+<div class="promotions-carousel">
+	
+
+	<div class="gallery js-flickity" data-flickity-options='{ "wrapAround": true, "cellAlign": "center", "draggable": false }'>
+	
+		<!-- Buy One Get One Half Price -->
+		
+		<div class="gallery-cell">
+			
+			<a href="https://www.thetoyshop.com/c/buy-one-get-one-half-price" title="Buy One Get One Half Price">
+					
+				<h3>
+															 
+					<img src="https://www.thetoyshop.com/medias/2025-promo-title-bogshp-350x90.jpg?context=bWFzdGVyfHJvb3R8NDI4MDF8aW1hZ2UvanBlZ3xhRGd3TDJnek9DOHhNalUyTWpBeE1qSTNORGN4T0M4eU1ESTFMWEJ5YjIxdkxYUnBkR3hsTFdKdlozTm9jQzB6TlRCNE9UQXVhbkJufDIwMzNhODMyMTkyNmIzMjRiMWU5Zjc3OTg5ZDE0OWRjMzYzYjJlNTg2MjVlNWYyNmVhN2M3MzViNzU3ZWNmZGM" alt="Buy One Get One Half Price" title="Buy One Get One Half Price" class="offer-title" />
+					
+					<img src="https://www.thetoyshop.com/medias/ELC-BOGOHP-2025-Addo-ELC-Digital-Assets-v2-ELC-BOGOHP-selected-toys-2025-HP-pod-350x350px.jpg?context=bWFzdGVyfHJvb3R8MjEwOTg0fGltYWdlL2pwZWd8YURjekwyZ3pPQzh4TWpVM01UTTJNRFUxT1RFek5DOUZURU5mUWs5SFQwaFFYekl3TWpWZlFXUmtieUJGVEVOZlJHbG5hWFJoYkNCQmMzTmxkSE1nZGpKZlJVeERYMEpQUjA5SVVDQnpaV3hsWTNSbFpDQjBiM2x6WHpJd01qVmZTRkFnY0c5a0lETTFNSGd6TlRCd2VDNXFjR2N8MThkNDJlYmIwM2EzMTBmZDNmY2YwNmE3N2YwMWVkNzU2YmUyMWRhODk0MjI2YmRlYWE5NmJmNzRiNGNiMjZhZA" alt="Buy One Get One Half Price" title="Buy One Get One Half Price">
+
+				</h3>
+				
+			</a>
+			
+		</div> 
+		
+	    <!-- FREE Ray Gift with any Click & Collect order over £15 
+		
+		<div class="gallery-cell">
+			
+			<a href="https://www.thetoyshop.com/c/all-categories?deliveryOptions=Click%20%26%20Collect" title="FREE Ray Gift with any Click & Collect order over £15">
+					
+				<h3>
+										 
+					<img src="https://www.thetoyshop.com/medias/2025-promo-title-free-gift-350x90.jpg?context=bWFzdGVyfHJvb3R8MzgxNTR8aW1hZ2UvanBlZ3xhRFptTDJnek5TOHhNalUyTWpBeE1qTTBNREkxTkM4eU1ESTFMWEJ5YjIxdkxYUnBkR3hsTFdaeVpXVXRaMmxtZEMwek5UQjRPVEF1YW5CbnwyNzFiN2M3ZTFkNGUxZDBhMjQyMzU3ODM5NzM5NzYwYjY5ZTI5NGI5NjhiZDliZWM5N2VhYWYyOGMwM2JiZjI1" alt="Free Gift" title="Free Gift" class="offer-title" />
+										
+					<img src="https://www.thetoyshop.com/medias/Ray-GWP-2025-HP-pod-350x350px-opt2.jpg?context=bWFzdGVyfHJvb3R8MjE4Njk2fGltYWdlL2pwZWd8YURZd0wyZzVOaTh4TWpVNE5UTTVNVFE0T1RBMU5DOVNZWGtnUjFkUUlESXdNalVnU0ZBZ2NHOWtJRE0xTUhnek5UQndlQ0J2Y0hReUxtcHdad3wzNDNiNDc0MjY4MWE3MzkyNDkwZDEwYTNmNDdmZDcxZmMxOThmZDEzMzBjYTMyYjUyMTU0MGYzZmQ4MmFlZGY3" alt="FREE Ray Gift with any Click & Collect order over £15" title="FREE Ray Gift with any Click & Collect order over £15">
+
+				</h3>
+				
+			</a>
+			
+		</div>	-->
+	
+		<!-- 2 for £20 Selected Remote Control Cars -->
+
+		<div class="gallery-cell">
+
+			<a href="https://www.thetoyshop.com/c/transport-toys/remote-control/rc-cars/remote-control-cars-promotion" title="2 for £20 Selected Remote Control Cars">
+
+				<h3>
+										 
+					<img src="https://www.thetoyshop.com/medias/2025-promo-title-2-for-20-350x90.jpg?context=bWFzdGVyfHJvb3R8MzkxNjF8aW1hZ2UvanBlZ3xhR0k1TDJnNFpDOHhNalUyTWpBeE1UZzRNVFV3TWk4eU1ESTFMWEJ5YjIxdkxYUnBkR3hsTFRJdFptOXlMY0tqTWpBdE16VXdlRGt3TG1wd1p3fDU2NDlkMWZiMTMwYmY3OTRkZTJiMzg3MTBlYjJmZGIxMDU3NTJiNzY0ZmJiYWY0NzM5ZTg5YzM3ZDM2MDFmZTc" alt="2 for £20" title="2 for £20" class="offer-title" />
+															
+					<img src="https://www.thetoyshop.com/medias/PNC-RC-CARS-HP-POD-350-x-350px.jpg?context=bWFzdGVyfHJvb3R8MzAyODd8aW1hZ2UvanBlZ3xhREk1TDJnNU1DOHhNalUxT1RZNU1EQXpPVE15Tmk5UVRrTmZVa05mUTBGU1UxOUlVQzFRVDBSZk16VXdMWGd0TXpVd2NIZ3VhbkJufGY2NGEwNDM3MzdhOGMwMzQ2YTFlMTNhMGM0ZGNkNDVjY2VmYWExNzQ4MDY2YjZmMDY3MWJhODMyMjdhNmJhOTk" alt="2 for £20 Selected Remote Control Cars" title="2 for £20 Selected Remote Control Cars">
+					
+				</h3>
+
+			</a>
+
+		</div>
+		
+		<!-- Paw Patrol 2 for £15
+
+		<div class="gallery-cell">
+
+			<a href="https://www.thetoyshop.com/brands/paw-patrol/paw-patrol-promotion" title="Paw Patrol 2 for £15">
+
+				<h3>
+															 
+					<img src="https://www.thetoyshop.com/medias/2025-promo-title-2-for-15-350x90.jpg?context=bWFzdGVyfHJvb3R8Mzg2OTB8aW1hZ2UvanBlZ3xhRFV3TDJnelppOHhNalUyTWpBeE1qQTNPREV4TUM4eU1ESTFMWEJ5YjIxdkxYUnBkR3hsTFRJdFptOXlMY0tqTVRVdE16VXdlRGt3TG1wd1p3fGUzMTU5YjE3MzI5ZmE4Y2IxNWMxNTFiM2I4Yzk0MmRhNDNmOGI1NGI1OTg2YmRjOGI2NDljODNiOWNhNTI5ZjM" alt="2 for £15" title="2 for £15" class="offer-title" />
+					
+					<img src="https://www.thetoyshop.com/medias/PAW-UK-Entertainer-Digital-Banners-DEL7-350x350.jpg?context=bWFzdGVyfHJvb3R8MTI1NDc2fGltYWdlL2pwZWd8YUdVeUwyZzJZeTh4TWpJeE5UTTBOemt3TkRVME1pOVFRVmRmVlV0ZlJXNTBaWEowWVdsdVpYSmZSR2xuYVhSaGJGOUNZVzV1WlhKelgwUkZURGRmTXpVd2VETTFNQzVxY0djfDViNTU2YWExNGQ4YzczZWJmMDNkOGJkMmQ2ZDk4YjllYmRhMzMwMmE4OThkNGM3MGFlY2JkMGU5M2NjMzk4MjM" alt="Paw Patrol 2 for £15" title="Paw Patrol 2 for £15">
+					
+				</h3>
+
+			</a>
+
+		</div> -->
+	
+		<!-- Reduced to Clear -->
+        
+		<div class="gallery-cell">
+			
+			<a href="https://www.thetoyshop.com/c/reduced-to-clear" title="Reduced to Clear">
+				
+				<h3>
+											 
+					<img src="https://www.thetoyshop.com/medias/2025-promo-title-incredible-deals-350x90.jpg?context=bWFzdGVyfHJvb3R8NDQxNjJ8aW1hZ2UvanBlZ3xhREV5TDJnNFlpOHhNalUyTWpBeE1Ua3hOREkzTUM4eU1ESTFMWEJ5YjIxdkxYUnBkR3hsTFdsdVkzSmxaR2xpYkdVdFpHVmhiSE10TXpVd2VEa3dMbXB3Wnd8NDNkZDdmOWJkMWZiOGZhZWI1ZGExOGI1Njk0OThhZDFkMzFhYzYwY2UwZTQwMjMxYjI4M2UyYzAwNzc5NjVmMw" alt="Incredible Deals" title="Incredible Deals" class="offer-title" />
+					
+					<img src="https://www.thetoyshop.com/medias/Reduced-HP-Pod-350x350px.jpg?context=bWFzdGVyfHJvb3R8MTMxMzU3fGltYWdlL2pwZWd8YURjMUwyaGtaUzh4TWpVM05UQXpORE0zTmpJeU1pOVNaV1IxWTJWa1gwaFFJRkJ2WkY4ek5UQjRNelV3Y0hndWFuQm58N2ZkYzVmNDQ4MGYwMTRhMDgzZmUyZDkzMmQyNTEyMDFhY2M3MGY5YWVkNGFkYjA3OGM5ZWY2OGY5ZmQ3OGU3Mg" alt="Reduced to Clear" title="Reduced to Clear">
+
+				</h3>
+			
+			</a>
+			
+		</div>		
+
+		<!-- Back to School Buy 1 Get 2nd Half Price 
+
+		<div class="gallery-cell">
+
+			<a href="https://www.thetoyshop.com/c/back-to-school" title="Back to School Buy 1 Get 2nd Half Price">
+
+				<h3>
+															 
+					<img src="https://www.thetoyshop.com/medias/2025-promo-title-bogshp-350x90.jpg?context=bWFzdGVyfHJvb3R8NDI4MDF8aW1hZ2UvanBlZ3xhRGd3TDJnek9DOHhNalUyTWpBeE1qSTNORGN4T0M4eU1ESTFMWEJ5YjIxdkxYUnBkR3hsTFdKdlozTm9jQzB6TlRCNE9UQXVhbkJufDIwMzNhODMyMTkyNmIzMjRiMWU5Zjc3OTg5ZDE0OWRjMzYzYjJlNTg2MjVlNWYyNmVhN2M3MzViNzU3ZWNmZGM" alt="Buy 1 Get 2nd Half Price" title="Buy 1 Get 2nd Half Price" class="offer-title" />
+															
+					<img src="https://www.thetoyshop.com/medias/2025-promo-back-to-school-350x350.jpg?context=bWFzdGVyfHJvb3R8NzUzNTd8aW1hZ2UvanBlZ3xhR0l3TDJnek1TOHhNalUyTWpBeE1qUTNNVE15Tmk4eU1ESTFMWEJ5YjIxdkxXSmhZMnN0ZEc4dGMyTm9iMjlzTFRNMU1IZ3pOVEF1YW5Cbnw3Yzk5NDRmYTJhMDEyNGY4YjZhYzY1MWE2ZjhmY2E1YTc4MTRjM2ViNzMyZmJiNDY0Y2NmMDQ1YzAzYTZhMjQ1" alt="Back to School Buy 1 Get 2nd Half Price" title="Back to School Buy 1 Get 2nd Half Price">
+
+
+				</h3>
+
+			</a>
+
+		</div>
+
+		<-- Hasbro Monopoly Gift With Purchase
+
+        <div class="gallery-cell">
+
+			<a href="https://www.thetoyshop.com/brands/hasbro-games" title="Hasbro Monopoly Gift With Purchase">
+
+				<h3>
+										 
+					<img src="https://www.thetoyshop.com/medias/2025-promo-title-free-gift-350x90.jpg?context=bWFzdGVyfHJvb3R8MzgxNTR8aW1hZ2UvanBlZ3xhRFptTDJnek5TOHhNalUyTWpBeE1qTTBNREkxTkM4eU1ESTFMWEJ5YjIxdkxYUnBkR3hsTFdaeVpXVXRaMmxtZEMwek5UQjRPVEF1YW5CbnwyNzFiN2M3ZTFkNGUxZDBhMjQyMzU3ODM5NzM5NzYwYjY5ZTI5NGI5NjhiZDliZWM5N2VhYWYyOGMwM2JiZjI1" alt="Free Gift" title="Free Gift" class="offer-title" />
+										
+					<img src="https://www.thetoyshop.com/medias/2025-promo-hasbro-gwp-350x350.jpg?context=bWFzdGVyfHJvb3R8NzI4MjZ8aW1hZ2UvanBlZ3xhRGN4TDJnek1pOHhNalUyTWpBeE1qUXdOVGM1TUM4eU1ESTFMWEJ5YjIxdkxXaGhjMkp5YnkxbmQzQXRNelV3ZURNMU1DNXFjR2N8OWVjZmVjM2Y1YmYyNWVjMzE4YjNkMGY3ZDdkZjhkM2FmNTZhODYzNGExYzc2MDU4N2JjNTI4MmI5ZWY2NmZiOA" alt="Hasbro Monopoly Gift With Purchas" title="Hasbro Monopoly Gift With Purchas">
+
+				</h3>
+
+			</a>
+
+		</div>
+
+		<-- Minecraft 2 for £20 -->
+
+		<div class="gallery-cell">
+			
+			<a href="https://www.thetoyshop.com/brands/minecraft/minecraft-promotion" title="Minecraft 2 for £20">
+
+				<h3>
+														 
+					<img src="https://www.thetoyshop.com/medias/2025-promo-title-2-for-20-350x90.jpg?context=bWFzdGVyfHJvb3R8MzkxNjF8aW1hZ2UvanBlZ3xhR0k1TDJnNFpDOHhNalUyTWpBeE1UZzRNVFV3TWk4eU1ESTFMWEJ5YjIxdkxYUnBkR3hsTFRJdFptOXlMY0tqTWpBdE16VXdlRGt3TG1wd1p3fDU2NDlkMWZiMTMwYmY3OTRkZTJiMzg3MTBlYjJmZGIxMDU3NTJiNzY0ZmJiYWY0NzM5ZTg5YzM3ZDM2MDFmZTc" alt="2 for £20" title="2 for £20" class="offer-title" />
+														
+					<img src="https://www.thetoyshop.com/medias/556638-BEE-556638-BEE-7.jpg-1200Wx1200H?context=bWFzdGVyfGltYWdlc3wxMjM5NjE2fGltYWdlL2pwZWd8YVcxaFoyVnpMMmc1TUM5b01HVXZNVEl3TkRjME5UZ3hNRGMwTWpJdWFuQm58ZjFlYmM4OWEwMjg4ZmIwZDk1N2I2MGNhYWFhMGI1Y2Y4MzgzNTgzYjM2NDYzYmRiYzU1ZTcxMTFiMzMyZjMzYw" alt="Minecraft 2 for £20" title="Minecraft 2 for £20">
+
+				</h3>
+
+			</a>
+			
+		</div>
+		
+		
+		<!-- Barbie & Polly Pocket 3 for 2 
+        
+        <div class="gallery-cell">
+			
+			<a href="https://www.thetoyshop.com/c/3-for-2-toys" title="Barbie & Polly Pocket 3 for 2">
+					
+				<h3>
+										 
+					<img src="https://www.thetoyshop.com/medias/2025-promo-title-3-for-2-350x90.jpg?context=bWFzdGVyfHJvb3R8MzcxNTd8aW1hZ2UvanBlZ3xhR0ppTDJnNFlTOHhNalUyTWpBeE1UazBOekF6T0M4eU1ESTFMWEJ5YjIxdkxYUnBkR3hsTFRNdFptOXlMVEl0TXpVd2VEa3dMbXB3Wnd8YTdmZDdiZTlkODAzM2RlY2UyYjZiMThlYTU3OGJjNDJkZmFkZDIwNzMzMWVjMDliM2E5ZTI5ZGI3MGMxYzU2OQ" alt="3 for 2" title="3 or 2" class="offer-title" />
+										
+					<img src="https://www.thetoyshop.com/medias/2025-promo-barbie-polly-pocket-350x350.jpg?context=bWFzdGVyfHJvb3R8NjEyMTJ8aW1hZ2UvanBlZ3xhR1V3TDJnNU5DOHhNalUyTWpBeE1UWTFNakV5Tmk4eU1ESTFMWEJ5YjIxdkxXSmhjbUpwWlMxd2IyeHNlUzF3YjJOclpYUXRNelV3ZURNMU1DNXFjR2N8ZWMxZGQ2NTAxZGIzYjZiYWRhNzk4NzgxYjAxY2E4MGE2MWIxMzJkZTA4ZDBkZTMxYTYwMGQxNTU1Mjc2NjcwZQ" alt="Barbie & Polly Pocket 3 for 2" title="Barbie & Polly Pocket 3 for 2">
+
+				</h3>
+				
+			</a>
+			
+		</div> -->
+		
+		<!-- Hot Wheels Cars 3 for 2 -->
+        
+		<div class="gallery-cell">
+			
+			<a href="https://www.thetoyshop.com/transport-toys/cars/Hot-Wheels-1%3A64-Diecast-Vehicle-%28Styles-Vary%29/p/519084" title="Hot Wheels Cars 3 for 2">
+				
+                <h3>
+
+					<img src="https://www.thetoyshop.com/medias/2025-promo-title-3-for-2-350x90.jpg?context=bWFzdGVyfHJvb3R8MzcxNTd8aW1hZ2UvanBlZ3xhR0ppTDJnNFlTOHhNalUyTWpBeE1UazBOekF6T0M4eU1ESTFMWEJ5YjIxdkxYUnBkR3hsTFRNdFptOXlMVEl0TXpVd2VEa3dMbXB3Wnd8YTdmZDdiZTlkODAzM2RlY2UyYjZiMThlYTU3OGJjNDJkZmFkZDIwNzMzMWVjMDliM2E5ZTI5ZGI3MGMxYzU2OQ" alt="3 for 2" title="3 or 2" class="offer-title" />
+					
+					<img src="https://www.thetoyshop.com/medias/2A-4-PODTE-Homepage-Pod-350x350-3.jpg?context=bWFzdGVyfHJvb3R8MTUxNTE3fGltYWdlL2pwZWd8YURRNEwyaGtPQzh4TWpRek5UUXpPVFl4TmpBek1DOHlRU0EwSUZCUFJGUkZJRWh2YldWd1lXZGxJRkJ2WkNBek5UQjRNelV3SURNdWFuQm58MjQyYzVjNTE2YjUyMzBhY2VkYzdjZTM4YzY2OWU5Mzc1NGM4Njg3NmVhYjk1MWI5YjI1ZDhjZDdlMjFkZWI3Mw" alt="Hot Wheels Cars 3 for 2" title="Hot Wheels Cars 3 for 2">
+
+				</h3>
+			
+			</a>
+			
+		</div>
+	
+	</div>
+	
+</div>
+    </div>
+    <div class="homepage-tab-content" id="top-picks">
+      <div class="top-picks">
+    <div class="top-picks-container">
+        <div class="carousel carousel-top-picks js-flickity flickity-enabled is-draggable" data-flickity="{ &quot;autoPlay&quot;: true, &quot;wrapAround&quot;: true, &quot;cellAlign&quot;: &quot;left&quot; }">
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/shop-by-age/8-year-olds/Huffy-Green-Machine-20%22-Drift-Trike/p/577753" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-577753-Primary?context=bWFzdGVyfGltYWdlc3w5ODg4NXxpbWFnZS9qcGVnfGFEZzBMMmc0TUM4eE1qVTBNelF3TlRnMU1EWTFOQzgxTVRWWGVEVXhOVWhmTlRjM056VXpYMUJ5YVcxaGNua3xmOTE0ZDE1Y2RlODdlY2MwYjRjZTYwMjdhNmZkODFiNDQyN2ZkMjM3YmFjNDUzMTVlZDAzYzNiNDYzMTY5ZDRl" alt='Huffy Green Machine 20" Drift Trike' title='Huffy Green Machine 20" Drift Trike' />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                50% OFF
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/shop-by-age/8-year-olds/Huffy-Green-Machine-20%22-Drift-Trike/p/577753" title="view more details">
+                                Huffy Green Machine 20" Drift Trike
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/shop-by-age/8-year-olds/Huffy-Green-Machine-20%22-Drift-Trike/p/577753" title="view more details">
+                                &pound;79.99
+                                <span class="was-price">
+                                    &pound;159.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/shop-by-age/8-year-olds/Huffy-Green-Machine-20%22-Drift-Trike/p/577753" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/construction-toys/building-blocks/LEGO-Disney-Lilo-and-Stitch-Beach-House-Construction-Set-43268/p/576066" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-576066-Primary?context=bWFzdGVyfGltYWdlc3wxODQ4Njd8aW1hZ2UvanBlZ3xhR0V6TDJnMVlTOHhNalV5TWpRek9UZ3pOVFkzT0M4MU1UVlhlRFV4TlVoZk5UYzJNRFkyWDFCeWFXMWhjbmt8N2JmYTQwMDk2OTAxMjJjOTAxYzVkOWQ1MmYzN2M4M2VhM2I1MjkwMzM1MzNhZTA4NGQ4YTM1MGVlZDVhZmY3Yw" alt='LEGO Disney Lilo and Stitch Beach House Construction Set 43268' title='LEGO Disney Lilo and Stitch Beach House Construction Set 43268' />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                SAVE £22
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/construction-toys/building-blocks/LEGO-Disney-Lilo-and-Stitch-Beach-House-Construction-Set-43268/p/576066" title="view more details">
+                                LEGO Disney Lilo and Stitch Beach House Construction Set 43268
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/construction-toys/building-blocks/LEGO-Disney-Lilo-and-Stitch-Beach-House-Construction-Set-43268/p/576066" title="view more details">
+                                &pound;57.99
+                                <span class="was-price">
+                                    &pound;79.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/construction-toys/building-blocks/LEGO-Disney-Lilo-and-Stitch-Beach-House-Construction-Set-43268/p/5760661" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Disney-Stitch-Ultimate-Electronic-Pet/p/573526" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-573526-Primary?context=bWFzdGVyfGltYWdlc3wxMDM5MjJ8aW1hZ2UvanBlZ3xhRGd6TDJnd01pOHhNalUwTkRVNE5UUTVPRFkxTkM4MU1UVlhlRFV4TlVoZk5UY3pOVEkyWDFCeWFXMWhjbmt8YWIzYjIzMGRlZGQ3NTQ4YTY5ZmJjZDE1OGE1ZTQyNjMyZWVlODJhZjljYTFiMDg2MThkYzI2MDA2MGJiMTE0Ng" alt="Disney Stitch Ultimate Electronic Pet" title="Disney Stitch Ultimate Electronic Pet" />
+                        </a>
+                        <!-- <div class="badge-container">
+                            <div class="badge">
+                                25% OFF
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Disney-Stitch-Ultimate-Electronic-Pet/p/573526" title="view more details">
+                                Disney Stitch Ultimate Electronic Pet
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Disney-Stitch-Ultimate-Electronic-Pet/p/573526" title="view more details">
+                                &pound;80.00
+                                <!-- <span class="was-price">
+                                    &pound;15.00
+                                </span> -->
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Disney-Stitch-Ultimate-Electronic-Pet/p/573526" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/animals/dinosaurs/Jurassic-World-Distortus-Rex-Dinosaur-Rebirth/p/575031" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-575031-Primary?context=bWFzdGVyfGltYWdlc3wxMzg2MDl8aW1hZ2UvanBlZ3xhRFE0TDJobU1TOHhNalV3T0RJNU1qSXhPRGt4TUM4MU1UVlhlRFV4TlVoZk5UYzFNRE14WDFCeWFXMWhjbmt8ZDcxYzdlYTA1MTFmYWNkZWQ2YmQ5OGExODkxZDVlNWJmOGZlNjZhY2I4YWZiYjgwMmJjOTMzMTVjOWVkYmMwMg" alt='Jurassic World Distortus Rex Dinosaur Rebirth' title='Jurassic World Distortus Rex Dinosaur Rebirth' />
+                        </a>
+                        <!-- <div class="badge-container">
+                            <div class="badge">
+                                SAVE £5
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/animals/dinosaurs/Jurassic-World-Distortus-Rex-Dinosaur-Rebirth/p/575031" title="view more details">
+                                Jurassic World Distortus Rex Dinosaur Rebirth
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/animals/dinosaurs/Jurassic-World-Distortus-Rex-Dinosaur-Rebirth/p/575031" title="view more details">
+                                &pound;55.00
+                                <!-- <span class="was-price">
+                                    &pound;54.99
+                                </span> -->
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/animals/dinosaurs/Jurassic-World-Distortus-Rex-Dinosaur-Rebirth/p/575031" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/online-only/Huffy-Extent-Junior-20%22-Mountain-Bike---Antifreeze-Green/p/560999" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/560999-Primary-515Wx515H?context=bWFzdGVyfGltYWdlc3wxNzU3OTB8aW1hZ2UvanBlZ3xhVzFoWjJWekwyaGxPUzlvWldRdk1USXdNamN3TkRFMU1UTTFNREl1YW5Cbnw2ZTFjMmIxMjVlYWVmZTk1ZDc2ZTFiY2Y3NzMyMDI3NzJkOWQwMTFkODgyNjk3MTZhZTE2OWQwNGRiM2Q2ZjY3" alt='Huffy Extent Junior 20" Mountain Bike - Antifreeze Green' title='Huffy Extent Junior 20" Mountain Bike - Antifreeze Green' />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                SAVE £43
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/online-only/Huffy-Extent-Junior-20%22-Mountain-Bike---Antifreeze-Green/p/560999" title="view more details">
+                                Huffy Extent Junior 20" Mountain Bike - Antifreeze Green
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/online-only/Huffy-Extent-Junior-20%22-Mountain-Bike---Antifreeze-Green/p/560999" title="view more details">
+                                &pound;176.99
+                                <span class="was-price">
+                                    &pound;219.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/online-only/Huffy-Extent-Junior-20%22-Mountain-Bike---Antifreeze-Green/p/560999" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/dolls/animal-figures/Sylvanian-Families-Pony%27s-Hair-Salon-Playset/p/556085" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-556085-Primary?context=bWFzdGVyfGltYWdlc3w3ODQ2OXxpbWFnZS9qcGVnfGFEYzRMMmcwTVM4eE1qUXdPRFU0TWpnNU56WTVOQzgxTVRWWGVEVXhOVWhmTlRVMk1EZzFYMUJ5YVcxaGNua3wxOWE5ZmIzNzEzZmY0NWYwNTVmMTg4ZmVmN2Y5MGMzOTM1OWIxMWNjYzlkODhlOTA2NTE5ZjdjNGRmYTA1YTUx" alt="Sylvanian Families Pony's Hair Salon Playset" title="Sylvanian Families Pony's Hair Salon Playset" />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                SAVE £40
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/dolls/animal-figures/Sylvanian-Families-Pony%27s-Hair-Salon-Playset/p/556085" title="view more details">
+                                Sylvanian Families Pony's Hair Salon Playset
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/dolls/animal-figures/Sylvanian-Families-Pony%27s-Hair-Salon-Playset/p/556085" title="view more details">
+                                &pound;29.99
+                                <span class="was-price">
+                                    &pound;69.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/dolls/animal-figures/Sylvanian-Families-Pony%27s-Hair-Salon-Playset/p/556085" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Jurassic-World-Primal-Hatch-Electronic-Pet/p/575373" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-575373-Primary?context=bWFzdGVyfGltYWdlc3w5MTE5MHxpbWFnZS9qcGVnfGFERTJMMmcwWWk4eE1qVTBORGMwT0RJNU1EQTNPQzgxTVRWWGVEVXhOVWhmTlRjMU16Y3pYMUJ5YVcxaGNua3wzOTMzODZhMGRiYWIyNmRhYjIwYzc0ZmViZmEzOTU0ZGU1NjA2ZTc0OGU2YTNkNGFmYmNlNTkyNjZlNDQ0YTk2" alt='Jurassic World Primal Hatch Electronic Pet' title='Jurassic World Primal Hatch Electronic Pet' />
+                        </a>
+                        <!-- <div class="badge-container">
+                            <div class="badge">
+                                25% OFF
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Jurassic-World-Primal-Hatch-Electronic-Pet/p/575373" title="view more details">
+                                Jurassic World Primal Hatch Electronic Pet
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Jurassic-World-Primal-Hatch-Electronic-Pet/p/575373" title="view more details">
+                                &pound;64.99
+                                <!-- <span class="was-price">
+                                    &pound;20.00
+                                </span> -->
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Jurassic-World-Primal-Hatch-Electronic-Pet/p/575373" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/shop-by-age/3-4-years/Octonauts-Above-%26-Beyond%3A-Octoray-Headquarters-Transforming-Playset-and-Mini-Ray-Figure/p/557409" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/557409-Primary-515Wx515H?context=bWFzdGVyfGltYWdlc3wxNDk2NTR8aW1hZ2UvanBlZ3xhVzFoWjJWekwyZzNNaTlvTmpBdk1URXpPRGN6TlRreU9UYzFOall1YW5Cbnw3MTQ1M2MzNzU2ZDA0NTQzMzI5ZTlkMTljNmIxMWY1ZGRhNDIyZTdkYzU4YjJmYTVjODIzZTRmMjM3YzE0YjM4" alt="Octonauts Above & Beyond: Octoray Headquarters Transforming Playset and Mini-Ray Figure" title="Octonauts Above & Beyond: Octoray Headquarters Transforming Playset and Mini-Ray Figure" />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                SAVE £50
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/shop-by-age/3-4-years/Octonauts-Above-%26-Beyond%3A-Octoray-Headquarters-Transforming-Playset-and-Mini-Ray-Figure/p/557409" title="view more details">
+                                Octonauts Above & Beyond: Octoray Headquarters
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/shop-by-age/3-4-years/Octonauts-Above-%26-Beyond%3A-Octoray-Headquarters-Transforming-Playset-and-Mini-Ray-Figure/p/557409" title="view more details">
+                                &pound;19.99
+                                <span class="was-price">
+                                    &pound;69.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/shop-by-age/3-4-years/Octonauts-Above-%26-Beyond%3A-Octoray-Headquarters-Transforming-Playset-and-Mini-Ray-Figure/p/557409" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/transport-toys/race-tracks/Monster-Jam-World-Finals-Supercharge-Speedway-Race-Track-Playset/p/568758" title="view more details">
+                                <img src="https://www.thetoyshop.com/medias/515Wx515H-568758-Primary?context=bWFzdGVyfGltYWdlc3wxMzY5NTJ8aW1hZ2UvanBlZ3xhRE5rTDJoaE5pOHhNak16TnprME1qZ3lNamswTWk4MU1UVlhlRFV4TlVoZk5UWTROelU0WDFCeWFXMWhjbmt8Yjc0ZmJkNjZlMDhkNmQzYzg1M2EwMjgxNDBlMjUxNmZhOWU4ZTI3Y2E5NDFkY2ZhMTJiNDllN2UyZjY0NzdmZQ" alt="Monster Jam World Finals Supercharge Speedway Race Track Playset" title="Monster Jam World Finals Supercharge Speedway Race Track Playset" />
+                            </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                50% OFF
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/transport-toys/race-tracks/Monster-Jam-World-Finals-Supercharge-Speedway-Race-Track-Playset/p/568758" title="view more details">
+                                Monster Jam World Finals Supercharge Speedway Race Track Playset
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/transport-toys/race-tracks/Monster-Jam-World-Finals-Supercharge-Speedway-Race-Track-Playset/p/568758" title="view more details">
+                                &pound;20.00
+                                <span class="was-price">
+                                    &pound;40.00
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/transport-toys/race-tracks/Monster-Jam-World-Finals-Supercharge-Speedway-Race-Track-Playset/p/568758" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/gifts-for-children/Happyland-Village-Collection-Playset/p/551378" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/551378-1-515Wx515H?context=bWFzdGVyfHJvb3R8NTczNDd8aW1hZ2UvanBlZ3xhR1E0TDJnek1DOHhNVE15TVRBMU16UTNPRGswTWk1cWNHY3wyZDc4OTNlYjAxNGE2M2JmMmQyMjIxOWUyYzIzN2I0OTRjMmQxZjM4YzU3ZjFiMjQ0MDkyNjA1ZGU2NWM5MzU0" alt="Happyland Village Collection Playset" title="Happyland Village Collection Playset" />
+                        </a>
+                        <!-- <div class="badge-container">
+                            <div class="badge">
+                               25% OFF
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/gifts-for-children/Happyland-Village-Collection-Playset/p/551378" title="view more details">
+                                Happyland Village Collection Playset
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/gifts-for-children/Happyland-Village-Collection-Playset/p/551378" title="view more details">
+                                &pound;75.00
+                                <!-- <span class="was-price">
+                                    &pound;8.00
+                                </span> -->
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/gifts-for-children/Happyland-Village-Collection-Playset/p/551378" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Furby-Galaxy-Glow-in-the-Dark-Electronic-Pet/p/570904" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-570904-Primary?context=bWFzdGVyfGltYWdlc3w4NzQ1NnxpbWFnZS9qcGVnfGFEUXhMMmczWmk4eE1qSTVPREV5TWpFNU9UQTNNQzgxTVRWWGVEVXhOVWhmTlRjd09UQTBYMUJ5YVcxaGNua3w4YzQ2NjcxNmZiZjQ0NDNhYWUyODAyMGVhMmY5NDY3N2MyZWIzYmU5NzVlODZhZDhkNTQ2N2JhZDkxZDk0ZTgw" alt='Furby Galaxy Glow in the Dark Electronic Pet' title='Furby Galaxy Glow in the Dark Electronic Pet' />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                SAVE £40
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Furby-Galaxy-Glow-in-the-Dark-Electronic-Pet/p/570904" title="view more details">
+                                Furby Galaxy Glow in the Dark Electronic Pet
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/electronic-toys/pets/Furby-Galaxy-Glow-in-the-Dark-Electronic-Pet/p/570904" title="view more details">
+                                &pound;34.99
+                                <span class="was-price">
+                                    &pound;74.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/electronic-toys/pets/Furby-Galaxy-Glow-in-the-Dark-Electronic-Pet/p/570904" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="top-picks-product-tile">
+                    <div class="product-tile-image">
+                        <a href="https://www.thetoyshop.com/transport-toys/garages/Majorette-Super-Chase-Centre-Garage/p/573940" title="view more details">
+                            <img src="https://www.thetoyshop.com/medias/515Wx515H-573940-Primary?context=bWFzdGVyfGltYWdlc3wzNDE4OTd8aW1hZ2UvanBlZ3xhREUwTDJoaU15OHhNalUxTVRRNU5EVTJOVGt4T0M4MU1UVlhlRFV4TlVoZk5UY3pPVFF3WDFCeWFXMWhjbmt8Y2Q2NjQ2Mjg3MTViOWQwN2M3MzgxZDc1ZjFiYTFkNjMxYjY0OTBmZjFlNTI3NGY3OGFiZDY5ZDIxZDY4ODkyOQ" alt="Majorette Super Chase Centre Garage" title="Majorette Super Chase Centre Garage" />
+                        </a>
+                        <div class="badge-container">
+                            <div class="badge">
+                                50% OFF
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-tile-details">
+                        <div class="product-title">
+                            <a href="https://www.thetoyshop.com/transport-toys/garages/Majorette-Super-Chase-Centre-Garage/p/573940" title="view more details">
+                                Majorette Super Chase Centre Garage
+                            </a>
+                        </div>
+                        <div class="price">
+                            <a href="https://www.thetoyshop.com/transport-toys/garages/Majorette-Super-Chase-Centre-Garage/p/573940" title="view more details">
+                                &pound;49.99
+                                <span class="was-price">
+                                    &pound;99.99
+                                </span>
+                            </a>
+                        </div>
+                        <a href="https://www.thetoyshop.com/transport-toys/garages/Majorette-Super-Chase-Centre-Garage/p/573940" class="details-button" title="view more details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+ </div>
+    </div>
+    <div class="homepage-tab-content" id="age-range">
+      <div class="shop-by-age-container">
+        <div class="shop-by-age">
+          <a
+            data-element-type="hp-shop-age"
+            data-promotion-index="1"
+            data-promotion-name="Aged 0 to 3 years"
+            href="/c/all-categories?ageRange=0%20-%2018%20months&amp;ageRange=18%20-%2036%20months"
+            title="Aged 0 to 3 years"
+          >
+            0-3
+            <span>Years</span>
+          </a>
+          <a
+            class="red"
+            data-element-type="hp-shop-age"
+            data-promotion-index="2"
+            data-promotion-name="Aged 3 to 5 years"
+            href="/c/all-categories?ageRange=3%20-%205%20years"
+            title="Aged 3 to 5 years"
+          >
+            3-5
+            <span>Years</span>
+          </a>
+          <a
+            class="purple"
+            data-element-type="hp-shop-age"
+            data-promotion-index="3"
+            data-promotion-name="Aged 5 to 8 years"
+            href="/c/all-categories?ageRange=5%20-%208%20years"
+            title="Aged 5 to 8 years"
+          >
+            5-8
+            <span>Years</span>
+          </a>
+          <a
+            class="blue"
+            data-element-type="hp-shop-age"
+            data-promotion-index="4"
+            data-promotion-name="Aged 8 to 11 years"
+            href="/c/all-categories?ageRange=8%20-%2011%20years"
+            title="Aged 8 to 11 years"
+          >
+            8-11
+            <span>Years</span>
+          </a>
+          <a
+            class="light-green"
+            data-element-type="hp-shop-age"
+            data-promotion-index="5"
+            data-promotion-name="Aged 11 years and over"
+            href="/c/all-categories?ageRange=11%2B%20years"
+            title="Aged 11 years and over"
+          >
+            11+
+            <span>Years</span>
+          </a>
+          <a
+            class="green"
+            data-element-type="hp-shop-age"
+            data-promotion-index="6"
+            data-promotion-name="Big Kids"
+            href="/c/shop-by-age/bigkids"
+            title="Big Kids"
+          >
+            Big
+            <span>Years</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="homepage-tab-content" id="brands">
+      <div
+        class="brands-carousel carousel js-flickity flickity-enabled is-draggable"
+        data-flickity='{ "autoPlay": true, "wrapAround": true, "cellAlign": "left" }'
+      >
+
+      <div class="carousel-cell">
+          <div class="brand-tile">
+            <a href="https://www.thetoyshop.com/brands/paw-patrol" title="Paw Patrol ">
+              <img
+                alt="Paw Patrol "
+                class="item"
+                src="https://www.thetoyshop.com/medias/Web-Homepage-Pod-w350x350h-PAW.jpg?context=bWFzdGVyfHJvb3R8NTY1MzZ8aW1hZ2UvanBlZ3xhR0UyTDJnNFlTOHhNalU0TkRZM05EQTJOalEyTWk5WFpXSWdTRzl0WlhCaFoyVWdVRzlrTFhjek5UQjRNelV3YUNBdElGQkJWeTVxY0djfDA1NTdlOGVmYmM0YWU3YWM0MTI3ZTM3YWVhYWZjMjc5Y2VhODNkZmY2MDcyM2EyNjM1MGEzZTVhOWYxYzE0ZjA"
+                title="Paw Patrol "
+              />
+            </a>
+          </div>
+        </div>
+        <div class="carousel-cell">
+          <div class="brand-tile">
+            <a href="https://www.thetoyshop.com/brands/topps-premier-league" title="Topps Premier League">
+              <img
+                alt="Topps Premier League"
+                class="item"
+                src="https://www.thetoyshop.com/medias/2025-p9-topps-350x350.png?context=bWFzdGVyfHJvb3R8MTI1MDAzfGltYWdlL3BuZ3xhR016TDJnek5DOHhNalUzTURZNU1EWTFNREUwTWk4eU1ESTFMWEE1TFhSdmNIQnpMVE0xTUhnek5UQXVjRzVufDFmMjQxNzk4MDY5ZGM2YzE1NmMxMjA4MmY0MWY0ZWNmNDI4OGEyMjU0MmNmZTU3NzJjNTVlZThhMmI0ODJlMGQ"
+                title="Topps Premier League"
+              />
+            </a>
+          </div>
+        </div>
+
+        <div class="carousel-cell">
+          <div class="brand-tile">
+            <a href="https://www.thetoyshop.com/brands/addo/totally-tracks" title="Totally Tracks">
+              <img
+                alt="Totally Tracks"
+                class="item"
+                src="https://www.thetoyshop.com/medias/P10-Totally-Tracks-Online-ASSETS-Homepage-Pod-350x350px-.jpg?context=bWFzdGVyfHJvb3R8MTM3NDkzfGltYWdlL2pwZWd8YUdJNUwyZzVZeTh4TWpVMk1qSXdOelV3TmpRMk1pOVFNVEFnVkc5MFlXeHNlU0JVY21GamEzTWdUMjVzYVc1bElFRlRVMFZVVTE5SWIyMWxjR0ZuWlNCUWIyUWdMU0F6TlRCNE16VXdjSGdnTG1wd1p3fDFkZmIxMDg5OTkwMTY2NzRmZWUwMGMyZTllZjYzZjM5MzRiNWRiYWZlNDg4Y2NjNjE3NzQyZWI1NDA5OGQ0N2M"
+                title="Totally Tracks"
+              />
+            </a>
+          </div>
+        </div>
+
+        <div class="carousel-cell">
+          <div class="brand-tile">
+            <a href="https://www.thetoyshop.com/brands/meccano" title="Meccano">
+              <img
+                alt="Meccano"
+                class="item"
+                src="https://www.thetoyshop.com/medias/P7-MECCANO-WEB-ASSETS-Homepage-Pod-350x350px.jpg?context=bWFzdGVyfHJvb3R8NDI4NTB8aW1hZ2UvanBlZ3xhR1k0TDJnMFppOHhNalUwT1RJNE5EWXlOalEyTWk5UU55Qk5SVU5EUVU1UElGZEZRaUJCVTFORlZGTmZTRzl0WlhCaFoyVWdVRzlrSUMwZ016VXdlRE0xTUhCNExtcHdad3w1ZDZkYzc2NTk5Yzk4NTc1ZWI3ZDIyY2JlZmVmNTUzNDUzZTE2MTk0NWM1NjQ3MGE2MDJjYjZhZDljNDYzZGNm"
+                title="Meccano"
+              />
+            </a>
+          </div>
+        </div>
+
+        <div class="carousel-cell">
+          <div class="brand-tile hide-mb">
+            <a href="https://www.thetoyshop.com/brands/squishmallows" title="Squishamallows">
+              <img
+                alt="Squishamallows"
+                class="item"
+                src="https://www.thetoyshop.com/medias/Squishmallows-Generic-Banner-SuiteTE-Homepage-Pod.jpg?context=bWFzdGVyfHJvb3R8NjIxMDA2fGltYWdlL2pwZWd8YUdFekwyZ3lNQzh4TWpVM05Ea3pOVGczTlRZeE5DOVRjWFZwYzJodFlXeHNiM2R6WDBkbGJtVnlhV05mUW1GdWJtVnlYMU4xYVhSbFZFVWdTRzl0WlhCaFoyVWdVRzlrTG1wd1p3fGQ2Y2U2ZTVjZWIxYWM3OWJhNTEwOGRjZTRmYmFkZTIxMmE1OTI5Yjc2NWNkZDU1MzBhMWYyZjlmYTUyZDMzYTM"
+                title="Squishamallows"
+              />
+            </a>
+          </div>
+        </div>
+
+        <div class="carousel-cell">
+          <div class="brand-tile hide-mb">
+            <a href="https://www.thetoyshop.com/brands/fuggler" title="Fuggler">
+              <img
+                alt="Fuggler"
+                class="item"
+                src="https://www.thetoyshop.com/medias/2025-fuggler-generic-pod-350x350.jpg?context=bWFzdGVyfHJvb3R8OTUxMTZ8aW1hZ2UvanBlZ3xhREl6TDJobE5DOHhNalEyT0RFMk16a3pOakk0Tmk4eU1ESTFMV1oxWjJkc1pYSXRaMlZ1WlhKcFl5MXdiMlF0TXpVd2VETTFNQzVxY0djfDM5ZjJlN2FlY2U2YjVhN2I4OWIzYjVjNGFjNmM2Y2YwYjc1OGZjNWY3ZGRkNDMzZjQ3OGQ4YmViNTc1MDYxYWY"
+                title="Fuggler"
+              />
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="brands-tiles">
+  <div class="brands-tiles-container">
+    <div class="brand-tile">
+            <a href="https://www.thetoyshop.com/brands/lego" title="LEGO NEW">
+              <img
+                alt="LEGO NEW"
+                class="item"
+                src="https://www.thetoyshop.com/medias/2025-lego-new-pod-350x350.jpg?context=bWFzdGVyfHJvb3R8MTM1NjIyfGltYWdlL2pwZWd8YURVd0wyaG1NaTh4TWpVMk5qZ3dNRE16TkRnM09DOHlNREkxTFd4bFoyOHRibVYzTFhCdlpDMHpOVEI0TXpVd0xtcHdad3xmYTQxZWUwOWViMDUxNDkxY2UyNTNiNDA1NTAwMmVlNDk3MDQyOTY2NTgxZTdmZmYwZDQ0NWQxNjhiM2ZmMTc5"
+                title="LEGO NEW"
+              />
+            </a>
+          </div>
+    <div class="brand-tile">
+      <a href="https://www.thetoyshop.com/brands/topps-premier-league" title="Topps Premier League">
+        <img
+          alt="Topps Premier League"
+          class="item"
+          src="https://www.thetoyshop.com/medias/2025-p9-topps-350x350.png?context=bWFzdGVyfHJvb3R8MTI1MDAzfGltYWdlL3BuZ3xhR016TDJnek5DOHhNalUzTURZNU1EWTFNREUwTWk4eU1ESTFMWEE1TFhSdmNIQnpMVE0xTUhnek5UQXVjRzVufDFmMjQxNzk4MDY5ZGM2YzE1NmMxMjA4MmY0MWY0ZWNmNDI4OGEyMjU0MmNmZTU3NzJjNTVlZThhMmI0ODJlMGQ"
+          title="Topps Premier League"
+        />
+      </a>
+    </div>
+    <div class="brand-tile">
+      <a href="https://www.thetoyshop.com/brands/addo/totally-tracks" title="Totally Tracks">
+        <img
+          alt="Totally Tracks"
+          class="item"
+          src="https://www.thetoyshop.com/medias/P10-Totally-Tracks-Online-ASSETS-Homepage-Pod-350x350px-.jpg?context=bWFzdGVyfHJvb3R8MTM3NDkzfGltYWdlL2pwZWd8YUdJNUwyZzVZeTh4TWpVMk1qSXdOelV3TmpRMk1pOVFNVEFnVkc5MFlXeHNlU0JVY21GamEzTWdUMjVzYVc1bElFRlRVMFZVVTE5SWIyMWxjR0ZuWlNCUWIyUWdMU0F6TlRCNE16VXdjSGdnTG1wd1p3fDFkZmIxMDg5OTkwMTY2NzRmZWUwMGMyZTllZjYzZjM5MzRiNWRiYWZlNDg4Y2NjNjE3NzQyZWI1NDA5OGQ0N2M"
+          title="Totally Tracks"
+        />
+      </a>
+    </div>
+    <div class="brand-tile">
+      <a href="https://www.thetoyshop.com/brands/meccano" title="Meccano">
+        <img
+          alt="Meccano"
+          class="item"
+          src="https://www.thetoyshop.com/medias/P7-MECCANO-WEB-ASSETS-Homepage-Pod-350x350px.jpg?context=bWFzdGVyfHJvb3R8NDI4NTB8aW1hZ2UvanBlZ3xhR1k0TDJnMFppOHhNalUwT1RJNE5EWXlOalEyTWk5UU55Qk5SVU5EUVU1UElGZEZRaUJCVTFORlZGTmZTRzl0WlhCaFoyVWdVRzlrSUMwZ016VXdlRE0xTUhCNExtcHdad3w1ZDZkYzc2NTk5Yzk4NTc1ZWI3ZDIyY2JlZmVmNTUzNDUzZTE2MTk0NWM1NjQ3MGE2MDJjYjZhZDljNDYzZGNm"
+          title="Meccano"
+        />
+      </a>
+    </div>
+    <div class="brand-tile hide-mb">
+      <a href="https://www.thetoyshop.com/brands/squishmallows" title="Squishamallows">
+        <img
+          alt="Squishamallows"
+          class="item"
+          src="https://www.thetoyshop.com/medias/Squishmallows-Generic-Banner-SuiteTE-Homepage-Pod.jpg?context=bWFzdGVyfHJvb3R8NjIxMDA2fGltYWdlL2pwZWd8YUdFekwyZ3lNQzh4TWpVM05Ea3pOVGczTlRZeE5DOVRjWFZwYzJodFlXeHNiM2R6WDBkbGJtVnlhV05mUW1GdWJtVnlYMU4xYVhSbFZFVWdTRzl0WlhCaFoyVWdVRzlrTG1wd1p3fGQ2Y2U2ZTVjZWIxYWM3OWJhNTEwOGRjZTRmYmFkZTIxMmE1OTI5Yjc2NWNkZDU1MzBhMWYyZjlmYTUyZDMzYTM"
+          title="Squishamallows"
+        />
+      </a>
+    </div>
+    <div class="brand-tile hide-mb">
+      <a href="https://www.thetoyshop.com/brands/fuggler" title="Fuggler">
+        <img
+          alt="Fuggler"
+          class="item"
+          src="https://www.thetoyshop.com/medias/2025-fuggler-generic-pod-350x350.jpg?context=bWFzdGVyfHJvb3R8OTUxMTZ8aW1hZ2UvanBlZ3xhREl6TDJobE5DOHhNalEyT0RFMk16a3pOakk0Tmk4eU1ESTFMV1oxWjJkc1pYSXRaMlZ1WlhKcFl5MXdiMlF0TXpVd2VETTFNQzVxY0djfDM5ZjJlN2FlY2U2YjVhN2I4OWIzYjVjNGFjNmM2Y2YwYjc1OGZjNWY3ZGRkNDMzZjQ3OGQ4YmViNTc1MDYxYWY"
+          title="Fuggler"
+        />
+      </a>
+    </div>
+  </div>
+</div>
+
+
+    </div>
+    <div class="homepage-tab-content" id="toy-types">
+      <div class="category-roundels">
+        <div class="toy-types">
+          <div class="carousel-cell">
+            <a href="https://www.thetoyshop.com/c/dolls" title="Dolls">
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/300Wx300H-564426-Primary?context=bWFzdGVyfGltYWdlc3wzNTAxOXxpbWFnZS9qcGVnfGFHSmtMMmhoTWk4eE1qQTROVGMwTlRZeE5EZzNPQzh6TURCWGVETXdNRWhmTlRZME5ESTJYMUJ5YVcxaGNua3xlNTliZmI5ZGE0MTMwNjI1YjNiNDg0NzU4OWM1NjBlY2U2Y2JhMWFmNjNkNDY5NjM3N2U5YmNlMTViZDhmNzlh"
+                alt="Dolls"
+                title="Dolls"
+              />
+              <span>Dolls</span>
+            </a>
+            <a
+              href="https://www.thetoyshop.com/c/action-toys"
+              title="Action Toys"
+            >
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/300Wx300H-573193-Primary?context=bWFzdGVyfGltYWdlc3w0MTkxN3xpbWFnZS9qcGVnfGFERTFMMmd5TlM4eE1qVXlNVEUwTlRrNU1URTVPQzh6TURCWGVETXdNRWhmTlRjek1Ua3pYMUJ5YVcxaGNua3xiMjYwOTU4ZDk0OWQ0YmNmNjY2ODIzMDNmMDc2Yjk3ZWIzMzRjNTljOWY1MzJkMTYyNWQ2OTUyM2YwYTExYWI5"
+                alt="Action Toys"
+                title="Action Toys"
+              />
+              <span>Action Toys</span>
+            </a>
+            <a
+              href="https://www.thetoyshop.com/c/baby-pre-school"
+              title="Pre-School Toys"
+            >
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/300Wx300H-570341-Primary?context=bWFzdGVyfGltYWdlc3wxMDQzMTZ8aW1hZ2UvanBlZ3xhR1ZpTDJoaVppOHhNak01TVRJM05ESXhOelV3TWk4ek1EQlhlRE13TUVoZk5UY3dNelF4WDFCeWFXMWhjbmt8NWI3NDU5MjJmNDIwNzc0ODAxYjA5MmM3YTE0Y2MyYjdkMzdlMTFjNjFjMTIyYjZhODMwMWI2YjA5ZWU3OTEyYw"
+                alt="Pre-School Toys"
+                title="Pre-School Toys"
+              />
+              <span>Pre-School Toys</span>
+            </a>
+            <a
+              href="https://www.thetoyshop.com/c/arts-creative-play"
+              title="Arts &amp; Crafts"
+            >
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/300Wx300H-540775-540775-2.jpg?context=bWFzdGVyfGltYWdlc3w2MzgwOXxpbWFnZS9qcGVnfGFHRm1MMmhqT1M4eE1qUXpNemN6T1RRME9ETTFNQzh6TURCWGVETXdNRWhmTlRRd056YzFYelUwTURjM05TMHlMbXB3Wnd8NTgwNjdlMzE3MWEwY2UwMDc4M2IyNDUwMDUzNjc0NDA0Y2U5ODQ4MjEwNTBjMmNmYmJiNjcyYjgwNGJhY2IzMg"
+                alt="Arts &amp; Crafts"
+                title="Arts &amp; Crafts"
+              />
+              <span>Arts &amp; Crafts</span>
+            </a>
+            <a
+              href="https://www.thetoyshop.com/c/games"
+              title="Games &amp; Puzzles"
+            >
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/300Wx300H-530024-530024-2.jpg?context=bWFzdGVyfGltYWdlc3wxMTM4OTB8aW1hZ2UvanBlZ3xhRFE0TDJoaFlTOHhNak0xTVRFNU16TTRNamswTWk4ek1EQlhlRE13TUVoZk5UTXdNREkwWHpVek1EQXlOQzB5TG1wd1p3fDI2YzZkMjcxMzY2ZWQzOGM0ZjIyZWVkNDk4YjE2MjA5MmE3MTIwM2NjZjU3NzI2NmQ0NzcyMGM2MGJmNzgzMjY"
+                alt="Games &amp; Puzzles"
+                title="Games &amp; Puzzles"
+              />
+              <span>Games &amp; Puzzles</span>
+            </a>
+            <a
+              href="https://www.thetoyshop.com/c/construction-toys"
+              title="Construction Toys"
+            >
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/Cat-roundels-270x270-Construction-Toys-1.png?context=bWFzdGVyfHJvb3R8MTA3NTJ8aW1hZ2UvcG5nfGFEVmhMMmd6TkM4eE1qVTRNVEV3TlRNek5qTTFNQzlEWVhRZ2NtOTFibVJsYkhOZk1qY3dlREkzTUY5RGIyNXpkSEoxWTNScGIyNGdWRzk1Y3lBeExuQnVad3w0OTRjMGQ3NjM4MzcwY2QzNzZkMGNmYjNjNTNhZWQ1YmNkMjJhNzZmOGVhY2VjNjU2ZjA1ODFhZGMxYTRkYTVi"
+                alt="Construction Toys"
+                title="Construction Toys"
+              />
+              <span>Construction Toys</span>
+            </a>
+            <a
+              href="https://www.thetoyshop.com/c/electronic-toys"
+              title="Electronic Toys"
+            >
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/300Wx300H-577630-577630-6.jpg?context=bWFzdGVyfGltYWdlc3w0MjAyM3xpbWFnZS9qcGVnfGFETm1MMmc0WlM4eE1qVTBNek01TURZM09UQTNNQzh6TURCWGVETXdNRWhmTlRjM05qTXdYelUzTnpZek1DMDJMbXB3Wnd8NWEzODVhMzA3YTIxZGY0NDI4ZDM3MDg4MzNhNzhmYmRiNDcyYzIyZTJkMmU4YmNhZjIwM2EyYTI5MWQwMjM2NQ"
+                alt="Electronic Toys"
+                title="Electronic Toys"
+              />
+              <span>Electronic Toys</span>
+            </a>
+            <a
+              href="https://www.thetoyshop.com/c/educational-toys"
+              title="Educational Toys"
+            >
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/564684-Primary-515Wx515H?context=bWFzdGVyfGltYWdlc3wxMzA3MjF8aW1hZ2UvanBlZ3xhVzFoWjJWekwyaGlPQzlvWkdFdk1USXdOalEyT1RReE1EZ3hPVEF1YW5Cbnw0YjY1YzcxZDc1YjlmNTlhMjE0ZDYxNWFhZGU0Y2EyMTllMjY3NjM0MjU5ZGM1MTZhY2RkMzVlMjg2MDQyYzJh"
+                alt="Educational Toys"
+                title="Educational Toys"
+              />
+              <span>Educational Toys</span>
+            </a>
+            <a
+              href="https://www.thetoyshop.com/c/animals"
+              title="Animal Toys &amp; Figures"
+            >
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/300Wx300H-575452-JFJ65-Primary?context=bWFzdGVyfGltYWdlc3w0MjY0OXxpbWFnZS9qcGVnfGFEUmpMMmc1T0M4eE1qVXlOamcxTnpjME9EVXhNQzh6TURCWGVETXdNRWhmTlRjMU5EVXlYMHBHU2pZMVgxQnlhVzFoY25rfGZiMDg5YTRiMDQ3YjkxMTI1ZjMxZWQ5ZDJiMzQ2NjYxZDJjYTExODY2OGI5YjU0MzQzMTc2YWYyMWQwNWM0Y2U"
+                alt="Animal Toys &amp; Figures"
+                title="Animal Toys &amp; Figures"
+              />
+              <span>Animal Toys &amp; Figures</span>
+            </a>
+            <a href="https://www.thetoyshop.com/c/dress-up" title="Dress Up">
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/543072-Primary-300Wx300H?context=bWFzdGVyfGltYWdlc3wzNzY5NXxpbWFnZS9wbmd8YVcxaFoyVnpMMmhpTXk5b09UVXZPVEU1T1RJeE1qWXlOVGsxTUM1d2JtY3xiZjMwNzBjNDcwNTIxNWI3NjNmNzI1YmQ5NWZkMTVjN2E4ZGJkNzczNzUwMTM3Yzc2ZTExYjgyOWRmMzBjOWJi"
+                alt="Dress Up"
+                title="Dress Up"
+              />
+              <span>Dress Up</span>
+            </a>
+            <a href="/c/outdoor-toys" title="Outdoor Toys">
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/560999-Primary-300Wx300H?context=bWFzdGVyfGltYWdlc3w4Nzc3NnxpbWFnZS9qcGVnfGFXMWhaMlZ6TDJobE9DOW9PRFV2TVRJd01qY3dOREUwTkRjNU5qWXVhbkJufDVjM2U2NGM1ZGNkN2VkMGI5YmZjOWRkNDMzODQ3NjYwZWJjNjY5NmZjOTU2M2RmYjkyMDJhNjgzNmJkZGI0YTc"
+                alt="Outdoor Toys"
+                title="Outdoor Toys"
+              />
+              <span>Outdoor Toys</span>
+            </a>
+            <a href="Plushies & Soft Toys" title="Plushies & Soft Toys">
+              <img
+                class="item"
+                src="https://www.thetoyshop.com/medias/559002-Primary-300Wx300H?context=bWFzdGVyfGltYWdlc3w5Nzk5NXxpbWFnZS9qcGVnfGFXMWhaMlZ6TDJnelpTOW9OMll2TVRJd01qSXpPREUwTVRJek9ESXVhbkJufDk5MWFjYzc4MWViOGI5YzNhYTFiM2UyMGQyNDU0YjNiOTM1NjY3ZTMxNWQ1NWFlMDBjMTRhYWEzOTY1MzE3YmM"
+                alt="Plushies & Soft Toys"
+                title="Plushies & Soft Toys"
+              />
+              <span>Plushies & Soft Toys</span>
+            </a>
+          </div>
+
+          <!-- <div class="carousel-cell">
+                        <a href="/c/animals" title="Animal Figures">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-animal-figures.png?context=bWFzdGVyfHJvb3R8NzAzNXxpbWFnZS9wbmd8YURrNUwyZ3hZaTh4TWpVMU5qSTJNRGs1T1RFNU9DOWpZWFJsWjI5eWVTMTBhV3hsY3kxaGJtbHRZV3d0Wm1sbmRYSmxjeTV3Ym1jfGZkYzFiMTUzODNiYjY3OGU5MTBjZDhhNTdhNjhkYTJiNDEyOGY0MGRlOWQyYWJkNmRmZDI0NWNmNWZlYzFiYmU" alt="Animal Figures" title="Animal Figures">
+                            <span>Animal Figures</span>
+                        </a>
+                        <a href="/c/electronic-toys" title="Electronic Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-electronic-toys.png?context=bWFzdGVyfHJvb3R8MTAzNDR8aW1hZ2UvcG5nfGFESXlMMmd5Wmk4eE1qVTFOakkyTVRBMk5EY3pOQzlqWVhSbFoyOXllUzEwYVd4bGN5MWxiR1ZqZEhKdmJtbGpMWFJ2ZVhNdWNHNW58YWQ0NDdiOWMzYTVjYjllM2I4ODk4NjlmMWMwODY5N2IwYzhiZjdkYTI3ZGViY2IxZjAwY2ZlZjFjZjY5OGFlZg" alt="Electronic Toys" title="Electronic Toys">
+                            <span>Electronic Toys</span>
+                        </a>
+                        <a href="/c/educational-toys" title="Educational Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-educational-toys.png?context=bWFzdGVyfHJvb3R8MTQyMjV8aW1hZ2UvcG5nfGFHVXhMMmc1Wmk4eE1qVTFOakkyTWpJM056RTFNQzlqWVhSbFoyOXllUzEwYVd4bGN5MWxaSFZqWVhScGIyNWhiQzEwYjNsekxuQnVad3xlM2RiMzM2MTQ5YjZmY2RhOGQxMTg0NDk3MmY1NzdhZjU4ZWE4NGZkYTJkMzdkNmNjYjczZDI5ZWE4NjY1MDgz" alt="Educational Toys" title="Educational Toys">
+                            <span>Educational Toys</span>
+                        </a>
+                        <a href="/c/transport-toys" title="Transport Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-transport-toys.png?context=bWFzdGVyfHJvb3R8Njk1MnxpbWFnZS9wbmd8YUdZeUwyaGhNaTh4TWpVMU5qSTJNak0wTWpZNE5pOWpZWFJsWjI5eWVTMTBhV3hsY3kxMGNtRnVjM0J2Y25RdGRHOTVjeTV3Ym1jfDYyZGYwZTdlZjYwM2QzNTc1NDc4ODk3MGJjYjY5ZmIyZWE5OGU0MTIwODMwYjJlZjU0OTQwZmJjOGI5NmY1NGM" alt="Transport Toys" title="Transport Toys">
+                            <span>Transport Toys</span>
+                        </a>
+                        <a href="/c/soft-toys" title="Soft Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-soft-toys.png?context=bWFzdGVyfHJvb3R8MTAyMzJ8aW1hZ2UvcG5nfGFEUTNMMmd4WXk4eE1qVTFOakkyTURrek16WTJNaTlqWVhSbFoyOXllUzEwYVd4bGN5MXpiMlowTFhSdmVYTXVjRzVufDc4OTc0ZWYyZGNlODlhNGViMmRhN2RhOWM5MjI2MWQ5ZjE3NzY3MzhmZTFmMWE3ZjNjNDU1YmFhYjk0YjIzM2E" alt="Soft Toys" title="Soft Toys">
+                            <span>Soft Toys</span>
+                        </a>
+                        <a href="/search/?text=collectibles" title="Collectibles">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-collectibles.png?context=bWFzdGVyfHJvb3R8OTIwMHxpbWFnZS9wbmd8YURFMUwyZ3lOaTh4TWpVMU5qSTJNRFkzTVRVeE9DOWpZWFJsWjI5eWVTMTBhV3hsY3kxamIyeHNaV04wYVdKc1pYTXVjRzVufDdiNDg1NTQwYTk3ZDRjN2QwMTJlYzFlNTkwYzllY2I1NzYwOGE3NWI3MGFjNzYzNTNjZmI5ZmRiNzEzMDI1NGU" alt="Collectibles" title="Collectibles">
+                            <span>Collectibles</span>
+                        </a>
+                        <a href="/c/outdoor-toys" title="Outdoor Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-outdoor-toys.png?context=bWFzdGVyfHJvb3R8MTA5ODh8aW1hZ2UvcG5nfGFEQTJMMmd5TUM4eE1qVTFOakkyTURnd01qVTVNQzlqWVhSbFoyOXllUzEwYVd4bGN5MXZkWFJrYjI5eUxYUnZlWE11Y0c1bnxhY2FiZmRjOWRmMGY1NDFhMzYwY2EwMGU0ODM0NjZjYTk4Yzc3OTFiNjZlOTc4NThkNTc4NjRlMTk5NzgzYzJl" alt="Outdoor Toys" title="Outdoor Toys">
+                            <span>Outdoor Toys</span>
+                        </a>
+                        <a href="/c/pocket-money" title="Pocket Money">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-pocket-money.png?context=bWFzdGVyfHJvb3R8MTE5NzJ8aW1hZ2UvcG5nfGFETTBMMmd6WWk4eE1qVTFOakkyTURBeE5qRTFPQzlqWVhSbFoyOXllUzEwYVd4bGN5MXdiMk5yWlhRdGJXOXVaWGt1Y0c1bnwzZGU4MGVkMzQ1YjNlMmYwOGFmZjIwY2RhYjllYTBjYTliZGFlNTE0YmZiMDY2YzI1NDc1MzY3NzRhYzE5OTY1" alt="Pocket Money" title="Pcket Money">
+                            <span>Pocket Money</span>
+                        </a>
+                        <a href="/c/games" title="Offers">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-offers.png?context=bWFzdGVyfHJvb3R8NDk5N3xpbWFnZS9wbmd8YUdVekwyZzVPQzh4TWpVME5EQTBORGMyTVRFeE9DOWpZWFJsWjI5eWVTMTBhV3hsY3kxdlptWmxjbk11Y0c1bnwzMzg5YzRkNzViZTIyMjMxZGZhNGRjNWUwYTNjMTg5ZjMxOTQ2YjdmNGE1Mjc2YTE1OGUzOWFiNjQ5MTY0Mzg2" alt="Offers" title="Offers">
+                            <span>Offers</span>
+                        </a>
+                        <a href="/c/games" title="Action Toys">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-action-toys.png?context=bWFzdGVyfHJvb3R8NDM0MXxpbWFnZS9wbmd8YUdVeEwyZzVZaTh4TWpVME5EQTBORGd5TmpZMU5DOWpZWFJsWjI5eWVTMTBhV3hsY3kxaFkzUnBiMjR0ZEc5NWN5NXdibWN8ZDgwY2Y5ODNjYTQ3OTBkOGEzYmFhOTIzNGQ5MmQxNjcxOTgxZjAwZGRkOTgzZWFjMDRkN2RmZTJkZjU0ZTM3ZA" alt="Action Toys" title="Action Toys">
+                            <span>Action Toys</span>
+                        </a>
+                        <a href="/c/games" title="Kids Dress-Up">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-kids-dress-up.png?context=bWFzdGVyfHJvb3R8NTU3N3xpbWFnZS9wbmd8YURRNUwyZzVaaTh4TWpVME5EQTBORGt5TkRrMU9DOWpZWFJsWjI5eWVTMTBhV3hsY3kxcmFXUnpMV1J5WlhOekxYVndMbkJ1Wnd8YTQxOWRhOWMxNjVhMmI3OTNiNTA0MzAzNWY1NWMzNDYzNDRmMDhmNGY1Y2ZiMjUxMDEzYjIxYWNkNDAyOTkxMg" alt="Kids Dress-Up" title="Kids Dress-Up">
+                            <span>Kids Dress-Up</span>
+                        </a>
+                        <a href="/c/games" title="Games & Puzzles">
+                            <img class="item" src="https://www.thetoyshop.com/medias/category-tiles-games-puzzles.png?context=bWFzdGVyfHJvb3R8NDQyNXxpbWFnZS9wbmd8YUdReUwyZzVOUzh4TWpVME5EQTBORFk1TlRVNE1pOWpZWFJsWjI5eWVTMTBhV3hsY3kxbllXMWxjeTF3ZFhwNmJHVnpMbkJ1Wnd8NjAzMmE0ZjM3YTNmZjRhMDljZWFiNDY1NDBhM2Q2YzdmNThlM2I0NDUyN2UyZmVjMDdjMWQ2NDUzZGMxODcwYg" alt="Games & Puzzles" title="Games & Puzzles">
+                            <span>Games & Puzzles</span>
+                        </a>
+                    </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="homepage-tab-content" id="content">
+      <div class="latest-blog-posts">
+        <div class="latest-blog-posts-container">
+            <div class="heading-ribbon-container">
+                <div class="heading-ribbon">
+                    <span class="ribbon-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="48" viewBox="0 0 24 48" fill="none">
+                            <g clip-path="url(#clip0_2260_15)">
+                            <path d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z" fill="#EE3224"/>
+                            <path d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z" fill="#EE3224"/>
+                            </g>
+                            <defs>
+                            <clipPath id="clip0_2260_15">
+                            <rect width="335" height="48" fill="white"/>
+                            </clipPath>
+                            </defs>
+                        </svg>
+                    </span>
+                    <h3>Latest blog posts</h3>
+                    <span class="ribbon-end">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="48" viewBox="0 0 24 48" fill="none">
+                            <g clip-path="url(#clip0_2260_15)">
+                            <path d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z" fill="#EE3224"/>
+                            <path d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z" fill="#EE3224"/>
+                            </g>
+                            <defs>
+                            <clipPath id="clip0_2260_15">
+                            <rect width="335" height="48" fill="white"/>
+                            </clipPath>
+                            </defs>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <div class="carousel blog-carousel js-flickity flickity-enabled is-draggable" data-flickity="{ &quot;autoPlay&quot;: true, &quot;wrapAround&quot;: true, &quot;cellAlign&quot;: &quot;left&quot; }">
+                
+            <div class="carousel-cell">
+                <div class="latest-blog-posts-content-tile">
+                    <div class="content-tile-image">
+                        <img src="https://www.thetoyshop.com/medias/Meccano-Blog-Story-Module-1.jpg?context=bWFzdGVyfHJvb3R8NzgwMTV8aW1hZ2UvanBlZ3xhR0kwTDJoaFlpOHhNalUwTkRBME5qQXpPVEEzTUM5TlpXTmpZVzV2SUVKc2IyY2dVM1J2Y25rZ1RXOWtkV3hsSURFdWFuQm58ZGM5NGRlZDUyYjYzNjcyZjc3M2Q1MzE3Yzg0ZDUyZDQ1MDVjMWRmYmZhNjdhMGVlYWIxZDFiMTVhOGQ1NDJiNA" alt="The History of Meccano" title="The History of Meccano" />
+                    </div>
+                    <div class="content-tile-details">
+                        <h4 class="content-tile-title">
+                            The History of Meccano
+                        </h4>
+                        <!-- <p>Content paragraph copy goes here. Content paragraph copy goes here.</p> -->
+                        <a href="https://www.thetoyshop.com/childhood-adventures/a-history-of-meccano" class="hero-button">
+                            <span class="swoosh-container">
+                                <span class="star-start">
+                                    <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                    </svg>
+                                </span>
+                                <span class="swoosh">&nbsp;</span>
+                            </span>
+                            Discover More
+                            <!-- <span class="basket-icon">
+                                <svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path>
+                                </svg>
+                            </span> -->
+                            <span class="star-end">
+                                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="latest-blog-posts-content-tile">
+                    <div class="content-tile-image">
+                        <img src="https://www.thetoyshop.com/medias/Team-building-activities-story.jpg?context=bWFzdGVyfHJvb3R8ODk0NDh8aW1hZ2UvanBlZ3xhR015TDJnMVpTOHhNalU1TVRrNU56UTFNak14T0M5VVpXRnRJR0oxYVd4a2FXNW5JR0ZqZEdsMmFYUnBaWE1nYzNSdmNua3VhbkJufDg1NTdkMmNlOGU5NDQxM2QxYThiNDc4ZmEzMTFiYjU5ZWY4ZjUzYTdjM2Y0MzJhYjBmOGYyMDAxMTc1OWUxNzM" alt="Team Building Activities for Kids to Improve Communication, Collaboration & Critical Thinking" title="Team Building Activities for Kids to Improve Communication, Collaboration & Critical Thinking" />
+                    </div>
+                    <div class="content-tile-details">
+                        <h4 class="content-tile-title">
+                            Team Building Activities for Kids to Improve Communication, Collaboration & Critical Thinking
+                        </h4>
+                        <!-- <p>Content paragraph copy goes here. Content paragraph copy goes here.</p> -->
+                        <a href="https://www.thetoyshop.com/childhood-adventures/team-building-activities-for-kids" class="hero-button">
+                            <span class="swoosh-container">
+                                <span class="star-start">
+                                    <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                    </svg>
+                                </span>
+                                <span class="swoosh">&nbsp;</span>
+                            </span>
+                            Read More
+                            <!-- <span class="basket-icon">
+                                <svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path>
+                                </svg>
+                            </span> -->
+                            <span class="star-end">
+                                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-cell">
+                <div class="latest-blog-posts-content-tile">
+                    <div class="content-tile-image">
+                        <img src="https://www.thetoyshop.com/medias/2-3.jpg?context=bWFzdGVyfHJvb3R8NzA4ODh8aW1hZ2UvanBlZ3xhRGcxTDJnMVpTOHhNalUyTmpFNE56WXdOakEwTmk4eUlETXVhbkJufDUzMTZjZmVmODI2YWQzOTI2MmQ3ZjRlYWE1N2Y5YTgyZGU1YjY1OTE3NDQ0NDUxZDUwYTM2ODI3NmNlNjcyMmE" alt="Best Toys for 5 Year Olds 2025" title="Best Toys for 5 Year Olds 2025" />
+                    </div>
+                    <div class="content-tile-details">
+                        <h4 class="content-tile-title">
+                            Best Toys for 5 Year Olds 2025
+                        </h4>
+                        <!-- <p>Content paragraph copy goes here. Content paragraph copy goes here.</p> -->
+                        <a href="https://www.thetoyshop.com/childhood-adventures/best-toys-for-5-year-olds" class="hero-button">
+                            <span class="swoosh-container">
+                                <span class="star-start">
+                                    <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                    </svg>
+                                </span>
+                                <span class="swoosh">&nbsp;</span>
+                            </span>
+                            Find Out More
+                            <!-- <span class="basket-icon">
+                                <svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path>
+                                </svg>
+                            </span> -->
+                            <span class="star-end">
+                                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+        </div>
+    </div>
+    </div>
+    <div class="homepage-tab-content" id="our-stores">
+      <div class="store-delivery-panels">
+        <div class="store-finder">
+          <div class="delivery-message">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="21"
+              viewBox="0 0 24 21"
+              fill="none"
+            >
+              <path
+                d="M22.9808 14.5961C23.1443 14.5961 23.2885 14.6538 23.3943 14.7692C23.5 14.8846 23.5577 15.0385 23.5577 15.2211V16.4808C23.5577 16.6635 23.5 16.8173 23.3943 16.9327C23.2885 17.0481 23.1443 17.1058 22.9808 17.1058H21.2597C21.2597 18.1538 20.9231 19.0481 20.2597 19.7885C19.5866 20.5288 18.7789 20.8942 17.8173 20.8942C16.8558 20.8942 16.0481 20.5288 15.375 19.7885C14.702 19.0481 14.375 18.1538 14.375 17.1058H9.7885C9.7885 18.1538 9.45196 19.0481 8.7885 19.7885C8.11542 20.5288 7.30773 20.8942 6.34619 20.8942C5.38465 20.8942 4.57696 20.5288 3.90389 19.7885C3.23081 19.0481 2.90389 18.1538 2.90389 17.1058V12.0577H8.35581C8.54811 12.0577 8.64427 11.9519 8.64427 11.7404V11.1058C8.64427 10.8942 8.54811 10.7885 8.35581 10.7885H0.89427C0.701962 10.7885 0.605809 10.6827 0.605809 10.4711V9.83653C0.605809 9.62499 0.701962 9.51922 0.89427 9.51922H9.50004C9.69235 9.51922 9.7885 9.41345 9.7885 9.20191V8.5673C9.7885 8.35576 9.69235 8.24999 9.50004 8.24999H2.0385C1.84619 8.24999 1.75004 8.14422 1.75004 7.93268V7.29807C1.75004 7.08653 1.84619 6.98076 2.0385 6.98076H10.6443C10.8366 6.98076 10.9327 6.87499 10.9327 6.66345V6.02884C10.9327 5.8173 10.8366 5.71153 10.6443 5.71153H0.884652C0.692345 5.71153 0.596191 5.60576 0.596191 5.39422V4.75961C0.596191 4.54807 0.692345 4.4423 0.884652 4.4423H2.89427V2.54807C2.89427 2.01922 3.05773 1.57691 3.39427 1.21153C3.73081 0.846144 4.13465 0.663452 4.61542 0.663452H13.7981C14.2789 0.663452 14.6827 0.846144 15.0193 1.21153C15.3558 1.57691 15.5193 2.02884 15.5193 2.54807V4.4423H17.0962C17.577 4.4423 17.9808 4.62499 18.3173 4.99038L21.9039 8.93268C22.2404 9.29807 22.4039 9.74999 22.4039 10.2692V14.5288H22.9808V14.5961ZM5.12504 18.4615C5.46158 18.8269 5.86542 19.0096 6.34619 19.0096C6.82696 19.0096 7.23081 18.8269 7.56735 18.4615C7.90388 18.0961 8.06735 17.6442 8.06735 17.125C8.06735 16.6058 7.90388 16.1538 7.56735 15.7885C7.23081 15.4231 6.82696 15.2404 6.34619 15.2404C5.86542 15.2404 5.46158 15.4231 5.12504 15.7885C4.7885 16.1538 4.62504 16.6058 4.62504 17.125C4.62504 17.6442 4.7885 18.0961 5.12504 18.4615ZM20.6923 10.8077V10.3365L17.1058 6.39422H15.5289V10.8077H20.6923ZM16.6058 18.4615C16.9423 18.8269 17.3462 19.0096 17.827 19.0096C18.3077 19.0096 18.7116 18.8269 19.0481 18.4615C19.3847 18.0961 19.5481 17.6442 19.5481 17.125C19.5481 16.6058 19.3847 16.1538 19.0481 15.7885C18.7116 15.4231 18.3077 15.2404 17.827 15.2404C17.3462 15.2404 16.9423 15.4231 16.6058 15.7885C16.2693 16.1538 16.1058 16.6058 16.1058 17.125C16.1058 17.6442 16.2693 18.0961 16.6058 18.4615Z"
+                fill="currentColor"
+              />
+            </svg>
+            <span> Free Express Delivery on orders over £75 </span>
+          </div>
+          <div class="store-locator-content">
+            <div class="store-locator-message">
+              <img
+                src="https://www.thetoyshop.com/medias/store-locator-map-graphic.png?context=bWFzdGVyfHJvb3R8MjAxNjR8aW1hZ2UvcG5nfGFHWm1MMmhqWXk4eE1qVTJNamMwTkRZd05qYzFNQzl6ZEc5eVpTMXNiMk5oZEc5eUxXMWhjQzFuY21Gd2FHbGpMbkJ1Wnd8NzgzM2ViNzA5YTk0OGRlYjQ0NDQ4M2YxMTJhY2RiMWQwYzNlMDE3ZTZmODY0NGU2NzkyZjIzOGJjNzg1MzM2YQ"
+                alt="Find your local The Entertainer store or locker"
+                title="Find your local The Entertainer store"
+              />
+
+              <a href="/store-finder" class="store-locator-button">
+                <span class="swoosh-container">
+                  <span class="star-start">
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 11 11"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z"
+                        fill-opacity="0.5"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span class="swoosh">&nbsp;</span>
+                </span>
+                Search for stores
+                <span class="send-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="20"
+                    viewBox="0 0 22 20"
+                    fill="none"
+                  >
+                    <path
+                      d="M10.5124 13.7391L11.3721 9.13113L13.1951 9.56975L11.8195 16.9425C11.7228 17.4609 11.2203 17.7613 10.736 17.6448L3.44414 15.8903C2.93143 15.7669 2.60788 15.2678 2.70461 14.7494L4.08023 7.37662L5.9032 7.81525L5.04344 12.4232L10.5124 13.7391ZM20.7513 8.95035C21.0373 9.6511 20.4596 10.3547 19.7475 10.1834L3.3407 6.23571C2.60011 6.05752 2.32331 5.14832 2.83493 4.63947L5.94388 1.53564C6.16315 1.31756 6.48023 1.2133 6.79355 1.28869L18.3296 4.06437C18.6429 4.13976 18.8955 4.3811 19.018 4.68142L20.7513 8.95035ZM15.3794 18.2806L16.841 10.447L18.664 10.8856L17.2024 18.7192C17.1541 18.9784 16.8886 19.1252 16.6607 19.0703L15.7492 18.851C15.4929 18.7893 15.3311 18.5398 15.3794 18.2806Z"
+                      fill="white"
+                    />
+                  </svg>
+                </span>
+                <span class="star-end">
+                  <svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 11 11"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z"
+                      fill-opacity="0.5"
+                    ></path>
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="delivery-panel">
+          <div class="heading-ribbon-container">
+            <div class="heading-ribbon">
+              <span class="ribbon-start">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="48"
+                  viewBox="0 0 24 48"
+                  fill="none"
+                >
+                  <g clip-path="url(#clip0_2260_15)">
+                    <path
+                      d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z"
+                      fill="#EE3224"
+                    />
+                    <path
+                      d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z"
+                      fill="#EE3224"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_2260_15">
+                      <rect width="335" height="48" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+              <div class="delivery-panel-title">We love to deliver</div>
+              <span class="ribbon-end">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="48"
+                  viewBox="0 0 24 48"
+                  fill="none"
+                >
+                  <g clip-path="url(#clip0_2260_15)">
+                    <path
+                      d="M5.72687 47.4667C2.87304 47.4667 0.536342 44.9173 0.478882 41.7493L8.84885 24L0.478882 6.25066C0.545918 3.08266 2.87304 0.533325 5.72687 0.533325H329.273C332.127 0.533325 334.464 3.08266 334.521 6.25066L326.151 24L334.521 41.7493C334.464 44.9173 332.127 47.4667 329.273 47.4667H5.72687Z"
+                      fill="#EE3224"
+                    />
+                    <path
+                      d="M329.273 1.06667C331.83 1.06667 333.918 3.31733 334.042 6.13333L325.854 23.5093L325.624 24L325.854 24.4907L334.042 41.8667C333.927 44.6827 331.83 46.9333 329.273 46.9333H5.72682C3.16986 46.9333 1.08216 44.6827 0.957663 41.8667L9.14568 24.4907L9.37552 24L9.14568 23.5093L0.967239 6.13333C1.08216 3.31733 3.17944 1.06667 5.7364 1.06667H329.283M329.283 0H5.72682C2.56654 0 0 2.85867 0 6.37867L8.30294 24L0 41.6213C0 45.1413 2.56654 48 5.72682 48H329.273C332.433 48 335 45.1413 335 41.6213L326.697 24L335 6.37867C335 2.85867 332.433 0 329.273 0L329.283 0Z"
+                      fill="#EE3224"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_2260_15">
+                      <rect width="335" height="48" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+            </div>
+          </div>
+          <div class="delivery-icons">
+            <div class="delivery-icon-section">
+              <a
+                href="https://theentertainer.zendesk.com/hc/en-gb/articles/6480509734289-Delivery-information"
+                title="see delivery information"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="37"
+                  height="29"
+                  viewBox="0 0 37 29"
+                  fill="none"
+                >
+                  <path
+                    d="M18.5547 21.5V12.75H22.0547V26.75C22.0547 27.224 21.8724 27.625 21.5078 27.9531C21.1797 28.3177 20.7786 28.5 20.3047 28.5H6.30469C5.83073 28.5 5.41146 28.3177 5.04688 27.9531C4.71875 27.625 4.55469 27.224 4.55469 26.75V12.75H8.05469V21.5H18.5547ZM35.7812 8.26562C36.1458 8.84896 36.1641 9.45052 35.8359 10.0703C35.5078 10.6901 34.9974 11 34.3047 11H2.80469C2.11198 11 1.60156 10.6901 1.27344 10.0703C0.945312 9.45052 0.981771 8.84896 1.38281 8.26562L6.03125 1.26562C6.35938 0.755208 6.83333 0.5 7.45312 0.5H29.6562C30.276 0.5 30.75 0.755208 31.0781 1.26562L35.7812 8.26562ZM29.0547 27.625V12.75H32.5547V27.625C32.5547 27.8802 32.4635 28.0807 32.2812 28.2266C32.1354 28.4089 31.9349 28.5 31.6797 28.5H29.9297C29.6745 28.5 29.4557 28.4089 29.2734 28.2266C29.1276 28.0807 29.0547 27.8802 29.0547 27.625Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <div class="delivery-icon-title">FREE Click & Collect</div>
+                <div class="delivery-icon-details">
+                  In as little as 30 minutes
+                </div>
+              </a>
+            </div>
+            <div class="delivery-icon-section">
+              <a
+                href="https://theentertainer.zendesk.com/hc/en-gb/articles/6480509734289-Delivery-information"
+                title="see delivery information"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="35"
+                  height="29"
+                  viewBox="0 0 35 29"
+                  fill="none"
+                >
+                  <path
+                    d="M34.125 19.75C34.5625 19.75 35 20.1875 35 20.625V22.375C35 22.8672 34.5625 23.25 34.125 23.25H31.5C31.5 26.1484 29.1484 28.5 26.25 28.5C23.3516 28.5 21 26.1484 21 23.25H14C14 26.1484 11.6484 28.5 8.75 28.5C5.85156 28.5 3.5 26.1484 3.5 23.25H2.625C1.14844 23.25 0 22.1016 0 20.625V3.125C0 1.70312 1.14844 0.5 2.625 0.5H20.125C21.5469 0.5 22.75 1.70312 22.75 3.125V5.75H25.1562C25.8125 5.75 26.5234 6.07812 27.0156 6.57031L32.4297 11.9844C32.9219 12.4766 33.25 13.1875 33.25 13.8438V19.75H34.125ZM8.75 25.875C10.1719 25.875 11.375 24.7266 11.375 23.25C11.375 21.8281 10.1719 20.625 8.75 20.625C7.27344 20.625 6.125 21.8281 6.125 23.25C6.125 24.7266 7.27344 25.875 8.75 25.875ZM26.25 25.875C27.6719 25.875 28.875 24.7266 28.875 23.25C28.875 21.8281 27.6719 20.625 26.25 20.625C24.7734 20.625 23.625 21.8281 23.625 23.25C23.625 24.7266 24.7734 25.875 26.25 25.875ZM30.625 14.5V13.8438L25.1562 8.375H22.75V14.5H30.625Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <div class="delivery-icon-title">Standard Delivery</div>
+                <div class="delivery-icon-details">Within 3 working days</div>
+              </a>
+            </div>
+            <div class="delivery-icon-section">
+              <a
+                href="https://theentertainer.zendesk.com/hc/en-gb/articles/6480509734289-Delivery-information"
+                title="see delivery information"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="35"
+                  height="29"
+                  viewBox="0 0 35 29"
+                  fill="none"
+                >
+                  <path
+                    d="M34.125 19.75C34.5625 19.75 35 20.1875 35 20.625V22.375C35 22.8672 34.5625 23.25 34.125 23.25H31.5C31.5 26.1484 29.1484 28.5 26.25 28.5C23.3516 28.5 21 26.1484 21 23.25H14C14 26.1484 11.6484 28.5 8.75 28.5C5.85156 28.5 3.5 26.1484 3.5 23.25V16.25H11.8125C12.0312 16.25 12.25 16.0859 12.25 15.8125V14.9375C12.25 14.7188 12.0312 14.5 11.8125 14.5H0.4375C0.164062 14.5 0 14.3359 0 14.0625V13.1875C0 12.9688 0.164062 12.75 0.4375 12.75H13.5625C13.7812 12.75 14 12.5859 14 12.3125V11.4375C14 11.2188 13.7812 11 13.5625 11H2.1875C1.91406 11 1.75 10.8359 1.75 10.5625V9.6875C1.75 9.46875 1.91406 9.25 2.1875 9.25H15.3125C15.5312 9.25 15.75 9.08594 15.75 8.8125V7.9375C15.75 7.71875 15.5312 7.5 15.3125 7.5H0.4375C0.164062 7.5 0 7.33594 0 7.0625V6.1875C0 5.96875 0.164062 5.75 0.4375 5.75H3.5V3.125C3.5 1.70312 4.64844 0.5 6.125 0.5H20.125C21.5469 0.5 22.75 1.70312 22.75 3.125V5.75H25.1562C25.8125 5.75 26.5234 6.07812 27.0156 6.57031L32.4297 11.9844C32.9219 12.4766 33.25 13.1875 33.25 13.8438V19.75H34.125ZM8.75 25.875C10.1719 25.875 11.375 24.7266 11.375 23.25C11.375 21.8281 10.1719 20.625 8.75 20.625C7.27344 20.625 6.125 21.8281 6.125 23.25C6.125 24.7266 7.27344 25.875 8.75 25.875ZM26.25 25.875C27.6719 25.875 28.875 24.7266 28.875 23.25C28.875 21.8281 27.6719 20.625 26.25 20.625C24.7734 20.625 23.625 21.8281 23.625 23.25C23.625 24.7266 24.7734 25.875 26.25 25.875ZM30.625 14.5V13.8438L25.1562 8.375H22.75V14.5H30.625Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <div class="delivery-icon-title">Next Day Delivery</div>
+                <div class="delivery-icon-details">If you order by 7pm</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-tabs">
+      <button class="tab-button" data-id="top-picks">
+        <span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="21"
+            height="19"
+            viewBox="0 0 21 19"
+            fill="currentColor"
+          >
+            <path
+              d="M19.0985 4.20293C19.3057 4.22456 19.4743 4.31547 19.6042 4.47566C19.7341 4.63585 19.7882 4.81955 19.7666 5.02675L19.5849 6.76729C19.4637 7.92765 18.7122 8.90699 17.3301 9.7053C16.262 10.306 15.078 10.6118 13.7782 10.6227C13.4362 11.0897 13.0696 11.4913 12.6784 11.8275C12.2872 12.1637 11.9804 12.3935 11.7581 12.5169L11.4245 12.7021L11.1909 14.9399L12.6828 15.0956C13.2423 15.154 13.6923 15.3581 14.0328 15.7079C14.394 16.0598 14.5465 16.5051 14.4903 17.0438L14.4513 17.4168C14.4254 17.6655 14.2881 17.7768 14.0394 17.7509L4.83943 16.7904C4.59079 16.7644 4.47944 16.6271 4.5054 16.3785L4.54434 16.0055C4.60058 15.4668 4.83141 15.0615 5.23683 14.7896C5.66298 14.5199 6.15578 14.4142 6.71524 14.4726L8.20713 14.6284L8.44076 12.3905C8.3622 12.3405 8.25581 12.256 8.12158 12.1373C7.98735 12.0185 7.7543 11.7429 7.42243 11.3102C7.09055 10.8776 6.80553 10.3975 6.56736 9.8699C5.29782 9.59074 4.20252 9.04699 3.28148 8.23865C2.09414 7.1721 1.56104 6.05864 1.68218 4.89828L1.86389 3.15774C1.88552 2.95053 1.97643 2.78198 2.13662 2.65207C2.2968 2.52217 2.4805 2.46804 2.68771 2.48967L5.92014 2.82713L6.04993 1.58389C6.07156 1.37668 6.16247 1.20812 6.32266 1.07822C6.48285 0.948319 6.66655 0.894184 6.87375 0.915816L15.3278 1.79841C15.535 1.82004 15.7036 1.91095 15.8335 2.07114C15.9634 2.23132 16.0175 2.41502 15.9959 2.62223L15.8661 3.86547L19.0985 4.20293ZM4.60021 6.74249C4.96578 7.05296 5.3782 7.31595 5.83747 7.53147C5.69824 6.65813 5.65657 5.75308 5.71247 4.81632L3.72328 4.60865L3.67137 5.10595C3.62161 5.58252 3.93123 6.12804 4.60021 6.74249ZM17.5957 6.55963L17.6476 6.06233L15.6584 5.85466C15.5196 6.78277 15.2919 7.6597 14.9753 8.48545C15.4692 8.36944 15.927 8.1973 16.3489 7.96903C17.1303 7.506 17.5459 7.0362 17.5957 6.55963Z"
+            />
+          </svg>
+        </span>
+        <span> Top Picks </span>
+      </button>
+      <button class="tab-button" data-id="age-range">
+        <span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="20"
+            viewBox="0 0 18 20"
+            fill="currentColor"
+          >
+            <path
+              d="M1.79738 15.1491C2.07711 15.1199 2.43062 14.8945 2.8579 14.4728C3.26186 14.0536 3.74358 13.8148 4.30304 13.7564C4.83919 13.7004 5.35984 13.8346 5.86499 14.1589C6.34683 14.4856 6.72762 14.6344 7.00735 14.6052C7.28708 14.576 7.64058 14.3506 8.06786 13.9289C8.47183 13.5097 8.95354 13.2709 9.513 13.2125C10.0492 13.1565 10.5698 13.2907 11.075 13.615C11.5801 13.9393 11.9609 14.0881 12.2173 14.0613C12.5204 14.0296 12.8855 13.803 13.3128 13.3814C13.7168 12.9621 14.1985 12.7233 14.7579 12.6649C15.2941 12.609 15.8147 12.7431 16.3199 13.0674C16.8017 13.3942 17.1825 13.5429 17.4622 13.5137L17.1702 10.7164C17.1215 10.2502 16.917 9.87096 16.5566 9.57868C16.1962 9.2864 15.7828 9.16459 15.3166 9.21327L14.7572 9.27167L14.2315 4.23654L11.9937 4.47017L12.5193 9.5053L10.2815 9.73893L9.75582 4.70379L7.51798 4.93742L8.04364 9.97255L5.80581 10.2062L5.28015 5.17105L3.04231 5.40467L3.56797 10.4398L3.00851 10.4982C2.54229 10.5469 2.16304 10.7514 1.87076 11.1119C1.57848 11.4723 1.45668 11.8856 1.50535 12.3518L1.79738 15.1491ZM2.26464 19.6248L17.9295 17.9894L17.5791 14.6326C17.0196 14.691 16.499 14.5569 16.0171 14.2301C15.512 13.9058 15.1195 13.7583 14.8398 13.7875C14.5601 13.8167 14.2182 14.0409 13.8142 14.4601C13.387 14.8818 12.9052 15.1206 12.3691 15.1766C11.8096 15.235 11.289 15.1008 10.8071 14.7741C10.302 14.4498 9.90955 14.3022 9.62982 14.3314C9.35009 14.3606 9.00824 14.5848 8.60427 15.004C8.17699 15.4257 7.69528 15.6645 7.15913 15.7205C6.59967 15.7789 6.07902 15.6447 5.59718 15.318C5.09202 14.9937 4.68793 14.8473 4.38488 14.879C4.12847 14.9057 3.79827 15.1287 3.3943 15.548C2.96703 15.9696 2.47366 16.2096 1.9142 16.268L2.26464 19.6248ZM13.0542 3.79389C13.3572 3.76226 13.6143 3.62937 13.8255 3.39524C14.011 3.14023 14.0879 2.8612 14.0563 2.55816C14.0222 2.23181 13.8016 1.92493 13.3946 1.63751C12.9876 1.3501 12.7573 0.949974 12.7037 0.437136C12.4706 0.461472 12.249 0.708477 12.0388 1.17815C11.8262 1.62452 11.743 2.06915 11.7892 2.51206C11.8355 2.95496 11.9769 3.29367 12.2134 3.52819C12.4476 3.7394 12.7278 3.82796 13.0542 3.79389ZM8.5785 4.26115C8.88154 4.22951 9.13866 4.09662 9.34987 3.86249C9.53533 3.60748 9.61224 3.32845 9.5806 3.02541C9.54653 2.69906 9.32597 2.39218 8.91893 2.10477C8.51189 1.81735 8.2816 1.41723 8.22806 0.904389C7.99495 0.928725 7.7733 1.17573 7.56312 1.64541C7.35051 2.09177 7.26732 2.53641 7.31356 2.97931C7.3598 3.42222 7.5012 3.76093 7.73777 3.99544C7.9719 4.20665 8.25214 4.29522 8.5785 4.26115ZM4.10282 4.7284C4.40586 4.69676 4.66298 4.56388 4.87419 4.32974C5.05965 4.07473 5.13656 3.79571 5.10493 3.49267C5.07086 3.16632 4.8503 2.85943 4.44326 2.57202C4.03621 2.28461 3.80592 1.88448 3.75238 1.37164C3.51927 1.39598 3.29763 1.64298 3.08745 2.11266C2.87483 2.55902 2.79165 3.00366 2.83789 3.44656C2.88412 3.88947 3.02553 4.22818 3.26209 4.4627C3.49623 4.6739 3.77647 4.76247 4.10282 4.7284Z"
+            />
+          </svg>
+        </span>
+        <span> Shop By Age </span>
+      </button>
+      <button class="tab-button" data-id="brands">
+        <span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="26"
+            height="25"
+            viewBox="0 0 26 25"
+            fill="currentColor"
+          >
+            <path
+              d="M20.5149 7.57425L16.7187 1.48951C16.4705 1.09181 16.1204 0.840612 15.6684 0.73591C15.2163 0.631208 14.7914 0.702918 14.3937 0.95104L8.30898 4.74731C7.91128 4.99543 7.66008 5.34553 7.55538 5.7976L5.17716 16.0661C5.07246 16.5182 5.14417 16.9431 5.39229 17.3408C5.64041 17.7385 5.99051 17.9897 6.44258 18.0944L16.3236 20.3828C16.7757 20.4875 17.2006 20.4158 17.5982 20.1677C17.9959 19.9196 18.2471 19.5695 18.3518 19.1174L20.7301 8.84891C20.8348 8.39683 20.7631 7.97195 20.5149 7.57425ZM12.9222 5.10126C13.0269 4.64919 13.2781 4.29909 13.6758 4.05097C14.0735 3.80284 14.4983 3.73113 14.9504 3.83584C15.4025 3.94054 15.7526 4.19174 16.0007 4.58943C16.2488 4.98713 16.3205 5.41201 16.2158 5.86408C16.1111 6.31616 15.8599 6.66625 15.4622 6.91438C15.0646 7.1625 14.6397 7.23421 14.1876 7.12951C13.7355 7.02481 13.3854 6.77361 13.1373 6.37591C12.8892 5.97822 12.8175 5.55333 12.9222 5.10126Z"
+            />
+          </svg>
+        </span>
+        <span> Brands </span>
+      </button>
+      <button class="tab-button" data-id="toy-types">
+        <span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="25"
+            height="20"
+            viewBox="0 0 25 20"
+            fill="currentColor"
+          >
+            <path
+              d="M12.7257 14.3463L12.3372 8.73473L10.0926 8.89012L10.7141 17.8686C10.7352 18.1726 10.8699 18.4217 11.1183 18.6159C11.3449 18.8352 11.6102 18.9343 11.9141 18.9132L20.8926 18.2917C21.1966 18.2707 21.4574 18.1351 21.675 17.8851C21.8709 17.6601 21.9583 17.3957 21.9373 17.0917L21.3157 8.11319L19.0711 8.26858L19.4596 13.8801L12.7257 14.3463ZM1.09035 6.62359C0.88243 7.01388 0.897446 7.40048 1.1354 7.7834C1.37335 8.16632 1.71445 8.3424 2.15869 8.31165L22.3603 6.91318C22.8046 6.88243 23.1182 6.66103 23.3011 6.24897C23.484 5.83692 23.4339 5.45274 23.1508 5.09644L19.8589 0.813557C19.6258 0.500783 19.3105 0.358154 18.913 0.38567L4.67369 1.37139C4.2762 1.39891 3.98357 1.58362 3.7958 1.92553L1.09035 6.62359ZM6.26372 18.7406L5.60333 9.20089L3.3587 9.35627L4.01909 18.8959C4.03042 19.0596 4.09777 19.1842 4.22116 19.2696C4.32278 19.38 4.45542 19.4296 4.61909 19.4183L5.74141 19.3406C5.90508 19.3292 6.04132 19.2611 6.15013 19.1361C6.23719 19.0361 6.27505 18.9042 6.26372 18.7406Z"
+            />
+          </svg>
+        </span>
+        <span> Toy Types </span>
+      </button>
+      <button class="tab-button" data-id="content">
+        <span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="17"
+            viewBox="0 0 22 17"
+            fill="none"
+          >
+            <path
+              d="M3.05732 16.8515L19.9634 15.0746C20.7869 14.988 21.3849 14.2495 21.2984 13.426L20.2008 2.98354C20.1143 2.16008 19.3757 1.562 18.5523 1.64855L18.0558 1.70073L18.032 1.47398C17.9587 0.777019 17.3309 0.268655 16.634 0.341908L15.6959 0.4405C13.7053 0.649724 11.8134 1.24676 10.0666 2.21465C8.15644 1.6287 6.18195 1.44046 4.19131 1.64969L3.25328 1.74828C2.55632 1.82153 2.04796 2.44931 2.12121 3.14627L2.14504 3.37302L1.64858 3.4252C0.825111 3.51175 0.227036 4.25031 0.313585 5.07378L1.41113 15.5163C1.49768 16.3397 2.23625 16.9378 3.05971 16.8512L3.05732 16.8515ZM16.7386 1.33723C16.8866 1.32167 17.0211 1.43061 17.0367 1.57859L18.1819 12.4746C18.1974 12.6226 18.0885 12.7571 17.9405 12.7726L17.0025 12.8712C15.1908 13.0616 13.4616 13.5764 11.8487 14.3951L10.6548 3.03606C12.255 2.16562 13.9818 1.62698 15.8006 1.43582L16.7386 1.33723ZM3.11414 3.04191C3.09859 2.89392 3.20752 2.7594 3.35551 2.74384L4.29354 2.64525C6.10993 2.45434 7.91358 2.62434 9.65952 3.14067L10.8534 14.4997C9.10532 14.0319 7.30707 13.8903 5.49545 14.0807L4.55742 14.1793C4.40943 14.1948 4.27491 14.0859 4.25935 13.9379L3.11414 3.04191Z"
+              fill="currentColor"
+            />
+            <path
+              d="M4.78675 4.7436C5.53584 4.68417 6.97674 4.61719 8.18933 4.83483C8.23832 4.84175 8.28442 4.84414 8.32977 4.83938C8.54698 4.81655 8.73003 4.65252 8.76926 4.42879C8.81779 4.15582 8.63619 3.89739 8.36322 3.84886C7.04021 3.61386 5.50547 3.68347 4.70839 3.74552C4.4422 3.76143 4.22685 4.0085 4.24853 4.28374C4.27022 4.55898 4.51151 4.76529 4.78675 4.7436Z"
+              fill="currentColor"
+            />
+            <path
+              d="M5.04823 7.23066C5.79732 7.17123 7.23821 7.10425 8.4508 7.32189C8.49979 7.32881 8.5459 7.33121 8.59125 7.32644C8.80845 7.30361 8.99151 7.13958 9.03074 6.91585C9.07927 6.64288 8.89766 6.38445 8.62469 6.33592C7.30168 6.10092 5.76695 6.17053 4.96987 6.23258C4.70367 6.2485 4.48832 6.49556 4.51001 6.7708C4.5317 7.04604 4.77299 7.25235 5.04823 7.23066Z"
+              fill="currentColor"
+            />
+            <path
+              d="M5.30933 9.7154C6.05843 9.65597 7.49932 9.58899 8.71191 9.80664C8.7609 9.81355 8.807 9.81595 8.85235 9.81118C9.06956 9.78835 9.25262 9.62432 9.29184 9.40059C9.34038 9.12762 9.15877 8.86919 8.8858 8.82066C7.56279 8.58566 6.02806 8.65527 5.23098 8.71732C4.96478 8.73324 4.74943 8.9803 4.77112 9.25554C4.79281 9.53078 5.03409 9.73709 5.30933 9.7154Z"
+              fill="currentColor"
+            />
+            <path
+              d="M5.57067 12.2025C6.31976 12.1431 7.76065 12.0761 8.97325 12.2937C9.02224 12.3006 9.06834 12.303 9.11369 12.2983C9.33089 12.2754 9.51395 12.1114 9.55318 11.8877C9.60171 11.6147 9.4201 11.3563 9.14714 11.3077C7.82412 11.0727 6.28939 11.1424 5.49231 11.2044C5.22637 11.2227 5.01076 11.4674 5.03245 11.7426C5.05414 12.0179 5.29543 12.2242 5.57067 12.2025Z"
+              fill="currentColor"
+            />
+            <path
+              d="M12.3086 4.42112C12.354 4.41635 12.401 4.40418 12.4451 4.38748C13.5862 3.92486 15.0095 3.6908 15.7543 3.5908C16.028 3.55479 16.2188 3.30307 16.1852 3.02909C16.1491 2.75535 15.9105 2.55118 15.6234 2.59824C14.8309 2.70326 13.3152 2.95427 12.07 3.4592C11.8131 3.56342 11.6915 3.85372 11.7934 4.11088C11.8783 4.32156 12.0938 4.4437 12.3086 4.42112Z"
+              fill="currentColor"
+            />
+            <path
+              d="M12.5701 6.90827C12.6154 6.9035 12.6624 6.89132 12.7065 6.87462C13.8476 6.41201 15.2709 6.17795 16.0158 6.07795C16.2895 6.04194 16.4802 5.79022 16.4466 5.51623C16.4106 5.2425 16.1722 5.04071 15.8849 5.08539C15.0923 5.19041 13.5767 5.44142 12.3314 5.94635C12.0745 6.05057 11.953 6.34086 12.0548 6.59803C12.1397 6.80871 12.3553 6.93085 12.5701 6.90827Z"
+              fill="currentColor"
+            />
+            <path
+              d="M12.8314 9.39539C12.8768 9.39062 12.9238 9.37845 12.9679 9.36174C14.109 8.89913 15.5323 8.66507 16.2771 8.56507C16.5508 8.52906 16.7416 8.27734 16.708 8.00336C16.6719 7.72962 16.4335 7.52783 16.1462 7.57251C15.3537 7.67753 13.838 7.92854 12.5928 8.43347C12.3359 8.53769 12.2143 8.82798 12.3162 9.08515C12.4011 9.29583 12.6166 9.41797 12.8314 9.39539Z"
+              fill="currentColor"
+            />
+            <path
+              d="M16.4053 10.0599C15.6127 10.1649 14.097 10.4159 12.8518 10.9208C12.5949 11.0251 12.4734 11.3154 12.5752 11.5725C12.6601 11.7832 12.8756 11.9053 13.0905 11.8828C13.1358 11.878 13.1828 11.8658 13.2269 11.8491C14.368 11.3865 15.7913 11.1524 16.5361 11.0524C16.8099 11.0164 17.0006 10.7647 16.967 10.4907C16.931 10.217 16.6926 10.0152 16.4053 10.0599Z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+        <span> Blogs </span>
+      </button>
+      <button class="tab-button" data-id="our-stores">
+        <span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="19"
+            viewBox="0 0 16 19"
+            fill="currentColor"
+          >
+            <path
+              d="M9.71009 17.2836C10.158 16.4579 10.6727 15.525 11.254 14.4851C11.8134 13.4474 12.2155 12.7155 12.4603 12.2894C12.7051 11.8632 12.9848 11.3444 13.2993 10.7329C13.6115 10.0994 13.821 9.65468 13.9278 9.39871C14.0126 9.14505 14.1126 8.82304 14.2276 8.43268C14.3206 8.04462 14.3753 7.7162 14.3918 7.44741C14.3839 7.15891 14.3605 6.82752 14.3214 6.45326C14.1375 4.692 13.3648 3.25928 12.0032 2.15511C10.6416 1.05094 9.08017 0.590787 7.31891 0.774659C5.55765 0.958532 4.12493 1.73127 3.02076 3.09286C1.91659 4.45445 1.45644 6.01588 1.64031 7.77714C1.67939 8.15141 1.73588 8.47935 1.80979 8.76096C1.85939 9.02285 1.98078 9.33288 2.17396 9.69106C2.34513 10.0515 2.5094 10.346 2.66678 10.5744C2.80214 10.805 3.08798 11.1981 3.52431 11.7534C3.95833 12.2867 4.33913 12.7366 4.66671 13.103C4.99429 13.4694 5.54988 14.1013 6.3335 14.9988C7.09511 15.8985 7.78032 16.7061 8.38914 17.4215C8.56624 17.6256 8.79789 17.7126 9.08409 17.6828C9.3703 17.6529 9.57896 17.5198 9.71009 17.2836ZM10.0597 8.80103C9.5842 9.36256 8.98318 9.68124 8.25666 9.75709C7.53014 9.83294 6.88727 9.64411 6.32804 9.19061C5.7445 8.7174 5.41481 8.11753 5.33896 7.39101C5.26311 6.66449 5.46295 6.02047 5.93846 5.45894C6.38966 4.8777 6.97852 4.54916 7.70504 4.47331C8.43156 4.39746 9.08659 4.59614 9.67013 5.06936C10.2294 5.52286 10.5469 6.11287 10.6227 6.83939C10.6986 7.56591 10.5109 8.21979 10.0597 8.80103Z"
+            />
+          </svg>
+        </span>
+        <span> Our Stores </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var tabButtons = document.querySelectorAll(".tab-button");
+  const tabContents = document.querySelectorAll(".homepage-tab-content");
+
+  const FLICKITIES = document.querySelectorAll(".blog-carousel");
+
+  FLICKITIES.forEach((slider) => {
+    new Flickity(slider);
+  });
+
+  if (tabButtons && tabContents) {
+    tabButtons.forEach((tabBtn) => {
+      tabBtn.addEventListener("click", () => {
+        const tabId = tabBtn.getAttribute("data-id");
+
+        tabButtons.forEach((btn) => btn.classList.remove("active"));
+        tabBtn.classList.add("active");
+
+        tabContents.forEach((content) => {
+          content.classList.remove("active");
+
+          if (content.id === tabId) {
+            content.classList.add("active");
+          }
+
+          var flkty4 = new Flickity(".carousel-top-picks ");
+          flkty4.resize();
+
+          var flkty5 = new Flickity(".gallery ");
+          flkty5.resize();
+
+          var flkty6 = new Flickity(".blog-carousel ");
+          flkty6.resize();
+
+          var flkty7 = new Flickity(".brands-carousel ");
+          flkty7.resize();
+        });
+        
+        if (tabId === "content") {
+          setTimeout(function(){
+            const blogSlides = document.querySelectorAll('.latest-blog-posts .carousel-cell');
+
+            blogSlides.forEach((slide) => {
+                slide.style.height = "100%";
+            })
+          }, 500);
+        } else {
+          const blogSlides = document.querySelectorAll('.latest-blog-posts .carousel-cell');
+
+          blogSlides.forEach((slide) => {
+              slide.style.height = "";
+          })
+        }
+      });
+    });
+  }
+  // const r = document.querySelector(':root');
+  // let navHeightTest = document.querySelector(".js-mainHeader").offsetHeight;
+  // r.style.setProperty('--nav-height', navHeightTest + 'px');
+</script>
+

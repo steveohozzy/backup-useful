@@ -1,0 +1,93 @@
+<style>
+#peeking-sheep {
+  position: fixed;
+  top: 40%;
+  right: -175px;
+  width: 80px;
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+@media (min-width: 1440px) {
+  #peeking-sheep {
+    top: 15%;
+    width: 150px;
+  }
+}
+
+@media (min-width: 1640px) {
+  #peeking-sheep {
+    top: 15%;
+    width: 220px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const sheep = document.createElement("img");
+
+  sheep.id = "peeking-sheep";
+
+  sheep.src = "https://www.thetoyshop.com/medias/sheep-detective.png?context=bWFzdGVyfHJvb3R8NDM0MDd8aW1hZ2UvcG5nfGFEUXhMMmd3TkM4eE1qZzBOVFV4T1RBM056UXdOaTl6YUdWbGNDMWtaWFJsWTNScGRtVXVjRzVufDU1MjhmZGI2YTg4YTI2YTVlMjQ1NTNlY2Y0ODU2ZTU0ZDc3Y2YzNGEwOGM0MTk5MjkyYmFmNWRlYTAzYzJjNmQ";
+
+  sheep.alt = "Peeking sheep head";
+
+  document.body.appendChild(sheep);
+
+  function updateSheepParallax() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    const docHeight =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+
+    const scrollPercent =
+      docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+    const startPercent = 35;
+    const peakPercent = 47;
+    const endPercent = 55;
+
+    if (
+      scrollPercent < startPercent ||
+      scrollPercent > endPercent
+    ) {
+      sheep.style.opacity = "0";
+      sheep.style.transform = "translateX(0px)";
+    } else {
+      let progress = 0;
+
+      if (scrollPercent <= peakPercent) {
+        progress =
+          (scrollPercent - startPercent) /
+          (peakPercent - startPercent);
+      } else {
+        progress =
+          1 -
+          ((scrollPercent - peakPercent) /
+          (endPercent - peakPercent));
+      }
+
+      progress = Math.max(0, Math.min(1, progress));
+
+      const slideDistance = 180 * progress;
+
+      sheep.style.opacity = "1";
+
+      /* Move LEFT from the right-hand side */
+      sheep.style.transform =
+        "translateX(-" + slideDistance + "px)";
+    }
+  }
+
+  window.addEventListener("scroll", updateSheepParallax);
+  window.addEventListener("resize", updateSheepParallax);
+
+  updateSheepParallax();
+});
+</script>
