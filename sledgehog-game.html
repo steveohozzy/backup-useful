@@ -25,8 +25,11 @@
   #game-container {
     position: relative;
     width: 100%;
-    height: 100vh;
-    min-height: 560px;
+    /* Clamp total height to dynamic viewport height minus the 140px header/footer allowance */
+    height: calc(100vh - 140px);
+    height: calc(100dvh - 140px);
+    max-height: calc(100vh - 140px);
+    /* Removed min-height so it shrinks properly on smaller screens */
     overflow: hidden;
     background: linear-gradient(
       180deg,
@@ -40,8 +43,9 @@
   }
 
   .sledge-game-section #game-container {
-    height: 100%;
-    min-height: 500px;
+    height: calc(100vh - 140px);
+    height: calc(100dvh - 140px);
+    min-height: 0; /* Clear previous min-height overrides */
   }
 
   #sky {
@@ -995,7 +999,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px;
+    padding: 12px 20px; /* Reduced vertical padding */
     text-align: center;
     color: white;
     background:
@@ -1008,6 +1012,65 @@
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     animation: screenIn 0.35s ease;
+    overflow-y: auto; /* Fallback safety if height is extremely small */
+  }
+
+  .hero-emoji {
+    font-size: clamp(36px, 6vh, 80px); /* Scales dynamic to vertical height */
+    margin-bottom: 6px;
+    filter: drop-shadow(0 15px 12px rgba(0, 0, 0, 0.3));
+    animation: heroFloat 1.3s ease-in-out infinite alternate;
+  }
+
+  .screen h1 {
+    font-size: clamp(22px, 4vh, 40px);
+    margin-bottom: 6px;
+    color: white;
+    text-shadow: 0 5px 25px rgba(56, 189, 248, 0.65);
+  }
+
+  .screen p {
+    font-size: clamp(12px, 1.8vh, 15px);
+    line-height: 1.3;
+    color: #dbeafe;
+    margin-bottom: 12px;
+  }
+
+  .instructions-box {
+    width: min(400px, 90vw);
+    padding: 8px 14px;
+    margin-bottom: 14px;
+    border-radius: 16px;
+    background: rgba(30, 41, 59, 0.72);
+    border: 1px solid rgba(125, 211, 252, 0.25);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  .rule-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    color: #f1f5f9;
+    font-size: clamp(11px, 1.5vh, 13px);
+    text-align: left;
+  }
+
+  .btn {
+    border: none;
+    padding: 10px 28px;
+    border-radius: 50px;
+    background: linear-gradient(180deg, #7dd3fc 0%, #0284c7 100%);
+    color: white;
+    font-size: clamp(14px, 2vh, 18px);
+    font-weight: 1000;
+    cursor: pointer;
+    box-shadow:
+      0 5px 0 #0369a1,
+      0 12px 25px rgba(2, 132, 199, 0.35);
+    transition:
+      transform 0.1s ease,
+      box-shadow 0.1s ease;
   }
 
   @keyframes screenIn {
@@ -1022,68 +1085,10 @@
     }
   }
 
-  .hero-emoji {
-    font-size: clamp(60px, 9vw, 95px);
-    margin-bottom: 10px;
-    filter: drop-shadow(0 15px 12px rgba(0, 0, 0, 0.3));
-    animation: heroFloat 1.3s ease-in-out infinite alternate;
-  }
-
   @keyframes heroFloat {
     to {
       transform: translateY(-9px) rotate(3deg);
     }
-  }
-
-  .screen h1 {
-    font-size: clamp(30px, 5vw, 48px);
-    margin-bottom: 10px;
-    color: white;
-    text-shadow: 0 5px 25px rgba(56, 189, 248, 0.65);
-  }
-
-  .screen p {
-    font-size: clamp(14px, 2vw, 17px);
-    line-height: 1.5;
-    color: #dbeafe;
-    margin-bottom: 18px;
-  }
-
-  .instructions-box {
-    width: min(400px, 90vw);
-    padding: 16px 19px;
-    margin-bottom: 24px;
-    border-radius: 22px;
-    background: rgba(30, 41, 59, 0.72);
-    border: 1px solid rgba(125, 211, 252, 0.25);
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
-  }
-
-  .rule-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 7px 0;
-    color: #f1f5f9;
-    font-size: 14px;
-    text-align: left;
-  }
-
-  .btn {
-    border: none;
-    padding: 16px 35px;
-    border-radius: 50px;
-    background: linear-gradient(180deg, #7dd3fc 0%, #0284c7 100%);
-    color: white;
-    font-size: 19px;
-    font-weight: 1000;
-    cursor: pointer;
-    box-shadow:
-      0 7px 0 #0369a1,
-      0 16px 35px rgba(2, 132, 199, 0.35);
-    transition:
-      transform 0.1s ease,
-      box-shadow 0.1s ease;
   }
 
   .btn:hover {

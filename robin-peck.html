@@ -53,6 +53,12 @@
     cursor: pointer;
 }
 
+@media (max-width: 767px) {
+    #game {
+        height: calc(100vh - 180px);
+    }
+}
+
 #ground{
     position:absolute;
     bottom:calc(var(--ground-bottom) * var(--scale));
