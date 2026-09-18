@@ -1,0 +1,1684 @@
+<style>
+
+@import url("https://use.typekit.net/bke4tog.css");
+::selection {
+    background: #B6985A;
+    color: #072442;
+}
+
+.breadcrumb-section {
+    display: none;
+}
+
+.advent-wrapper {
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+    background-image: url('https://thetoyshop.com/medias/Background.png?context=bWFzdGVyfHJvb3R8NTU1MjE4fGltYWdlL3BuZ3xhRFF4TDJnME5DOHhNalkxTURrNU9ETXdNRGN3TWk5Q1lXTnJaM0p2ZFc1a0xuQnVad3w1OTdmYTdmOTIyZDMwYjAxYThjY2RlZTVmYjliOWNhYTFlZGFhYTk3NTM2N2U4ZjBjNDY5OTM3MDMwOTA2MTEw');
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-bottom: 100px;
+    margin-bottom: -150px;
+    max-width: 100vw;
+    top: -1px;
+}
+
+.stars-left {
+    position: absolute;
+    left: -30px;
+    top: 0;
+    height: 100%;
+    width: auto;
+}
+
+.stars-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: auto;
+}
+
+footer {
+    position: relative;
+    z-index: 2;
+}
+
+.advent-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem 2rem;
+    position: relative;
+    z-index: 20;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.hero-icons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    margin: 0 auto 20px;
+}
+
+.heading-area {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.hero-title {
+  margin: 0;
+  line-height: 1.2;
+  font-family: "kari-display-pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 80px;
+   color: transparent;
+  background-image: url('https://thetoyshop.com/medias/gold-square.png?context=bWFzdGVyfHJvb3R8NTIyMjV8aW1hZ2UvcG5nfGFEUmtMMmcyWXk4eE1qWTBPVFE1TXpNek1UazVPQzluYjJ4a0lITnhkV0Z5WlM1d2JtY3xiZmFlNDVkNTNjMDJlMWRkZTliZDNhZDIwMGMxNDdjOWJkYjBkODNkZmNlOWQ3NGQ1NmNlYWY1MzI5MDA3NWQ2');
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-repeat: repeat;
+  filter: drop-shadow(4px 4px #021833);
+}
+
+.hero-instructions {
+    font-size: 18px;
+    color: #fff;
+    margin: 0 auto;
+    max-width: 59rem;
+    line-height: 1.2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.hero-instructions .instruction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-instructions .instruction svg {
+  margin-right: 10px;
+}
+
+.hero-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 14px;
+}
+
+/* Calendar Grid */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+    margin: 0 auto;
+    max-width: 64rem;
+    padding-bottom: 30px
+}
+
+.calendar-door {
+    aspect-ratio: 1;
+    cursor: pointer;
+    transition: all 0.5s;
+    border-radius: 8px;
+    position: relative;
+    background-image: url('https://thetoyshop.com/medias/Univ-advent-door-unlocked.png?context=bWFzdGVyfHJvb3R8MTYzMTA3fGltYWdlL3BuZ3xhRGd5TDJnd1ppOHhNalkxTURFMU5EQXdNRFF4TkM5VmJtbDJMV0ZrZG1WdWRDMWtiMjl5TFhWdWJHOWphMlZrTG5CdVp3fDhjN2Q3ZjU3OWRjODdkOTE0MGViNzg0ZTY4OTI2MGFjMDZhMjAyNzBhYzE2YmUxZGQ0NzhmZmVkOWU3ZjQ2NDg');
+    background-size: cover;
+    overflow: hidden;
+}
+
+.calendar-door.opened {
+    background: #072442;
+    box-shadow:inset 1px 1px 1px 0 rgba(255,255,255,0.5), inset -1px -1px 1px 0 rgba(0,0,0,0.5);
+    /* cursor: not-allowed; */
+    position: relative;
+    border: 3px solid #AB9B63;
+    opacity: 0.5;
+}
+
+.calendar-door.past.opened {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.calendar-door.opened::after {
+  content: '';
+  display: none;
+  background-color: #001533;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+}
+
+.calendar-door.available {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.calendar-door.available:hover {
+    transform: scale(1.05);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.calendar-door.today {
+  opacity: 1;
+  animation: pulse-animation 2s infinite, bounce-animation 2s infinite;
+}
+
+.calendar-door.today:hover {
+    animation: none;
+    transform: scale(1.05);
+    box-shadow: 0 0 0 5px rgba(229, 167, 62, 0.4);
+}
+
+@keyframes pulse-animation {
+  0% {
+    box-shadow: 0 0 0 0px rgba(229, 167, 62, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgba(229, 167, 62, 0);
+  }
+}
+
+@keyframes bounce-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.calendar-door.locked {
+    cursor: not-allowed;
+    background-image: url('https://thetoyshop.com/medias/Univ-advent-door-locked.png?context=bWFzdGVyfHJvb3R8MTc2ODQ4fGltYWdlL3BuZ3xhRE13TDJneE1DOHhNalkxTURFMU5EQTJOVGsxTUM5VmJtbDJMV0ZrZG1WdWRDMWtiMjl5TFd4dlkydGxaQzV3Ym1jfDg3MmNiZTY0NmU2NDM2MjY3MDMxNWFkOTBhNmVkZGI1MjEyZjFjMDI4MTdiODQxYWM2ZTRlYzlhYzkzMzk3YzY');
+}
+
+.door-content {
+    padding: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    gap: 20px;
+}
+
+.door-number {
+  font-family: "kari-display-pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 90px;
+  line-height: 90px;
+  color: transparent;
+  background-image: url('https://thetoyshop.com/medias/edited-photo-3-.png?context=bWFzdGVyfHJvb3R8Mjk3MTd8aW1hZ2UvcG5nfGFHVTJMMmhqTkM4eE1qWTBNemd6T1RRM05UYzBNaTlsWkdsMFpXUXRjR2h2ZEc4Z0tETXBMbkJ1Wnd8MzRlNmZjMzIzMjUwYzk5OGY4Y2JkY2ZlZGNlOGJhYjEwYWVmZDc1YTE0MzVhMDU1ODVhNTM0OWY2M2RkMWE3Zg');
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-repeat: repeat;
+  filter: drop-shadow(4px 4px #021833);
+  /*filter: drop-shadow(0 3px #124E05) drop-shadow(0 -3px #124E05)
+      drop-shadow(3px 0 #124E05) drop-shadow(-3px 0 #124E05);*/
+  /*margin-top: 20px;*/
+}
+
+.calendar-door.opened .door-title {
+  display: none;
+}
+
+.calendar-door.opened .door-number {
+  font-size: 18px;
+  width: 30%;
+  padding: 0;
+  border: none;
+  filter: none;
+  transform: rotate(0deg) !important;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  /* font-family: "Nunito Bold", "Tahoma Bold", sans-serif; */
+  font-family: "kari-display-pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  margin-top: 0;
+}
+
+.door-opened {
+    text-align: center;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+}
+
+.door-emoji {
+    width: 100%;
+    margin: 0 auto 1rem;
+    height: 100%;
+}
+
+.door-emoji img {
+    width: 70%;
+    height: auto;
+    border: 3px solid #e5a73e;
+    border-radius: 5px;
+}
+
+.door-opened .door-emoji {
+  width: 100%;
+  display: flex;
+  flex-flow: row-reverse;
+  background-color: #001533;
+  border-radius: 8px;
+}
+
+.door-opened .door-emoji img {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.door-opened .door-emoji .door-number {
+    display: none;
+}
+
+.door-title {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #7f1d1d;
+    margin-bottom: 0.25rem;
+}
+
+.door-discount {
+    font-size: 0.75rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    color: #072442;
+    font-weight: bold;
+    background-image: url('https://thetoyshop.com/medias/edited-photo-3-.png?context=bWFzdGVyfHJvb3R8Mjk3MTd8aW1hZ2UvcG5nfGFHVTJMMmhqTkM4eE1qWTBNemd6T1RRM05UYzBNaTlsWkdsMFpXUXRjR2h2ZEc4Z0tETXBMbkJ1Wnd8MzRlNmZjMzIzMjUwYzk5OGY4Y2JkY2ZlZGNlOGJhYjEwYWVmZDc1YTE0MzVhMDU1ODVhNTM0OWY2M2RkMWE3Zg');
+    font-family: "kari-display-pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.door-opened .door-discount {
+  width: 100%;
+}
+
+.door-available {
+    text-align: center;
+    width: calc(100% - 30px);
+    padding-top: 20px;
+    display: none;
+}
+
+.door-open-text {
+  font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  background-color: #124E05;
+  border: 3px solid #E5A73E;
+  border-radius: 30px;
+  padding: 5px 10px;
+  width: 100%;
+}
+
+.door-click-text {
+    color: #fde047;
+    font-size: 0.75rem;
+}
+
+.door-locked {
+    text-align: center;
+    width: calc(100% - 30px);
+}
+
+.door-lock-icon {
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    color: #072442;
+    font-weight: bold;
+    font-size: 20px;
+    background-image: url(https://thetoyshop.com/medias/edited-photo-2-.png?context=bWFzdGVyfHJvb3R8MzkwNDd8aW1hZ2UvcG5nfGFHUTBMMmhqTVM4eE1qWTBNemd6T1RVME1USTNPQzlsWkdsMFpXUXRjR2h2ZEc4Z0tESXBMbkJ1Wnd8ZGM4NWNlMzQ1YWQxNmU4NGI2ODMyZmRjN2VjNjk4MjIwMzc4ODI4NmVlNWNiZjU1MGRiZTU3MTIzNmExNTZiMA);
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    padding: 60px 20px 70px 15px;
+    display: flex;
+    align-items: center;
+    right: -3px;
+    bottom: -60px;
+    transform: rotate(45deg);
+}
+
+.door-lock-icon svg {
+    transform: rotate(-45deg);
+}
+
+/* Progress Section */
+.progress-section {
+    max-width: 32rem;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 20px;
+    border: 3px solid #E5A73E;
+    font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+    font-size: 14px;
+    display: none;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+    color: #407ec9;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.progress-bar {
+    width: 100%;
+    background: #124E05;
+    border-radius: 9999px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.progress-sleigh {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 5px;
+}
+
+.progress-sleigh svg {
+  position: relative;
+  margin-left: -10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #AE1F23;
+    transition: width 1s ease-out;
+    position: relative;
+}
+
+/* Modal */
+.advent-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 93, 156, 0.6);
+    z-index: 99999;
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+}
+
+.advent-modal.show {
+    display: flex !important;
+}
+
+.advent-modal-content {
+    background-image: url('https://thetoyshop.com//medias/Frame.png?context=bWFzdGVyfHJvb3R8NzgxODN8aW1hZ2UvcG5nfGFEQTNMMmcyTUM4eE1qWTBPVFE0TXpRek5qQTJNaTlHY21GdFpTNXdibWN8YzdiNjBlY2I0YTcyNGU5MTI4YjIyNWU3YjljM2Q3ZTg2YmViNThiMWRiOGU2MDg5NGI4Mzg3MWU2NDAwYzFmMA');
+    background-size: cover;
+    max-width: 28rem;
+    width: 100%;
+    border-radius: 1rem;
+    color: white;
+    position: relative;
+    margin: auto;
+    border: 3px solid #E5A73E;
+    animation: modal-bounce 0.6s ease-out;
+    overflow: hidden;
+}
+
+.modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.modal-body {
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.offer-emoji {
+    width: 70%;
+    height: auto;
+    margin: 0 auto 1rem;
+    overflow: hidden;
+    background-image: url('https://thetoyshop.com/medias/edited-photo-3-.png?context=bWFzdGVyfHJvb3R8Mjk3MTd8aW1hZ2UvcG5nfGFHVTJMMmhqTkM4eE1qWTBNemd6T1RRM05UYzBNaTlsWkdsMFpXUXRjR2h2ZEc4Z0tETXBMbkJ1Wnd8MzRlNmZjMzIzMjUwYzk5OGY4Y2JkY2ZlZGNlOGJhYjEwYWVmZDc1YTE0MzVhMDU1ODVhNTM0OWY2M2RkMWE3Zg');
+    padding: 4px;
+    position: relative;
+}
+
+.offer-emoji img {
+    width: 100%;
+    height: auto;
+}
+
+.offer-emoji .worth {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #fff;
+    background-color: #001533;
+    padding: 2px 10px;
+    border-radius: 8px;
+    font-family: "Nunito Bold","Tahoma Bold",sans-serif;
+}
+
+.offer-day {
+    font-size: 50px;
+    line-height: 50px;
+    font-family: "kari-display-pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+    color: transparent;
+    background-image: url('https://thetoyshop.com/medias/edited-photo-3-.png?context=bWFzdGVyfHJvb3R8Mjk3MTd8aW1hZ2UvcG5nfGFHVTJMMmhqTkM4eE1qWTBNemd6T1RRM05UYzBNaTlsWkdsMFpXUXRjR2h2ZEc4Z0tETXBMbkJ1Wnd8MzRlNmZjMzIzMjUwYzk5OGY4Y2JkY2ZlZGNlOGJhYjEwYWVmZDc1YTE0MzVhMDU1ODVhNTM0OWY2M2RkMWE3Zg');
+    background-clip: text;
+    -webkit-background-clip: text;
+    filter: drop-shadow(4px 4px #021833);
+    margin: 10px 0;
+}
+
+.offer-title {
+    margin: 10px 0;
+}
+
+.offer-discount-box {
+    padding: 10px 10px 20px;
+    margin-bottom: 20px;
+    background-image: url('https://thetoyshop.com/medias/gold-square.png?context=bWFzdGVyfHJvb3R8NTIyMjV8aW1hZ2UvcG5nfGFEUmtMMmcyWXk4eE1qWTBPVFE1TXpNek1UazVPQzluYjJ4a0lITnhkV0Z5WlM1d2JtY3xiZmFlNDVkNTNjMDJlMWRkZTliZDNhZDIwMGMxNDdjOWJkYjBkODNkZmNlOWQ3NGQ1NmNlYWY1MzI5MDA3NWQ2');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5);
+    position: relative;
+}
+
+.offer-discount {
+    font-size: 34px;
+    line-height: 34px;
+    margin-bottom: 0;
+    color: #072442;
+    font-family: "kari-display-pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#offer-description {
+    font-size: 20px;
+    color: #fff;
+    font-family: "Nunito Bold","Tahoma Bold",sans-serif;
+    text-shadow: 0px 0px 8px rgba(0, 0, 0, 1);
+    filter: drop-shadow(0px 0px 4px #021833);
+    margin-top: 5px;
+}
+
+.offer-code-box {
+  margin-bottom: 20px;
+  font-size: 32px;
+  padding: 10px 10px 20px;
+  background-image: url('https://thetoyshop.com/medias/gold-square.png?context=bWFzdGVyfHJvb3R8NTIyMjV8aW1hZ2UvcG5nfGFEUmtMMmcyWXk4eE1qWTBPVFE1TXpNek1UazVPQzluYjJ4a0lITnhkV0Z5WlM1d2JtY3xiZmFlNDVkNTNjMDJlMWRkZTliZDNhZDIwMGMxNDdjOWJkYjBkODNkZmNlOWQ3NGQ1NmNlYWY1MzI5MDA3NWQ2');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5);
+    font-family: "kari-display-pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+    position: relative;
+}
+
+.offer-code-box p {
+    font-size: 20px;
+    color: #072442;
+}
+
+.offer-code-box.hide p {
+  display: none;
+}
+
+.offer-code-box.vanish {
+  display: none;
+}
+
+.offer-code {
+    font-size: 32px;
+    color: #fff;
+    font-family: "Nunito Bold","Tahoma Bold",sans-serif;
+    text-shadow: 0px 0px 8px rgba(0, 0, 0, 1);
+    filter: drop-shadow(0px 0px 4px #021833);
+}
+
+.offer-code-box.hide .offer-code {
+  font-size: 20px;
+}
+
+.offer-code-box .offer-code-copy {
+    display: none;
+    font-size: 18px;
+    border-radius: 8px;
+}
+
+.offer-code-box.copied .offer-code-copy {
+    display: block;
+    background-image: url('https://thetoyshop.com//medias/Frame.png?context=bWFzdGVyfHJvb3R8NzgxODN8aW1hZ2UvcG5nfGFEQTNMMmcyTUM4eE1qWTBPVFE0TXpRek5qQTJNaTlHY21GdFpTNXdibWN8YzdiNjBlY2I0YTcyNGU5MTI4YjIyNWU3YjljM2Q3ZTg2YmViNThiMWRiOGU2MDg5NGI4Mzg3MWU2NDAwYzFmMA');
+    background-size: cover;
+    padding: 10px;
+    width: 80%;
+    box-shadow: 0 0 8px rgba(3,33,33,.3);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px
+} 
+
+.modal-actions {
+    display: flex;
+    gap: 30px;
+}
+
+.btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: white;
+    color: #374151;
+}
+
+.btn-primary:hover {
+    background: #f3f4f6;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.offer-terms {
+    font-size:12px;
+    margin-bottom: 10px;
+    text-shadow: 0px 0px 8px rgba(0, 0, 0, 1);
+    max-width: 270px;
+    margin: auto;
+    line-height: 14px;
+}
+
+.offer-terms a {
+  color: #fff !important;
+  text-decoration: underline;
+  display: block;
+}
+
+.hero-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #072442;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px;
+    height: 40px;
+    box-shadow: 0 0 5px rgba(3, 33, 33, .3);
+    transition: all 0.3s;
+    flex-grow: 1;
+    width: 100%;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    border: 3px solid #072442;
+}
+
+.hero-button:hover {
+    background-color: #072442;
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3,33,33,.3);
+    color: #fff;
+    border-color: #fff;
+}
+
+.universal-logo {
+    margin: 0 auto;
+    max-width: 323px;
+  }
+
+  .universal-logo img {
+    width: 100%;
+    height: auto;
+  }
+
+  #offer-modal .stars-right {
+      bottom: -40px;
+      left: unset;
+      top: unset;
+      right: -80px;
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .offer-discount {
+    font-size: 35px;
+    line-height: 35px;
+}
+  .universal-logo {
+    max-width: 95px;
+  }
+  .progress-section {
+    width: 100%;
+  }
+
+  .modal-body {
+    padding: 1rem;
+}
+
+.stars-left {
+  width: auto;
+  height: 100vw;
+  transform-origin: top left;
+  transform: rotate(90deg);
+  left: 100%;
+  top: -20px;
+}
+
+  .stars-right {
+    width: auto;
+    height: 100vw;
+    transform-origin: bottom right;
+    transform: rotate(90deg);
+    right: calc(100% + 25px);
+    bottom: 80px;
+    top: unset;
+  }
+
+  .hero-icons {
+    justify-content: center;
+  }
+
+  .heading-area {
+    justify-content: center;
+  }
+
+  .hero-instructions {
+    font-size: 14px;
+  }
+    .hero-instructions .instruction {
+        width: 100%;
+    }
+    .calendar-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    
+    .hero-title {
+        font-size: 42px;
+    }
+    
+    .hero-info {
+      justify-content: space-between;
+        gap: 1rem;
+    }
+    
+    .instructions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .instruction {
+        grid-column: span 2;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    #offer-modal .stars-right {
+      right: calc(100% + 25px);
+    }
+}
+
+@media (max-width: 480px) {
+    .calendar-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .decoration {
+        font-size: 2rem;
+    }
+    
+    .decoration-2, .decoration-4, .decoration-5, .decoration-6 {
+        font-size: 1.5rem;
+    }
+}
+
+.oneday {
+  position: absolute;
+  top: -60px;
+  right: -10px;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  background-color: #001533;
+  color: white;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  line-height: 1;
+  font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+  box-shadow: inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5);
+}
+
+.oneday.hide {
+  display: none;
+}
+
+.xavailable {
+  position: absolute;
+  top: -60px;
+  right: -10px;
+  border-radius: 50%;
+  width: 70px;
+  height:70px;
+  background-color: #001533;
+  color: white;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  line-height: 1;
+  font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+  box-shadow: inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5);
+}
+
+.xavailable.hide {
+  display: none;
+}
+
+.main-terms {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.coming-soon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  padding: 5px;
+  background-color: #001533;
+  color: #001533;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1;
+  font-family: "Nunito Bold", "Tahoma Bold", sans-serif;
+   background-image: url('https://thetoyshop.com/medias/gold-square.png?context=bWFzdGVyfHJvb3R8NTIyMjV8aW1hZ2UvcG5nfGFEUmtMMmcyWXk4eE1qWTBPVFE1TXpNek1UazVPQzluYjJ4a0lITnhkV0Z5WlM1d2JtY3xiZmFlNDVkNTNjMDJlMWRkZTliZDNhZDIwMGMxNDdjOWJkYjBkODNkZmNlOWQ3NGQ1NmNlYWY1MzI5MDA3NWQ2');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5);
+}
+
+.available .coming-soon {
+  display: none;
+}
+
+/* CONFETTI */
+@keyframes bang {
+  from {
+    transform: translate3d(0,0,0);
+    opacity: 1;
+  }
+}
+
+i {
+    position: absolute;
+    display: block;
+    left: 50%;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    clip-path: polygon(
+    50% 0%, 
+    61% 35%, 
+    98% 35%, 
+    68% 57%, 
+    79% 91%, 
+    50% 70%, 
+    21% 91%, 
+    32% 57%, 
+    2% 35%, 
+    39% 35%
+  );
+  }
+
+  .inactive-offer {
+    position: absolute;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    background: rgba(13, 93, 156, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: #D8BE77;
+    font-family: "kari-display-pro", sans-serif;
+    font-weight: 400;
+    z-index: 9;
+    text-align: center;
+    padding: 20px;
+    text-shadow: 0px 0px 8px rgba(0, 0, 0, 1);
+  }
+</style>
+
+<div class="advent-wrapper">
+    <img src="https://thetoyshop.com/medias/Univ-Advent-Stars-left.png?context=bWFzdGVyfHJvb3R8MzQ4MjE1fGltYWdlL3BuZ3xhREJoTDJnME1pOHhNalkxTURFMU16Y3pPREkzTUM5VmJtbDJMVUZrZG1WdWRDMVRkR0Z5Y3kxc1pXWjBMbkJ1Wnd8ZjYwMmUzOWZjZGM2ZTQ5YWY4NTdjYmJhMGI3YzlmNWJjOGI0OGVjYTc2NjkwMjhkYmVkODUyNWVjNTZjOTY5NQ" class="stars-left" />
+    <img src="https://thetoyshop.com/medias/Univ-Advent-Stars-right.png?context=bWFzdGVyfHJvb3R8MjkxMTMwfGltYWdlL3BuZ3xhR1k1TDJnelpTOHhNalkxTURFMU16Z3dNemd3Tmk5VmJtbDJMVUZrZG1WdWRDMVRkR0Z5Y3kxeWFXZG9kQzV3Ym1jfDY5NDVkZmNlOThjMWFlNDU4MmMzMTRlNzY4ZjBiYjJkYTQzNThhMzJmZDU3MmFkMTY4MGM1YWFiMDQ5YjlkMTA" class="stars-right" />
+    <div class="advent-container">
+        <div class="universal-logo">
+            <img src="https://thetoyshop.com/medias/Universal-advent-logo.png?context=bWFzdGVyfHJvb3R8NzU5MDl8aW1hZ2UvcG5nfGFHSmtMMmcxT1M4eE1qWTFNREUxTXpBMU1ERTBNaTlWYm1sMlpYSnpZV3d0WVdSMlpXNTBMV3h2WjI4dWNHNW58ZWYzODVmOTUxNzk5YzMyODAxMTc2YmE0YTcwOTY5M2FmYTQ5MGI5MTZhNGUxNTJiNWVhOGE4NTIyNTU2Njk4OA" alt="Universal" />
+        </div>
+        <div class="hero">
+            <div class="hero-icons">
+              <div class="heading-area">
+                <h1 class="hero-title">12 Surprises of Christmas</h1>
+                </div>
+                <div class="progress-section">
+                  <div class="hero-info">
+                      <span><svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
+<path d="M0 12.6875V5.25H12.25V12.6875C12.25 13.4258 11.6484 14 10.9375 14H1.3125C0.574219 14 0 13.4258 0 12.6875ZM8.75 7.32812V8.42188C8.75 8.61328 8.88672 8.75 9.07812 8.75H10.1719C10.3359 8.75 10.5 8.61328 10.5 8.42188V7.32812C10.5 7.16406 10.3359 7 10.1719 7H9.07812C8.88672 7 8.75 7.16406 8.75 7.32812ZM8.75 10.8281V11.9219C8.75 12.1133 8.88672 12.25 9.07812 12.25H10.1719C10.3359 12.25 10.5 12.1133 10.5 11.9219V10.8281C10.5 10.6641 10.3359 10.5 10.1719 10.5H9.07812C8.88672 10.5 8.75 10.6641 8.75 10.8281ZM5.25 7.32812V8.42188C5.25 8.61328 5.38672 8.75 5.57812 8.75H6.67188C6.83594 8.75 7 8.61328 7 8.42188V7.32812C7 7.16406 6.83594 7 6.67188 7H5.57812C5.38672 7 5.25 7.16406 5.25 7.32812ZM5.25 10.8281V11.9219C5.25 12.1133 5.38672 12.25 5.57812 12.25H6.67188C6.83594 12.25 7 12.1133 7 11.9219V10.8281C7 10.6641 6.83594 10.5 6.67188 10.5H5.57812C5.38672 10.5 5.25 10.6641 5.25 10.8281ZM1.75 7.32812V8.42188C1.75 8.61328 1.88672 8.75 2.07812 8.75H3.17188C3.33594 8.75 3.5 8.61328 3.5 8.42188V7.32812C3.5 7.16406 3.33594 7 3.17188 7H2.07812C1.88672 7 1.75 7.16406 1.75 7.32812ZM1.75 10.8281V11.9219C1.75 12.1133 1.88672 12.25 2.07812 12.25H3.17188C3.33594 12.25 3.5 12.1133 3.5 11.9219V10.8281C3.5 10.6641 3.33594 10.5 3.17188 10.5H2.07812C1.88672 10.5 1.75 10.6641 1.75 10.8281ZM10.9375 1.75C11.6484 1.75 12.25 2.35156 12.25 3.0625V4.375H0V3.0625C0 2.35156 0.574219 1.75 1.3125 1.75H2.625V0.4375C2.625 0.21875 2.81641 0 3.0625 0H3.9375C4.15625 0 4.375 0.21875 4.375 0.4375V1.75H7.875V0.4375C7.875 0.21875 8.06641 0 8.3125 0H9.1875C9.40625 0 9.625 0.21875 9.625 0.4375V1.75H10.9375Z" fill="#E5A73E"/>
+</svg> December <span id="current-day">1</span>, 2025</span>
+                      <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="15" viewBox="0 0 18 15" fill="none">
+<path d="M17.0625 12.3594C17.2812 12.3594 17.5 12.5781 17.5 12.7969V13.6719C17.5 13.918 17.2812 14.1094 17.0625 14.1094H13.125V3.60938H10.5V1.85938H13.5625C14.2734 1.85938 14.875 2.48828 14.875 3.22656V12.3594H17.0625ZM8.53125 0.164062C9.07812 0 9.625 0.4375 9.625 1.03906V14.1094H0.4375C0.191406 14.1094 0 13.918 0 13.6719V12.7969C0 12.5781 0.191406 12.3594 0.4375 12.3594H2.625V2.37891C2.625 1.96875 2.87109 1.61328 3.28125 1.50391L8.53125 0.164062ZM7.21875 7.98438C7.57422 7.98438 7.875 7.60156 7.875 7.10938C7.875 6.64453 7.57422 6.23438 7.21875 6.23438C6.83594 6.23438 6.5625 6.64453 6.5625 7.10938C6.5625 7.60156 6.83594 7.98438 7.21875 7.98438Z" fill="#E5A73E"/>
+</svg> <span id="doors-opened">0</span>/12 doors opened</span>
+                  </div>
+                  <div id="progress-sleigh" class="progress-sleigh">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14" fill="none">
+                      <path d="M1.00357 6.00546L1.00357 1.99863C0.735949 1.99863 0.497004 1.90301 0.296291 1.70219C0.0955778 1.50137 0 1.27186 0 0.994535C0 0.717213 0.0955778 0.497268 0.296291 0.296448C0.497004 0.0956284 0.726391 0 1.00357 0L1.66305 0C2.68574 0 3.63196 0.26776 4.50171 0.812842C5.38103 1.35792 6.04052 2.0847 6.49929 3.00273C6.95806 3.92076 7.62711 4.64754 8.49687 5.19262C9.37618 5.7377 10.3224 6.00546 11.3355 6.00546H11.995C12.5398 6.00546 13.0081 5.80464 13.4 5.41257C13.7919 5.02049 13.9926 4.55191 13.9926 4.00683V2.0082H16.9937C17.2613 2.0082 17.5003 2.10383 17.701 2.30464C17.9017 2.50546 17.9973 2.73497 17.9973 3.0123C17.9973 3.28962 17.9017 3.51913 17.701 3.71995C17.5003 3.92076 17.2709 4.01639 16.9937 4.01639V7.01913C16.9937 7.85109 16.6974 8.55874 16.1144 9.14208C15.5314 9.72541 14.8241 10.0219 13.9926 10.0219V11.5232H11.995V10.0219H5.99273V11.5232H3.99515V9.89754C3.11584 9.66803 2.399 9.18989 1.84465 8.47268C1.28074 7.75546 1.00357 6.93306 1.00357 6.01503V6.00546ZM19.1538 9.97404C19.7559 10.4522 20.0427 11.0929 19.9949 11.877C19.9566 12.4795 19.6986 12.9863 19.2398 13.388C18.781 13.7896 18.2458 14 17.615 14L1.50057 14C1.3572 14 1.23295 13.9522 1.13738 13.8566C1.0418 13.7609 0.994009 13.6462 0.994009 13.4932L0.994009 12.9959C0.994009 12.8525 1.0418 12.7281 1.13738 12.6325C1.23295 12.5369 1.34765 12.4891 1.50057 12.4891L17.7106 12.4891C17.94 12.4891 18.1311 12.4126 18.2745 12.2691C18.4178 12.1257 18.4943 11.9344 18.4943 11.7049C18.4943 11.4754 18.3987 11.2746 18.2171 11.112L17.9017 10.8921C17.6532 10.6817 17.6341 10.4426 17.8348 10.1749L18.1502 9.80191C18.3605 9.53415 18.5899 9.4959 18.8384 9.70628L19.1538 9.95492V9.97404Z" fill="#AE1F23"/>
+                      </svg>
+                  </div>
+                  <div class="progress-bar">
+                      <div class="progress-fill" id="progress-fill"></div>
+                  </div>
+              </div>
+            </div>
+            <div class="hero-instructions">
+              There's a new festive gift, discount code or fabulous prize draw every day until 15th December. Unlock each door at 9am &ndash; some offers are only available in limited numbers and are first-come, first-served so don't leave it too late!
+            </div>
+        </div>
+
+        <div class="calendar-grid" id="calendar-grid">
+             Calendar doors will be generated by JavaScript 
+        </div>
+
+        <div class="main-terms">Terms and conditions apply</div>
+    </div>
+    
+
+    <!-- <audio id="sound-indicator" src=""></audio> -->
+</div>
+
+<div id="offer-modal" class="advent-modal">
+        <div class="advent-modal-content">
+            <img src="https://thetoyshop.com/medias/Univ-Advent-Stars-left.png?context=bWFzdGVyfHJvb3R8MzQ4MjE1fGltYWdlL3BuZ3xhREJoTDJnME1pOHhNalkxTURFMU16Y3pPREkzTUM5VmJtbDJMVUZrZG1WdWRDMVRkR0Z5Y3kxc1pXWjBMbkJ1Wnd8ZjYwMmUzOWZjZGM2ZTQ5YWY4NTdjYmJhMGI3YzlmNWJjOGI0OGVjYTc2NjkwMjhkYmVkODUyNWVjNTZjOTY5NQ" class="stars-left" />
+    <img src="https://thetoyshop.com/medias/Univ-Advent-Stars-right.png?context=bWFzdGVyfHJvb3R8MjkxMTMwfGltYWdlL3BuZ3xhR1k1TDJnelpTOHhNalkxTURFMU16Z3dNemd3Tmk5VmJtbDJMVUZrZG1WdWRDMVRkR0Z5Y3kxeWFXZG9kQzV3Ym1jfDY5NDVkZmNlOThjMWFlNDU4MmMzMTRlNzY4ZjBiYjJkYTQzNThhMzJmZDU3MmFkMTY4MGM1YWFiMDQ5YjlkMTA" class="stars-right" />
+            <button class="modal-close" id="modal-close"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="33" viewBox="0 0 32 33" fill="none">
+<rect x="0.5" y="1.5" width="31" height="31" rx="15.5" fill="#CBAA5F"/>
+<path d="M5 6.0625C8.04167 3.02083 11.7083 1.5 16 1.5C20.2917 1.5 23.9375 3.02083 26.9375 6.0625C29.9792 9.0625 31.5 12.7083 31.5 17C31.5 21.2917 29.9792 24.9583 26.9375 28C23.9375 31 20.2917 32.5 16 32.5C11.7083 32.5 8.04167 31 5 28C2 24.9583 0.5 21.2917 0.5 17C0.5 12.7083 2 9.0625 5 6.0625ZM7.125 25.875C9.58333 28.2917 12.5417 29.5 16 29.5C19.4583 29.5 22.3958 28.2917 24.8125 25.875C27.2708 23.4167 28.5 20.4583 28.5 17C28.5 13.5417 27.2708 10.6042 24.8125 8.1875C22.3958 5.72917 19.4583 4.5 16 4.5C12.5417 4.5 9.58333 5.72917 7.125 8.1875C4.70833 10.6042 3.5 13.5417 3.5 17C3.5 20.4583 4.70833 23.4167 7.125 25.875ZM22.375 13.125L18.5 17L22.375 20.875C22.7083 21.25 22.7083 21.6042 22.375 21.9375L20.9375 23.375C20.6042 23.7083 20.25 23.7083 19.875 23.375L16 19.5L12.125 23.375C11.75 23.7083 11.3958 23.7083 11.0625 23.375L9.625 21.9375C9.29167 21.6042 9.29167 21.25 9.625 20.875L13.5 17L9.625 13.125C9.29167 12.75 9.29167 12.3958 9.625 12.0625L11.0625 10.625C11.3958 10.2917 11.75 10.2917 12.125 10.625L16 14.5L19.875 10.625C20.25 10.2917 20.6042 10.2917 20.9375 10.625L22.375 12.0625C22.7083 12.3958 22.7083 12.75 22.375 13.125Z" fill="white"/>
+</svg></button>
+            <div class="modal-body">
+                <div class="offer-emoji" id="offer-emoji">🎁</div>
+                <h2 class="offer-day">Day <span id="offer-day-number">1</span></h2>
+                <h3 class="offer-title" id="offer-title">Special Offer</h3>
+                <div class="offer-discount-box">
+                    <div class="offer-discount" id="offer-discount">20% OFF</div>
+                    <div id="offer-description"></div>
+                    <div class="oneday hide">1 Day Only</div>
+                    <div class="xavailable hide">x200 Available</div>
+                </div>
+                <div class="offer-code-box">
+                    <p>Use code at checkout:</p>
+                    <div class="offer-code" id="offer-code">CODE20</div>
+                    <div class="offer-code-copy">Code copied to clipboard</div>
+                </div>
+                <div class="modal-actions">
+                    <a href="https://www.thetoyshop.com/brands/addo/snuggle-buddies" class="hero-button">
+                        Shop Now
+                    </a>
+                    
+                </div>
+                <p class="offer-terms">* Offer valid until December 31st, 2025. Terms and conditions apply.</p>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+  // Advent Calendar Data
+const adventOffers = [
+    {
+        day: 4,
+        dayNumber: 1,
+        title: '<img src="https://www.thetoyshop.com/medias/GBD-Logo-50px-high.png?context=bWFzdGVyfHJvb3R8MTIxMzF8aW1hZ2UvcG5nfGFEWTJMMmhrTWk4eE1qWTFNVEF3TkRVMU9UTTVNQzlIUWtSZlRHOW5ieTAxTUhCNExXaHBaMmd1Y0c1bnxiNzgyZjg4M2U4M2M2NmRlZDM3NjdiZWEwNzQ0MDg4MWY2NGVmMzVhOWZjYmM5ODQ3NTNhOWQ1MGRmMjNiMDNm" />',
+        discount: "25% off",
+        description: "Selected Gabby's Dollhouse toys",
+        code: "GABBY25",
+        color: "#AE1F23",
+        emoji: '<img src="https://www.thetoyshop.com/medias/TE-Advent-Inside-Grid-Doors-1-GOLD.jpg?context=bWFzdGVyfHJvb3R8NjQ4MjZ8aW1hZ2UvanBlZ3xhR1EwTDJneE9DOHhNalkxTXpneU1EYzNNak00TWk5VVJTQkJaSFpsYm5RZ1NXNXphV1JsSUVkeWFXUWdSRzl2Y25NZ01TMUhUMHhFTG1wd1p3fDkwZGE4MDYxNmIyN2M1YTc5ZWY4MzdiODIyYzhmODA0ZGY1M2FiNzdjOGFhYjJjMWI4OWM1MmMzMzkxM2UzMmI" />',
+        link: 'https://www.thetoyshop.com/c/daily-deals',
+        linkText: 'Shop Now',
+        codeUsed: true,
+        terms: 'Offer ends 5th December 2025 at 9am <a href="https://www.thetoyshop.com/c/daily-deals#terms" target="_blank">Terms and conditions apply</a>',
+        oneday: true,
+        promotionName: '25% off Gabbys Dollhouse',
+        inactive: true,
+    },
+    {
+        day: 5,
+        dayNumber: 2,
+        title: '<img src="https://www.thetoyshop.com/medias/LOGO.png?context=bWFzdGVyfHJvb3R8MTQ4NTF8aW1hZ2UvcG5nfGFEQmlMMmhrWkM4eE1qWTBPVFE1TkRVME5EUXhOQzlNVDBkUExuQnVad3xkYWU4YzAwNmJhMjYwNzY0ZDEyMzA0YTUyYzYzMTg3YjZlNDQ5NDc3YzhjY2YyM2FiOGUwYWE4YzVhNzdhODhj" />',
+        discount: "Free Toothless soft toy",
+        description: "When you spend £40 or more via home delivery",
+        code: "FREEGIFT",
+        color: "#AE1F23",
+        emoji: "<img src='https://www.thetoyshop.com/medias/door-2-edit-V2.jpg?context=bWFzdGVyfHJvb3R8NDYwNjN8aW1hZ2UvanBlZ3xhR0k1TDJobE9TOHhNalkxTXpnek1UUTFORGMxTUM5a2IyOXlMVEl0WldScGRDMVdNaTVxY0djfDdhMTA2YmE0ZGM2Njk2YTNlNzRmNDQ5ZmJiZWM3ZDM5Yjk4NmQ3ZWU5OWI5NjMyZTJlMTFhOWExMGE2MjY0ZmM' /><div class='worth'>Worth £11</div>",
+        link: 'https://www.thetoyshop.com/c/all-categories',
+        linkText: 'Shop Now',
+        codeUsed: true,
+        terms: 'Styles vary. While stocks last. Offer ends 6th December 2025 at 9am <a href="https://www.thetoyshop.com/c/all-categories#terms" target="_blank">Terms and conditions apply</a>',
+        xavailable: 'x200 available',
+        promotionName: 'Free Toothless soft toy',
+        inactive: true,
+    },
+    {
+        day: 6,
+        dayNumber: 3,
+        title: '<img src="https://www.thetoyshop.com/medias/JW-LOGO-50px-high.png?context=bWFzdGVyfHJvb3R8NzQ3MHxpbWFnZS9wbmd8YUdNd0wyaGpZUzh4TWpZMU1UQXdOVE0wTlRneU1pOUtWeTFNVDBkUExUVXdjSGd0YUdsbmFDNXdibWN8NDllZDc4OGE0MGIyNWY0YzM1ZGIyMmRlOTBhYjk2YzhlZWViZTBiNWY5ODgwYTNlNzdkZWRmMjRiOWFkMjNjMw" />',
+        discount: "Win a Jurassic World bundle",
+        description: "x3 to be won",
+        code: "",
+        color: "#AE1F23",
+        emoji: '<img src="https://www.thetoyshop.com/medias/Jurassic-Bundle-edit-V2.jpg?context=bWFzdGVyfHJvb3R8ODA1NjJ8aW1hZ2UvanBlZ3xhREExTDJnMk9DOHhNalkxTXpneU9UVXlNVFF6T0M5S2RYSmhjM05wWXkxQ2RXNWtiR1V0WldScGRDMVdNaTVxY0djfDg0Y2RhZjdiYjhmYTQwOTczMWZkNjIzMTJkNzc1ZGZiNjkzM2RkMzRlMjMzN2U1NTk4NzZlODdjMWQ2NDk3ZjU" />',
+        link: 'https://www.thetoyshop.com/jurassic-bundle-prize-draw',
+        linkText: 'Enter Now',
+        codeUsed: false,
+        terms: 'Draw closes 7th December 2025 <a href="https://www.thetoyshop.com/jurassic-bundle-terms" target="_blank">Terms and conditions apply</a>',
+        promotionName: 'Win a Jurassic World bundle',
+    },
+    {
+        day: 7,
+        dayNumber: 4,
+        title: '<img src="https://www.thetoyshop.com/medias/WICKED-2-LOGO-50px-high.png?context=bWFzdGVyfHJvb3R8MTE5MDd8aW1hZ2UvcG5nfGFEbGpMMmhrWmk4eE1qWTFNVEF3TkRreE9UZ3pPQzlYU1VOTFJVUXRNaTFNVDBkUExUVXdjSGd0YUdsbmFDNXdibWN8NzhiMTUyZmQwNjU3ZmYxMjQ0MWNiMGVhYmQ4ODI3MjhhYjY3YmU3ZWFhOTMyZTU3NmYyOGE3YjI5ZjVhMTcxZA" />',
+        discount: "Win a Wicked beauty bundle",
+        description: "x3 to be won",
+        code: "",
+        color: "#AE1F23",
+        emoji: '<img src="https://www.thetoyshop.com/medias/Wicked-Bundle-2-edit.jpg?context=bWFzdGVyfHJvb3R8NzUxNzd8aW1hZ2UvanBlZ3xhREppTDJnNE5DOHhNalkxTVRVMU5qUXpPREEwTmk5WGFXTnJaV1F0UW5WdVpHeGxMVEl0WldScGRDNXFjR2N8NWJmOTFkYzVkOTBjY2Q3ZTAwMTU1YjlkNGY0ZDQ3M2Y5MDFkMGQ5MTY2ZWVlN2I1NzIxZmQ0Y2VhYTU1NDQ1Ng" />',
+        link: 'https://www.thetoyshop.com/wicked-bundle-prize-draw',
+        linkText: 'Enter Now',
+        codeUsed: false,
+        terms: 'Closes 8th December 2025 at 9am <a href="https://www.thetoyshop.com/wicked-bundle-terms" target="_blank">Terms and conditions apply</a>',
+        promotionName: 'Win a Wicked beauty bundle',
+    },
+    {
+        day: 8,
+        dayNumber: 5,
+        title: '<img src="https://www.thetoyshop.com/medias/WICKED-2-LOGO-50px-high.png?context=bWFzdGVyfHJvb3R8MTE5MDd8aW1hZ2UvcG5nfGFEbGpMMmhrWmk4eE1qWTFNVEF3TkRreE9UZ3pPQzlYU1VOTFJVUXRNaTFNVDBkUExUVXdjSGd0YUdsbmFDNXdibWN8NzhiMTUyZmQwNjU3ZmYxMjQ0MWNiMGVhYmQ4ODI3MjhhYjY3YmU3ZWFhOTMyZTU3NmYyOGE3YjI5ZjVhMTcxZA" />',
+        discount: "20% off",
+        description: "Selected Wicked dolls",
+        code: "WICKED20",
+        color: "#AE1F23",
+        emoji: '<img src="https://www.thetoyshop.com/medias/TE-Advent-Inside-Grid-Doors-5-GOLD.jpg?context=bWFzdGVyfHJvb3R8NDM5NTF8aW1hZ2UvanBlZ3xhREF5TDJnMFpDOHhNalkxTXpneU1UWXlORE0xTUM5VVJTQkJaSFpsYm5RZ1NXNXphV1JsSUVkeWFXUWdSRzl2Y25NZ05TMUhUMHhFTG1wd1p3fGVmMTlkNDkzYmYzNDQ5ZTllOWUxNGNlOWFjZTU1M2IzYWYwMzZhNjI2OTQxMWY4ZTFmYmIyZWEyNTlhMzJjZmY" />',
+        link: 'https://www.thetoyshop.com/c/daily-deals',
+        linkText: 'Shop Now',
+        codeUsed: true,
+        terms: 'Offer ends 9th December 2025 at 9am <a href="https://www.thetoyshop.com/c/all-categories#terms" target="_blank">Terms and conditions apply</a>',
+        oneday: true,
+        promotionName: '20% off wicked dolls',
+    },
+    {
+        day: 9,
+        dayNumber: 6,
+        title: '<img src="https://www.thetoyshop.com/medias/DRAGON-logo-50px-high.png?context=bWFzdGVyfHJvb3R8MTcwMDV8aW1hZ2UvcG5nfGFHVTFMMmhrTkM4eE1qWTFNVEF3TlRBMU1Ea3hNQzlFVWtGSFQwNHRiRzluYnkwMU1IQjRMV2hwWjJndWNHNW58NjEwYzNmNDFhYjRiOTkwYTczYzA1NDE0ZDljNWNmZDdmODVkNzcxMzIyNTgzOTdkMTk5MjYwYTgxZDBhMDIxZA" />',
+        discount: "20% off",
+        description: "Selected How to Train Your Dragon action figures ",
+        code: "DRAGON20",
+        color: "#AE1F23",
+        emoji: '<img src="https://www.thetoyshop.com/medias/TE-Advent-Inside-Grid-Doors-6-GOLD.jpg?context=bWFzdGVyfHJvb3R8Njg1ODB8aW1hZ2UvanBlZ3xhR0l3TDJnMFpDOHhNalkxTXpneU1UWTRPVGc0Tmk5VVJTQkJaSFpsYm5RZ1NXNXphV1JsSUVkeWFXUWdSRzl2Y25NZ05pMUhUMHhFTG1wd1p3fDU1OTA4YzJkMjhkZmZkMGQ4MjA2MjVkYjUwMjk2ODFhMDEwMWExOTg4ZWY2MGRkNTAwYTllNzYzYzlkNjdhOWI" />',
+        link: 'https://www.thetoyshop.com/c/daily-deals',
+        linkText: 'Shop Now',
+        codeUsed: true,
+        terms: 'Offer ends 10th December 2025 at 9am <a href="https://www.thetoyshop.com/c/daily-deals#terms" target="_blank">Terms and conditions apply</a>',
+        oneday: true,
+        promotionName: '20% off How To Train Your Dragon action figures',
+    },
+    {
+        day: 10,
+        dayNumber: 7,
+        title: '<img src="https://www.thetoyshop.com/medias/JW-LOGO-50px-high.png?context=bWFzdGVyfHJvb3R8NzQ3MHxpbWFnZS9wbmd8YUdNd0wyaGpZUzh4TWpZMU1UQXdOVE0wTlRneU1pOUtWeTFNVDBkUExUVXdjSGd0YUdsbmFDNXdibWN8NDllZDc4OGE0MGIyNWY0YzM1ZGIyMmRlOTBhYjk2YzhlZWViZTBiNWY5ODgwYTNlNzdkZWRmMjRiOWFkMjNjMw" />',
+        discount: "Free Jurassic World soft toy",
+        description: "When you spend £40 or more via home delivery",
+        code: "FREEGIFT",
+        color: "#AE1F23",
+        emoji: "<img src='https://www.thetoyshop.com/medias/door-7-edit-v2.jpg?context=bWFzdGVyfHJvb3R8NjM0MDV8aW1hZ2UvanBlZ3xhREUzTDJnMllpOHhNalkxTXpneU9UUTFOVGt3TWk5a2IyOXlMVGN0WldScGRDMTJNaTVxY0djfDNkYTQxNjI4ZGYyNDRmMTI2MDNkZGU1YTE1MTlmNGJmNDMxMzZkYWJkNTZkOWIxYWQ2NzcwYThkODRlZDM5Y2Y' /><div class='worth'>Worth £7.99</div>",
+        link: 'https://www.thetoyshop.com/c/all-categories',
+        linkText: 'Shop Now',
+        codeUsed: true,
+        terms: 'While stocks last. Styles vary. Offer ends 11th December 2025 at 9am <a href="https://www.thetoyshop.com/c/all-categories#terms" target="_blank">Terms and conditions apply</a>',
+        xavailable: 'x200 available',
+        promotionName: 'Free Jurrassic World soft toy',
+    },
+    {
+        day: 11,
+        dayNumber: 8,
+        title: "<img src='https://www.thetoyshop.com/medias/WICKED-2-LOGO-50px-high.png?context=bWFzdGVyfHJvb3R8MTE5MDd8aW1hZ2UvcG5nfGFEbGpMMmhrWmk4eE1qWTFNVEF3TkRreE9UZ3pPQzlYU1VOTFJVUXRNaTFNVDBkUExUVXdjSGd0YUdsbmFDNXdibWN8NzhiMTUyZmQwNjU3ZmYxMjQ0MWNiMGVhYmQ4ODI3MjhhYjY3YmU3ZWFhOTMyZTU3NmYyOGE3YjI5ZjVhMTcxZA' />",
+        discount: "Free Wicked bag clip",
+        description: "When you spend £40 or more via home delivery",
+        code: "FREEGIFT",
+        color: "#AE1F23",
+        emoji: "<img src='https://www.thetoyshop.com/medias/door-8-edit-v2.jpg?context=bWFzdGVyfHJvb3R8NDUwOTJ8aW1hZ2UvanBlZ3xhREUwTDJnMlpTOHhNalkxTXpneU9UTTVNRE0yTmk5a2IyOXlMVGd0WldScGRDMTJNaTVxY0djfDI5NDM0NDY1ZDNiMjRiYTJiMGYyNDZmMmE3ZjI4NGM3YWVmMThlZDdhMjUxMDIzYmJmODU1MDc0MzlmMDI1NzY' /><div class='worth'>Worth £4.99</div>",
+        link: 'https://www.thetoyshop.com/c/all-categories',
+        linkText: 'Shop Now',
+        codeUsed: true,
+        terms: 'While stocks last. Styles vary. Offer ends 12th December 2025 at 9am <a href="https://www.thetoyshop.com/c/all-categories#terms" target="_blank">Terms and conditions apply</a>',
+        xavailable: 'x200 available',
+        promotionName: 'Free Wicked bag clip',
+    },
+    {
+        day: 12,
+        dayNumber: 9,
+        title: '<img src="https://www.thetoyshop.com/medias/JW-LOGO-50px-high.png?context=bWFzdGVyfHJvb3R8NzQ3MHxpbWFnZS9wbmd8YUdNd0wyaGpZUzh4TWpZMU1UQXdOVE0wTlRneU1pOUtWeTFNVDBkUExUVXdjSGd0YUdsbmFDNXdibWN8NDllZDc4OGE0MGIyNWY0YzM1ZGIyMmRlOTBhYjk2YzhlZWViZTBiNWY5ODgwYTNlNzdkZWRmMjRiOWFkMjNjMw" />',
+        discount: "20% off",
+        description: "Selected Jurassic World toys",
+        code: "DINO20",
+        color: "#AE1F23",
+        emoji: '<img src="https://www.thetoyshop.com/medias/TE-Advent-Inside-Grid-Doors-9-GOLD.jpg?context=bWFzdGVyfHJvb3R8NjUwMzJ8aW1hZ2UvanBlZ3xhR014TDJnMU1DOHhNalkxTXpneU1UYzFOVFF5TWk5VVJTQkJaSFpsYm5RZ1NXNXphV1JsSUVkeWFXUWdSRzl2Y25NZ09TMUhUMHhFTG1wd1p3fDg3ZjA5MzZmZDMwODRmMTVkZWI1ZjJiMjUzMzI0MjFlMzU5YWMwMzZjNmUyZTAzMmVlZDNhODBlMWY3MTY4MTg" />',
+        link: 'https://www.thetoyshop.com/c/daily-deals',
+        linkText: 'Shop Now',
+        codeUsed: true,
+        terms: 'Offer ends 13th December 2025 at 9am <a href="https://www.thetoyshop.com/c/daily-deals#terms" target="_blank">Terms and conditions apply</a>',
+        oneday: true,
+        promotionName: '20% off Jurrassic World toys',
+    },
+    {
+        day: 13,
+        dayNumber: 10,
+        title: '<img src="https://www.thetoyshop.com/medias/GBD-Logo-50px-high.png?context=bWFzdGVyfHJvb3R8MTIxMzF8aW1hZ2UvcG5nfGFEWTJMMmhrTWk4eE1qWTFNVEF3TkRVMU9UTTVNQzlIUWtSZlRHOW5ieTAxTUhCNExXaHBaMmd1Y0c1bnxiNzgyZjg4M2U4M2M2NmRlZDM3NjdiZWEwNzQ0MDg4MWY2NGVmMzVhOWZjYmM5ODQ3NTNhOWQ1MGRmMjNiMDNm" />',
+        discount: "Win a Gabby's Dollhouse bundle",
+        description: "x3 to be won",
+        code: "",
+        color: "#AE1F23",
+        emoji: '<img src="https://www.thetoyshop.com/medias/door-10-edit-v2.jpg?context=bWFzdGVyfHJvb3R8NzA1MDl8aW1hZ2UvanBlZ3xhR1EyTDJnMlpTOHhNalkxTXpneU9UTXlORGd6TUM5a2IyOXlMVEV3TFdWa2FYUXRkakl1YW5Cbnw5MWQ5OGJiYzdkNDU2N2RlY2MzOTFlMjU2NTM3MzViZDMxZWRlYjRhZmY2NTI5YzczODUyYmRmMGRhYjgwNzAz" />',
+        link: 'https://www.thetoyshop.com/gabbys-dollhouse-bundle-prize-draw',
+        linkText: 'Enter Now',
+        codeUsed: false,
+        terms: 'Draw closes 14th December 2025 at 9am <a href="https://www.thetoyshop.com/gabbys-dollhouse-bundle-terms" target="_blank">Terms and conditions apply</a>',
+        promotionName: 'Win a Gabbys Dollhouse bundle',
+    },
+    {
+        day: 14,
+        dayNumber: 11,
+        title: '<img src="https://www.thetoyshop.com/medias/DRAGON-logo-50px-high.png?context=bWFzdGVyfHJvb3R8MTcwMDV8aW1hZ2UvcG5nfGFHVTFMMmhrTkM4eE1qWTFNVEF3TlRBMU1Ea3hNQzlFVWtGSFQwNHRiRzluYnkwMU1IQjRMV2hwWjJndWNHNW58NjEwYzNmNDFhYjRiOTkwYTczYzA1NDE0ZDljNWNmZDdmODVkNzcxMzIyNTgzOTdkMTk5MjYwYTgxZDBhMDIxZA" />',
+        discount: "Win a How to Train Your Dragon bundle",
+        description: "x3 to be won",
+        code: "",
+        color: "#AE1F23",
+        emoji: '<img src="https://www.thetoyshop.com/medias/Dragon-big-bundle-edit-V2.jpg?context=bWFzdGVyfHJvb3R8ODk5NDR8aW1hZ2UvanBlZ3xhR1ZsTDJoaFlpOHhNalkxTXpnek1EUXdOakUzTkM5RWNtRm5iMjR0WW1sbkxXSjFibVJzWlMxbFpHbDBMVll5TG1wd1p3fGRmMWJmMWY4MWU1ZTY1YTBhNDhmODc0NTE3ZDNiMTUwYTI1NWFlZWU2ZDNiZWY5OGYxZjYyNDIwZjcyMThkZmQ" />',
+        link: 'https://www.thetoyshop.com/httyd-bundle-prize-draw',
+        linkText: 'Enter Now',
+        codeUsed: false,
+        terms: 'Closes 15th December 2025 at 9am <a href="https://www.thetoyshop.com/httyd-bundle-terms" target="_blank">Terms and conditions apply</a>',
+        promotionName: 'Win a How to Train Your Dragon bundle',
+    },
+    {
+        day: 15,
+        dayNumber: 12,
+        title: '<img src="https://www.thetoyshop.com/medias/WICKED-2-LOGO-50px-high.png?context=bWFzdGVyfHJvb3R8MTE5MDd8aW1hZ2UvcG5nfGFEbGpMMmhrWmk4eE1qWTFNVEF3TkRreE9UZ3pPQzlYU1VOTFJVUXRNaTFNVDBkUExUVXdjSGd0YUdsbmFDNXdibWN8NzhiMTUyZmQwNjU3ZmYxMjQ0MWNiMGVhYmQ4ODI3MjhhYjY3YmU3ZWFhOTMyZTU3NmYyOGE3YjI5ZjVhMTcxZA" />',
+        discount: "Win a magical weekend in France",
+        description: "",
+        code: "",
+        color: "#AE1F23",
+        emoji: '<img src="https://www.thetoyshop.com/medias/TE-Advent-Inside-Grid-Doors-12-GOLD.jpg?context=bWFzdGVyfHJvb3R8NzU1NjJ8aW1hZ2UvanBlZ3xhR1l4TDJnME9TOHhNalkxTXpneU1UVTFPRGd4TkM5VVJTQkJaSFpsYm5RZ1NXNXphV1JsSUVkeWFXUWdSRzl2Y25NZ01USXRSMDlNUkM1cWNHY3wwYjEwMzZiYjY0Y2VkNDc2ZGUwNTUyMTE2OTY2ODk2NjNhYjA2NzNlNGNhODA0MTZiYWQ1NDkwYTQ0NGEyYjYy" />',
+        link: 'https://www.thetoyshop.com/wicked-france-prize-draw',
+        linkText: 'Enter Now',
+        codeUsed: false,
+        terms: 'Closes 31st December 2025 at 11:59pm <a href="https://www.thetoyshop.com/wicked-france-prize-draw-terms" target="_blank">Terms and conditions apply</a>',
+        promotionName: 'Win a magical weekend in France',
+    },
+];
+
+// Global state
+let openedDoors = new Set();
+let selectedDoor = null;
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', function() {
+    //loadOpenedDoors();
+    updateCurrentDay();
+    generateCalendar();
+    updateProgress();
+    setupEventListeners();
+
+    // const reviews = document.querySelectorAll('.door-number');
+    // const maxAngle = 10;
+    // const minAngle = -10;
+    // reviews.forEach(review => {
+    //     const randomAngle = Math.floor(Math.random() * (maxAngle - minAngle + 1)) + minAngle;
+    //     review.style.transform = `rotate(${randomAngle}deg)`;
+    // });
+});
+
+// Load opened doors from localStorage
+// function loadOpenedDoors() {
+//     // remove to store when done
+//     localStorage.removeItem('advent-opened-doors');
+//      const saved = localStorage.getItem('advent-opened-doors');
+//      if (saved) {
+//          openedDoors = new Set(JSON.parse(saved));
+//      }
+// }
+
+// Save opened doors to localStorage
+function saveOpenedDoors() {
+    localStorage.setItem('advent-opened-doors', JSON.stringify([...openedDoors]));
+}
+
+// Update current day display
+function updateCurrentDay() {
+    const currentDay = new Date().getDate();
+    document.getElementById('current-day').textContent = currentDay;
+}
+
+// Check if date is available
+function isDateAvailable(day) {
+    const today = new Date().getDate();
+    const currentMonth = new Date().getMonth();
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    
+    // Today at 9am or later
+    return true;
+    if (currentMonth === 11 && day === today && currentHour >= 9) {
+        return true;
+    }
+    
+    // Yesterday until 9am today (gives users until 9am next day to claim)
+    if (currentMonth === 11 && day === today - 1 && currentHour < 9) {
+        return true;
+    }
+
+    if (currentMonth === 11 && day === 15 && today >= 16 ) {
+        return true;
+    }
+    
+    return false;
+}
+
+// Check if date is tomorrow before 9 am 
+function isDateNextDay(day) {
+    const today = new Date().getDate();
+    const currentMonth = new Date().getMonth();
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    
+    // Today at 9am or later
+    if (currentMonth === 11 && day === today && currentHour >= 9) {
+        return true;
+    }
+
+    //return true;
+    
+    return false;
+}
+
+function isDatePast(day) {
+    const today = new Date().getDate();
+    const currentMonth = new Date().getMonth();
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    
+    // More than 1 day ago
+    if (currentMonth === 11 && day < today - 1) {
+        return true;
+    }
+    
+    if (currentMonth === 11 && day === today - 1 && currentHour >= 9) {
+        return true;
+    }
+    
+    return false;
+}
+
+// Get current day
+function getCurrentDay() {
+    return new Date().getDate();
+}
+
+// Get current month
+function getCurrentMonth() {
+    return new Date().getMonth();
+}
+
+// Get current hour
+function getCurrentHour() {
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    return currentHour;
+}
+
+// Generate calendar grid
+function generateCalendar() {
+    const calendarGrid = document.getElementById('calendar-grid');
+    calendarGrid.innerHTML = '';
+    
+    adventOffers.map(offer => {
+        const door = document.createElement('div');
+        door.className = 'calendar-door';
+        door.dataset.day = offer.day;
+        door.dataset.elementType = 'universal-advent-calendar';
+        door.dataset.promotionIndex = offer.dayNumber;
+        door.dataset.promotionName = offer.promotionName;
+        
+        const isOpened = openedDoors.has(offer.day);
+        const isAvailable = isDateAvailable(offer.day);
+        const isToday = getCurrentDay() === offer.day && getCurrentMonth() === 11 && getCurrentHour() >= 9;
+        const isPast = isDatePast(offer.day);
+        const isNextDay = ((getCurrentDay() + 1)  === offer.day && getCurrentMonth() === 11 && getCurrentHour() >= 23);
+        const isComingSoon = getCurrentDay() === offer.day && getCurrentMonth() === 11 && getCurrentHour() < 9;
+        
+        // Add appropriate classes
+        if (isOpened) {
+            door.classList.add('opened');
+        } else if (isPast) {
+            door.classList.add('opened');
+            door.classList.add('past');
+        } else if (isAvailable || isToday) {
+            door.classList.add('available');
+        } else {
+            door.classList.add('locked');
+        }
+        
+        if (isToday || offer.day === 15) {
+            door.classList.remove('opened');
+            door.classList.remove('past');
+            door.classList.add('today');
+        }
+        
+        // Create door locked
+        const doorContent = document.createElement('div');
+        doorContent.className = 'door-content';
+        
+        // Door number
+        const doorNumber = document.createElement('div');
+        doorNumber.className = `door-number ${isOpened ? 'opened' : ''}`;
+        doorNumber.textContent = offer.dayNumber;
+        doorContent.appendChild(doorNumber);
+        
+        // Door main content
+        if ((isPast || isOpened) && offer.day !== 15) {
+            const openedContent = document.createElement('div');
+            openedContent.className = 'door-opened';
+            
+            const emoji = document.createElement('div');
+            emoji.className = 'door-emoji';
+            emoji.innerHTML = offer.emoji;
+            openedContent.appendChild(emoji);
+
+            emoji.appendChild(doorNumber);
+            
+            const title = document.createElement('div');
+            title.className = 'door-title';
+            title.textContent = offer.title;
+            openedContent.appendChild(title);
+            
+            const discount = document.createElement('div');
+            discount.className = 'door-discount';
+            //discount.style.background = offer.color;
+            discount.textContent = offer.discount;
+            openedContent.appendChild(discount);
+            
+            doorContent.appendChild(openedContent);
+        } else if (isAvailable || isToday) {
+            const availableContent = document.createElement('div');
+            availableContent.className = 'door-available';
+            
+            const openText = document.createElement('div');
+            openText.className = 'door-open-text';
+            openText.textContent = 'OPEN';
+            availableContent.appendChild(openText);
+            
+            doorContent.appendChild(availableContent);
+            
+        }
+
+        if (isNextDay) {
+            // Door conmig next day
+            const comingTomorrow = document.createElement('div');
+            comingTomorrow.className = `coming-soon`;
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+
+            const shortDay = tomorrow.toLocaleDateString('en-GB', { weekday: 'short' });
+            comingTomorrow.textContent = `Open from 9am ${shortDay}`;
+            doorContent.appendChild(comingTomorrow);
+        }
+
+        if (isComingSoon) {
+            // Door conmig next day
+            const comingTomorrow = document.createElement('div');
+            comingTomorrow.className = `coming-soon`;
+            const today = new Date();
+            const shortDay = today.toLocaleDateString('en-GB', { weekday: 'short' });
+            comingTomorrow.textContent = `Open from 9am ${shortDay}`;
+            doorContent.appendChild(comingTomorrow);
+        }
+        
+        door.appendChild(doorContent);
+        
+        // Add click event
+        if (isAvailable || isToday) {
+            door.addEventListener('click', () => handleDoorClick(offer.day));
+        }
+
+        // if (isToday) {
+        //     const todayIndicator = document.createElement('div');
+        //     todayIndicator.className = 'today-indicator';
+        //     todayIndicator.textContent = '⭐';
+        //     doorContent.appendChild(todayIndicator);
+        // }
+        
+        calendarGrid.appendChild(door);
+    });
+}
+
+function random(max){
+        return Math.random() * (max - 0) + 0;
+    }
+
+// Handle door click
+function handleDoorClick(day) {
+    // if (openedDoors.has(day)) {
+    //     // Door already opened, just show the offer
+    //     return;
+    // }
+    
+    // Open new door
+    openedDoors.add(day);
+    saveOpenedDoors();
+
+    
+    
+    // Update the door visually
+    const door = document.querySelector(`[data-day="${day}"]`);
+    door.classList.remove('available');
+    door.classList.add('opened');
+    
+    // Regenerate the door content
+    generateCalendar();
+    updateProgress();
+    
+    // Show offer after animation
+    setTimeout(() => {
+        showOffer(day);
+    }, 600);
+}
+
+// Show offer modal
+function showOffer(day) {
+    const offer = adventOffers.find(o => o.day === day);
+    // const sound = audios.find(o => o.id === day);
+
+    // const indicator = document.getElementById('sound-indicator');
+
+    // indicator.src = sound.sound;
+    // indicator.play();
+
+    if (!offer) return;
+    
+    selectedDoor = day;
+    
+    // Update modal content
+    const modal = document.getElementById('offer-modal');
+    const modalContent = modal.querySelector('.advent-modal-content');
+    
+    // Set background gradient
+    //modalContent.style.background = offer.color;
+    
+    document.getElementById('offer-emoji').innerHTML = offer.emoji;
+    document.getElementById('offer-day-number').textContent = offer.dayNumber;
+    document.getElementById('offer-title').innerHTML = offer.title;
+    document.getElementById('offer-discount').textContent = offer.discount;
+    document.getElementById('offer-description').textContent = offer.description;
+    document.getElementById('offer-code').textContent = offer.code;
+    document.querySelector('.modal-actions .hero-button').textContent = offer.linkText;
+    document.querySelector('.modal-actions .hero-button').setAttribute('href', offer.link);
+    document.querySelector('.offer-terms').innerHTML = offer.terms;
+
+    if (offer.inactive) {
+      const div = document.createElement('div');
+      div.className = 'inactive-offer';
+      div.textContent = "Sorry all today's gifts have been claimed";
+
+      const container = document.querySelector('.advent-modal-content');
+      container.prepend(div);
+    }
+
+
+
+
+    if (!offer.codeUsed) {
+      document.querySelector('.offer-code-box').classList.add('hide');
+    } else {
+      document.querySelector('.offer-code-box').classList.remove('hide');
+    }
+    
+    if (offer.code === '') {
+      document.querySelector('.offer-code-box').classList.add('vanish');
+    } else {
+      document.querySelector('.offer-code-box').classList.remove('vanish');
+    }
+
+    if (offer.oneday) {
+      document.querySelector('.oneday').classList.remove('hide');
+    } else {
+      document.querySelector('.oneday').classList.add('hide');
+    }
+
+    if (offer.xavailable) {
+      document.querySelector('.xavailable').classList.remove('hide');
+      document.querySelector('.xavailable').innerHTML = offer.xavailable;
+    } else {
+      document.querySelector('.xavailable').classList.add('hide');
+    }
+
+    var c = document.createDocumentFragment();
+    for (var i=0; i<70; i++) {
+      var startX = Math.random() * 100;
+        var styles = 'left: ${startX}%;\
+                    transform: translate3d(' + (random(500) - 250) + 'px, ' + (random(200) - 50) + 'px, 0) rotate(' + random(360) + 'deg);\
+                    background: #DAB96A;\
+                    animation: bang 1.5s ease-out forwards;\
+                    opacity: 0';
+        
+        var e = document.createElement("i");
+        e.style.cssText = styles.toString();
+        modalContent.appendChild(e);
+    }
+
+    var e = document.createElement("i");
+    document.querySelector(`[data-day="${day}"]`).appendChild(c);
+    
+    // Show modal
+    modal.classList.add('show');
+
+    //copy code 
+
+document.querySelector('.offer-code').addEventListener('click', function() {
+    var copyText = document.querySelector('.offer-code');
+    navigator.clipboard.writeText( copyText.textContent );
+    document.querySelector('.offer-code-box').classList.add('copied');
+    setTimeout(function() {
+        document.querySelector('.offer-code-box').classList.remove('copied');
+    }, 2000);
+});
+}
+
+// Close offer modal
+function closeOffer() {
+    const modal = document.getElementById('offer-modal');
+    modal.classList.remove('show');
+    selectedDoor = null;
+}
+
+// Update progress
+function updateProgress() {
+    let count = document.querySelectorAll('.door-opened').length;
+    if (count < 12 && count !== 0) {
+        count = count + 1
+    }
+    const percentage = (count / 12) * 100;
+    
+    document.getElementById('doors-opened').textContent = count;
+    document.getElementById('progress-fill').style.width = percentage + '%';
+    document.getElementById('progress-sleigh').style.marginLeft = percentage + '%';
+}
+
+// Play sound effect
+function playSound(soundType = 'door') {
+    const indicator = document.getElementById('sound-indicator');
+    
+    switch (soundType) {
+        case 'door':
+            indicator.src = "https://assets.mixkit.co/active_storage/sfx/2988/2988-preview.mp3";
+            indicator.play();
+            break;
+        case 'bell':
+             indicator.src = "https://assets.mixkit.co/active_storage/sfx/939/939-preview.mp3";
+             indicator.play();
+            break;
+        case 'magic':
+             indicator.src = "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-77317/zapsplat_human_santa_says_ho_ho_ho_merry_christmas_77682.mp3";
+             indicator.play();
+            break;
+        default:
+            indicator.src = "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-344-audio/344_audio_christmas_reindeer_approach_left_to_right_207.mp3";
+            indicator.play();
+    }
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    // Modal close button
+    document.getElementById('modal-close').addEventListener('click', closeOffer);
+    
+    // Modal background click
+    document.getElementById('offer-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeOffer();
+        }
+    });
+    
+    // Escape key to close modal
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && selectedDoor) {
+            closeOffer();
+        }
+    });
+}
+</script>
+
+<script>
+function showcopy() {
+    var modal = document.querySelector('.advent-modal');
+
+    // modal doesn't exist yet — prevent errors
+    if (!modal) return;
+
+    if (modal.className.indexOf('show') > -1 && $('.copyinfo').length < 1) {
+        $('<div class="copyinfo" style="color: #072442; font-size: 12px; margin-bottom: -18px; font-family: Nunito Bold;">click to copy code</div>').insertAfter('.advent-modal.show .offer-code');
+    } else {
+        $('.copyinfo').remove();
+    }
+}
+
+// Wait until the modal node exists BEFORE starting MutationObserver
+var waitForModal = setInterval(function () {
+    var modal = document.querySelector('.advent-modal');
+
+    if (!modal) return; // keep waiting
+
+    clearInterval(waitForModal); // modal now exists
+
+    // Initial run
+    showcopy();
+
+    // Create observer AFTER modal exists
+    var mutshowcopy = new MutationObserver(function () {
+        setTimeout(showcopy, 200);
+    });
+
+    // Observe attribute/class changes (needed for .show class)
+    mutshowcopy.observe(modal, {
+        attributes: true,
+        attributeFilter: ['class']
+    });
+
+}, 100);
+</script>
+
+

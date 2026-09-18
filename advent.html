@@ -1,0 +1,1332 @@
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.advent-wrapper {
+    background: linear-gradient(to right, #dbe3ff, #deeeee, #dbe3ff);
+    min-height: 100vh;
+    color: #407ec9;
+    overflow: hidden;
+    position: relative;
+}
+
+.advent-bg-image {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+    object-fit: cover;
+    opacity: 0.08;
+}
+
+.advent-bg-image--mob {
+    display: none;
+}
+
+.advent-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    position: relative;
+    z-index: 20;
+}
+
+/* Snowflakes */
+.snowflakes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.snowflake {
+    position: absolute;
+    color: white;
+    user-select: none;
+    pointer-events: none;
+    animation: snowfall linear infinite;
+}
+
+@keyframes snowfall {
+    0% { transform: translateY(-100vh) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(360deg); }
+}
+
+/* Decorations */
+.decorations {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.decoration {
+    position: absolute;
+    font-size: 3rem;
+    animation: bounce 2s infinite;
+}
+
+.decoration-1 { top: 2.5rem; left: 2.5rem; animation-delay: 0s; }
+.decoration-2 { top: 5rem; right: 5rem; font-size: 2rem; animation-delay: 1s; }
+.decoration-3 { bottom: 5rem; left: 5rem; animation-delay: 2s; }
+.decoration-4 { bottom: 2.5rem; right: 2.5rem; font-size: 2rem; animation-delay: 0.5s; }
+.decoration-5 { top: 50%; left: 1.25rem; font-size: 1.5rem; animation-delay: 1.5s; }
+.decoration-6 { top: 33%; right: 1.25rem; font-size: 1.5rem; animation-delay: 2.5s; }
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-30px); }
+    60% { transform: translateY(-15px); }
+}
+
+@keyframes scale {
+    0%, 20%, 50%, 80%, 100% { transform: scale(1); }
+    40% { transform: scale(1.2); }
+    60% { transform: scale(0.8); }
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.hero-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-title {
+    background: linear-gradient(to right, #0d5d9c, #407ec9, #0d5d9c);
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.2;
+    font-weight: bold;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(rgb(255, 255, 255) 0px 3px) drop-shadow(rgb(255, 255, 255) 0px -3px) drop-shadow(rgb(255, 255, 255) 3px 0px) drop-shadow(rgb(255, 255, 255) -3px 0px);
+}
+
+.hero-description {
+    font-size: 1.25rem;
+    color: #0d5d9c;
+    max-width: 48rem;
+    margin: 0 auto 2rem;
+    line-height: 1.2;
+    text-shadow:1px 1px 10px #fff, 1px 1px 10px #fff;
+}
+
+.hero-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    text-shadow:1px 1px 10px #fff, 1px 1px 10px #fff;
+    font-size: 16px;
+}
+
+/* Calendar Grid */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 3rem auto;
+    max-width: 64rem;
+}
+
+.calendar-door {
+    aspect-ratio: 1;
+    cursor: pointer;
+    transition: all 0.5s;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid;
+}
+
+.calendar-door.opened {
+    background: linear-gradient(135deg, #dcfce7, #fecaca);
+    border-color: #facc15;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.calendar-door.available {
+    background: linear-gradient(135deg, #00331f, #008535);
+    border-color: #fde047;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.calendar-door.available:hover {
+    transform: scale(1.05);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.calendar-door.locked {
+    background: linear-gradient(135deg, #4b5563, #374151);
+    border-color: #6b7280;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.calendar-door.today {
+    animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(250, 204, 21, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+}
+
+.door-content {
+    padding: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.door-number {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: bold;
+    background: white;
+    color: #7f1d1d;
+}
+
+.door-number.opened {
+    background: #facc15;
+    color: #7f1d1d;
+}
+
+.today-indicator {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: #facc15;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.door-opened {
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.door-emoji {
+    width: 50%;
+    margin: 0 auto 1rem;
+    height: auto;
+    animation: bounce 1s infinite;
+}
+
+.door-emoji img {
+    width: 100%;
+    height: auto;
+}
+
+.opened .door-emoji {
+    animation: scale 1s infinite;
+}
+
+.door-title {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #7f1d1d;
+    margin-bottom: 0.25rem;
+}
+
+.door-discount {
+    font-size: 0.75rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    color: white;
+    font-weight: bold;
+}
+
+.door-available {
+    text-align: center;
+}
+
+.door-gift-icon {
+    font-size: 2rem;
+    color: #fde047;
+    margin-bottom: 0.5rem;
+    animation: bounce 1s infinite;
+}
+
+.door-open-text {
+    color: white;
+    font-weight: bold;
+    font-size: 1.125rem;
+}
+
+.door-click-text {
+    color: #fde047;
+    font-size: 0.75rem;
+}
+
+.door-locked {
+    text-align: center;
+}
+
+.door-lock-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+}
+
+.door-date {
+    color: #d1d5db;
+    font-size: 0.75rem;
+}
+
+.sparkle {
+    position: absolute;
+    color: #fde047;
+    animation: ping 1s infinite;
+}
+
+.sparkle-1 { top: 0.25rem; right: 0.25rem; }
+.sparkle-2 { bottom: 0.25rem; left: 0.25rem; animation-delay: 0.5s; }
+
+@keyframes ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+/* Progress Section */
+.progress-section {
+    max-width: 32rem;
+    margin: 2rem auto;
+    text-shadow:1px 1px 10px #fff, 1px 1px 10px #fff;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    color: #407ec9;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.progress-bar {
+    width: 100%;
+    background: #7f1d1d;
+    border-radius: 9999px;
+    height: 1rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #86efac, #fca5a5);
+    transition: width 1s ease-out;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: pulse 2s infinite;
+}
+
+/* Instructions */
+.instructions {
+    max-width: 32rem;
+    margin: 2rem auto;
+    background: linear-gradient(to right, #14532d, #7f1d1d);
+    border: 3px solid #facc15;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.instructions h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fde047;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.instructions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    color: #dcfce7;
+}
+
+.instruction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.instruction--double {
+    grid-column: span 2;
+}
+
+.instruction-icon {
+    font-size: 2rem;
+    color: #facc15;
+    margin-bottom: 0.5rem;
+}
+
+.instruction p {
+    font-size: 0.875rem;
+}
+
+/* Modal */
+.advent-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 93, 156, 0.6);
+    z-index: 99999;
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.advent-modal.show {
+    display: flex;
+}
+
+.advent-modal-content {
+    max-width: 28rem;
+    width: 100%;
+    border-radius: 1rem;
+    color: white;
+    position: relative;
+    margin: auto;
+    animation: modal-bounce 0.6s ease-out;
+}
+
+@keyframes modal-bounce {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg) scale(1.1);
+}
+
+.modal-decorations {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.modal-decoration {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: bounce 1s infinite;
+}
+
+.modal-decoration-1 { top: 1rem; left: 1rem; }
+.modal-decoration-2 { top: 1rem; right: 1rem; animation-delay: 0.2s; }
+.modal-decoration-3 { bottom: 1rem; left: 1rem; animation-delay: 0.4s; }
+.modal-decoration-4 { bottom: 1rem; right: 1rem; animation-delay: 0.6s; }
+
+.modal-body {
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.offer-emoji {
+    width: 70%;
+    height: auto;
+    margin: 0 auto 1rem;
+    animation: pulse 2s infinite;
+}
+
+.offer-emoji img {
+    width: 100%;
+    height: auto;
+}
+
+.offer-day {
+    font-size: 1.875rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.offer-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.offer-discount-box {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.offer-discount {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.offer-description {
+    font-size: 1.125rem;
+    opacity: 0.9;
+}
+
+.offer-code-box {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.offer-code-box p {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.offer-code {
+    font-size: 1.5rem;
+    font-family: monospace;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    display: inline-block;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: white;
+    color: #374151;
+}
+
+.btn-primary:hover {
+    background: #f3f4f6;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.offer-terms {
+    font-size: 0.75rem;
+    opacity: 0.75;
+}
+
+.hero-button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background-color: #009E44;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 30px 10px 10px;
+    height: 40px;
+    box-shadow: 0 0 5px rgba(3, 33, 33, .3);
+    border: 3px solid #DBE3FF;
+    transition: all 0.3s;
+}
+
+.hero-button:hover {
+    background-color: #AFCB17;
+    scale: 1.05;
+    box-shadow: 0 0 18px rgba(3,33,33,.3);
+    color: #fff;
+}
+
+.hero-button .basket-icon {
+    transition: all 0.3s;
+    transform: rotate(15deg);
+    margin-left: 5px;
+}
+
+.hero-button .star-start {
+    position: relative;
+    top: -3px;
+}
+
+.hero-button .swoosh-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-right: 5px;
+    width: 25px;
+}
+
+.hero-button .swoosh {
+    display: block;
+    width: 0;
+    height: 3px;
+    margin-top: -3px;
+    margin-left: -2px;
+    transform: rotate(15deg);
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s;
+}
+
+.hero-button:hover .swoosh {
+    width: 7px;
+}
+
+.hero-button .star-end {
+    position: relative;
+    bottom: -5px;
+    transition: all 0.3s;
+}
+
+.hero-button:hover .star-end {
+    scale: 1.1;
+    transform: rotate(30deg);
+}
+
+
+@keyframes sound-pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .advent-bg-image--desktop {
+        display: none;
+    }
+    .advent-bg-image--mob {
+        display: block;
+    }
+    .calendar-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .hero-info {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .instructions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .instruction {
+        grid-column: span 2;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .calendar-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .decoration {
+        font-size: 2rem;
+    }
+    
+    .decoration-2, .decoration-4, .decoration-5, .decoration-6 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+
+<div class="advent-wrapper">
+    <img src="https://thetoyshop.com/medias/advent-bg-mob.jpg?context=bWFzdGVyfHJvb3R8NzQyMDc1fGltYWdlL2pwZWd8YUdFeEwyZ3pOUzh4TWpVNE9UVTBPRFV6TlRnek9DOWhaSFpsYm5RdFltY3RiVzlpTG1wd1p3fGZkYmQ0MWI3NGIzNDJiMDg1YWJhNTg4MjJhNzg5Y2Y3NjUzMjZhNTBmZDYzMzhlYjA2MTc1ZGJiNmY2ZjFlZGE" class="advent-bg-image advent-bg-image--mob" />
+
+    <img src="https://thetoyshop.com/medias/advent-bg-desktop.jpg?context=bWFzdGVyfHJvb3R8MTM1OTM2MnxpbWFnZS9qcGVnfGFHSXpMMmd6T0M4eE1qVTRPVFUwT0RZd01UTTNOQzloWkhabGJuUXRZbWN0WkdWemEzUnZjQzVxY0djfGFkMGFkMmFlODM0NTFmMTMwNWM5ZTQzM2U5NjE1MTQ2NDU2MDY1MjAzMWUzYTQ4MmU0YmI2NjJkNjkxYjY2NDM" class="advent-bg-image advent-bg-image--desktop" />
+
+    <div id="snowflakes" class="snowflakes"></div>
+
+    <div class="decorations">
+        <div class="decoration decoration-1">🎄</div>
+        <div class="decoration decoration-2">⭐</div>
+        <div class="decoration decoration-3">🎅</div>
+        <div class="decoration decoration-4">🦌</div>
+        <div class="decoration decoration-5">🔔</div>
+        <div class="decoration decoration-6">🎁</div>
+    </div>
+    <div class="advent-container">
+        <div class="hero">
+            <div class="hero-icons">
+                <h1 class="hero-title">🎄 Advent Calendar 🎄</h1>
+            </div>
+            <p class="hero-description">
+                Open a door each day to reveal amazing Christmas offers on your favorite Universal branded toys!
+            </p>
+            <div class="hero-info">
+                <span>📅 December <span id="current-day">1</span>, 2025</span>
+                <span>✨ <span id="doors-opened">0</span>/12 doors opened</span>
+            </div>
+        </div>
+
+        <div class="calendar-grid" id="calendar-grid">
+             Calendar doors will be generated by JavaScript 
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-info">
+                <span>Christmas Progress</span>
+                <span><span id="progress-count">0</span>/12 doors</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>🔔 How It Works 🔔</h3>
+            <div class="instructions-grid">
+                <div class="instruction">
+                    <div class="instruction-icon">📅</div>
+                    <p><strong>Wait for the day:</strong> Doors unlock each day in December</p>
+                </div>
+                <div class="instruction">
+                    <div class="instruction-icon">🎁</div>
+                    <p><strong>Click to open:</strong> Reveal your daily Christmas offer</p>
+                </div>
+                <div class="instruction instruction--double">
+                    <div class="instruction-icon">✨</div>
+                    <p><strong>Use the code:</strong> Apply at checkout for instant savings</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="offer-modal" class="advent-modal">
+        <div class="advent-modal-content">
+            <button class="modal-close" id="modal-close">✕</button>
+            <div class="modal-decorations">
+                <div class="modal-decoration modal-decoration-1">🎉</div>
+                <div class="modal-decoration modal-decoration-2">⭐</div>
+                <div class="modal-decoration modal-decoration-3">✨</div>
+                <div class="modal-decoration modal-decoration-4">🌟</div>
+            </div>
+            <div class="modal-body">
+                <div class="offer-emoji" id="offer-emoji">🎁</div>
+                <h2 class="offer-day">Day <span id="offer-day-number">1</span></h2>
+                <h3 class="offer-title" id="offer-title">Special Offer</h3>
+                <div class="offer-discount-box">
+                    <div class="offer-discount" id="offer-discount">20% OFF</div>
+                    <p class="offer-description" id="offer-description">Amazing deal description</p>
+                </div>
+                <div class="offer-code-box">
+                    <p>Use code at checkout:</p>
+                    <div class="offer-code" id="offer-code">CODE20</div>
+                </div>
+                <div class="modal-actions">
+                    <a href="https://www.thetoyshop.com/brands/addo/snuggle-buddies" class="hero-button">
+                        <span class="swoosh-container">
+                            <span class="star-start">
+                                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                                </svg>
+                            </span>
+                            <span class="swoosh">&nbsp;</span>
+                        </span>
+                        Shop Now
+                        <span class="basket-icon">
+                            <svg width="22" height="18" viewBox="0 0 22 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21.2401 7.57V8.14C21.2401 8.38 21.1601 8.58 20.9901 8.75C20.8201 8.92 20.6201 9 20.3801 9H20.0901L19.1601 15.57C19.0901 16 18.8901 16.35 18.5701 16.63C18.2501 16.9 17.8701 17.04 17.4401 17.04H4.36006C3.93006 17.04 3.55006 16.9 3.23006 16.63C2.91006 16.35 2.71006 16 2.64006 15.57L1.71006 9H1.42006C1.18006 9 0.980059 8.92 0.810059 8.75C0.640059 8.58 0.560059 8.38 0.560059 8.14V7.57C0.560059 7.33 0.640059 7.13 0.810059 6.96C0.980059 6.79 1.18006 6.71 1.42006 6.71H3.83006L7.67006 1.43C7.86006 1.17 8.11006 1.01 8.42006 0.960001C8.73006 0.910001 9.02006 0.980002 9.28006 1.18C9.54006 1.37 9.70006 1.62 9.75006 1.93C9.80006 2.24 9.73006 2.53 9.53006 2.79L6.66006 6.71H15.1401L12.2701 2.79C12.0801 2.53 12.0101 2.24 12.0501 1.93C12.1001 1.62 12.2501 1.37 12.5201 1.18C12.7801 0.990002 13.0701 0.920001 13.3801 0.960001C13.6901 1.01 13.9401 1.16 14.1301 1.43L17.9701 6.71H20.3801C20.6201 6.71 20.8201 6.79 20.9901 6.96C21.1601 7.13 21.2401 7.33 21.2401 7.57ZM7.73006 13.89V9.87C7.73006 9.63 7.65006 9.43 7.48006 9.26C7.31006 9.09 7.11006 9.01 6.87006 9.01C6.63006 9.01 6.43006 9.09 6.26006 9.26C6.09006 9.43 6.01006 9.63 6.01006 9.87V13.89C6.01006 14.13 6.09006 14.33 6.26006 14.5C6.43006 14.67 6.63006 14.75 6.87006 14.75C7.11006 14.75 7.31006 14.67 7.48006 14.5C7.65006 14.33 7.73006 14.13 7.73006 13.89ZM11.7501 13.89V9.87C11.7501 9.63 11.6701 9.43 11.5001 9.26C11.3301 9.09 11.1301 9.01 10.8901 9.01C10.6501 9.01 10.4501 9.09 10.2801 9.26C10.1101 9.43 10.0301 9.63 10.0301 9.87V13.89C10.0301 14.13 10.1101 14.33 10.2801 14.5C10.4501 14.67 10.6501 14.75 10.8901 14.75C11.1301 14.75 11.3301 14.67 11.5001 14.5C11.6701 14.33 11.7501 14.13 11.7501 13.89ZM15.7701 13.89V9.87C15.7701 9.63 15.6901 9.43 15.5201 9.26C15.3501 9.09 15.1501 9.01 14.9101 9.01C14.6701 9.01 14.4701 9.09 14.3001 9.26C14.1301 9.43 14.0501 9.63 14.0501 9.87V13.89C14.0501 14.13 14.1301 14.33 14.3001 14.5C14.4701 14.67 14.6701 14.75 14.9101 14.75C15.1501 14.75 15.3501 14.67 15.5201 14.5C15.6901 14.33 15.7701 14.13 15.7701 13.89Z"></path>
+                            </svg>
+                        </span>
+                        <span class="star-end">
+                            <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.23539 2.16758C4.31585 1.75612 4.83196 1.6292 5.09362 1.92958L6.64272 3.65653L8.92869 3.36308C9.33686 3.31475 9.62105 3.7548 9.41431 4.12022L8.26344 6.1095L9.24532 8.18833C9.41411 8.56311 9.07604 8.98116 8.67962 8.89652L6.43413 8.40043L4.74982 9.98635C4.45362 10.2631 3.94852 10.0788 3.90018 9.67067L3.67114 7.38306L1.6601 6.27065C1.29468 6.06391 1.31163 5.54034 1.6864 5.37155L3.81205 4.44154L4.23539 2.16758Z" fill-opacity="0.5"></path>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+                <p class="offer-terms">* Offer valid until December 31st, 2025. Terms and conditions apply.</p>
+            </div>
+        </div>
+    </div>
+
+    <audio id="sound-indicator" src=""></audio>
+</div>
+
+<script>
+
+  // Advent Calendar Data
+const adventOffers = [
+    {
+        day: 1,
+        title: "Jurassic World",
+        discount: "20% OFF",
+        description: "Jurrassic World Toys",
+        code: "JURASSIC20",
+        color: "linear-gradient(135deg, #ef4444, #dc2626)",
+        emoji: '<img src="https://www.thetoyshop.com//medias/1200Wx1200H-562948-GWY58-Primary?context=bWFzdGVyfGltYWdlc3wzODM4MDF8aW1hZ2UvanBlZ3xhREZqTDJnMlpTOHhNakl3TWpjNE1ERTVOamc1TkM4eE1qQXdWM2d4TWpBd1NGODFOakk1TkRoZlIxZFpOVGhmVUhKcGJXRnllUXw5ZGJlZDNlNzE5YzhiZDkzN2UwODE4NjhmYjA4NDdlNWY3ZWU4ZTYzOWM3N2ZhNTFkZjE3OGQ1ZjU4NjJiYzQ4" />',
+    },
+    {
+        day: 2,
+        title: "Minions Deal",
+        discount: "Buy 2 Get 1 FREE",
+        description: "On all Minions toys",
+        code: "MINIONS3",
+        color: "linear-gradient(135deg, #374151, #1f2937)",
+        emoji: "<img src='https://www.thetoyshop.com/medias/300Wx300H-566249-Primary?context=bWFzdGVyfGltYWdlc3w3MTU4MHxpbWFnZS9qcGVnfGFHSXpMMmd6Tmk4eE1qSTFORE0wTmpBeE9EZzBOaTh6TURCWGVETXdNRWhmTlRZMk1qUTVYMUJ5YVcxaGNua3w4MDUwMDUyY2IxYjQ1MzA4YjdhZDg1Nzk5ZmUyYWEwYTgwMjYwNDA0OGM2NGZiMDNiN2JmMmUzZWI4MDkzMDU1' />",
+    },
+    {
+        day: 3,
+        title: "WICKED",
+        discount: "30% OFF",
+        description: "All WICKED Figures Sets",
+        code: "WICKED30",
+        color: "linear-gradient(135deg, #eab308, #ca8a04)",
+        emoji: "<img src='https://image.smythstoys.com/original/800/desktop/247543_3.webp' />",
+    },
+    {
+        day: 4,
+        title: "Trolls",
+        discount: "25% OFF",
+        description: "Trolls Toys",
+        code: "TROLLS25",
+        color: "linear-gradient(135deg, #facc15, #f97316)",
+        emoji: '<img src="https://www.thetoyshop.com/medias/564907-Primary-300Wx300H?context=bWFzdGVyfGltYWdlc3wxNDM5ODB8aW1hZ2UvanBlZ3xhVzFoWjJWekwyaGtOeTlvWmpjdk1USXdOek14T1RRd05qRTROVFF1YW5CbnxiNGUwNmY4Y2Y2OWU0MzNhYWI0NGRiYjljNjA2Yjk4NmI4ZWFhMWM0ZDQ4NjhjMzg3MDFhZmRlMTFlNDQ2ZGIy" />',
+    },
+    {
+        day: 5,
+        title: "How To Train Your Dragon",
+        discount: "FREE SHIPPING",
+        description: "On all How TO Train Your Dragon products",
+        code: "TOOTHLESS",
+        color: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
+        emoji: '<img src="https://www.thetoyshop.com/medias/300Wx300H-573686-TOOTH-Primary?context=bWFzdGVyfGltYWdlc3wzNjM2M3xpbWFnZS9qcGVnfGFEWTVMMmhsTmk4eE1qVTJOamswTkRJNE5EY3dNaTh6TURCWGVETXdNRWhmTlRjek5qZzJYMVJQVDFSSVgxQnlhVzFoY25rfDY0NjM0NDNmMWQ3Njc3YzA3Njg2YjI3ZDAwMmY2YjNkZWY2ZTk3YWRiMmRhZWUxMzMyOTIyMmVmN2VkMzk3YjM" />',
+    },
+    {
+        day: 6,
+        title: "Gabby's Dollhouse Deal",
+        discount: "35% OFF",
+        description: "Gabby's Dollhouse deluxe set",
+        code: "GABBY35",
+        color: "linear-gradient(135deg, #dc2626, #2563eb)",
+        emoji: '<img src="https://www.thetoyshop.com/medias/1200Wx1200H-568715-Primary?context=bWFzdGVyfGltYWdlc3w1MzcwODh8aW1hZ2UvanBlZ3xhR1kzTDJnd05pOHhNak14TWprd09Ea3lNamt4TUM4eE1qQXdWM2d4TWpBd1NGODFOamczTVRWZlVISnBiV0Z5ZVF8NDBiMzFjNWI5YmY3NDAxNTcwZWEyNTBmNmE5NTUyNWUxMDI1MmU4NTljNzY3ODI1MTIyYzVjMGU2ZWI1ZjAyYg" />',
+    },
+    {
+        day: 7,
+        title: "Harry Potter",
+        discount: "Buy 1 Get 1 50% OFF",
+        description: "All Harry Potter Merchandise",
+        code: "POTTER50",
+        color: "linear-gradient(135deg, #2563eb, #ef4444)",
+        emoji: '<img src="https://image.smythstoys.com/picture/desktop/168637.webp" />',
+    },
+    {
+        day: 8,
+        title: "Shrek",
+        discount: "40% OFF",
+        description: "Shrek Audio Character",
+        code: "SHREK40",
+        color: "linear-gradient(135deg, #10b981, #059669)",
+        emoji: '<img src="https://www.thetoyshop.com/medias/300Wx300H-572720-Primary?context=bWFzdGVyfGltYWdlc3w3NDA5OHxpbWFnZS9qcGVnfGFEUmxMMmc1Wmk4eE1qUTNOamd3TVRjeE1qRTFPQzh6TURCWGVETXdNRWhmTlRjeU56SXdYMUJ5YVcxaGNua3wxOGIzNjcwNmIxNzFiNGI5NzAzNzc2YWViNDVjZGFhM2UyNzBiZGQ4MGQ2NjZjNDgwMGUwMjA0ZjA2NjgyZDFm" />',
+    },
+    {
+        day: 9,
+        title: "Universal Resort",
+        discount: "Free Competition Entry",
+        description: "Free Entry into the Universal Orlando Resort Holiday Draw",
+        code: "ORLANDO",
+        color: "linear-gradient(135deg, #f97316, #ef4444)",
+        emoji: '<img src="https://insidethemagic.net/wp-content/uploads/2022/11/universal-orlando-resort-800x400.png" />',
+    },
+    {
+        day: 10,
+        title: "Universal Brands",
+        discount: "20% OFF",
+        description: "All Universal Braned Toys",
+        code: "UNIVERSAL20",
+        color: "linear-gradient(135deg, #f97316, #eab308)",
+        emoji: '<img src="https://www.thetoyshop.com/medias/563749-Primary-300Wx300H?context=bWFzdGVyfGltYWdlc3wxMzQ2MzR8aW1hZ2UvanBlZ3xhVzFoWjJWekwyZ3dOaTlvWkdNdk1USXdOekl6T0RZME9UUTBPVFF1YW5CbnxlYjgwNTFiYWQxZTQzYjg1MjU2MDViMmI3MzMxYTkxY2NlZTlkOTg3NzQzODAxMzVkNGYyNzYzODI3NzIzODBm" />',
+    },
+    {
+        day: 11,
+        title: "Free Minion Toy",
+        discount: "FREE",
+        description: "Get a free Minion Blaster with any purchase",
+        code: "TOOTME",
+        color: "linear-gradient(135deg, #60a5fa, #f87171)",
+        emoji: '<img src="https://www.thetoyshop.com/medias/546138-Primary-300Wx300H?context=bWFzdGVyfGltYWdlc3wzNjkzOXxpbWFnZS9qcGVnfGFXMWhaMlZ6TDJoa09TOW9NVEF2T1RVNE1EVTJOamczTWpBNU5DNXFjR2N8MDY5N2VkZmUxMjlhYzRmNTE2MDAwMTAwYzhkYTI4NzQxYTgwNGY1MWNmYWQ4ODcyOTM2ODE4NThmMDA2ODc0OQ" />',
+    },
+    {
+        day: 12,
+        title: "Free Troll",
+        discount: "FREE",
+        description: "Get a free Troll with any purchase",
+        code: "FREETROLL",
+        color: "linear-gradient(135deg, #f472b6, #a855f7)",
+        emoji: '<img src="https://www.thetoyshop.com/medias/564899-Primary-300Wx300H?context=bWFzdGVyfGltYWdlc3w1NDA1MHxpbWFnZS9qcGVnfGFXMWhaMlZ6TDJnME1DOW9Oak12TVRJd056TXhPVEkwTWpNME5UUXVhbkJufDVmZTU1N2Q3ZTZhYjgzM2RlNzIxNGUwZjExNzc1MWVkOWZlZmIzZDdkZGY0YzAzYjJhZmQwZGJlYzljZGZhMjU" />',
+    },
+];
+
+const audios = [
+    {
+        id: 1,
+        sound: "https://assets.mixkit.co/active_storage/sfx/2988/2988-preview.mp3"
+    },
+    {
+        id: 2,
+        sound: "https://assets.mixkit.co/active_storage/sfx/939/939-preview.mp3"
+    },
+    {
+        id: 3,
+        sound: "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-77317/zapsplat_human_santa_says_ho_ho_ho_merry_christmas_77682.mp3"
+    },
+    {
+        id: 4,
+        sound: "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-344-audio/344_audio_christmas_reindeer_approach_left_to_right_207.mp3"
+    },
+    {
+        id: 5,
+        sound: "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-five/zapsplat_household_christmas_tree_fake_shake_baubles_decorations_wobble_fall_off.mp3"
+    },
+    {
+        id: 6,
+        sound: "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-14566/zapsplat_musical_large_sleigh_bells_med_shake_001_15366.mp3"
+    },
+    {
+        id: 7,
+        sound: "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-gma/gma_magic_sparkle_gem_loop_04_655.mp3"
+    },
+    {
+        id: 8,
+        sound: "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-35448/zapsplat_multimedia_game_sound_bright_sparkle_twinkle_tone_positive_award_achievement_010_40552.mp3"
+    },
+    {
+        id: 9,
+        sound: "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-five/zapsplat_foley_bauble_decoration_christmas_down_bounce_fast_table_004.mp3"
+    },
+    {
+        id: 10,
+        sound: "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-77317/zapsplat_fantasy_magic_magical_glissando_twinkle_bright_fairy_004_79213.mp3"
+    },
+    {
+        id: 11,
+        sound: "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-55112/zapsplat_foley_tinsle_decoration_christmas_short_handling_001_61295.mp3"
+    },
+    {
+        id: 12,
+        sound: "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-35448/zapsplat_multimedia_game_sound_bright_positive_sparkle_022_40539.mp3"
+    },
+];
+
+// Global state
+let openedDoors = new Set();
+let selectedDoor = null;
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', function() {
+    initializeSnowflakes();
+    loadOpenedDoors();
+    updateCurrentDay();
+    generateCalendar();
+    updateProgress();
+    setupEventListeners();
+});
+
+// Generate snowflakes
+function initializeSnowflakes() {
+    const snowflakesContainer = document.getElementById('snowflakes');
+    
+    for (let i = 0; i < 50; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.className = 'snowflake';
+        snowflake.textContent = '❄️';
+        snowflake.style.left = Math.random() * 100 + '%';
+        snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+        snowflake.style.fontSize = (Math.random() * 10 + 5) + 'px';
+        snowflake.style.animationDelay = Math.random() * 2 + 's';
+        
+        snowflakesContainer.appendChild(snowflake);
+    }
+}
+
+// Load opened doors from localStorage
+function loadOpenedDoors() {
+     const saved = localStorage.getItem('advent-opened-doors');
+     if (saved) {
+         openedDoors = new Set(JSON.parse(saved));
+     }
+}
+
+// Save opened doors to localStorage
+function saveOpenedDoors() {
+    localStorage.setItem('advent-opened-doors', JSON.stringify([...openedDoors]));
+}
+
+// Update current day display
+function updateCurrentDay() {
+    const currentDay = new Date().getDate();
+    document.getElementById('current-day').textContent = currentDay;
+}
+
+// Check if date is available
+function isDateAvailable(day) {
+    const today = new Date().getDate();
+    const currentMonth = new Date().getMonth();
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    // For demo purposes, we'll use September (month 8) instead of December (month 11)
+    // In production, change this to: return currentMonth === 11 && day <= today;
+    return currentMonth === 11 && day === today && currentHour >= 9;
+}
+
+function isDatePast(day) {
+    const today = new Date().getDate();
+    const currentMonth = new Date().getMonth();
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    // For demo purposes, we'll use September (month 8) instead of December (month 11)
+    // In production, change this to: return currentMonth === 11 && day <= today;
+    return currentMonth === 11 && day < today && currentHour < 9;
+}
+
+// Get current day
+function getCurrentDay() {
+    return new Date().getDate();
+}
+
+// Get current month
+function getCurrentMonth() {
+    return new Date().getMonth();
+}
+
+// Get current hour
+function getCurrentHour() {
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    return currentHour;
+}
+
+// Generate calendar grid
+function generateCalendar() {
+    const calendarGrid = document.getElementById('calendar-grid');
+    calendarGrid.innerHTML = '';
+    
+    adventOffers.forEach(offer => {
+        const door = document.createElement('div');
+        door.className = 'calendar-door';
+        door.dataset.day = offer.day;
+        
+        const isOpened = openedDoors.has(offer.day);
+        const isAvailable = isDateAvailable(offer.day);
+        const isToday = getCurrentDay() === offer.day && getCurrentMonth() === 11 && getCurrentHour() >= 9;
+        const isPast = isDatePast(offer.day);
+        
+        // Add appropriate classes
+        if (isOpened) {
+            door.classList.add('opened');
+        } else if (isPast) {
+            door.classList.add('opened');
+        } else if (isAvailable || isToday) {
+            door.classList.add('available');
+        } else {
+            door.classList.add('locked');
+        }
+        
+        if (isToday) {
+            door.classList.add('today');
+        }
+        
+        // Create door content
+        const doorContent = document.createElement('div');
+        doorContent.className = 'door-content';
+        
+        // Door number
+        const doorNumber = document.createElement('div');
+        doorNumber.className = `door-number ${isOpened ? 'opened' : ''}`;
+        doorNumber.textContent = offer.day;
+        doorContent.appendChild(doorNumber);
+        
+        // Today indicator
+        if (isToday) {
+            const todayIndicator = document.createElement('div');
+            todayIndicator.className = 'today-indicator';
+            todayIndicator.textContent = '⭐';
+            doorContent.appendChild(todayIndicator);
+        }
+        
+        // Door main content
+        if (isPast || isOpened) {
+            const openedContent = document.createElement('div');
+            openedContent.className = 'door-opened';
+            
+            const emoji = document.createElement('div');
+            emoji.className = 'door-emoji';
+            emoji.innerHTML = offer.emoji;
+            openedContent.appendChild(emoji);
+            
+            const title = document.createElement('div');
+            title.className = 'door-title';
+            title.textContent = offer.title;
+            openedContent.appendChild(title);
+            
+            const discount = document.createElement('div');
+            discount.className = 'door-discount';
+            discount.style.background = offer.color;
+            discount.textContent = offer.discount;
+            openedContent.appendChild(discount);
+            
+            doorContent.appendChild(openedContent);
+        } else if (isAvailable || isToday) {
+            const availableContent = document.createElement('div');
+            availableContent.className = 'door-available';
+            
+            const giftIcon = document.createElement('div');
+            giftIcon.className = 'door-gift-icon';
+            giftIcon.textContent = '🎁';
+            availableContent.appendChild(giftIcon);
+            
+            const openText = document.createElement('div');
+            openText.className = 'door-open-text';
+            openText.textContent = 'OPEN';
+            availableContent.appendChild(openText);
+            
+            const clickText = document.createElement('div');
+            clickText.className = 'door-click-text';
+            clickText.textContent = 'Click to reveal!';
+            availableContent.appendChild(clickText);
+            
+            doorContent.appendChild(availableContent);
+            
+        } else {
+            const lockedContent = document.createElement('div');
+            lockedContent.className = 'door-locked';
+            
+            const lockIcon = document.createElement('div');
+            lockIcon.className = 'door-lock-icon';
+            lockIcon.textContent = '🔒';
+            lockedContent.appendChild(lockIcon);
+            
+            const dateText = document.createElement('div');
+            dateText.className = 'door-date';
+            dateText.textContent = `Dec ${offer.day}`;
+            lockedContent.appendChild(dateText);
+            
+            doorContent.appendChild(lockedContent);
+        }
+        
+        door.appendChild(doorContent);
+        
+        // Add click event
+        if (isAvailable || isToday) {
+            door.addEventListener('click', () => handleDoorClick(offer.day));
+        }
+        
+        calendarGrid.appendChild(door);
+    });
+}
+
+// Handle door click
+function handleDoorClick(day) {
+    if (openedDoors.has(day)) {
+        // Door already opened, just show the offer
+        return;
+    }
+    
+    // Open new door
+    openedDoors.add(day);
+    saveOpenedDoors();
+    
+    // Update the door visually
+    const door = document.querySelector(`[data-day="${day}"]`);
+    door.classList.remove('available');
+    door.classList.add('opened');
+    
+    // Regenerate the door content
+    generateCalendar();
+    updateProgress();
+    
+    // Show offer after animation
+    setTimeout(() => {
+        showOffer(day);
+    }, 600);
+}
+
+// Show offer modal
+function showOffer(day) {
+    const offer = adventOffers.find(o => o.day === day);
+    const sound = audios.find(o => o.id === day);
+
+    const indicator = document.getElementById('sound-indicator');
+
+    indicator.src = sound.sound;
+    indicator.play();
+
+    if (!offer) return;
+    
+    selectedDoor = day;
+    
+    // Update modal content
+    const modal = document.getElementById('offer-modal');
+    const modalContent = modal.querySelector('.advent-modal-content');
+    
+    // Set background gradient
+    modalContent.style.background = offer.color;
+    
+    document.getElementById('offer-emoji').innerHTML = offer.emoji;
+    document.getElementById('offer-day-number').textContent = offer.day;
+    document.getElementById('offer-title').textContent = offer.title;
+    document.getElementById('offer-discount').textContent = offer.discount;
+    document.getElementById('offer-description').textContent = offer.description;
+    document.getElementById('offer-code').textContent = offer.code;
+    
+    // Show modal
+    modal.classList.add('show');
+}
+
+// Close offer modal
+function closeOffer() {
+    const modal = document.getElementById('offer-modal');
+    modal.classList.remove('show');
+    selectedDoor = null;
+}
+
+// Update progress
+function updateProgress() {
+    let count = document.querySelectorAll('.door-opened').length;
+    if (count < 12 && count !== 0) {
+        count = count + 1
+    }
+    const percentage = (count / 12) * 100;
+    
+    document.getElementById('doors-opened').textContent = count;
+    document.getElementById('progress-count').textContent = count;
+    document.getElementById('progress-fill').style.width = percentage + '%';
+}
+
+// Play sound effect
+function playSound(soundType = 'door') {
+    const indicator = document.getElementById('sound-indicator');
+    
+    switch (soundType) {
+        case 'door':
+            indicator.src = "https://assets.mixkit.co/active_storage/sfx/2988/2988-preview.mp3";
+            indicator.play();
+            break;
+        case 'bell':
+             indicator.src = "https://assets.mixkit.co/active_storage/sfx/939/939-preview.mp3";
+             indicator.play();
+            break;
+        case 'magic':
+             indicator.src = "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-77317/zapsplat_human_santa_says_ho_ho_ho_merry_christmas_77682.mp3";
+             indicator.play();
+            break;
+        default:
+            indicator.src = "https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-344-audio/344_audio_christmas_reindeer_approach_left_to_right_207.mp3";
+            indicator.play();
+    }
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    // Modal close button
+    document.getElementById('modal-close').addEventListener('click', closeOffer);
+    
+    // Modal background click
+    document.getElementById('offer-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeOffer();
+        }
+    });
+    
+    // Shop now button
+    document.getElementById('shop-now-btn').addEventListener('click', function() {
+        closeOffer();
+        // In a real app, this would navigate to the shop
+        alert('Redirecting to shop...');
+    });
+    
+    // Escape key to close modal
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && selectedDoor) {
+            closeOffer();
+        }
+    });
+}
+</script>
